@@ -1,5 +1,4 @@
 require_relative '../../../spec_helper'
-require_relative '../../../../lib/test_user_credentials'
 require_relative '../pages/login_email'
 require_relative '../pages/login_password'
 
