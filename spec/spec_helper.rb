@@ -64,9 +64,9 @@ RSpec.configure do |config|
       ENV['base_url'] = 'http://app.uniteus.io'
     when 'ehr_staging'
       ENV['base_url'] = 'http://emr.uniteusdev.com'
-    when 'ehr_staging'
+    when 'ehr_training'
       ENV['base_url'] = 'http://emr.uniteustraining.com'
-    when 'ehr_staging'
+    when 'ehr_production'
       ENV['base_url'] = 'http://emr.uniteus.io'
     end
   end
