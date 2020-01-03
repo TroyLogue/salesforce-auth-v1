@@ -74,7 +74,7 @@ namespace :browserstack do
     ENV['os_version'] = args[:os_version]
     ENV['browser'] = args[:browser]
     ENV['browser_version'] = args[:browser_version]
-    run_in_parallel('4', 'app_client_smoke'
+    run_in_parallel('4', 'app_client_smoke')
   end
 
   # example:
