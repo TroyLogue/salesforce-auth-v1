@@ -72,7 +72,7 @@ We run tests on Windows browsers using [BrowserStack](http://www.browserstack.co
 
 The full test result output including screenshots and video is available in BrowserStack's [Automate view](https://www.browserstack.com/automate). BrowserStack results configs are set in the `spec_helper` file.
 
-# Running Tests
+# Running Tests Locally
 
 Run tests from the root path of this project in a Terminal window.
 
@@ -125,6 +125,10 @@ To run only the test in `networks/browse_map_spec` at line 20:
 To run two tests in `networks/browse_map_spec` at lines 20 and 31:
 
 `rspec spec/networks/browse_map_spec.rb:27:40`
+
+# Running Tests via Docker
+
+- TODO [UU3-35283](https://uniteus.atlassian.net/browse/UU3-35283)
 
 # Developing Tests
 

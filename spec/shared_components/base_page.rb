@@ -8,8 +8,7 @@ class BasePage
 
   # explicit-wait wrapper for find_element methods to avoid flakiness caused by timing, 
   # e.g., wait on find_element before interacting with it or asserting its visibility
-  # def wait_for(seconds = 30)
-  def wait_for(seconds = 15)
+  def wait_for(seconds = 30)
     Selenium::WebDriver::Wait.new(:timeout => seconds).until { yield }
   end
 
