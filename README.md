@@ -68,7 +68,7 @@ We will leverage BrowserStack for cross-browser testing.
 
 ## Create a BrowserStack User Account
 
-We run tests on Windows browsers using [BrowserStack](http://www.browserstack.com). To gain access, either copy lib/`browserstack_credentials.rb.example` to lib/`browserstack_credentials.rb` and set your BrowserStack username and access key or manage the defined env vars in `browserstack_credentials.rb.example` however you'd like. If you need to be added as a user on our team, see an admin of our BrowserStack account (@carolmirakove).
+We run tests on Windows browsers using [BrowserStack](http://www.browserstack.com). To gain access, copy lib/`browserstack_credentials.rb.example` to lib/`browserstack_credentials.rb` and set your BrowserStack username and access key. If you need to be added as a user on our team, see an admin of our BrowserStack account (@carolmirakove).
 
 The full test result output including screenshots and video is available in BrowserStack's [Automate view](https://www.browserstack.com/automate). BrowserStack results configs are set in the `spec_helper` file.
 
