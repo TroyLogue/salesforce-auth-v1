@@ -171,7 +171,7 @@ The tagging effort is significant, mostly by design.
 
 #### Intentional effort
 
-Thoughtful Test design is at least as meaningful as clean coding. Deciding whether a test case is a smoke vs. regression test and whether it neeeds to be run on all browsers vs. just one browser are high-value expressions that we should take care to optimize.
+Thoughtful Test design is at least as meaningful as clean coding. Deciding whether a test case is a smoke vs. regression test and whether it needs to be run on all browsers vs. just one browser are high-value expressions that we should take care to optimize.
 
 #### Arbitrary effort
 
