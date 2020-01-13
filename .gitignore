@@ -1,0 +1,9 @@
+# test-run artifacts
+results/
+
+# account credentials
+lib/browserstack_credentials.rb
+
+# OS X system files
+.DS_Store
+.byebug_history
