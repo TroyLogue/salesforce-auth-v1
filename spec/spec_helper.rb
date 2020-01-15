@@ -4,7 +4,7 @@ require 'rubygems'
 require_relative '../lib/browserstack_credentials'
 
 # Specifies required dependencies per groups defined in Gemfile
-# When spec files require spec_helper, they have access to all the package gems 
+# When spec files require spec_helper, they have access to all the package gems
 # and do not need to require them individually
 Bundler.require(:drivers, :test_framework, :test_harness, :test_data, :debugging)
 
@@ -28,14 +28,14 @@ RSpec.configure do |config|
       # caps['browserstack.debug'] = 'true'
       # comment the line below to enable video recording; note, test execution time will "slightly" increase
 
-    # remote driver for browserstack 
+    # remote driver for browserstack
     @driver = Selenium::WebDriver.for(
       :remote,
       :url => "http://#{BROWSERSTACK_USERNAME}:#{BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub",
       :desired_capabilities => caps)
 
     else
-    # default browser is chrome; others can passed as variables 
+    # default browser is chrome; others can passed as variables
       case ENV['browser'] ||= 'chrome'
       when 'chrome'
         @driver = Selenium::WebDriver.for :chrome
@@ -43,7 +43,9 @@ RSpec.configure do |config|
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')
         options.add_argument('--disable-gpu')
+        options.add_argument('--no-sandbox')
         options.add_argument('--remote-debugging-port=9222')
+
         @driver = Selenium::WebDriver.for :chrome, options: options
       when 'firefox'
         @driver = Selenium::WebDriver.for :firefox
@@ -52,7 +54,7 @@ RSpec.configure do |config|
       end
     end
 
-    # default base_url is app-client staging; others can be passed as variables 
+    # default base_url is app-client staging; others can be passed as variables
     case ENV['base_url'] ||= 'http://app.uniteusdev.com'
     when 'devqa'
       ENV['base_url'] = 'ENTER_URL_HERE' # or pass at runtime
@@ -90,7 +92,7 @@ RSpec.configure do |config|
         # true is the default value but stating explicitly for readability
         caps['browserstack.video'] = 'true'
       end
-    else 
+    else
       # if results directory doesn't exist, create it
       results_directory = File.join(Dir.pwd, 'results/')
       Dir.mkdir(results_directory) unless File.exists?(results_directory)
@@ -100,7 +102,7 @@ RSpec.configure do |config|
       end
     # uncomment the lines below to save screenshot on every test, not just on failure
     # else
-    #   @driver.save_screenshot(File.join(Dir.pwd, "#{results_directory}/visual-checks/#{example.metadata[:full_description]}-#{page.generate_timestamp}.png")) 
+    #   @driver.save_screenshot(File.join(Dir.pwd, "#{results_directory}/visual-checks/#{example.metadata[:full_description]}-#{page.generate_timestamp}.png"))
     end
     @driver.quit
   end
