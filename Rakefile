@@ -10,7 +10,7 @@ namespace :local do
   task :app_client_staging, :browser do |t, args|
     ENV['browser'] = args[:browser]
     ENV['base_url'] = 'app_client_staging'
-    run_in_parallel(2, 'app_client_smoke --tag app_client_regression')
+    exit run_in_parallel(2, 'app_client_smoke --tag app_client_regression')
   end
 
   # presupposes a url is set in spec_helper
@@ -22,7 +22,7 @@ namespace :local do
     # ENV['base_url'] = 'devqa'
     ENV['base_url'] = 'app_client_staging'
     tag = args[:tag]
-    run_in_parallel(2, "#{tag}")
+    exit run_in_parallel(2, "#{tag}")
   end
 
   # rake local:by_tag[ehr_staging,chrome,ehr]
@@ -31,7 +31,7 @@ namespace :local do
     ENV['base_url'] = args[:base_url]
     ENV['browser'] = args[:browser]
     tag = args[:tag]
-    run_in_parallel(2, "#{tag}")
+    exit run_in_parallel(2, "#{tag}")
   end
 
 end
@@ -48,7 +48,7 @@ namespace :browserstack do
     ENV['os'] = args[:os]
     ENV['browser'] = args[:browser]
     ENV['browser_version'] = args[:browser_version]
-    run_in_parallel(1, 'app_client_smoke --tag app_client_regression --tag')
+    exit run_in_parallel(1, 'app_client_smoke --tag app_client_regression --tag')
   end
 
   # rake browserstack:app_client_staging_cross_browser['Windows','10','internet_explorer','11.0']
@@ -61,7 +61,7 @@ namespace :browserstack do
     ENV['os_version'] = args[:os_version]
     ENV['browser'] = args[:browser]
     ENV['browser_version'] = args[:browser_version]
-    run_in_parallel(4, 'app_client_smoke --tag app_client_regression --tag ~chrome_only')
+    exit run_in_parallel(4, 'app_client_smoke --tag app_client_regression --tag ~chrome_only')
   end
 
   # example:
@@ -75,7 +75,7 @@ namespace :browserstack do
     ENV['os_version'] = args[:os_version]
     ENV['browser'] = args[:browser]
     ENV['browser_version'] = args[:browser_version]
-    run_in_parallel(4, 'app_client_smoke')
+    exit run_in_parallel(4, 'app_client_smoke')
   end
 
   # example:
@@ -90,7 +90,7 @@ namespace :browserstack do
     ENV['browser'] = 'internet_explorer'
     ENV['browser_version'] = '11.0'
     tag = args[:tag]
-    run_in_parallel(2, "#{tag}")
+    exit run_in_parallel(2, "#{tag}")
   end
 
   # example:
@@ -104,7 +104,7 @@ namespace :browserstack do
     ENV['browser'] = 'internet_explorer'
     ENV['browser_version'] = '10.0'
     tag = args[:tag]
-    run_in_parallel(2, "#{tag}")
+    exit run_in_parallel(2, "#{tag}")
   end
 
 end
