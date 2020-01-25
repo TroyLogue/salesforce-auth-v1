@@ -20,8 +20,8 @@ group :test_data do
 end
 
 group :browserstack do
-  # enables HTTP persistent connection in selenium bindings 
-  # https://github.com/browserstack/fast-selenium-scripts/tree/master/fast-selenium-gem 
+  # enables HTTP persistent connection in selenium bindings
+  # https://github.com/browserstack/fast-selenium-scripts/tree/master/fast-selenium-gem
   gem 'fast-selenium'
 end
 
