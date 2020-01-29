@@ -35,7 +35,7 @@ podTemplate(containers: [
 }
 
 def checkout() {
-    branch = 'test'
+    branch = 'master'
 
     git(branch: branch,
         credentialsId: 'github_ssh',
