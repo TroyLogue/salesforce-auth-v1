@@ -56,6 +56,11 @@ Note: There is a [webdrivers gem](https://github.com/titusfortner/webdrivers) wh
 
 Download from the [project releases](https://github.com/mozilla/geckodriver/releases) page and extract the server to somewhere on your `PATH`.
 
+With homebrew:
+```
+brew install geckodriver
+``
+
 ### Safari 
 No driver needed. Launch your Safari instance, go to the Develop menu, and select "Allow Remote Automation."
 
