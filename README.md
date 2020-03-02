@@ -59,15 +59,15 @@ Download from the [project releases](https://github.com/mozilla/geckodriver/rele
 With homebrew:
 ```
 brew install geckodriver
-``
+```
 
-### Safari 
+### Safari
 No driver needed. Launch your Safari instance, go to the Develop menu, and select "Allow Remote Automation."
 
 Note: Braking changes were confirmed with Safari 13. They are fixed in [Safari Technology Preview 97](https://github.com/SeleniumHQ/selenium/issues/7649) but not yet a released version.
 
 ### Windows Browsers
-If using BrowserStack, no local drivers are needed. If local drivers are needed, install [IEDriverServer](https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver) for IE and [msedgedriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) for MS Edge. 
+If using BrowserStack, no local drivers are needed. If local drivers are needed, install [IEDriverServer](https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver) for IE and [msedgedriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/) for MS Edge.
 
 We will leverage BrowserStack for cross-browser testing.
 
@@ -216,7 +216,7 @@ Brackets for describe and context are used for test results readability.
 
 Files and classes in `pages/` are named for the top route of the feature under test.
 
-Page classes inherit from `spec/base_page`. The methods in the base page class may be used and useful to all page classes in all applications. 
+Page classes inherit from `spec/base_page`. The methods in the base page class may be used and useful to all page classes in all applications.
 
 ## Debugging
 
