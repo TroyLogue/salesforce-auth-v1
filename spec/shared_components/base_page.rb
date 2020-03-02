@@ -123,4 +123,7 @@ class BasePage
     find(selector).text.include?(text)
   end
 
+  def get_active_element
+    driver.switch_to.active_element
+  end
 end
