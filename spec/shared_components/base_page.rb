@@ -73,6 +73,10 @@ class BasePage
     driver.get ENV['base_url'] + path
   end
 
+  def get_active_element
+    driver.switch_to.active_element
+  end
+
   def get_title
     wait_for { driver.title }
   end
@@ -121,9 +125,5 @@ class BasePage
 
   def text_include?(text, selector)
     find(selector).text.include?(text)
-  end
-
-  def get_active_element
-    driver.switch_to.active_element
   end
 end
