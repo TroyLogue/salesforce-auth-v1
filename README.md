@@ -272,3 +272,7 @@ Error handling is defined in the base page object, `pages/page.rb`.
 
 - [ ] Errors with embedded screenshots
   - [ ] Spike viability of Allure
+
+## References
+
+For documentation on libraries used in this project and other tips, please see ["end-to-end-tests Help" in the QA Confluence space](https://uniteus.atlassian.net/wiki/spaces/QA/pages/1029701696/end-to-end-tests+Help).
