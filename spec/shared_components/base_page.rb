@@ -1,18 +1,20 @@
 class BasePage
- 
-  attr_reader :driver 
+
+  SPINNER = { css: '.spinner' }
+
+  attr_reader :driver
 
   def initialize(driver)
     @driver = driver
   end
 
-  # explicit-wait wrapper for find_element methods to avoid flakiness caused by timing, 
+  # explicit-wait wrapper for find_element methods to avoid flakiness caused by timing,
   # e.g., wait on find_element before interacting with it or asserting its visibility
   def wait_for(seconds = 30)
     Selenium::WebDriver::Wait.new(:timeout => seconds).until { yield }
   end
 
-  def clear(selector) 
+  def clear(selector)
     find(selector).clear
   end
 
@@ -21,11 +23,11 @@ class BasePage
     find(selector).send_keys text
   end
 
-  def clear_within(context, selector) 
+  def clear_within(context, selector)
     find_within(context, selector).clear
   end
 
-  def click(selector) 
+  def click(selector)
     find(selector).click
   end
 
@@ -34,7 +36,7 @@ class BasePage
     driver.execute_script("arguments[0].click();", element)
   end
 
-  def click_within(context, selector) 
+  def click_within(context, selector)
     find_within(context, selector).click
   end
 
@@ -42,13 +44,13 @@ class BasePage
     find(selector).send_keys text
   end
 
-  # debugging tip: to verify value set, run 
+  # debugging tip: to verify value set, run
   # driver.execute_script("return document.getElementById(`#{selector_id}`).value")
   def enter_via_js(text, selector_id)
     driver.execute_script("document.getElementById(`#{selector_id}`).setAttribute('value', `#{text}`)")
   end
 
-  def enter_within(text, context, selector) 
+  def enter_within(text, context, selector)
     find_within(context, selector).send_keys text
   end
 
@@ -60,7 +62,7 @@ class BasePage
     find(selector).text.include?(text)
   end
 
-  def find_within(context, selector) 
+  def find_within(context, selector)
     wait_for { driver.find_element(context).find_element(selector) }
   end
 
@@ -80,7 +82,7 @@ class BasePage
   def hover_over(selector)
     driver.action.move_to(find(selector)).perform
   end
-  
+
   def is_displayed?(selector)
     begin
       find(selector).displayed?
@@ -97,8 +99,8 @@ class BasePage
   end
 
   def is_not_displayed?(selector)
-    begin 
-      wait_for(seconds = 8) { !driver.find_element(selector).displayed? } 
+    begin
+      wait_for(seconds = 8) { !driver.find_element(selector).displayed? }
     rescue Selenium::WebDriver::Error::NoSuchElementError
       return true
     rescue Selenium::WebDriver::Error::StaleElementReferenceError
@@ -106,20 +108,29 @@ class BasePage
     rescue Selenium::WebDriver::Error::TimeOutError
       return true
     else
-      return false 
+      return false
       print "E2E ERROR: Selector #{selector} was present"
     end
   end
 
-  def submit(selector) 
+  # for debugging race conditions and element visibility
+  def print_page_source()
+    puts("UUQA DEBUG Page Source is #{driver.page_source}")
+  end
+
+  def submit(selector)
     find(selector).submit
   end
 
-  def text(selector) 
+  def text(selector)
     find(selector).text
   end
 
   def text_include?(text, selector)
     find(selector).text.include?(text)
+  end
+
+  def wait_for_spinner_to_disappear()
+    is_not_displayed?(SPINNER)
   end
 end

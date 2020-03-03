@@ -2,8 +2,13 @@ require_relative '../../../shared_components/base_page'
 
 class Exports < BasePage
   NEW_EXPORT_BUTTON = { css: '#create-new-export-btn' }
+  EXPORTS_TABLE = { css: '.exports-table .ui-table-body' }
+  EXPORT_DIALOG = { css: 'create-export-dialog' }
+  EXPORT_DIALOG_CONTENT = { css: '#create-export-dialog .dialog-content' }
   EXPORT_SOURCE_SELECT_LIST = { css: '.export-create-fields__select:nth-of-type(1)' }
+  EXPORT_SOURCE_SELECT_LIST_OPEN = { css: '.choices.is-open.is-focused' }
   EXPORT_SOURCE_CHOICE = { css: '#choices-export-create-input__type-item-choice-1' }
+  EXPORT_SOURCE_CHOICE_SELECTED = { css: '#export-create-input__type + .choices__list > div[aria-selected="true"]' }
   EXPORT_SOURCE_CLOSE = { css: '.multiple-selector' }
   EXPORT_TYPE_SELECT_LIST = { css: '.export-create-fields__select:nth-of-type(2)' }
   EXPORT_TYPE_CHOICE = EXPORT_SOURCE_CHOICE # to clarify: not the same element, but the same selector
@@ -15,6 +20,7 @@ class Exports < BasePage
 
   def page_displayed?
     is_displayed?(NEW_EXPORT_BUTTON)
+    is_displayed?(EXPORTS_TABLE)
   end
 
   def click_new_export
@@ -22,8 +28,11 @@ class Exports < BasePage
   end
 
   def select_export_source
+    is_displayed?(EXPORT_DIALOG_CONTENT)
     click(EXPORT_SOURCE_SELECT_LIST)
+    is_displayed?(EXPORT_SOURCE_SELECT_LIST_OPEN)
     click(EXPORT_SOURCE_CHOICE)
+    is_displayed?(EXPORT_SOURCE_CHOICE_SELECTED)
     click(EXPORT_SOURCE_CLOSE)
   end
 
@@ -34,7 +43,7 @@ class Exports < BasePage
 
   def select_comparison_field
     click(EXPORT_COMPARISON_FIELD_SELECT_LIST)
-    click(EXPORT_COMPARISON_FIELD_CHOICE)    
+    click(EXPORT_COMPARISON_FIELD_CHOICE)
   end
 
   def select_date_range
@@ -54,6 +63,7 @@ class Exports < BasePage
   end
 
   def has_pending?
-    text_include?('Pending', {css: '.exports-table'})
+    wait_for_spinner_to_disappear()
+    text_include?('Pending', EXPORTS_TABLE)
   end
 end
