@@ -3,7 +3,6 @@ require_relative '../../../shared_components/base_page'
 class Exports < BasePage
   NEW_EXPORT_BUTTON = { css: '#create-new-export-btn' }
   EXPORTS_TABLE = { css: '.exports-table .ui-table-body' }
-  EXPORT_DIALOG = { css: 'create-export-dialog' }
   EXPORT_DIALOG_CONTENT = { css: '#create-export-dialog .dialog-content' }
   EXPORT_SOURCE_SELECT_LIST = { css: '.export-create-fields__select:nth-of-type(1)' }
   EXPORT_SOURCE_SELECT_LIST_OPEN = { css: '.choices.is-open.is-focused' }
