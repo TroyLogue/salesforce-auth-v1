@@ -19,9 +19,9 @@ describe '[Reports - Create Export]', :reports do
       log_in_as(Login::CC_HARVARD)
       left_nav.go_to_exports
       expect(exports.page_displayed?).to be_truthy
-    } 
+    }
 
-    it 'creates an export', :uuqa_292, :app_client_regression do
+    it 'creates an export', :uuqa_152, :app_client_regression do
       exports.click_new_export
       exports.fill_export_form
       exports.submit_export_form
