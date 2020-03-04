@@ -16,17 +16,24 @@ RSpec.configure do |config|
     case ENV['host']
     when 'browserstack'
       Bundler.require(:browserstack)
+      caps = Selenium::WebDriver::Remote::Capabilities.new
 
-      caps = Selenium::WebDriver::Remote::Capabilities.send(ENV['browser'])
-      caps.version = ENV['browser_version']
-      caps.platform = ENV['os']
       caps[:name] = example.metadata[:full_description]
+      caps['browserstack.selenium_version'] = '3.5.2'
+      caps['browserstack.local'] = 'false'
       caps['acceptSslCerts'] = 'true'
       # needed for IE 11 https://www.browserstack.com/automate/using-sendkeys-on-remote-IE11
       caps['browserstack.sendKeys'] = 'true'
       # uncomment the line below to capture screenshots at every command throughout the test
       # caps['browserstack.debug'] = 'true'
-      # comment the line below to enable video recording; note, test execution time will "slightly" increase
+      # comment the line below to disable video recording
+      # caps['browserstack.video'] = 'false'
+
+      # env vars are passed by rake tasks
+      caps['os'] = ENV['os']
+      caps['os_version'] = ENV['os_version']
+      caps['browser'] = ENV['browser']
+      caps['browser_version'] = ENV['browser_version']
 
     # remote driver for browserstack
     @driver = Selenium::WebDriver.for(
