@@ -17,12 +17,14 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     } 
 
     it 'uploads consent form' do 
+      base_page.get('/dashboard/new/pending-consent')
+             
     end
 
     # need this? mailtrap... 
     it 'requests and grants consent by email' do 
+      skip
     end
-
 
   end
 end

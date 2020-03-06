@@ -16,4 +16,10 @@ class HomePage < BasePage
     INTERCOM_IFRAME = { css: '.intercom-launcher-frame' }
     # Revisit INTERCOM_BTN selector once selector migration plan is complete
     INTERCOM_BTN = { css: '.intercom-launcher' }
-    CLOSE_INTERCOM_BTN = { INTERCOM_BTN }
+    CLOSE_INTERCOM_BTN = INTERCOM_BTN
+
+  def click_incoming_pending_btn
+    click(INCOMING_PENDING_BTN)
+  end
+
+end
