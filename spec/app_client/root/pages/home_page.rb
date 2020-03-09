@@ -18,8 +18,12 @@ class HomePage < BasePage
     INTERCOM_BTN = { css: '.intercom-launcher' }
     CLOSE_INTERCOM_BTN = INTERCOM_BTN
 
-  def click_incoming_pending_btn
-    click(INCOMING_PENDING_BTN)
-  end
+    AR_OVERFLOW_MENU = { css: '#vertical-dots-menu' }
+    AR_REQUEST_OR_UPLOAD_CONSENT_BUTTON = { css: '#vertical-dots-menu-item-0' } 
+
+    def open_consent_modal 
+      click(AR_OVERFLOW_MENU) 
+      click(AR_REQUEST_OR_UPLOAD_CONSENT_BUTTON) 
+    end
 
 end
