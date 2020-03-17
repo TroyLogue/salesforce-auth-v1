@@ -18,14 +18,12 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       log_in_as(Login::CC_HARVARD)
     } 
 
-    it 'uploads consent form to assistance request' do 
-      # not working yet
+    it 'add consent to an incoming Pending Consent referral' do 
       base_page.get('/dashboard/new/pending-consent')
       home_page.open_consent_modal
     end
 
-    # need this? mailtrap... 
-    it 'requests and grants consent by email' do 
+    it 'request consent by email' do 
       skip
     end
 
