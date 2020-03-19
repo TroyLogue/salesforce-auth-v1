@@ -13,6 +13,10 @@ class PendingConsentPage < BasePage
   def consent_modal_displayed? 
     is_displayed?(CONSENT_MODAL)
   end
+
+  def consent_modal_not_displayed? 
+    is_not_displayed?(CONSENT_MODAL)
+  end
   
   def open_first_consent_modal 
     click(VERTICAL_DOTS_MENU_FIRST)
