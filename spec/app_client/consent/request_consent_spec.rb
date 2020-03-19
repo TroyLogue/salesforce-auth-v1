@@ -28,15 +28,23 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(pending_consent_page.page_displayed?).to be_truthy
     } 
 
-=begin 
     it 'adds consent to an incoming Pending Consent referral' do 
       skip
+
       @first_referral_text = pending_consent_page.text_of_first_referral;
       @second_referral_text = pending_consent_page.text_of_second_referral; 
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
+
+      consent_modal.add_on_screen_consent 
+
+      expect(pending_consent_page.consent_modal_not_displayed?).to be_truthy
+
+      base_page.refresh
+
+      @new_first_referral_text = pending_consent_page.text_of_first_referral
+      expect(@new_first_referral_text).to equal(@second_referral_text)
     end
-=end 
 
     it 'requests consent by email' do 
       pending_consent_page.open_first_consent_modal
@@ -44,6 +52,20 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
       address = "#{Faker::Internet.email}"
       consent_modal.request_consent_by_email(address)
+
+      notification_text = notifications.success_text
+      expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)
+    end
+
+    it 'requests consent by text' do 
+      pending_consent_page.open_first_consent_modal
+      expect(pending_consent_page.consent_modal_displayed?).to be_truthy
+
+      #Faker::PhoneNumber.cell_phone was giving invalid numbers, 
+      #We require an accurate area code so I'm using this constant.. 
+      #Need a better place to put it though
+      phone_number = "2129999999"
+      consent_modal.request_consent_by_text(phone_number)
 
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)

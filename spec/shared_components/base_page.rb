@@ -111,8 +111,16 @@ class BasePage
     end
   end
 
+  def refresh
+    driver.navigate().refresh()
+  end
+
   def submit(selector) 
     find(selector).submit
+  end
+
+  def switch_to(frame)
+    driver.switch_to.frame(frame)
   end
 
   def text(selector) 
