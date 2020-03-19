@@ -62,8 +62,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
       #Faker::PhoneNumber.cell_phone was giving invalid numbers, 
-      #We require an accurate area code so I'm using this constant.. 
-      #Need a better place to put it though
+      #We require an accurate area code so I'm using this constant 
       phone_number = "2129999999"
       consent_modal.request_consent_by_text(phone_number)
 
