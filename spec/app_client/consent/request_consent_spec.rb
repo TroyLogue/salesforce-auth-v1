@@ -29,8 +29,6 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     } 
 
     it 'adds consent to an incoming Pending Consent referral' do 
-      skip
-
       @first_referral_text = pending_consent_page.text_of_first_referral;
       @second_referral_text = pending_consent_page.text_of_second_referral; 
       pending_consent_page.open_first_consent_modal
@@ -61,10 +59,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
-      #Faker::PhoneNumber.cell_phone was giving invalid numbers, 
-      #We require an accurate area code so I'm using this constant 
-      phone_number = "2129999999"
-      consent_modal.request_consent_by_text(phone_number)
+      consent_modal.request_consent_by_text(ConsentModal::VALID_PHONE_NUMBER)
 
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)

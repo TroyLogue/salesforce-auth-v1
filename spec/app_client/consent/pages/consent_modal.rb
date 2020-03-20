@@ -17,6 +17,7 @@ class ConsentModal < BasePage
   PHONE_NUMBER_RADIO_BTN = { css: '#phone_number-label' }
   PHONE_NUMBER_INPUT_FIELD = { css: '#phone-number' }
   PHONE_NUMBER_SUBMIT_BTN = { css: '#consent-submit-phone-btn' }
+  VALID_PHONE_NUMBER = '2129999999' 
 
   def add_on_screen_consent 
     click(ON_SCREEN_CONSENT_RADIO_BTN)
