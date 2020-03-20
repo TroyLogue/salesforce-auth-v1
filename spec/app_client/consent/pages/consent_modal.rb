@@ -6,13 +6,11 @@ class ConsentModal < BasePage
   EMAIL_INPUT_FIELD = { css: '#email-address' }
   EMAIL_SUBMIT_BTN = { css: '#consent-submit-email-btn' }
 
-  ON_SCREEN_CONSENT_RADIO_BTN = { css: '#on_screen-label' }
+  ON_SCREEN_CONSENT_RADIO_BTN = { css: "#on_screen-label" }
   ON_SCREEN_CONSENT_GO_TO_FORM = { css: '#go-to-form-btn' }
-
-  # to ask devs to add an id or name attr. to the iframe so we can switch to it
-  # CONSENT_IFRAME_ID
+  CONSENT_IFRAME = { css: '#consent-app-frame-iframe' }
   SIGNATURE_BOX = { css: '#signature-pad' }
-  ACCEPT_BTN = { css: "span:contains('Accept')" }
+  ACCEPT_BTN = { css: "#accept" }
 
   PHONE_NUMBER_RADIO_BTN = { css: '#phone_number-label' }
   PHONE_NUMBER_INPUT_FIELD = { css: '#phone-number' }
@@ -22,10 +20,13 @@ class ConsentModal < BasePage
   def add_on_screen_consent 
     click(ON_SCREEN_CONSENT_RADIO_BTN)
     click(ON_SCREEN_CONSENT_GO_TO_FORM)
-    # switch to iframe
-    # switch_to(CONSENT_IFRAME_ID)
-    click(SIGNATURE_BOX)
-    click(ACCEPT_BTN)
+    switch_to(CONSENT_IFRAME)
+    scroll_to(ACCEPT_BTN)
+    byebug
+    click_via_js(SIGNATURE_BOX)
+    byebug
+    click_via_js(ACCEPT_BTN)
+    byebug
   end
 
   def request_consent_by_email(address)
