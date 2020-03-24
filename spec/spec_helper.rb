@@ -64,7 +64,7 @@ RSpec.configure do |config|
     # default base_url is app-client staging; others can be passed as variables
     case ENV['base_url'] ||= 'http://app.uniteusdev.com'
     when 'devqa'
-      ENV['base_url'] = 'http://app.uniteusdev.com' # add bucket here or pass at runtime
+      ENV['base_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
     when 'app_client_staging'
       ENV['base_url'] = 'http://app.uniteusdev.com'
     when 'app_client_training'
