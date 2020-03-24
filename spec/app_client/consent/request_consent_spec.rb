@@ -35,11 +35,8 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
       consent_modal.add_on_screen_consent 
-      byebug
 
       expect(pending_consent_page.consent_modal_not_displayed?).to be_truthy
-
-      byebug
 
       # confirm the referral we added consent to 
       # is removed from the pending consent page on refresh
