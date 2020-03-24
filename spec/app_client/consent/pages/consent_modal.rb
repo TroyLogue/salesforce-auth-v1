@@ -17,18 +17,6 @@ class ConsentModal < BasePage
   PHONE_NUMBER_SUBMIT_BTN = { css: '#consent-submit-phone-btn' }
   VALID_PHONE_NUMBER = '2129999999' 
 
-  def add_on_screen_consent 
-    click(ON_SCREEN_CONSENT_RADIO_BTN)
-    click(ON_SCREEN_CONSENT_GO_TO_FORM)
-    switch_to(CONSENT_IFRAME)
-    scroll_to(ACCEPT_BTN)
-    byebug
-    click_via_js(SIGNATURE_BOX)
-    byebug
-    click_via_js(ACCEPT_BTN)
-    byebug
-  end
-
   def request_consent_by_email(address)
     click(EMAIL_RADIO_BTN)
     click(EMAIL_INPUT_FIELD) 
