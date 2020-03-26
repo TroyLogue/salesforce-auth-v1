@@ -3,12 +3,12 @@ require_relative '../../../shared_components/base_page'
 class Exports < BasePage
   NEW_EXPORT_BUTTON = { css: '#create-new-export-btn' }
   EXPORTS_TABLE = { css: '.exports-table .ui-table-body' }
-  EXPORT_DIALOG_CONTENT = { css: '#create-export-dialog .dialog-content' }
+  EXPORT_DIALOG_CONTENT = { css: '.dialog.open.large .dialog-content' }
   EXPORT_SOURCE_SELECT_LIST = { css: '.export-create-fields__select:nth-of-type(1)' }
   EXPORT_SOURCE_SELECT_LIST_OPEN = { css: '.choices.is-open.is-focused' }
   EXPORT_SOURCE_CHOICE = { css: '#choices-export-create-input__type-item-choice-1' }
   EXPORT_SOURCE_CHOICE_SELECTED = { css: '#export-create-input__type + .choices__list > div[aria-selected="true"]' }
-  EXPORT_SOURCE_CLOSE = { css: '.multiple-selector' }
+  EXPORT_SOURCE_CLOSE = { css: '.multiple-selector.open' }
   EXPORT_TYPE_SELECT_LIST = { css: '.export-create-fields__select:nth-of-type(2)' }
   EXPORT_TYPE_CHOICE = EXPORT_SOURCE_CHOICE # to clarify: not the same element, but the same selector
   EXPORT_COMPARISON_FIELD_SELECT_LIST = { css: '.export-create-fields__select:nth-of-type(3)' }
@@ -24,15 +24,17 @@ class Exports < BasePage
 
   def click_new_export
     click(NEW_EXPORT_BUTTON)
+    wait_for_animation
+    is_displayed?(EXPORT_DIALOG_CONTENT)
   end
 
   def select_export_source
-    is_displayed?(EXPORT_DIALOG_CONTENT)
     click(EXPORT_SOURCE_SELECT_LIST)
     is_displayed?(EXPORT_SOURCE_SELECT_LIST_OPEN)
     click(EXPORT_SOURCE_CHOICE)
     is_displayed?(EXPORT_SOURCE_CHOICE_SELECTED)
     click(EXPORT_SOURCE_CLOSE)
+    is_not_displayed?(EXPORT_SOURCE_CLOSE, 0.5)
   end
 
   def select_export_type

@@ -98,9 +98,9 @@ class BasePage
     end
   end
 
-  def is_not_displayed?(selector)
+  def is_not_displayed?(selector, timeout=5)
     begin
-      wait_for(seconds = 8) { !driver.find_element(selector).displayed? }
+      wait_for(seconds = timeout) { !driver.find_element(selector).displayed? }
     rescue Selenium::WebDriver::Error::NoSuchElementError
       return true
     rescue Selenium::WebDriver::Error::StaleElementReferenceError
@@ -111,6 +111,12 @@ class BasePage
       return false
       print "E2E ERROR: Selector #{selector} was present"
     end
+  end
+
+  # Some text boxes glide into the page, making local development difficult
+  # For now its an explicit wait, but we can change this to create a better solution
+  def wait_for_animation
+    sleep(1)
   end
 
   # for debugging race conditions and element visibility
