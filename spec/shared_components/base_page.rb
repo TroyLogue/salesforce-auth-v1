@@ -62,6 +62,10 @@ class BasePage
     find(selector).text.include?(text)
   end
 
+  def find_elements(selector)
+    wait_for { driver.find_elements(selector) }    
+  end
+
   def find_within(context, selector)
     wait_for { driver.find_element(context).find_element(selector) }
   end
@@ -115,8 +119,8 @@ class BasePage
 
   # Some text boxes glide into the page, making local development difficult
   # For now its an explicit wait, but we can change this to create a better solution
-  def wait_for_animation
-    sleep(1)
+  def sleep_for(seconds=1)
+    sleep(seconds)
   end
 
   # for debugging race conditions and element visibility
@@ -130,6 +134,22 @@ class BasePage
 
   def text(selector)
     find(selector).text
+  end
+  
+  def click_element_from_list_by_text(selector, text)
+    list = find_elements(selector)
+    found = false
+    list.each do |element|
+      if element.text == text
+        element.click
+        found = true
+        break
+      end
+    end
+    if (!found)
+      raise StandardError.new "E2E ERROR: Option '#{text}' was not found in list of Selector #{selector}"
+    end
+
   end
 
   def text_include?(text, selector)
