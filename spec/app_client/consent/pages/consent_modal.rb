@@ -39,7 +39,7 @@ class ConsentModal < BasePage
   def request_consent_by_text(phone_number) 
     click(PHONE_NUMBER_RADIO_BTN)
     click(PHONE_NUMBER_INPUT_FIELD)
-    clear_then_enter(phone_number, PHONE_NUMBER_INPUT_FIELD)
+    replace_text(phone_number, PHONE_NUMBER_INPUT_FIELD)
     click(PHONE_NUMBER_SUBMIT_BTN)
   end
 

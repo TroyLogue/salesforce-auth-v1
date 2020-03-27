@@ -86,7 +86,7 @@ RSpec.configure do |config|
 
   # config.verbose_retry = false # recommended for development mode
   config.verbose_retry = true # show retry status in spec process
-  config.default_retry_count = 2
+  config.default_retry_count = 1
 
   # reporting
   config.after(:each) do |example|

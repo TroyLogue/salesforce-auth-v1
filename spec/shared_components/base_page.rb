@@ -115,6 +115,10 @@ class BasePage
     driver.navigate().refresh()
   end
 
+  def replace_text(text, selector)
+    find(selector).send_keys [:control, 'a'], text
+  end
+
   def scroll_to(selector) 
     element = find(selector)
     driver.execute_script("arguments[0].scrollIntoView(true);", element);

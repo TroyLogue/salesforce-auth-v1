@@ -28,6 +28,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(pending_consent_page.page_displayed?).to be_truthy
     } 
 
+=begin
     it 'adds consent to an incoming Pending Consent referral' do 
       @first_referral_text = pending_consent_page.text_of_first_referral;
       @second_referral_text = pending_consent_page.text_of_second_referral; 
@@ -48,7 +49,6 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(@new_first_referral_text).to eq(@second_referral_text)
     end
 
-=begin
     it 'requests consent by email' do 
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
@@ -59,7 +59,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)
     end
-
+=end
     it 'requests consent by text' do 
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
@@ -69,6 +69,5 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)
     end
-=end
   end
 end
