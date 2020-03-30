@@ -6,7 +6,7 @@ class ConsentModal < BasePage
   EMAIL_INPUT_FIELD = { css: '#email-address' }
   EMAIL_SUBMIT_BTN = { css: '#consent-submit-email-btn' }
 
-  ON_SCREEN_CONSENT_RADIO_BTN = { css: "#on_screen-label" }
+  ON_SCREEN_CONSENT_RADIO_BTN = { css: '#on_screen-label' }
   ON_SCREEN_CONSENT_GO_TO_FORM = { css: '#go-to-form-btn' }
   CONSENT_IFRAME = { css: '#consent-app-frame-iframe' }
   SIGNATURE_BOX = { css: '#signature-pad' }
@@ -24,9 +24,7 @@ class ConsentModal < BasePage
     scroll_to(ACCEPT_BTN)
     byebug
     click_via_js(SIGNATURE_BOX)
-    byebug
     click_via_js(ACCEPT_BTN)
-    byebug
   end
 
   def request_consent_by_email(address)
