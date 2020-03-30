@@ -13,15 +13,22 @@ class HomePage < BasePage
   OPEN_CASES_BTN = { css: '#assigned-open-cases-tab' }
   CLOSED_CASE_BTN = { css: '#assigned-closed-cases-tab' }
   TIMELINE = { css: '.activity-stream' }
+  TIMELINE_LOADING = { css: '.loading-entries__content' }
   INTERCOM_IFRAME = { css: '.intercom-launcher-frame' }
   # Revisit INTERCOM_BTN selector once selector migration plan is complete
   INTERCOM_BTN = { css: '.intercom-launcher' }
   CLOSE_INTERCOM_BTN = INTERCOM_BTN
-  PENDING_CONSENT_BTN = { css: '#dashboard-new-pending-consent' }
-  SENT_PENDING_CONSENT_BTN = { css: '#dashboard-referrals-sent-pending-consent' }
+  PENDING_CONSENT_BTN = { css: '#incoming-pending-consent-tab' }
+  SENT_PENDING_CONSENT_BTN = { css: '#referred-out-pending-consent-tab' }
 
   def go_to_pending_consent
     click(PENDING_CONSENT_BTN) 
+  end
+
+  def page_displayed? 
+    is_displayed?(NEW_REFERRAL_BTN)
+    is_displayed?(TIMELINE)
+    is_not_displayed?(TIMELINE_LOADING)
   end
 
 end

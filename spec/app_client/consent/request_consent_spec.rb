@@ -13,7 +13,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
   
   let(:base_page) { BasePage.new(@driver) }
   let(:consent_modal) { ConsentModal.new(@driver) }
-  let(:dashboard) { HomePage.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:left_nav) { LeftNav.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
@@ -23,12 +23,13 @@ describe '[Consent - Request Consent]', :consent, :app_client do
   context('[as cc user]') do 
     before {
       log_in_as(Login::CC_HARVARD) 
-      left_nav.go_to_dashboard
-      dashboard.go_to_pending_consent
-      expect(pending_consent_page.page_displayed?).to be_truthy
+      expect(home_page.page_displayed?).to be_truthy
     } 
 
     it 'requests consent by email' do 
+      home_page.go_to_pending_consent
+      expect(pending_consent_page.page_displayed?).to be_truthy
+
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
