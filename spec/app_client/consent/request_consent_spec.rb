@@ -3,7 +3,6 @@ require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
-require_relative '../root/pages/left_nav'
 require_relative '../root/pages/notifications'
 require_relative './pages/consent_modal'
 require_relative './pages/pending_consent_page'
@@ -14,7 +13,6 @@ describe '[Consent - Request Consent]', :consent, :app_client do
   let(:base_page) { BasePage.new(@driver) }
   let(:consent_modal) { ConsentModal.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
-  let(:left_nav) { LeftNav.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
