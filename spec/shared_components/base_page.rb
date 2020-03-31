@@ -111,8 +111,22 @@ class BasePage
     end
   end
 
+  def refresh
+    driver.navigate().refresh()
+  end
+
+  def scroll_to(selector) 
+    element = find(selector)
+    driver.execute_script("arguments[0].scrollIntoView(true);", element);
+  end
+
   def submit(selector) 
     find(selector).submit
+  end
+
+  def switch_to(frame) 
+    iframe = find(frame)
+    driver.switch_to.frame(iframe)
   end
 
   def text(selector) 
