@@ -14,6 +14,27 @@ class Exports < BasePage
   EXPORT_DATE_RANGE_CHOICE = { css: "div[id^='choices-export-create-input__period-item-choice-']" }
   SUBMIT_BUTTON = { css: '#form-footer-submit-btn' }
 
+  #Export Type Options
+  ASSESSMENT = 'Assessments'
+  CASES = 'Cases'
+  CLIENTS = 'Clients'
+  NOTES = 'Notes'
+  REFERALS = 'Referals'
+  EPISODE_RAW = 'Service Episodes (Raw)'
+  EPISODE_SNAPSHOT = 'Service Episodes (Snapshot)'
+  USERS = 'Users'
+
+  #Comparison Field Options
+  CREATED = 'Created'
+  CREATE_UPDATED = 'Created or Updated'
+  UPDATED = 'Updated'
+
+  #Date Range Options
+  DAYS_7 = 'Last 7 Days'
+  DAYS_30 = 'Last 30 Days'
+  DAYS_60 = 'Last 60 Days'
+  DAYS_90 = 'Last 90 Days'
+
   def page_displayed?
     is_displayed?(NEW_EXPORT_BUTTON)
     is_displayed?(EXPORTS_TABLE)
@@ -36,38 +57,32 @@ class Exports < BasePage
     is_not_displayed?(EXPORT_SOURCE_CLOSE, 0.5)
   end
 
-  def select_export_type(type)
-    # Accepted Types:
-    # Assessment # Cases # Clients # Notes # Referals # Service Episodes (Raw) # Service Episodes (Snapshot) # Users
+  def select_export_type(type=ASSESSMENT)
     click(EXPORT_FIELD.transform_values{|v| v % 'Export Type'})
     click_element_from_list_by_text(EXPORT_TYPE_CHOICE, type)
   end
 
-  def select_comparison_field(type)
-    # Accepted Types:
-    # Created # Created or Updated # Updated 
+  def select_comparison_field(type=CREATED)
     click(EXPORT_FIELD.transform_values{|v| v % 'Comparison Field'})
     click_element_from_list_by_text(EXPORT_COMPARISON_FIELD_CHOICE, type)
   end
 
-  def select_date_range(type)
-    # Accepted Types:
-    # Last 30 Days # Last 60 Days # Last 7 Days # Last 90 Days
+  def select_date_range(type=DAYS_30)
     click(EXPORT_FIELD.transform_values{|v| v % 'Date Range'})
     click_element_from_list_by_text(EXPORT_DATE_RANGE_CHOICE, type)
   end
 
   def fill_export_form_user
     select_export_source
-    select_export_type('Assessments')
-    select_comparison_field('Created')
-    select_date_range('Last 30 Days')
+    select_export_type(ASSESSMENT)
+    select_comparison_field(CREATED)
+    select_date_range(DAYS_30)
   end
 
   def fill_export_form_org
-    select_export_type('Assessments')
-    select_comparison_field('Created')
-    select_date_range('Last 30 Days')
+    select_export_type(ASSESSMENT)
+    select_comparison_field(CREATED)
+    select_date_range(DAYS_30)
   end 
 
   def submit_export_form
