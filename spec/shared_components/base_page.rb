@@ -141,4 +141,8 @@ class BasePage
     find(selector).text.include?(text)
   end
 
+  def wait_for_spinner(spinner = { css: ".spinner-container"})
+    wait_for(){ find_elements(spinner).length < 1 }
+  end 
+
 end

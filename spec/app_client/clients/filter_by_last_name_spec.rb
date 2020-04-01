@@ -5,7 +5,7 @@ require_relative '../auth/pages/login_password'
 require_relative '../root/pages/left_nav'
 require_relative './pages/clients_page'
 
-describe '[Dashboard - Client - Filter]', :network do
+describe '[Dashboard - Client - Filter]', :clients do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
