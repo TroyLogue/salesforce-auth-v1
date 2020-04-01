@@ -25,6 +25,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     } 
 
     it 'adds consent to an incoming Pending Consent referral' do 
+      home_page.go_to_pending_consent
       @first_referral_text = pending_consent_page.text_of_first_referral;
       @second_referral_text = pending_consent_page.text_of_second_referral; 
       pending_consent_page.open_first_consent_modal

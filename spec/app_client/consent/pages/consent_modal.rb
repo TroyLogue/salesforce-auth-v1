@@ -8,6 +8,7 @@ class ConsentModal < BasePage
 
   ON_SCREEN_CONSENT_RADIO_BTN = { css: '#on_screen-label' }
   ON_SCREEN_CONSENT_GO_TO_FORM = { css: '#go-to-form-btn' }
+  LOADING_SPINNER = { css: '.overlay-spinner__text'}
   CONSENT_IFRAME = { css: '#consent-app-frame-iframe' }
   SIGNATURE_BOX = { css: '#signature-pad' }
   ACCEPT_BTN = { css: "#accept" }
@@ -20,11 +21,17 @@ class ConsentModal < BasePage
   def add_on_screen_consent 
     click(ON_SCREEN_CONSENT_RADIO_BTN)
     click(ON_SCREEN_CONSENT_GO_TO_FORM)
+    is_not_displayed?(LOADING_SPINNER)
+
+    scroll_down_consent(CONSENT_IFRAME)
+
     switch_to(CONSENT_IFRAME)
-    scroll_to(ACCEPT_BTN)
-    byebug
-    click_via_js(SIGNATURE_BOX)
-    click_via_js(ACCEPT_BTN)
+  
+    driver.action.click_and_hold(find(SIGNATURE_BOX)).perform
+    driver.action.move_by(50,50).perform
+    driver.action.click(find(SIGNATURE_BOX)).perform
+
+    click(ACCEPT_BTN)
   end
 
   def request_consent_by_email(address)
@@ -40,5 +47,14 @@ class ConsentModal < BasePage
     replace_text(phone_number, PHONE_NUMBER_INPUT_FIELD)
     click(PHONE_NUMBER_SUBMIT_BTN)
   end
+
+  def scroll_down_consent(selector)
+    consent_box = find(selector)
+    consent_box.send_keys :page_down
+    consent_box.send_keys :page_down
+    consent_box.send_keys :page_down
+    consent_box.send_keys :page_down
+    sleep(1)
+  end 
 
 end
