@@ -97,3 +97,26 @@ namespace :browserstack do
   end
 
 end
+
+namespace :docker do
+  desc 'Build End-To-End Test Cases'
+  task :build do
+    `docker build --tag=end-to-end .`
+  end
+
+  desc 'Run App Client Test'
+  task :run, :browser do |t, args|
+    `docker network create qa-network`
+    `docker run --network=qa-network -d -p 4444:4444 -v /dev/shm:/dev/shm --name #{args[:browser]} selenium/standalone-#{args[:browser]}:latest`
+    `sleep 2` #waiting for ^container to be up and running
+    `docker run --network=qa-network --name qa-tests -e browser=#{args[:browser]} -e host=docker end-to-end rake "local:app_client_staging[#{args[:browser]}]"`
+  end
+
+  desc 'Clean'
+  task :clean, :browser do |t, args|
+    `docker stop #{args[:browser]}`
+    `docker network rm qa-network`
+    `docker rm qa-tests`
+    `docker rm #{args[:browser]}`
+  end
+end 

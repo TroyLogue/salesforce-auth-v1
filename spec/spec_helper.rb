@@ -45,7 +45,11 @@ RSpec.configure do |config|
     # default browser is chrome; others can passed as variables
       case ENV['browser'] ||= 'chrome'
       when 'chrome'
-        @driver = Selenium::WebDriver.for :chrome
+        @driver = if ENV['host'] == 'docker' 
+                  then Selenium::WebDriver.for(:remote, 
+                                              :url => "chrome://chrome:4444/wd/hub", 
+                                              :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
+                  else Selenium::WebDriver.for :chrome end 
       when 'chrome_headless'
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')
@@ -54,8 +58,13 @@ RSpec.configure do |config|
         options.add_argument('--remote-debugging-port=9222')
 
         @driver = Selenium::WebDriver.for :chrome, options: options
+
       when 'firefox'
-        @driver = Selenium::WebDriver.for :firefox
+        @driver = if ENV['host'] == 'docker' 
+                  then Selenium::WebDriver.for(:remote, 
+                                              :url => "firefox://firefox:4444/wd/hub", 
+                                              :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.firefox())
+                  else Selenium::WebDriver.for :firefox end
       when 'safari'
         @driver = Selenium::WebDriver.for :safari
       end
