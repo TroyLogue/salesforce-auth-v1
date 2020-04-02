@@ -10,7 +10,7 @@ class ConsentModal < BasePage
   ON_SCREEN_CONSENT_GO_TO_FORM = { css: '#go-to-form-btn' }
   LOADING_SPINNER = { css: '.overlay-spinner__text'}
   CONSENT_IFRAME = { css: '#consent-app-frame-iframe' }
-  SIGNATURE_BOX = { css: '#signature-pad' }
+  SIGNATURE_BOX = { css: '#signature-canvas' }
   ACCEPT_BTN = { css: "#accept" }
 
   PHONE_NUMBER_RADIO_BTN = { css: '#phone_number-label' }
@@ -25,13 +25,13 @@ class ConsentModal < BasePage
 
     scroll_down_consent(CONSENT_IFRAME)
 
-    switch_to(CONSENT_IFRAME)
-  
-    driver.action.click_and_hold(find(SIGNATURE_BOX)).perform
-    driver.action.move_by(50,50).perform
-    driver.action.click(find(SIGNATURE_BOX)).perform
+    driver.action.move_by(500, 500).perform
+    driver.action.click_and_hold.perform
+    driver.action.move_by(50, 0).perform
+    driver.action.click.perform
 
-    click(ACCEPT_BTN)
+    switch_to(CONSENT_IFRAME)
+    click_via_js(ACCEPT_BTN)
   end
 
   def request_consent_by_email(address)
@@ -50,10 +50,10 @@ class ConsentModal < BasePage
 
   def scroll_down_consent(selector)
     consent_box = find(selector)
-    consent_box.send_keys :page_down
-    consent_box.send_keys :page_down
-    consent_box.send_keys :page_down
-    consent_box.send_keys :page_down
+    for i in 0..30 # chrome is giving a hard time with scrolling
+      consent_box.send_keys :page_down
+    end
+
     sleep(1)
   end 
 
