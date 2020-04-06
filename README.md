@@ -94,24 +94,24 @@ When running tests via `rspec` the default `base_url` and `browser` values defin
 
 `chrome_headless` is defined in the `spec_helper`. You can use it via rake task or by passing the `browser` env var at runtime, e.g.,
 
-`browser='chrome_headless' rspec --tag smoke`
+`browser='chrome_headless' rspec --tag debug`
 
 ### Passing a Dev QA URL
 
 You can pass a Dev QA URL at runtime, e.g.,
-`base_url='https://devqa.uniteusdev.com/uu3-#####' rspec --tag smoke`
+`base_url='https://devqa.uniteusdev.com/uu3-#####' rspec --tag debug`
 
 Or set a value in `spec/spec_helper.rb` replacing `ENTER_URL_HERE`.
 
 ### Including or Excluding Tags
 
-To run all tests tagged smoke:
+To run all tests tagged debug:
 
-`rspec --tag smoke`
+`rspec --tag debug`
 
-To run all tests without the tag smoke:
+To run all tests without the tag debug:
 
-`rspec -t ~smoke`
+`rspec -t ~debug`
 
 ### Passing a Folder or Filenames
 
@@ -167,10 +167,12 @@ Page Objects, developed and popularized by Google, have proven to be a best prac
 
 ### Tagging guidelines
 
-Each example should be tagged with the following parameters:
+In the current development phase tagging guidelines are simple"
+- each class should be tagged with the application under test, e.g., `:app_client`, `:ehr`
+- each class should be tagged with the feature under test, e.g., `:networks`, `:clients`
+- each example should be tagged with its corresponding UUQA JIRA test case ID, e.g., `:uuqa_500`
 
-- its corresponding UUQA JIRA test case ID, e.g., `:uuqa_652`
-- the application under test, e.g., `:app_client`
+As the project matures we might consider additional dimensions for running regression sets particularly in CI:
 - `:smoke` for happy-path tests that would result in a P0 if failed
 - `:browsers_all` for tests that need to be run on all browsers
 - `:browsers_chrome` for tests that need to be run on only one browsers
@@ -178,13 +180,13 @@ Each example should be tagged with the following parameters:
 - `:single_threaded` for tests that cannot be run in parallel
 - `:pending => "UU3-##### reason test is skipped"` where the reason includes a JIRA ticket ID, e.g., known bug (there are several ways to skip examples, but this is the most expressive approach, cf. [the rspec-core docs](https://www.rubydoc.info/github/rspec/rspec-core/RSpec/Core/Pending))
 
-The tagging effort is significant, mostly by design.
+A significant tagging effort can decrease maintenance tests in reflecting the value and purpose of a test.
 
-#### Intentional effort
+#### Tags as expression
 
 Thoughtful Test design is at least as meaningful as clean coding. Deciding whether a test case is a smoke vs. regression test and whether it needs to be run on all browsers vs. just one browser are high-value expressions that we should take care to optimize.
 
-#### Arbitrary effort
+#### Tags as function
 
 Running tests by tags rather than directory is optimal for its flexibility, but because we are housing tests for multiple projects in a common repository we need to tag the relevant application because distinct base URLs need to be passed for each.
 

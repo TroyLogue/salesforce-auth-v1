@@ -10,7 +10,7 @@ namespace :local do
   task :app_client_staging, :browser do |t, args|
     ENV['browser'] = args[:browser]
     ENV['base_url'] = 'app_client_staging'
-    exit run_in_parallel(2, 'app_client --tag app_client_smoke --tag app_client_regression')
+    exit run_in_parallel(2, 'app_client --tag app_client')
   end
 
   # presupposes a url is set in spec_helper
@@ -52,21 +52,21 @@ namespace :browserstack do
     ENV['os_version'] = '10'
     ENV['browser'] = 'chrome'
     ENV['browser_version'] = args[:browser_version]
-    exit run_in_parallel(2, 'app_client --tag app_client_smoke --tag app_client_regression')
+    exit run_in_parallel(2, 'app_client --tag app_client')
   end
 
   # example:
-  # rake browserstack:app_client_staging_smoke['Windows','7','internet_explorer','11.0']
-  # rake browserstack:app_client_staging_smoke['OS X','Catalina','safari','13.0']
-  desc 'Run tests tagged app_client_smoke by OS, browser, and browser version on app-client staging'
-  task :app_client_staging_smoke, :os, :os_version, :browser, :browser_version do |t, args|
+  # rake browserstack:app_client_staging['Windows','7','internet_explorer','11.0']
+  # rake browserstack:app_client_staging['OS X','Catalina','safari','13.0']
+  desc 'Run tests tagged app_client by OS, browser, and browser version on app-client staging'
+  task :app_client_staging, :os, :os_version, :browser, :browser_version do |t, args|
     ENV['host'] = 'browserstack'
     ENV['base_url'] = 'app_client_staging'
     ENV['os'] = args[:os]
     ENV['os_version'] = args[:os_version]
     ENV['browser'] = args[:browser]
     ENV['browser_version'] = args[:browser_version]
-    exit run_in_parallel(2, 'app_client_smoke')
+    exit run_in_parallel(2, 'app_client')
   end
 
   # example:
