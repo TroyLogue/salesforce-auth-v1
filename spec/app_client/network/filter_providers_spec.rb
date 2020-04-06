@@ -5,7 +5,7 @@ require_relative '../auth/pages/login_password'
 require_relative '../root/pages/left_nav'
 require_relative './pages/network_browse_map'
 
-describe '[Network - Browse Map]', :app_client, :network do
+describe '[Network - Browse Map]', :network, :app_client do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
