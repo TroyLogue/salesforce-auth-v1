@@ -28,6 +28,7 @@ class PendingConsentPage < BasePage
   def open_consent_modal 
     click(VERTICAL_DOTS_MENU) 
     click(REQUEST_OR_UPLOAD_CONSENT_BUTTON) 
+    sleep(1)
   end
 
   def page_displayed? 
