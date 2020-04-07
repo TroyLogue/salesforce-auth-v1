@@ -20,15 +20,9 @@ class PendingConsentPage < BasePage
   end
   
   def open_first_consent_modal 
-    click(VERTICAL_DOTS_MENU_FIRST)
-    click(REQUEST_OR_UPLOAD_CONSENT_BUTTON)
-    sleep(1) #waiting for slide in animation
-  end
-
-  def open_consent_modal 
     click(VERTICAL_DOTS_MENU) 
     click(REQUEST_OR_UPLOAD_CONSENT_BUTTON) 
-    sleep(1)
+    sleep(1) #waiting for slide in animation
   end
 
   def page_displayed? 

@@ -59,7 +59,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     end
 
     it 'requests consent by text' do 
-      pending_consent_page.open_consent_modal
+      pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
       consent_modal.request_consent_by_text(ConsentModal::VALID_PHONE_NUMBER)
@@ -81,7 +81,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     it 'adds consent' do 
       @first_referral_text = pending_consent_page.text_of_first_referral;
       @second_referral_text = pending_consent_page.text_of_second_referral; 
-      pending_consent_page.open_consent_modal
+      pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
       consent_modal.add_consent_by_document_upload 
