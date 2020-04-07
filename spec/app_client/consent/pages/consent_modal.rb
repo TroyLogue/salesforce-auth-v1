@@ -6,6 +6,11 @@ class ConsentModal < BasePage
   EMAIL_INPUT_FIELD = { css: '#email-address' }
   EMAIL_SUBMIT_BTN = { css: '#consent-submit-email-btn' }
 
+  DOCUMENT_UPLOAD_RADIO_BTN = { css: '#document-label' }
+  DOCUMENT_UPLOAD_FILE_INPUT = { css: "#Consent > section > div > input[type=file]"} 
+  CONSENT_FILE_PATH = "lib/files/fakeConsent.txt"
+  DOCUMENT_SUBMIT_BTN = { css: '#audio-document-consent-btn' }
+
   ON_SCREEN_CONSENT_RADIO_BTN = { css: '#on_screen-label' }
   ON_SCREEN_CONSENT_GO_TO_FORM = { css: '#go-to-form-btn' }
   LOADING_SPINNER = { css: '.overlay-spinner__text'}
@@ -17,6 +22,14 @@ class ConsentModal < BasePage
   PHONE_NUMBER_INPUT_FIELD = { css: '#phone-number' }
   PHONE_NUMBER_SUBMIT_BTN = { css: '#consent-submit-phone-btn' }
   VALID_PHONE_NUMBER = '2129999999' 
+
+  def add_consent_by_document_upload
+    click(DOCUMENT_UPLOAD_RADIO_BTN)
+    filename = CONSENT_FILE_PATH
+    file = File.join(Dir.pwd, filename)
+    enter(file, DOCUMENT_UPLOAD_FILE_INPUT)  
+    click(DOCUMENT_SUBMIT_BTN)
+  end
 
   def add_on_screen_consent 
     click(ON_SCREEN_CONSENT_RADIO_BTN)
