@@ -9,6 +9,7 @@ class PendingConsentPage < BasePage
   REFERRALS_TABLE = { css: '.dynamic-table' }
   REQUEST_OR_UPLOAD_CONSENT_BUTTON = { css: '#vertical-dots-menu-item-0' } 
   VERTICAL_DOTS_MENU_FIRST = { css: '#-pending-consent-referrals-table-row-0 #vertical-dots-menu' }
+  VERTICAL_DOTS_MENU = { css: '#vertical-dots-menu' }
 
   def consent_modal_displayed? 
     is_displayed?(CONSENT_MODAL)

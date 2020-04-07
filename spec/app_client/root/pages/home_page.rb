@@ -25,6 +25,10 @@ class HomePage < BasePage
     click(PENDING_CONSENT_BTN) 
   end
 
+  def go_to_sent_pending_consent
+    click(SENT_PENDING_CONSENT_BTN)
+  end
+
   def page_displayed? 
     is_displayed?(NEW_REFERRAL_BTN)
     is_displayed?(TIMELINE)
