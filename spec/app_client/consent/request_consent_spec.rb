@@ -58,7 +58,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)
     end
 
-    it 'requests consent by text', :only do 
+    it 'requests consent by text' do 
       pending_consent_page.open_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
