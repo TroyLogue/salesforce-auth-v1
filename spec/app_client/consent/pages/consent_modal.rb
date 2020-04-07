@@ -56,8 +56,8 @@ class ConsentModal < BasePage
 
   def request_consent_by_text(phone_number) 
     click(PHONE_NUMBER_RADIO_BTN)
-    click(PHONE_NUMBER_INPUT_FIELD)
-    replace_text(phone_number, PHONE_NUMBER_INPUT_FIELD)
+    10.times { delete_char(PHONE_NUMBER_INPUT_FIELD) }
+    enter(phone_number, PHONE_NUMBER_INPUT_FIELD) 
     click(PHONE_NUMBER_SUBMIT_BTN)
   end
 

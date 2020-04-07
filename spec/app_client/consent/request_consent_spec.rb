@@ -18,7 +18,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
   let(:notifications) { Notifications.new(@driver) }
   let(:pending_consent_page) {PendingConsentPage.new(@driver) }
 
-  context('[as cc user] Incoming') do 
+  context('[as cc user] On an incoming Pending Consent referral,') do 
     before {
       log_in_as(Login::CC_HARVARD) 
       expect(home_page.page_displayed?).to be_truthy
@@ -27,7 +27,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(pending_consent_page.page_displayed?).to be_truthy
     } 
 
-    it 'adds consent to an incoming Pending Consent referral' do 
+    it 'adds consent by document upload' do 
       @first_referral_text = pending_consent_page.text_of_first_referral;
       @second_referral_text = pending_consent_page.text_of_second_referral; 
       pending_consent_page.open_first_consent_modal
@@ -48,7 +48,6 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     end
 
     it 'requests consent by email' do 
-
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
@@ -59,10 +58,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)
     end
 
-    it 'requests consent by text' do 
-      home_page.go_to_pending_consent
-      expect(pending_consent_page.page_displayed?).to be_truthy
-
+    it 'requests consent by text', :only do 
       pending_consent_page.open_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
@@ -73,7 +69,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     end
   end
 
-  context('[as cc user] Sent') do 
+  context('[as cc user] On a sent Pending Consent referral,') do 
     before {
       log_in_as(Login::CC_HARVARD) 
       expect(home_page.page_displayed?).to be_truthy
@@ -82,7 +78,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(pending_consent_page.page_displayed?).to be_truthy
     } 
     
-    it 'adds consent to a sent pending consent referral' do 
+    it 'adds consent' do 
       @first_referral_text = pending_consent_page.text_of_first_referral;
       @second_referral_text = pending_consent_page.text_of_second_referral; 
       pending_consent_page.open_consent_modal

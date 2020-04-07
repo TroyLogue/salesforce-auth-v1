@@ -38,6 +38,10 @@ class BasePage
     find_within(context, selector).click
   end
 
+  def delete_char(selector)
+    find(selector).send_keys :backspace
+  end
+
   def enter(text, selector)
     find(selector).send_keys text
   end
