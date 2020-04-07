@@ -27,7 +27,7 @@ describe '[Search]', :app_client, :search do
     end
 
     it 'Search Page Results Table', :uuqa_663 do
-      search_bar.go_to_search_table('E')
+      search_bar.go_to_search_results_page('E')
       expect(search_bar.are_results_not_displayed?).to be_truthy
       expect(search_results_page.get_search_name_list).to all(start_with('E'))
     end

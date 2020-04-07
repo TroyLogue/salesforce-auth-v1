@@ -15,7 +15,7 @@ module RightNav
             wait_for_spinner
         end
 
-        def go_to_search_table(name)
+        def go_to_search_results_page(name)
             click(SEARCH_ICON)
             enter(name, SEARCH_INPUT)        
             find(SEARCH_INPUT).send_keys :enter
