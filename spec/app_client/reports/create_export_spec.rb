@@ -29,28 +29,3 @@ describe '[Reports - Create Export]', :reports, :app_client do
     end
   end
 end
-
-describe '[Reports - Create Export]', :reports, :app_client do
-  include Login
-
-  let(:left_nav) { LeftNav.new(@driver) }
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
-  let(:exports) { Exports.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
-
-  context('[as org]') do
-    before {
-      log_in_as(Login::ORG_YALE)
-      left_nav.go_to_exports
-      expect(exports.page_displayed?).to be_truthy
-    }
-  
-    it 'creates an export', :uuqa_152 do
-      exports.click_new_export
-      exports.fill_export_form_org
-      exports.submit_export_form
-      expect(exports.has_pending?).to be_truthy
-    end
-  end
-end
