@@ -77,7 +77,7 @@ def test() {
     def result = null
 
     withEnv(["browser=chrome_headless"]) {
-        result = sh(script: "bundle exec rspec -t app_client_smoke", returnStatus: true)
+        result = sh(script: "bundle exec rspec -t app_client", returnStatus: true)
     }
 
     // withEnv(["browser=chrome"]) {

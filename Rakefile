@@ -10,7 +10,7 @@ namespace :local do
   task :app_client_staging, :browser do |t, args|
     ENV['browser'] = args[:browser]
     ENV['base_url'] = 'app_client_staging'
-    exit run_in_parallel(2, 'app_client_smoke --tag app_client_regression')
+    exit run_in_parallel(2, 'app_client --tag app_client')
   end
 
   # presupposes a url is set in spec_helper
@@ -19,92 +19,104 @@ namespace :local do
   desc 'Run tests on Dev QA bucket by browser and tag(s)'
   task :devqa, :browser, :tag do |t, args|
     ENV['browser'] = args[:browser]
-    # ENV['base_url'] = 'devqa'
-    ENV['base_url'] = 'app_client_staging'
-    tag = args[:tag]
-    exit run_in_parallel(2, "#{tag}")
-  end
-
-  # rake local:by_tag[ehr_staging,chrome,ehr]
-  desc 'Run tests by base_url, browser, and tag(s)'
-  task :by_tag, :base_url, :browser, :tag do |t, args|
-    ENV['base_url'] = args[:base_url]
-    ENV['browser'] = args[:browser]
-    tag = args[:tag]
-    exit run_in_parallel(2, "#{tag}")
+    ENV['base_url'] = 'devqa'
+    exit run_in_parallel(2, "#{args[:tag]}")
   end
 
 end
 
 namespace :browserstack do
 
-  # see https://www.browserstack.com/docs?product=automate for OS and browser values
+  # see https://www.browserstack.com/automate/capabilities for OS and browser values
 
-  # rake browserstack:app_client_staging_chrome['Windows','10','chrome','79.0']
+  # example:
+  # rake browserstack:app_client_staging_by_browser_and_tag['OS X','Catalina','chrome','80.0',uuqa_292]
+  desc 'Run tests by tag on app-client base url'
+  task :app_client_staging_by_browser_and_tag, :os, :os_version, :browser, :browser_version, :tag do |t, args|
+    ENV['host'] = 'browserstack'
+    ENV['base_url'] = 'app_client_staging'
+    ENV['os'] = args[:os]
+    ENV['os_version'] = args[:os_version]
+    ENV['browser'] = args[:browser]
+    ENV['browser_version'] = args[:browser_version]
+    exit run_in_parallel(1, "#{args[:tag]}")
+  end
+
+  # example:
+  # rake browserstack:app_client_staging_chrome['80.0']
   desc 'Run all app_client tests on Chrome'
   task :app_client_staging_chrome, :base_url, :os, :browser do |t, args|
     ENV['host'] = 'browserstack'
     ENV['base_url'] = 'app_client_staging'
-    ENV['os'] = args[:os]
-    ENV['browser'] = args[:browser]
+    ENV['os'] = 'Windows'
+    ENV['os_version'] = '10'
+    ENV['browser'] = 'chrome'
     ENV['browser_version'] = args[:browser_version]
-    exit run_in_parallel(1, 'app_client_smoke --tag app_client_regression --tag')
-  end
-
-  # rake browserstack:app_client_staging_cross_browser['Windows','10','internet_explorer','11.0']
-  # rake browserstack:app_client_staging_cross_browser['Windows','10','edge','18.0']
-  desc 'Run all app_client tests on staging by OS and browser'
-  task :app_client_staging_cross_browser, :base_url, :os, :os_version, :browser, :browser_version do |t, args|
-    ENV['host'] = 'browserstack'
-    ENV['base_url'] = 'app_client_staging'
-    ENV['os'] = args[:os]
-    ENV['os_version'] = args[:os_version]
-    ENV['browser'] = args[:browser]
-    ENV['browser_version'] = args[:browser_version]
-    exit run_in_parallel(4, 'app_client_smoke --tag app_client_regression --tag ~chrome_only')
+    exit run_in_parallel(2, 'app_client --tag app_client')
   end
 
   # example:
-  # rake browserstack:app_client_staging_smoke['Windows','7','internet_explorer','11.0']
-  # rake browserstack:app_client_staging_smoke['Mac','Mojave','safari','12.1']
-  desc 'Run tests tagged app_client_smoke by OS, browser, and browser version on app-client staging'
-  task :app_client_staging_smoke, :os, :os_version, :browser, :browser_version do |t, args|
+  # rake browserstack:app_client_staging['Windows','7','internet_explorer','11.0']
+  # rake browserstack:app_client_staging['OS X','Catalina','safari','13.0']
+  desc 'Run tests tagged app_client by OS, browser, and browser version on app-client staging'
+  task :app_client_staging, :os, :os_version, :browser, :browser_version do |t, args|
     ENV['host'] = 'browserstack'
     ENV['base_url'] = 'app_client_staging'
     ENV['os'] = args[:os]
     ENV['os_version'] = args[:os_version]
     ENV['browser'] = args[:browser]
     ENV['browser_version'] = args[:browser_version]
-    exit run_in_parallel(4, 'app_client_smoke')
+    exit run_in_parallel(2, 'app_client')
   end
 
   # example:
   # rake browserstack:app_client_staging_ie11['uuqa_292']
-  # rake browserstack:app_client_staging_ie11['uuqa_292 --tag smoke']
+  # rake browserstack:app_client_staging_ie11['uuqa_292 --tag uuqa_293']
   desc 'Run app-client staging tests on IE 11 by tag(s)'
   task :app_client_staging_ie11, :tag do |t, args|
     ENV['host'] = 'browserstack'
     ENV['base_url'] = 'app_client_staging'
     ENV['os'] = 'Windows'
     ENV['os_version'] = '7'
-    ENV['browser'] = 'internet_explorer'
+    ENV['browser'] = 'IE'
     ENV['browser_version'] = '11.0'
-    tag = args[:tag]
-    exit run_in_parallel(2, "#{tag}")
+    exit run_in_parallel(2, "#{args[:tag]}")
   end
 
   # example:
-  # rake browserstack:ehr_staging_ie10['smoke']
+  # rake browserstack:ehr_staging_ie10['uuqa_123 --tag uuqa_124']
   desc 'Run EHR staging tests on IE 10 by tag(s)'
   task :ehr_staging_ie10, :tag do |t, args|
     ENV['host'] = 'browserstack'
     ENV['base_url'] = 'ehr_staging'
     ENV['os'] = 'Windows'
     ENV['os_version'] = '7'
-    ENV['browser'] = 'internet_explorer'
+    ENV['browser'] = 'IE'
     ENV['browser_version'] = '10.0'
-    tag = args[:tag]
-    exit run_in_parallel(2, "#{tag}")
+    exit run_in_parallel(2, "#{args[:tag]}")
   end
 
 end
+
+namespace :docker do
+  desc 'Build End-To-End Test Cases'
+  task :build do
+    `docker build --tag=end-to-end .`
+  end
+
+  desc 'Run App Client Test'
+  task :run, :browser do |t, args|
+    `docker network create qa-network`
+    `docker run --network=qa-network -d -p 4444:4444 -v /dev/shm:/dev/shm --name #{args[:browser]} selenium/standalone-#{args[:browser]}:latest`
+    `sleep 2` #waiting for ^container to be up and running
+    `docker run --network=qa-network --name qa-tests -e browser=#{args[:browser]} -e host=docker end-to-end rake "local:app_client_staging[#{args[:browser]}]"`
+  end
+
+  desc 'Clean'
+  task :clean, :browser do |t, args|
+    `docker stop #{args[:browser]}`
+    `docker network rm qa-network`
+    `docker rm qa-tests`
+    `docker rm #{args[:browser]}`
+  end
+end 

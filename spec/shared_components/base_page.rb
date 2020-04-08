@@ -70,6 +70,10 @@ class BasePage
     wait_for { driver.find_element(context).find_element(selector) }
   end
 
+  def find_elements(selector)
+    wait_for { driver.find_elements(selector) }    
+  end
+
   def generate_timestamp
     timestamp = Time.now.strftime('%m%d%Y%H%M%S')
     return timestamp
@@ -102,9 +106,9 @@ class BasePage
     end
   end
 
-  def is_not_displayed?(selector, timeout=5)
-    begin
-      wait_for(seconds = timeout) { !driver.find_element(selector).displayed? }
+  def is_not_displayed?(selector, timeout=10)
+    begin 
+      wait_for(seconds = timeout) { !driver.find_element(selector).displayed? } 
     rescue Selenium::WebDriver::Error::NoSuchElementError
       return true
     rescue Selenium::WebDriver::Error::StaleElementReferenceError
@@ -132,7 +136,25 @@ class BasePage
     find(selector).submit
   end
 
-  def text(selector)
+  def refresh
+    driver.navigate().refresh()
+  end
+
+  def scroll_to(selector) 
+    element = find(selector)
+    driver.execute_script("arguments[0].scrollIntoView(true);", element);
+  end
+
+  def submit(selector) 
+    find(selector).submit
+  end
+
+  def switch_to(frame) 
+    iframe = find(frame)
+    driver.switch_to.frame(iframe)
+  end
+
+  def text(selector) 
     find(selector).text
   end
   
@@ -156,7 +178,8 @@ class BasePage
     find(selector).text.include?(text)
   end
 
-  def wait_for_spinner_to_disappear()
-    is_not_displayed?(SPINNER)
-  end
+  def wait_for_spinner(spinner = { css: ".spinner-container"})
+    wait_for(){ find_elements(spinner).length < 1 }
+  end 
+
 end

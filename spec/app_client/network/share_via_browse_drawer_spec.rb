@@ -7,7 +7,7 @@ require_relative '../root/pages/notifications'
 require_relative './pages/network_browse_drawer'
 require_relative './pages/network_browse_map'
 
-describe '[Network - Browse Map - Browse Drawer]', :network do
+describe '[Network - Browse Map - Browse Drawer]', :app_client, :network do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
@@ -23,9 +23,9 @@ describe '[Network - Browse Map - Browse Drawer]', :network do
       log_in_as(Login::CC_HARVARD)
       left_nav.go_to_my_network
       expect(network_browse_map.page_displayed?).to be_truthy
-    } 
+    }
 
-    it 'shares provider details via email', :uuqa_652, :app_client_smoke, :cross_browser do
+    it 'shares provider details via email', :uuqa_652 do
       network_browse_map.click_first_provider_detail()
       expect(network_browse_drawer.drawer_displayed?).to be_truthy
 

@@ -16,17 +16,24 @@ RSpec.configure do |config|
     case ENV['host']
     when 'browserstack'
       Bundler.require(:browserstack)
+      caps = Selenium::WebDriver::Remote::Capabilities.new
 
-      caps = Selenium::WebDriver::Remote::Capabilities.send(ENV['browser'])
-      caps.version = ENV['browser_version']
-      caps.platform = ENV['os']
       caps[:name] = example.metadata[:full_description]
+      caps['browserstack.selenium_version'] = '3.5.2'
+      caps['browserstack.local'] = 'false'
       caps['acceptSslCerts'] = 'true'
       # needed for IE 11 https://www.browserstack.com/automate/using-sendkeys-on-remote-IE11
       caps['browserstack.sendKeys'] = 'true'
       # uncomment the line below to capture screenshots at every command throughout the test
       # caps['browserstack.debug'] = 'true'
-      # comment the line below to enable video recording; note, test execution time will "slightly" increase
+      # comment the line below to disable video recording
+      # caps['browserstack.video'] = 'false'
+
+      # env vars are passed by rake tasks
+      caps['os'] = ENV['os']
+      caps['os_version'] = ENV['os_version']
+      caps['browser'] = ENV['browser']
+      caps['browser_version'] = ENV['browser_version']
 
     # remote driver for browserstack
     @driver = Selenium::WebDriver.for(
@@ -38,7 +45,11 @@ RSpec.configure do |config|
     # default browser is chrome; others can passed as variables
       case ENV['browser'] ||= 'chrome'
       when 'chrome'
-        @driver = Selenium::WebDriver.for :chrome
+        @driver = if ENV['host'] == 'docker' 
+                  then Selenium::WebDriver.for(:remote, 
+                                              :url => "chrome://chrome:4444/wd/hub", 
+                                              :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
+                  else Selenium::WebDriver.for :chrome end 
       when 'chrome_headless'
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')
@@ -47,8 +58,13 @@ RSpec.configure do |config|
         options.add_argument('--remote-debugging-port=9222')
 
         @driver = Selenium::WebDriver.for :chrome, options: options
+
       when 'firefox'
-        @driver = Selenium::WebDriver.for :firefox
+        @driver = if ENV['host'] == 'docker' 
+                  then Selenium::WebDriver.for(:remote, 
+                                              :url => "firefox://firefox:4444/wd/hub", 
+                                              :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.firefox())
+                  else Selenium::WebDriver.for :firefox end
       when 'safari'
         @driver = Selenium::WebDriver.for :safari
       end
@@ -57,7 +73,7 @@ RSpec.configure do |config|
     # default base_url is app-client staging; others can be passed as variables
     case ENV['base_url'] ||= 'http://app.uniteusdev.com'
     when 'devqa'
-      ENV['base_url'] = 'ENTER_URL_HERE' # or pass at runtime
+      ENV['base_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
     when 'app_client_staging'
       ENV['base_url'] = 'http://app.uniteusdev.com'
     when 'app_client_training'

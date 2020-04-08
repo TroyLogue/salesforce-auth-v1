@@ -5,7 +5,7 @@ require_relative '../auth/pages/login_password'
 require_relative '../root/pages/left_nav'
 require_relative './pages/exports'
 
-describe '[Reports - Create Export]', :reports do
+describe '[Reports - Create Export]', :reports, :app_client do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
@@ -21,7 +21,7 @@ describe '[Reports - Create Export]', :reports do
       expect(exports.page_displayed?).to be_truthy
     }
 
-    it 'creates an export', :uuqa_152, :app_client_regression do
+    it 'creates an export', :uuqa_152 do
       exports.click_new_export
       exports.fill_export_form_user
       exports.submit_export_form
@@ -30,7 +30,7 @@ describe '[Reports - Create Export]', :reports do
   end
 end
 
-describe '[Reports - Create Export]', :reports do
+describe '[Reports - Create Export]', :reports, :app_client do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
@@ -46,7 +46,7 @@ describe '[Reports - Create Export]', :reports do
       expect(exports.page_displayed?).to be_truthy
     }
   
-    it 'creates an export', :uuqa_152, :app_client_regression do
+    it 'creates an export', :uuqa_152 do
       exports.click_new_export
       exports.fill_export_form_org
       exports.submit_export_form
