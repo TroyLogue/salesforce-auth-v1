@@ -61,13 +61,16 @@ class ConsentModal < BasePage
     click(PHONE_NUMBER_SUBMIT_BTN)
   end
 
-  def scroll_down_consent(selector)
+  def scroll_down_consent(selector) # needs debugging on firefox
     consent_box = find(selector)
+
+    # can't use js commands on this iframe - it throws a security error 
+    # increased initial scroll downs from 5 to 30 to work w chrome
     for i in 0..30 # chrome is giving a hard time with scrolling
       consent_box.send_keys :page_down
     end
 
-    sleep(1)
+    sleep(1) # wait for animation
   end 
 
 end
