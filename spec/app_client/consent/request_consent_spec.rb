@@ -27,7 +27,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(pending_consent_page.page_displayed?).to be_truthy
     } 
 
-    it 'adds consent by document upload' do 
+    it 'adds consent by document upload', :uuqa_753 do 
       @first_referral_text = pending_consent_page.text_of_first_referral
       @second_referral_text = pending_consent_page.text_of_second_referral 
       pending_consent_page.open_first_consent_modal
@@ -46,7 +46,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(@new_first_referral_text).to eq(@second_referral_text)
     end
 
-    it 'requests consent by email' do 
+    it 'requests consent by email', :uuqa_754 do 
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
@@ -57,7 +57,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)
     end
 
-    it 'requests consent by text' do 
+    it 'requests consent by text', :uuqa_755 do 
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
@@ -77,7 +77,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(pending_consent_page.page_displayed?).to be_truthy
     } 
     
-    it 'adds consent' do 
+    it 'adds consent by document upload', :uuqa_758 do 
       @first_referral_text = pending_consent_page.text_of_first_referral
       @second_referral_text = pending_consent_page.text_of_second_referral
       pending_consent_page.open_first_consent_modal
