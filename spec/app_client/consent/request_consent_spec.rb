@@ -28,8 +28,8 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     } 
 
     it 'adds consent by document upload' do 
-      @first_referral_text = pending_consent_page.text_of_first_referral;
-      @second_referral_text = pending_consent_page.text_of_second_referral; 
+      @first_referral_text = pending_consent_page.text_of_first_referral
+      @second_referral_text = pending_consent_page.text_of_second_referral 
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
@@ -41,7 +41,6 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       # is removed from the pending consent page on refresh
       base_page.refresh
       expect(pending_consent_page.page_displayed?).to be_truthy 
-      pp "refreshed page and page is displayed again"
 
       @new_first_referral_text = pending_consent_page.text_of_first_referral
       expect(@new_first_referral_text).to eq(@second_referral_text)
@@ -79,8 +78,8 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     } 
     
     it 'adds consent' do 
-      @first_referral_text = pending_consent_page.text_of_first_referral;
-      @second_referral_text = pending_consent_page.text_of_second_referral; 
+      @first_referral_text = pending_consent_page.text_of_first_referral
+      @second_referral_text = pending_consent_page.text_of_second_referral
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
