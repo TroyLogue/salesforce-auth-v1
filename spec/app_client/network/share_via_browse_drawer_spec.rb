@@ -7,7 +7,7 @@ require_relative '../root/pages/notifications'
 require_relative './pages/network_browse_drawer'
 require_relative './pages/network_browse_map'
 
-describe '[Network - Browse Map - Browse Drawer]', :app_client, :network do
+describe '[Network - Browse Map - Browse Drawer]', :network, :app_client do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
