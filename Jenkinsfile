@@ -53,7 +53,9 @@ def build() {
     '''
 
     // Install ChromeDriver. Major version must match google-chrome-stable
-    chromedriver_version = '79.0.3945.36'
+    // Find the latest version at https://sites.google.com/a/chromium.org/chromedriver/downloads
+    // then get the path to the chromedriver_linux64.zip file
+    chromedriver_version = '81.0.4044.69'
     sh """
         wget https://chromedriver.storage.googleapis.com/$chromedriver_version/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip

@@ -52,6 +52,10 @@ Note: There is a [webdrivers gem](https://github.com/titusfortner/webdrivers) wh
 `brew tap homebrew/cask`
 `brew cask install chromedriver`
 
+Note: The version of Chromedriver must match the version of Chrome running in the test. You can upgrade Chromedriver to the latest version as follows:
+
+`brew cask upgrade chromedriver`
+
 ### ([Geckodriver](https://github.com/mozilla/geckodriver)) (for Firefox)
 
 Download from the [project releases](https://github.com/mozilla/geckodriver/releases) page and extract the server to somewhere on your `PATH`.
@@ -138,7 +142,7 @@ To run two tests in `networks/browse_map_spec` at lines 20 and 31:
 - These are not finalized, but there are some useful docker commands in the Rake file to run test cases locally against Chrome and Firefox
 
 `rake docker:build` builds the image with the tag `end-to-end`
-`rake docker:run[chrome]` or `rake docker:run[firefox]` creates and starts the containers 
+`rake docker:run[chrome]` or `rake docker:run[firefox]` creates and starts the containers
 `rake docker:clean[chrome]` or `rake docker:clean[firefox]` deletes all the containers
 
 # Developing Tests
