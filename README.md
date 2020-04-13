@@ -52,6 +52,10 @@ Note: There is a [webdrivers gem](https://github.com/titusfortner/webdrivers) wh
 `brew tap homebrew/cask`
 `brew cask install chromedriver`
 
+Note: The version of Chromedriver must match the version of Chrome running in the test. You can upgrade Chromedriver to the latest version as follows:
+
+`brew cask upgrade chromedriver`
+
 ### ([Geckodriver](https://github.com/mozilla/geckodriver)) (for Firefox)
 
 Download from the [project releases](https://github.com/mozilla/geckodriver/releases) page and extract the server to somewhere on your `PATH`.
