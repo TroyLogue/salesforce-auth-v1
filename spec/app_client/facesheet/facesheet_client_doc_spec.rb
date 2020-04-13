@@ -32,12 +32,14 @@ describe '[Facesheet]', :app_client, :facesheet do
       expect(uploads_page.upload_document(@file)).to be_truthy
     } 
 
-    it 'Rename client document in uploads', :uuqa_341 do
-        expect(uploads_page.rename_document(current_file_name:@file, new_file_name:'rename.txt')).to be_truthy
-    end 
+     it 'Rename client document in uploads', :uuqa_341 do
+         uploads_page.rename_document(current_file_name:@file, new_file_name:'rename.txt')
+         expect(uploads_page.is_document_renamed?('rename.txt')).to be_truthy
+     end 
 
     it 'Remove client document in uploads', :uuqa_342 do
-        expect(uploads_page.remove_document(@file)).to be_truthy
+        uploads_page.remove_document(@file)
+        expect(uploads_page.is_document_removed?(@file)).to be_truthy
     end
     
     after{

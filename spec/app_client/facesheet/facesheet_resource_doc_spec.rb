@@ -29,7 +29,8 @@ describe '[Facesheet]', :app_client, :facesheet do
 
     it 'Rename resource document in uploads', :uuqa_341 do
         facesheet_page.go_to_uploads
-        expect(uploads_page.rename_document(current_file_name:'fakeConsent.txt', new_file_name:'rename.txt')).to be_truthy
+        uploads_page.rename_document(current_file_name:'fakeConsent.txt', new_file_name:'rename.txt')
+        expect(uploads_page.is_document_renamed?('rename.txt')).to be_truthy
     end 
   end
 end

@@ -52,8 +52,10 @@ class Uploads < BasePage
         clear(RENAME_TEXT_FIELD)
         enter(new_file_name, RENAME_TEXT_FIELD)
         click(SAVE_BUTTON)
-        #new file name displays
-        is_displayed?(DOCUMENT_NAME.transform_values{|v| v % new_file_name})
+    end
+
+    def is_document_renamed?(file_name)
+        is_displayed?(DOCUMENT_NAME.transform_values{|v| v % file_name})
     end
 
     def remove_document(file_name)
@@ -63,11 +65,15 @@ class Uploads < BasePage
         click_within(DOCUMENT_MENU.transform_values{|v| v % file_name}, DOCUMENT_MENU_REMOVE)
         is_displayed?(DIALOG)
         click(REMOVE_BUTTON)
-        #file no longer displays
-        is_displayed?(STATUS_BAR)
-        is_not_displayed?(DOCUMENT_NAME.transform_values{|v| v % file_name}, 5)
+        refresh
+        wait_for_spinner
     end            
     
+    def is_document_removed?(file_name)
+        # The method is_not_displayed? is throwing TimeOutErrors and returning True even when document is still present
+        !is_displayed?(DOCUMENT_NAME.transform_values{|v| v % file_name})
+    end
+
     #for clean up purposes deleting all documents created during test cases
     def delete_documents
         while is_displayed?(CLIENT_DOCUMENTS) do
