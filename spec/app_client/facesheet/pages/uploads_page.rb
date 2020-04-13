@@ -9,7 +9,9 @@ class Uploads < BasePage
     DOCUMENT_UPLOAD_INPUT = { css: 'input[type="file"]' }
     DOCUMENT_PREVIEW = { css: '.preview-item' }
     DOCUMENT_ATTATCH_BUTTON  = { css: '#upload-submit-btn'}
+    STATUS_BAR = { css: '.notification.success.velocity-animating' }
 
+    CLIENT_DOCUMENTS = { css: '.contact-documents__client-wrapper'}
     DOCUMENT_NAME = { xpath: ".//p[text()='%s']"}
     DOCUMENT_NAME_LIST = { css: ".contact-document-card-menu__title" }
     DOCUMENT_MENU = { xpath: ".//p[text()='%s']/following-sibling::div" }   
@@ -62,13 +64,14 @@ class Uploads < BasePage
         is_displayed?(DIALOG)
         click(REMOVE_BUTTON)
         #file no longer displays
+        is_displayed?(STATUS_BAR)
         is_not_displayed?(DOCUMENT_NAME.transform_values{|v| v % file_name}, 5)
     end            
     
     #for clean up purposes deleting all documents created during test cases
     def delete_documents
-        find_elements(DOCUMENT_NAME_LIST).each do |document|
-            remove_document(document.text)
+        while is_displayed?(CLIENT_DOCUMENTS) do
+            remove_document(text(DOCUMENT_NAME_LIST))
         end 
     end
 end  

@@ -8,7 +8,7 @@ require_relative './pages/facesheet_page'
 require_relative './pages/uploads_page'
 
 
-describe '[Facesheet]', :app_client, :search do
+describe '[Facesheet]', :app_client, :facesheet do
   include Login
 
   let(:login_email) {LoginEmail.new(@driver) }
@@ -18,7 +18,6 @@ describe '[Facesheet]', :app_client, :search do
   let(:clients_page) { ClientsPage.new(@driver) }
   let(:facesheet_page) { Facesheet.new(@driver) }
   let(:uploads_page) { Uploads.new(@driver)}
-
 
   context('[as org user]') do
     before {
@@ -33,18 +32,16 @@ describe '[Facesheet]', :app_client, :search do
       expect(uploads_page.upload_document(@file)).to be_truthy
     } 
 
-    it 'Rename document in uploads', :uuqa_170 do
+    it 'Rename client document in uploads', :uuqa_341 do
         expect(uploads_page.rename_document(current_file_name:@file, new_file_name:'rename.txt')).to be_truthy
     end 
 
-    it 'Remove document in uploads', :uuqa_663 do
+    it 'Remove client document in uploads', :uuqa_342 do
         expect(uploads_page.remove_document(@file)).to be_truthy
     end
     
     after{
         uploads_page.delete_documents
     }
-
     end
-
 end

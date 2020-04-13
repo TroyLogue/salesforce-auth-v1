@@ -6,6 +6,7 @@ class ClientsPage < BasePage
     FILTER_SELECTION = { css: "button[name='%s']"}
     CLIENT_TABLE = {css: ".dashboard-inner-content"}
     CLIENT_NAME_LIST = {css: "tr[id^='all-clients-table-row'] > td:nth-child(2) > span" }
+    CLIENT_FIRST_AUTHORIZED = { css: ".ui-table-body > tr:not(.unauthorized):nth-child(1) > td"}
     CLIENT_SECOND_AUTHORIZED = { css: ".ui-table-body > tr:not(.unauthorized):nth-child(2) > td"}
 
     def page_displayed?
@@ -22,6 +23,10 @@ class ClientsPage < BasePage
         names = find_elements(CLIENT_NAME_LIST)
         names_array = names.collect(&:text)
     end 
+
+    def go_to_facesheet_first_authorized_client
+        click(CLIENT_FIRST_AUTHORIZED)
+    end
 
     def go_to_facesheet_second_authorized_client
         click(CLIENT_SECOND_AUTHORIZED)
