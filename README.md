@@ -19,7 +19,7 @@ While most current OSs ship with Ruby installed, using a global Ruby version for
 - rbenv
 - chruby
 
-Each tool has its pros and cons, and no one choice is correct. That said, Rubyists tend to to be highly opionated, and there are approximately one million blog posts on which version manager is better and why. Share your selection at the risk of sparking a lengthy debate. I'll confess I like rvm. I don't disagree with the bloat arguments against it. Don't @ me.
+Each tool has its pros and cons, and no one choice is correct. That said, Rubyists tend to to be highly opinionated, and there are approximately one million blog posts on which version manager is better and why. Share your selection at the risk of sparking a lengthy debate. I'll confess I like rvm. I don't disagree with the bloat arguments against it. Don't @ me.
 
 Once you make your choice, follow the version-manager instructions on installing and using the version you need for a given project. Per convention, the version used in this project is defined in the `.ruby-version` file.
 
@@ -138,7 +138,7 @@ To run two tests in `networks/browse_map_spec` at lines 20 and 31:
 - These are not finalized, but there are some useful docker commands in the Rake file to run test cases locally against Chrome and Firefox
 
 `rake docker:build` builds the image with the tag `end-to-end`
-`rake docker:run[chrome]` or `rake docker:run[firefox]` creates and starts the containers 
+`rake docker:run[chrome]` or `rake docker:run[firefox]` creates and starts the containers
 `rake docker:clean[chrome]` or `rake docker:clean[firefox]` deletes all the containers
 
 # Developing Tests
