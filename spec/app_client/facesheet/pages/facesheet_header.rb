@@ -1,7 +1,6 @@
 require_relative '../../../shared_components/base_page'
 
 class Facesheet < BasePage 
-    
     NAME_HEADER = { css: '.status-select__full-name.display' }
     OVERVIEW_TAB = { css: '#facesheet-overview-tab' }
     PROFILE_TAB = { css: '#facesheet-profile-tab'} 
@@ -23,5 +22,9 @@ class Facesheet < BasePage
         click(UPLOADS_TAB)
         wait_for_spinner
     end
-                
-end  
+    
+    def go_to_overview
+        click(OVERVIEW_TAB)
+        wait_for_spinner
+    end
+end

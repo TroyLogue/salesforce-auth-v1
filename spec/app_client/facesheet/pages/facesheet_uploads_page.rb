@@ -71,7 +71,7 @@ class Uploads < BasePage
     
     def is_document_removed?(file_name)
         # The method is_not_displayed? is throwing TimeOutErrors and returning True even when document is still present
-        !is_displayed?(DOCUMENT_NAME.transform_values{|v| v % file_name})
+        is_not_displayed?(DOCUMENT_NAME.transform_values{|v| v % file_name})
     end
 
     #for clean up purposes deleting all documents created during test cases

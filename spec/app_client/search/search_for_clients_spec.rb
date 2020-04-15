@@ -3,7 +3,6 @@ require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
-require_relative '../facesheet/pages/facesheet_page'
 require_relative './pages/search_results_page'
 
 describe '[Search]', :app_client, :search do

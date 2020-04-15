@@ -4,9 +4,7 @@ require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/left_nav'
 require_relative '../clients/pages/clients_page'
-require_relative './pages/facesheet_header'
-require_relative './pages/facesheet_uploads_page'
-
+require_relative './pages/facesheet_overview_page'
 
 describe '[Facesheet]', :app_client, :facesheet do
   include Login
@@ -16,21 +14,21 @@ describe '[Facesheet]', :app_client, :facesheet do
   let(:base_page) { BasePage.new(@driver) }
   let(:left_nav) { LeftNav.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
-  let(:facesheet_header) { Facesheet.new(@driver) }
-  let(:uploads_page) { Uploads.new(@driver)}
+  let(:overview_page) { Overview.new(@driver)}
 
   context('[as org user]') do
     before {
       log_in_as(Login::ORG_COLUMBIA)
       left_nav.go_to_clients
       expect(clients_page.page_displayed?).to be_truthy
-      clients_page.go_to_facesheet_first_authorized_client
+      clients_page.go_to_facesheet_second_authorized_client
     } 
-    #should not run until referrals are done
-    it 'Rename resource document in uploads', :uuqa_341, :wip do
-        facesheet_header.go_to_uploads
-        uploads_page.rename_document(current_file_name:'fakeConsent.txt', new_file_name:'rename.txt')
-        expect(uploads_page.is_document_renamed?('rename.txt')).to be_truthy
-    end 
+
+    it 'Add Phone Interaction Note', :uuqa_157 do
+        interaction_note = { :type => 'Phone Call', :duration => '15m', :content => Faker::Lorem.sentence(word_count:5) }
+        overview_page.add_interaction(interaction_note)
+        hold_this = overview_page.first_note_in_timeline
+        expect(hold_this).to eql(interaction_note)
+    end
   end
 end
