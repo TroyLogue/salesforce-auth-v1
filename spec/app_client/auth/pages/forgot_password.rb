@@ -14,7 +14,7 @@ class ForgotPassword < BasePage
   end
 
   def page_displayed? 
-    wait_for { is_displayed?(SUBMIT_BUTTON) }
+    is_displayed?(SUBMIT_BUTTON)
     is_displayed?(CANCEL_FORGOT_PASSWORD_LINK)
   end 
 

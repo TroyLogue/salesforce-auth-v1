@@ -27,7 +27,7 @@ class LoginPassword < BasePage
   end 
 
   def page_displayed?
-    wait_for { is_displayed?(FORGOT_PASSWORD_LINK) }
+    is_displayed?(FORGOT_PASSWORD_LINK) 
     is_displayed?(NOT_YOU_LINK)
     is_displayed?(USER_EMAIL)
     is_displayed?(PASSWORD_INPUT)

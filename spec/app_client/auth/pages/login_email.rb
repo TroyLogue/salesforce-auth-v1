@@ -12,7 +12,7 @@ class LoginEmail < BasePage
   PASSWORD_RESET_TEXT = 'If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes.'
 
   def page_displayed?
-    wait_for { is_displayed?(AUTH_FORM) }
+    is_displayed?(AUTH_FORM) 
     is_displayed?(EMAIL_INPUT)
   end
 
