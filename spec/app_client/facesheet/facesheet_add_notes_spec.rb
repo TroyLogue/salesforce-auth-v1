@@ -25,10 +25,25 @@ describe '[Facesheet]', :app_client, :facesheet do
     } 
 
     it 'Add Phone Interaction Note', :uuqa_157 do
-        interaction_note = { :type => 'Phone Call', :duration => '15m', :content => Faker::Lorem.sentence(word_count:5) }
-        overview_page.add_interaction(interaction_note)
-        hold_this = overview_page.first_note_in_timeline
-        expect(hold_this).to eql(interaction_note)
+      interaction_note = { :type => 'Phone Call', :duration => '15m', :content => Faker::Lorem.sentence(word_count:5) }
+      overview_page.add_interaction(interaction_note)
+      created_note = overview_page.first_note_in_timeline
+      expect(created_note).to eql(interaction_note)
     end
+
+    it 'Add Email Interaction Note', :uuqa_157 do
+      interaction_note = { :type => 'Email', :duration => 'N/A', :content => Faker::Lorem.sentence(word_count:5) }
+      overview_page.add_interaction(interaction_note)
+      created_note = overview_page.first_note_in_timeline
+      expect(created_note).to eql(interaction_note)
+    end
+
+    it 'Add In-Person Interaction Note', :uuqa_157 do
+      interaction_note = { :type => 'Meeting', :duration => '> 2h 30m', :content => Faker::Lorem.sentence(word_count:5) }
+      overview_page.add_interaction(interaction_note)
+      created_note = overview_page.first_note_in_timeline
+      expect(created_note).to eql(interaction_note)
+    end
+
   end
 end

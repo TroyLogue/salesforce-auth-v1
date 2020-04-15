@@ -33,17 +33,19 @@ class Overview < BasePage
         case note[:type]
         when 'Phone Call'
             click(PHONE_INTERACTION)
+            click(DURATION_DROPDOWN)
+            click(DURATION_OPTIONS.transform_values{|v| v % DURATIONS[note[:duration]]})    
         when 'Email'
             click(EMAIL_INTERACTION)
         when 'Meeting'
             click(INPERSON_INTERACTION)
+            click(DURATION_DROPDOWN)
+            click(DURATION_OPTIONS.transform_values{|v| v % DURATIONS[note[:duration]]})    
         end 
-        click(DURATION_DROPDOWN)
-        click(DURATION_OPTIONS.transform_values{|v| v % DURATIONS[note[:duration]]})
 
         enter(note[:content], TEXT_BOX)
         click(POST_NOTE)
-        is_displayed?(SUCCESS_BANNER) #wait for banner to disp
+        is_displayed?(SUCCESS_BANNER) #wait for banner to appear
     end
 
     def first_note_in_timeline
