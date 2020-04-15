@@ -31,7 +31,6 @@ describe '[Auth - Reset Password]', :app_client, :auth do
 
     it 'sends reset password email', :uuqa_11 do 
       forgot_password.click_to_send_email
-      #forgot_password.cancel_password_reset
 
       expect(login_email.page_displayed?).to be_truthy
       expect(login_email.password_reset_message_displayed?).to be_truthy
@@ -39,6 +38,7 @@ describe '[Auth - Reset Password]', :app_client, :auth do
 
     it 'cancels password reset', :uuqa_12 do 
       forgot_password.cancel_password_reset
+
       expect(login_email.page_displayed?).to be_truthy
     end
   end
