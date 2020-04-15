@@ -13,6 +13,10 @@ class LoginPassword < BasePage
   # string to pass to enter_via_js which uses getElementById
   PASSWORD_INPUT_ID = 'app_2_user_password'
 
+  def click_forgot_password
+    click_via_js(FORGOT_PASSWORD_LINK) 
+  end
+
   def invalid_alert_displayed? 
     is_displayed?(INVALID_ALERT) 
   end
@@ -23,7 +27,7 @@ class LoginPassword < BasePage
   end 
 
   def page_displayed?
-    is_displayed?(FORGOT_PASSWORD_LINK)
+    wait_for { is_displayed?(FORGOT_PASSWORD_LINK) }
     is_displayed?(NOT_YOU_LINK)
     is_displayed?(USER_EMAIL)
     is_displayed?(PASSWORD_INPUT)

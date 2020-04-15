@@ -136,10 +136,6 @@ class BasePage
     puts("UUQA DEBUG Page Source is #{driver.page_source}")
   end
 
-  def submit(selector)
-    find(selector).submit
-  end
-
   def refresh
     driver.navigate().refresh()
   end
