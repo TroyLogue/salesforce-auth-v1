@@ -18,7 +18,7 @@ class LoginEmail < BasePage
 
   def password_reset_message_displayed?
     is_displayed?(PASSWORD_RESET_DIV) && 
-      text(PASSWORD_RESET_DIV).include?(PASSWORD_RESET_TEXT)
+      text_include?(PASSWORD_RESET_TEXT, PASSWORD_RESET_DIV)  
   end
 
   def submit(address)
