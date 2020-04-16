@@ -1,4 +1,5 @@
 require_relative '../../spec_helper'
+require_relative '../../../lib/mailtrap_helper' 
 require_relative '../auth/helpers/login'
 require_relative '../auth/pages/forgot_password'
 require_relative '../auth/pages/login_email'
@@ -7,6 +8,7 @@ require_relative '../root/pages/home_page'
 
 describe '[Auth - Reset Password]', :app_client, :auth do
   include Login
+  include MailtrapHelper
 
   let(:base_page) { BasePage.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
@@ -34,6 +36,11 @@ describe '[Auth - Reset Password]', :app_client, :auth do
 
       expect(login_email.page_displayed?).to be_truthy
       expect(login_email.password_reset_message_displayed?).to be_truthy
+
+      # verify in mailtrap: 
+      message = get_first_message
+      expect(is_password_reset_email?(message)).to be_truthy
+      expect(message_sent_to(message)).to include(email)
     end
 
     it 'cancels password reset', :uuqa_12 do 
