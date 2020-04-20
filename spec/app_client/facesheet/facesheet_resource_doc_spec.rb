@@ -14,17 +14,22 @@ describe '[Facesheet]', :app_client, :facesheet do
   let(:login_email) {LoginEmail.new(@driver) }
   let(:login_password) {LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
-  let(:left_nav) { LeftNav.new(@driver) }
-  let(:clients_page) { ClientsPage.new(@driver) }
+  let(:search_bar) { RightNav::SearchBar.new(@driver) }
   let(:facesheet_header) { Facesheet.new(@driver) }
   let(:uploads_page) { Uploads.new(@driver)}
 
   context('[as org user]') do
     before {
       log_in_as(Login::ORG_COLUMBIA)
-      left_nav.go_to_clients
-      expect(clients_page.page_displayed?).to be_truthy
-      clients_page.go_to_facesheet_first_authorized_client
+
+      #Creating Data
+      contact = DataCreation::Contact.new
+      contact_response = contact.create(token: base_page.get_uniteus_api_token, group_id: Providers::COLUMBIA_CC)
+      expect(contact_response.status.to_s).to eq('201 Created')
+
+      #Going to Clients page
+      search_bar.search_for(contact.formatted_name)
+      search_bar.go_to_facesheet_of(contact.formatted_name)
     } 
     #should not run until referrals are done
     it 'Rename resource document in uploads', :uuqa_341, :wip do

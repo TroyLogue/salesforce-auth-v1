@@ -186,4 +186,8 @@ class BasePage
     wait_for(){ find_elements(spinner).length < 1 }
   end 
 
+  def get_uniteus_api_token
+    JSON.parse(driver.execute_script('return window.sessionStorage.getItem("uniteusApiToken");'))["token"]
+  end
+
 end

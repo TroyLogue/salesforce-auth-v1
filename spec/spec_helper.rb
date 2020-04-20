@@ -8,6 +8,8 @@ require_relative '../lib/browserstack_credentials'
 # and do not need to require them individually
 Bundler.require(:drivers, :test_framework, :test_harness, :test_data, :debugging)
 
+Dir['./lib/tokens/*.rb'].each {|file| require file }
+
 # before and after hooks for every spec
 RSpec.configure do |config|
   Selenium::WebDriver.logger.level = :error
@@ -45,11 +47,12 @@ RSpec.configure do |config|
     # default browser is chrome; others can passed as variables
       case ENV['browser'] ||= 'chrome'
       when 'chrome'
-        @driver = if ENV['host'] == 'docker' 
-                  then Selenium::WebDriver.for(:remote, 
-                                              :url => "chrome://chrome:4444/wd/hub", 
-                                              :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
-                  else Selenium::WebDriver.for :chrome end 
+        options = Selenium::WebDriver::Chrome::Options.new
+        options.add_argument('--user-data-dir=/Users/valeriemaldonado/Library/Application Support/Google/Chrome/Guest Profile/')
+        options.add_argument('--profile-directory=Guest Profile')
+        Selenium::WebDriver::Chrome::Profile
+
+        @driver = Selenium::WebDriver.for :chrome, options: options
       when 'chrome_headless'
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')
@@ -95,7 +98,7 @@ RSpec.configure do |config|
 
   # config.verbose_retry = false # recommended for development mode
   config.verbose_retry = true # show retry status in spec process
-  config.default_retry_count = 2
+  config.default_retry_count = 0
 
   # reporting
   config.after(:each) do |example|
