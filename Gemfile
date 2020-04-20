@@ -17,6 +17,7 @@ end
 
 group :test_data do
   gem 'faker'
+  gem 'http' 
 end
 
 group :browserstack do

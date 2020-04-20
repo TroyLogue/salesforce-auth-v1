@@ -1,20 +1,39 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.7.0)
+      public_suffix (>= 2.0.2, < 5.0)
     byebug (11.0.1)
     childprocess (3.0.0)
     concurrent-ruby (1.1.5)
     curb (0.9.9)
     diff-lcs (1.3)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     faker (2.6.0)
       i18n (>= 1.6, < 1.8)
     fast-selenium (0.0.1)
       curb (= 0.9.9)
+    ffi (1.12.2)
+    ffi-compiler (1.0.1)
+      ffi (>= 1.0.0)
+      rake
+    http (4.4.1)
+      addressable (~> 2.3)
+      http-cookie (~> 1.0)
+      http-form_data (~> 2.2)
+      http-parser (~> 1.2.0)
+    http-cookie (1.0.3)
+      domain_name (~> 0.5)
+    http-form_data (2.3.0)
+    http-parser (1.2.1)
+      ffi-compiler (>= 1.0, < 2.0)
     i18n (1.7.0)
       concurrent-ruby (~> 1.0)
     parallel (1.18.0)
     parallel_tests (2.29.2)
       parallel
+    public_suffix (4.0.4)
     rake (13.0.0)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -35,6 +54,9 @@ GEM
     selenium-webdriver (3.142.6)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.7)
 
 PLATFORMS
   ruby
@@ -43,6 +65,7 @@ DEPENDENCIES
   byebug
   faker
   fast-selenium
+  http
   parallel_tests
   rake
   rspec
