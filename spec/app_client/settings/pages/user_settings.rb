@@ -1,0 +1,2 @@
+class UserSettings < BasePage
+end

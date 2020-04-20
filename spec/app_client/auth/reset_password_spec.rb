@@ -5,6 +5,8 @@ require_relative '../auth/pages/forgot_password'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
+require_relative '../root/pages/right_nav'
+require_relative '../settings/pages/user_settings' 
 
 describe '[Auth - Reset Password]', :app_client, :auth do
   include Login
@@ -15,6 +17,8 @@ describe '[Auth - Reset Password]', :app_client, :auth do
   let(:forgot_password) {ForgotPassword.new(@driver) }
   let(:login_email) {LoginEmail.new(@driver) }
   let(:login_password) {LoginPassword.new(@driver) }
+  let(:right_nav) {RightNav.new(@driver) }
+  let(:user_settings) {UserSettings.new(@driver) }
 
   context('[as cc user] From login page') do 
     let(:email) {Login::CC_HARVARD}
@@ -41,12 +45,30 @@ describe '[Auth - Reset Password]', :app_client, :auth do
       message = get_first_message
       expect(is_password_reset_email?(message)).to be_truthy
       expect(message_sent_to(message)).to include(email)
+
+      reset_link = get_first_reset_link
+      @driver.get(reset_link)
     end
 
     it 'cancels password reset', :uuqa_12 do 
       forgot_password.cancel_password_reset
 
       expect(login_email.page_displayed?).to be_truthy
+    end
+  end
+
+  context('[as cc user] From user settings page, ') do 
+    before { 
+      log_in_as(Login::CC_HARVARD)
+      right_nav.go_to_user_settings
+      expect(user_settings.page_displayed?).to be_truthy
+    } 
+
+    it 'cannot reset password to an unsecure password' do 
+       
+    end
+
+    it 'can reset password to a secure password' do 
     end
   end
 end
