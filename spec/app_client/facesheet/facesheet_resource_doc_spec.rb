@@ -2,10 +2,11 @@ require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
-require_relative '../root/pages/left_nav'
+require_relative '../root/pages/right_nav'
 require_relative '../clients/pages/clients_page'
 require_relative './pages/facesheet_header'
 require_relative './pages/facesheet_uploads_page'
+require_relative '../../../lib/data_creation'
 
 
 describe '[Facesheet]', :app_client, :facesheet do
@@ -24,12 +25,11 @@ describe '[Facesheet]', :app_client, :facesheet do
 
       #Creating Data
       contact = DataCreation::Contact.new
-      contact_response = contact.create(token: base_page.get_uniteus_api_token, group_id: Providers::COLUMBIA_CC)
-      expect(contact_response.status.to_s).to eq('201 Created')
+      contact_response = contact.create(token: base_page.get_uniteus_api_token, group_id: base_page.get_uniteus_group)
 
       #Going to Clients page
-      search_bar.search_for(contact.formatted_name)
-      search_bar.go_to_facesheet_of(contact.formatted_name)
+      search_bar.search_for(contact.searchable_name)
+      search_bar.go_to_facesheet_of(contact.searchable_name)
     } 
     #should not run until referrals are done
     it 'Rename resource document in uploads', :uuqa_341, :wip do

@@ -84,7 +84,7 @@ class BasePage
   end
 
   def get(path)
-    driver.get ENV['base_url'] + path
+    driver.get ENV['base_web_url'] + path
   end
 
   def get_title
@@ -188,6 +188,14 @@ class BasePage
 
   def get_uniteus_api_token
     JSON.parse(driver.execute_script('return window.sessionStorage.getItem("uniteusApiToken");'))["token"]
+  end
+
+  def get_uniteus_network
+    driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentNetwork");')
+  end
+
+  def get_uniteus_group
+    driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentGroup");')
   end
 
 end
