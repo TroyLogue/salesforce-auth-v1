@@ -182,6 +182,10 @@ class BasePage
     find(selector).text.include?(text)
   end
 
+  def wait_for_notification_to_disappear(notification = { css: "#notifications .notification" })
+    wait_for(){ find_elements(notification).length < 1 } 
+  end
+
   def wait_for_spinner(spinner = { css: ".spinner-container"})
     wait_for(){ find_elements(spinner).length < 1 }
   end 

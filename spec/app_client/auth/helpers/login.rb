@@ -11,7 +11,7 @@ RSpec.configure do |config|
   end
 end
 
-  attr_reader :email_address, :password
+  attr_reader :email_address, :password 
   
   # TODO UU3-26998 UU3-26999 UU3-27000 UU3-27001
   # manage users per staging, training, and prod envs
@@ -45,6 +45,8 @@ end
     ORG_YALE = 'yale@auto.com',
     # used in 3 tests
     REFERRAL_USER = 'referral@auto.com',
+    # used in reset pw spec - in Atlanta org
+    RESET_PW_USER = 'reset_pw_org@auto.com',
     # used in dashboardNavigationSN.js
     # might become obsolete or applied to referrals tests
     SUPER_USER = 'super@best.com',
@@ -54,7 +56,7 @@ end
   WRONG_PASSWORD = 'Uniteus' # can be passed to log_in_as method instance
   UNSECURE_PASSWORD = 'password123' 
 
- def log_in_as(email_address, password = DEFAULT_PASSWORD)
+  def log_in_as(email_address, password = DEFAULT_PASSWORD)
     base_page.get ''
     expect(login_email.page_displayed?).to be_truthy
 
@@ -63,5 +65,5 @@ end
 
     login_password.submit(password)
   end
-  
+ 
 end

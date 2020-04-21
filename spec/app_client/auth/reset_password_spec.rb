@@ -65,12 +65,12 @@ describe '[Auth - Reset Password]', :app_client, :auth do
 
   context('[as org user] From user settings page,') do 
     before { 
-      log_in_as(Login::ORG_ATLANTA)
+      log_in_as(Login::RESET_PW_USER)
       user_menu.go_to_user_settings
       expect(user_settings.page_displayed?).to be_truthy
     } 
 
-    it 'cannot reset password to an unsecure password', :uuqa_803, :only do 
+    it 'cannot reset password to an unsecure password', :uuqa_803 do 
       user_settings.change_password(Login::UNSECURE_PASSWORD) 
       notification_text = notifications.error_text
       expect(notification_text).to include(Notifications::UNSECURE_PASSWORD) 
@@ -82,12 +82,17 @@ describe '[Auth - Reset Password]', :app_client, :auth do
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::USER_UPDATED)
 
+      base_page.wait_for_notification_to_disappear
+
+      user_menu.log_out 
+      expect(login_email.page_displayed?).to be_truthy
+
       # try logging in w old pw
-      log_in_as(Login::ORG_ATLANTA)
+      log_in_as(Login::RESET_PW_USER)
       expect(login_password.invalid_alert_displayed?).to be_truthy
 
       # log in w new password 
-      log_in_as(Login::ORG_ATLANTA, new_pw) 
+      log_in_as(Login::RESET_PW_USER, new_pw) 
       expect(home_page.page_displayed?).to be_truthy
       
       #set pw back to original
