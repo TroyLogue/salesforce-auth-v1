@@ -52,6 +52,7 @@ end
 
   DEFAULT_PASSWORD = 'Uniteus1!'
   WRONG_PASSWORD = 'Uniteus' # can be passed to log_in_as method instance
+  UNSECURE_PASSWORD = 'password123' 
 
  def log_in_as(email_address, password = DEFAULT_PASSWORD)
     base_page.get ''
