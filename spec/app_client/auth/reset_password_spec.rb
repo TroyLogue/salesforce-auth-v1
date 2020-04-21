@@ -65,7 +65,7 @@ describe '[Auth - Reset Password]', :app_client, :auth do
 
   context('[as org user] From user settings page,') do 
     let (:reset_user) {Login::RESET_PW_USER}
-    NEW_PW = Faker::Internet.password(min_length: 8)
+    let (:new_pw) { "Uniteus123" }
 
     it 'cannot reset password to an unsecure password', :uuqa_803 do 
       log_in_as(reset_user)
@@ -82,13 +82,13 @@ describe '[Auth - Reset Password]', :app_client, :auth do
       user_menu.go_to_user_settings
       expect(user_settings.page_displayed?).to be_truthy
 
-      user_settings.change_password(NEW_PW)
+      user_settings.change_password(new_pw)
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::USER_UPDATED)
     end
 
     it 'resets password back to default password', :uuqa_247 do 
-      log_in_as(reset_user, NEW_PW) 
+      log_in_as(reset_user, new_pw) 
       user_menu.go_to_user_settings
       user_settings.change_password(Login::DEFAULT_PASSWORD)
       notification_text = notifications.success_text
