@@ -64,37 +64,31 @@ describe '[Auth - Reset Password]', :app_client, :auth do
   end
 
   context('[as org user] From user settings page,') do 
-    before { 
-      log_in_as(Login::RESET_PW_USER)
-      user_menu.go_to_user_settings
-      expect(user_settings.page_displayed?).to be_truthy
-    } 
+    let (:reset_user) {Login::RESET_PW_USER}
+    NEW_PW = Faker::Internet.password(min_length: 8)
 
     it 'cannot reset password to an unsecure password', :uuqa_803 do 
+      log_in_as(reset_user)
+      user_menu.go_to_user_settings
+      expect(user_settings.page_displayed?).to be_truthy
+
       user_settings.change_password(Login::UNSECURE_PASSWORD) 
       notification_text = notifications.error_text
       expect(notification_text).to include(Notifications::UNSECURE_PASSWORD) 
     end
 
-    it 'can reset password to a secure password', :uuqa_247, :only do 
-      new_pw = Faker::Internet.password(min_length: 8)
-      user_settings.change_password(new_pw)
+   it 'can reset password to a secure password', :uuqa_247 do 
+      log_in_as(reset_user)
+      user_menu.go_to_user_settings
+      expect(user_settings.page_displayed?).to be_truthy
+
+      user_settings.change_password(NEW_PW)
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::USER_UPDATED)
+    end
 
-      base_page.wait_for_notification_to_disappear
-
-      user_menu.log_out 
-
-      # try logging in w old pw
-      log_in_as(Login::RESET_PW_USER)
-      expect(login_password.invalid_alert_displayed?).to be_truthy
-
-      # log in w new password 
-      log_in_as(Login::RESET_PW_USER, new_pw) 
-      expect(home_page.page_displayed?).to be_truthy
-      
-      #set pw back to original
+    it 'resets password back to default password', :uuqa_247 do 
+      log_in_as(reset_user, NEW_PW) 
       user_menu.go_to_user_settings
       user_settings.change_password(Login::DEFAULT_PASSWORD)
       notification_text = notifications.success_text
