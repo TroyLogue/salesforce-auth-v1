@@ -76,7 +76,7 @@ describe '[Auth - Reset Password]', :app_client, :auth do
       expect(notification_text).to include(Notifications::UNSECURE_PASSWORD) 
     end
 
-    it 'can reset password to a secure password', :uuqa_247 do 
+    it 'can reset password to a secure password', :uuqa_247, :only do 
       new_pw = Faker::Internet.password(min_length: 8)
       user_settings.change_password(new_pw)
       notification_text = notifications.success_text
@@ -85,7 +85,6 @@ describe '[Auth - Reset Password]', :app_client, :auth do
       base_page.wait_for_notification_to_disappear
 
       user_menu.log_out 
-      expect(login_email.page_displayed?).to be_truthy
 
       # try logging in w old pw
       log_in_as(Login::RESET_PW_USER)
