@@ -52,4 +52,28 @@ module RightNav
       click(LOG_OUT_BTN) 
     end
   end
+
+  class OrgMenu < BasePage
+    ORG_MENU = { css: '#right-nav-org-menu-btn'}
+    USERS_BTN = { css: '#right-nav-org-users-btn'}
+    PROGRAMS_BTN = { css: '#right-nav-org-programs-btn'}
+    PROFILE_BTN = { css: '#right-nav-org-profile-btn'}
+
+    def go_to_users_table
+      click(ORG_MENU)
+      click(USERS_BTN)
+      wait_for_spinner
+    end
+
+    def go_to_programs
+      click(ORG_MENU)
+      click(PROGRAMS_BTN)
+    end
+
+    def go_to_profile
+      click(ORG_MENU)
+      click(PROFILE_BTN)
+    end
+  end
+
 end
