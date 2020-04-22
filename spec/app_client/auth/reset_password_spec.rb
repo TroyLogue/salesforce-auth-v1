@@ -77,7 +77,7 @@ describe '[Auth - Reset Password]', :app_client, :auth do
       expect(notification_text).to include(Notifications::UNSECURE_PASSWORD) 
     end
 
-   it 'can reset password to a secure password', :uuqa_247 do 
+    it 'can reset password to a secure password', :uuqa_247 do 
       log_in_as(reset_user)
       user_menu.go_to_user_settings
       expect(user_settings.page_displayed?).to be_truthy
@@ -87,6 +87,7 @@ describe '[Auth - Reset Password]', :app_client, :auth do
       expect(notification_text).to include(Notifications::USER_UPDATED)
     end
 
+    #TODO - convert to API call 
     it 'resets password back to default password', :uuqa_247 do 
       log_in_as(reset_user, new_pw) 
       user_menu.go_to_user_settings
