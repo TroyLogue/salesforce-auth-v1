@@ -1,7 +1,7 @@
 module Settings
 
-    class UserTable
-        USER_TABLE = { css: '#ui-table > tr > td > a' }
+    class UserTable < BasePage
+        USER_TABLE = { css: '.ui-table > table > tbody > tr > td > a' }
         USER_TABLE_LOAD = { xpath: ".//tbody/tr/td[text()='Loading']" }
         USER_LIST  = { css: '.ui-table-body > tr > td:nth-child(1) > a' }
         USER_NAME = { xpath: ".//*[@class='ui-table-body']/tr/td/a[text()='%s']" }
@@ -9,7 +9,7 @@ module Settings
 
         def page_displayed?
             wait_for_table_load
-            is_displayed(USER_TABLE)
+            is_displayed?(USER_TABLE)
         end
 
         def wait_for_table_load
@@ -31,11 +31,62 @@ module Settings
         end
     end
 
-    class UserCard
+    class UserCard < BasePage
         USER_HEADER = { css: '.ui-base-card-header__title'}
+
+        #NEW USER
+        INPUT_FIRSTNAME = { css: '#first-name' }
+        INPUT_LASTNAME = { css: '#last-name' }
+        INPUT_EMAIL = { css: '#email' }
+        INPUT_PHONE = { css: '#phone-number-0-number' }
+        INPUT_WORK_TITLE = { css: '#work-title' }
+        INPUT_NETWORKS = { css: 'div[aria-activedescendant^="choices-networks-item-choice"]' }
+        INPUT_ORG_LICENSE = { css: 'div[aria-activedescendant^="choices-org-license-item-choice"]' }
+        INPUT_PROGRAM_CHOICES = { css: 'div[aria-activedescendant^="choices-programs-item-choice"]' }
+        INPUT_PROGRAM_ROLES = { css: 'div[aria-activedescendant^="choices-program-roles-item-choice"]' }
+        INPUT_ORG_ROLES = { css: 'div[aria-activedescendant^="choices-org-roles-item-choice-6"]' }
+
+        #EXISTING USER
+        EDITABLE_PERSONAL_INFO = { css: '#edit-personal-information-modal-btn' }
+        EDITABLE_EMAIL = { css: '#edit-email-address-modal-btn' }
+        EDITABLE_PROGRAM =  { css: '#edit-program-information-modal-btn' }
+        EDITABLE_NETWORK = { css: '#edit-network-licenses-modal-btn' }
+        EDITABLE_ORG = { css: '#dit-group-licenses-modal-btn' }
+        CANCEL_BTN = {xpath: 'button[text()="Cancel"]'}
 
         def get_user_title
             text(USER_HEADER)
+        end
+
+        def new_user_fields_display?
+            is_displayed?(INPUT_FIRSTNAME) && is_displayed?(INPUT_LASTNAME) && is_displayed?(INPUT_EMAIL) && is_displayed?(INPUT_PHONE) &&
+            is_displayed?(INPUT_WORK_TITLE) && is_displayed?(INPUT_NETWORKS) && is_displayed?(INPUT_ORG_LICENSE) && 
+            is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
+        end
+
+        def existing_user_fields_editable?
+            edit_personal_info? && edit_email_info? && edit_program_access?
+        end
+
+        def edit_personal_info?
+            click(EDITABLE_PERSONAL_INFO)
+            editable = is_displayed?(INPUT_FIRSTNAME) && is_displayed?(INPUT_LASTNAME) && is_displayed?(INPUT_WORK_TITLE)
+            click(CANCEL_BTN)
+            editable
+        end
+
+        def edit_email_info?
+            click(EDITABLE_EMAIL)
+            editable = is_displayed?(INPUT_EMAIL)
+            click(CANCEL_BTN)
+            editable
+        end
+
+        def edit_program_access?
+            click(EDITABLE_PROGRAM)
+            editable = is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
+            click(CANCEL_BTN)
+            editable
         end
     end
 

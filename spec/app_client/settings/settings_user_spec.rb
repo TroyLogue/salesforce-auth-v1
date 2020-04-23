@@ -5,7 +5,7 @@ require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative './pages/settings_user_page'
 
-describe '[Settings - Users]', :reports, :app_client do
+describe '[Settings - Users]', :settings, :app_client do
   include Login
 
   let(:login_email) {LoginEmail.new(@driver) }
@@ -19,16 +19,24 @@ describe '[Settings - Users]', :reports, :app_client do
     before {
       log_in_as(Login::CC_HARVARD)
       org_menu.go_to_users_table
+      expect(user_table.page_displayed?).to be_truthy
     }
 
     it 'displays users in alphabetical order' do
-        expect(user_table.get_list_of_user_names.each_cons(2).all? {|a, b| a.downcase <= b.downcase }).to be_truthy
+      expect(user_table.get_list_of_user_names.each_cons(2).all? {|a, b| a.downcase <= b.downcase }).to be_truthy
     end
 
     it 'can view new user form', :uuqa_354 do
-        user_table.go_to_new_user_form
-        expect(user_form.get_user_title).to eql('New User')
+      user_table.go_to_new_user_form
+      expect(user_form.get_user_title).to eql('New User')
+      expect(user_form.new_user_fields_display?).to be_truthy
     end
 
+    it 'can view existing user form', :uuqa_355 do
+      user_table.go_to_user(name: 'Ivy, harvard')
+      expect(user_form.get_user_title).to eql("harvard Ivy's Profile")
+      expect(user_form.existing_user_fields_editable?).to be_truthy
+    end
+      
   end
 end
