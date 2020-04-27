@@ -53,7 +53,8 @@ module Settings
         end
 
         def is_field_saved?
-            #For a successful save, we expect the dialog model to not be present and a success banner
+            # Note: For now our way of verifying a successful save is a success banner, 
+            # but for a true end-to-end test we should verify through an endpoint that the backend has updated.
             is_not_displayed?(DIALOG_MODEL, 5) 
             is_displayed?(SUCCESS_HEADER)
         end

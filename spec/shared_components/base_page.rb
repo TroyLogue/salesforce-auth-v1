@@ -186,4 +186,8 @@ class BasePage
     wait_for(){ find_elements(spinner).length < 1 }
   end 
 
+  def is_selected?(selector)
+    find(selector).selected?
+  end
+
 end

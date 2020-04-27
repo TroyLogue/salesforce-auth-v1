@@ -8,12 +8,12 @@ require_relative './pages/settings_programs_page'
 describe '[Settings - Programs]', :settings, :app_client do
   include Login
 
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:program_table) { Settings::ProgramTable.new(@driver) }
-  let(:program_form) { Settings::ProgramCard.new(@driver) }  
+  let(:program_form) { Settings::ProgramForm.new(@driver) }  
   
   context('[as cc user]') do
     before {
@@ -23,8 +23,17 @@ describe '[Settings - Programs]', :settings, :app_client do
     }
 
     it 'can edit existing program', :uuqa_355 do
+      program_table.edit_program(name: 'Sciences Program')
+      expect(program_form.get_program_title).to eql('Edit Sciences Program')
+      program_form.save_changes
+      expect(program_table.are_changes_saved?).to be_truthy
+    end
+
+    it 'warning dialog displays when changing referral status', :uuqa_808 do
       program_table.edit_program(name: 'Referred Out of Network')
-      expect(program_form.get_program_title).to eql('Edit Referred Out of Network')
+      expect(program_form.get_program_referral_dialog).to eql('This program will now begin receiving new referrals')
+      program_form.toggle_program_referral
+      expect(program_form.get_program_referral_dialog).to eql('All current referrals and cases will remain active but there will be no NEW incoming referrals for this program until the status is set back')
     end
 
   end

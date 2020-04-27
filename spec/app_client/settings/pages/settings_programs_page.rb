@@ -7,6 +7,7 @@ module Settings
         NEW_PROGRAM_BTN = { css: '.ui-button.ui-button--primary' }
         PROGRAMS_LIST = { css: ".ui-base-card-header__title" }
         PROGRAM_EDIT = { xpath: ".//h2[text()='%s']/following-sibling::div/div/button" }
+        SUCCESS_HEADER = { css: '.notification.success' }
 
         def page_displayed?
             is_not_displayed?(PROGRAMS_TABLE_LOAD)
@@ -21,19 +22,52 @@ module Settings
         def edit_program(name:)
             click(PROGRAM_EDIT.transform_values{|v| v % name})
         end
-        
+
+        def get_program_description(name:)
+            text(PROGRAM_DESCRIPTION.transform_values{|v| v % name})
+        end
+
         def go_to_new_program_form
             click(NEW_PROGRAM_BTN)
         end
+
+        def are_changes_saved?
+            is_displayed?(SUCCESS_HEADER)
+        end
     end
 
-    class ProgramCard < BasePage
-        PROGRAM_HEADER = { css: '.ui-base-card-header__title' }
+    class ProgramForm < BasePage
 
+        PROGRAM_HEADER = { css: '.ui-base-card-header__title' }
+        INPUT_PROGRAM_NAME = { css: '#program-name' }
+        CHECKBOX_PROGRAM_REFERRAL = { css: 'label[for="program-referral-toggle"]' }
+        TEXT_PROGRAM_REFERRAL_CONTENT = { css: '.referral-content' }
+        INPUT_PAYMENT_OPTIONS = { css: '#program-payment-options' }
+        INPUT_ACCESSIBILITY_OPTIONS = { css: '#program-accessibility-options' }
+        INPUT_TRANSPORTATION = { css: '#program-transportation-options-checkbox-0'}
+        INPUT_SERVICE_TYPES = { css: '.service-types-checkboxes'}
+        UPDATE_BTN  = { css: '#new-program-submit-btn'}
+        
         def get_program_title
             text(PROGRAM_HEADER)
         end
+        
+        def save_changes
+            click(UPDATE_BTN)
+            is_not_displayed?(UPDATE_BTN,5)
+        end
 
+        def get_program_referral_dialog
+            text(TEXT_PROGRAM_REFERRAL_CONTENT)
+        end
+
+        def toggle_program_referral
+            click(CHECKBOX_PROGRAM_REFERRAL)
+        end
+
+        def is_program_referral_on?
+            is_selected?(CHECKBOX_PROGRAM_REFERRAL)
+        end
     end
 
 end
