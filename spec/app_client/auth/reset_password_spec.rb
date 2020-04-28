@@ -67,14 +67,14 @@ describe '[Auth - Reset Password]', :app_client, :auth do
     let (:reset_user) {Login::RESET_PW_USER}
     let (:new_pw) { "Uniteus123" }
 
-    it 'cannot reset password to an unsecure password', :uuqa_803 do 
+    it 'cannot reset password to an insecure password', :uuqa_803 do 
       log_in_as(reset_user)
       user_menu.go_to_user_settings
       expect(user_settings.page_displayed?).to be_truthy
 
-      user_settings.change_password(Login::UNSECURE_PASSWORD) 
+      user_settings.change_password(Login::INSECURE_PASSWORD) 
       notification_text = notifications.error_text
-      expect(notification_text).to include(Notifications::UNSECURE_PASSWORD) 
+      expect(notification_text).to include(Notifications::INSECURE_PASSWORD) 
     end
 
     it 'can reset password to a secure password', :uuqa_247 do 
