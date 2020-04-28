@@ -33,6 +33,7 @@ module Settings
 
     class UserCard < BasePage
         USER_HEADER = { css: '.ui-base-card-header__title'}
+        SUCCESS_HEADER = { css: '.notification.success' }
 
         #NEW USER
         INPUT_FIRSTNAME = { css: '#first-name' }
@@ -50,6 +51,7 @@ module Settings
         EDITABLE_PERSONAL_INFO = { css: '#edit-personal-information-modal-btn' }
         BTN_CANCEL_PERSONAL = { css: '#personal-information-cancel-btn' }
         EDITABLE_EMAIL = { css: '#edit-email-address-modal-btn' }
+        BTN_SAVE_EMAIL = { css: '#edit-email-save-btn' }
         BTN_CANCEL_EMAIL = { css: '#edit-email-cancel-btn' }
         EDITABLE_PROGRAM =  { css: '#edit-program-information-modal-btn' }
         BTN_CANCEL_PROGRAM = { css: '#program-data-cancel-btn' }
@@ -92,6 +94,14 @@ module Settings
             editable = is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
             click(BTN_CANCEL_PROGRAM)
             editable
+        end
+
+        def save_email_field?
+            click(EDITABLE_EMAIL)
+            sleep_for(1) #glide in animation
+            editable = is_displayed?(INPUT_EMAIL)
+            click(BTN_SAVE_EMAIL)
+            is_displayed?(SUCCESS_HEADER)
         end
     end
 

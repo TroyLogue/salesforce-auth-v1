@@ -36,6 +36,7 @@ describe '[Settings - Users]', :settings, :app_client do
       user_table.go_to_user(name: 'Ivy, harvard')
       expect(user_form.get_user_title).to eql("harvard Ivy's Profile")
       expect(user_form.existing_user_fields_editable?).to be_truthy
+      expect(user_form.save_email_field?).to be_truthy
     end
       
   end
