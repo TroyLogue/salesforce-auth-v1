@@ -6,8 +6,8 @@ class ResetPassword < BasePage
   SUBMIT_BUTTON = { css: '#password-edit-submit-btn' }
 
   def page_displayed? 
-    is_displayed?(NEW_PASSWORD_INPUT)
-    is_displayed?(CONFIRM_NEW_PASSWORD)
+    is_displayed?(NEW_PASSWORD_INPUT) &&
+    is_displayed?(CONFIRM_NEW_PASSWORD) &&
     is_displayed?(SUBMIT_BUTTON) 
   end 
 
