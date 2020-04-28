@@ -99,7 +99,7 @@ module Settings
         def save_email_field?
             click(EDITABLE_EMAIL)
             sleep_for(1) #glide in animation
-            editable = is_displayed?(INPUT_EMAIL)
+            is_displayed?(INPUT_EMAIL)
             click(BTN_SAVE_EMAIL)
             is_displayed?(SUCCESS_HEADER)
         end
