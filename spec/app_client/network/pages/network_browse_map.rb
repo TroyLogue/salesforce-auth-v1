@@ -1,7 +1,7 @@
 require_relative '../../../shared_components/base_page'
 
-class NetworkBrowseMap < BasePage 
-  
+class NetworkBrowseMap < BasePage
+
   # filters
   SEARCH_BAR = { css: '#browse-search-input' }
   SERVICE_TYPE_FILTER = { css: '#service-type-filter' }
@@ -14,7 +14,7 @@ class NetworkBrowseMap < BasePage
   NETWORK_SCOPE_FILTER_FIRST_OPTION_LABEL = { css: '#network-scope-filter .ui-filter__options div:nth-child(2) label' }
   NETWORK_SCOPE_FILTER_SELECTED_SPAN = { css: '#network-scope-filter div.selected-options span'}
 
-  # providers list 
+  # providers list
   PROVIDER_CARD = { css: '.ui-provider-card.group-list-item' }
   PROVIDER_CARD_FIRST = { css: '.ui-provider-card.group-list-item:nth-of-type(1)' }
   PROVIDER_CARD_DETAIL_FIRST = { css: '.ui-provider-card__detail:nth-of-type(1)' }
@@ -30,11 +30,11 @@ class NetworkBrowseMap < BasePage
   end
 
   def page_displayed?
-    # filters 
-    is_displayed?(SEARCH_BAR)
-    is_displayed?(SERVICE_TYPE_FILTER)
-    is_displayed?(NETWORK_FILTER)
-    is_displayed?(NETWORK_SCOPE_FILTER)
+    # filters
+    is_displayed?(SEARCH_BAR) &&
+    is_displayed?(SERVICE_TYPE_FILTER) &&
+    is_displayed?(NETWORK_FILTER) &&
+    is_displayed?(NETWORK_SCOPE_FILTER) &&
 
     # providers_list_elements
     is_displayed?(PROVIDER_CARD_FIRST)
@@ -43,7 +43,7 @@ class NetworkBrowseMap < BasePage
   def provider_card_displayed?
     is_displayed?(PROVIDER_CARD)
   end
-  
+
   def provider_card_oon_not_displayed?
     is_not_displayed?(PROVIDER_CARD_OON)
   end
@@ -51,7 +51,7 @@ class NetworkBrowseMap < BasePage
   def select_first_network_scope
     click(NETWORK_SCOPE_FILTER_FIRST_OPTION)
   end
-  
+
   def selected_option_text
     return text(NETWORK_SCOPE_FILTER_SELECTED_SPAN)
   end
@@ -59,5 +59,5 @@ class NetworkBrowseMap < BasePage
   def text_of_first_network_scope
     return text(NETWORK_SCOPE_FILTER_FIRST_OPTION_LABEL)
   end
-  
-end 
+
+end

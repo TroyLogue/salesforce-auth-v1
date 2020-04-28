@@ -13,10 +13,10 @@ class ForgotPassword < BasePage
     find(USER_EMAIL).attribute('value')
   end
 
-  def page_displayed? 
-    is_displayed?(SUBMIT_BUTTON)
+  def page_displayed?
+    is_displayed?(SUBMIT_BUTTON) &&
     is_displayed?(CANCEL_FORGOT_PASSWORD_LINK)
-  end 
+  end
 
   def click_to_send_email
     click(SUBMIT_BUTTON)
