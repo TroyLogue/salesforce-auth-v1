@@ -8,8 +8,8 @@ require_relative './pages/settings_user_page'
 describe '[Settings - Users]', :settings, :app_client do
   include Login
 
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:user_table) { Settings::UserTable.new(@driver) }
@@ -22,7 +22,7 @@ describe '[Settings - Users]', :settings, :app_client do
       expect(user_table.page_displayed?).to be_truthy
     }
 
-    it 'displays users in alphabetical order' do
+    it 'displays users in alphabetical order', :uuqa_809 do
       expect(user_table.get_list_of_user_names.each_cons(2).all? {|a, b| a.downcase <= b.downcase }).to be_truthy
     end
 
@@ -32,7 +32,7 @@ describe '[Settings - Users]', :settings, :app_client do
       expect(user_form.new_user_fields_display?).to be_truthy
     end
 
-    it 'can view existing user form', :uuqa_355 do
+    it 'can view and edit existing user form', :uuqa_355 do
       user_table.go_to_user(name: 'Ivy, harvard')
       expect(user_form.get_user_title).to eql("harvard Ivy's Profile")
       expect(user_form.existing_user_fields_editable?).to be_truthy

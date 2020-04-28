@@ -97,7 +97,7 @@ class BasePage
 
   def is_displayed?(selector)
     begin
-      find(selector).displayed?
+      find(selector).displayed? ? true : print("E2E ERROR: Selector #{selector} was not present")
     rescue Selenium::WebDriver::Error::NoSuchElementError
       print "E2E ERROR NoSuchElementError at #{selector}"
       false

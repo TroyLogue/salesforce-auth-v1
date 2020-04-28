@@ -37,22 +37,24 @@ module Settings
         #NEW USER
         INPUT_FIRSTNAME = { css: '#first-name' }
         INPUT_LASTNAME = { css: '#last-name' }
-        INPUT_EMAIL = { css: '#email' }
+        INPUT_EMAIL = { css: 'input[type="email"]' }
         INPUT_PHONE = { css: '#phone-number-0-number' }
         INPUT_WORK_TITLE = { css: '#work-title' }
         INPUT_NETWORKS = { css: 'div[aria-activedescendant^="choices-networks-item-choice"]' }
         INPUT_ORG_LICENSE = { css: 'div[aria-activedescendant^="choices-org-license-item-choice"]' }
-        INPUT_PROGRAM_CHOICES = { css: 'div[aria-activedescendant^="choices-programs-item-choice"]' }
-        INPUT_PROGRAM_ROLES = { css: 'div[aria-activedescendant^="choices-program-roles-item-choice"]' }
-        INPUT_ORG_ROLES = { css: 'div[aria-activedescendant^="choices-org-roles-item-choice-6"]' }
+        INPUT_PROGRAM_CHOICES = { css: 'div[aria-activedescendant*="programs-item-choice"]' }
+        INPUT_PROGRAM_ROLES = { css: 'div[aria-activedescendant*="roles-item-choice"]' }
+        INPUT_ORG_ROLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"]' }
 
         #EXISTING USER
         EDITABLE_PERSONAL_INFO = { css: '#edit-personal-information-modal-btn' }
+        BTN_CANCEL_PERSONAL = { css: '#personal-information-cancel-btn' }
         EDITABLE_EMAIL = { css: '#edit-email-address-modal-btn' }
+        BTN_CANCEL_EMAIL = { css: '#edit-email-cancel-btn' }
         EDITABLE_PROGRAM =  { css: '#edit-program-information-modal-btn' }
+        BTN_CANCEL_PROGRAM = { css: '#program-data-cancel-btn' }
         EDITABLE_NETWORK = { css: '#edit-network-licenses-modal-btn' }
         EDITABLE_ORG = { css: '#dit-group-licenses-modal-btn' }
-        CANCEL_BTN = {xpath: 'button[text()="Cancel"]'}
 
         def get_user_title
             text(USER_HEADER)
@@ -70,22 +72,25 @@ module Settings
 
         def edit_personal_info?
             click(EDITABLE_PERSONAL_INFO)
+            sleep_for(1) #glide in animation
             editable = is_displayed?(INPUT_FIRSTNAME) && is_displayed?(INPUT_LASTNAME) && is_displayed?(INPUT_WORK_TITLE)
-            click(CANCEL_BTN)
+            click(BTN_CANCEL_PERSONAL)
             editable
         end
 
         def edit_email_info?
             click(EDITABLE_EMAIL)
+            sleep_for(1) #glide in animation
             editable = is_displayed?(INPUT_EMAIL)
-            click(CANCEL_BTN)
+            click(BTN_CANCEL_EMAIL)
             editable
         end
 
         def edit_program_access?
             click(EDITABLE_PROGRAM)
+            sleep_for(1) #glide in animation
             editable = is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
-            click(CANCEL_BTN)
+            click(BTN_CANCEL_PROGRAM)
             editable
         end
     end

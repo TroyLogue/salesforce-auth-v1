@@ -22,7 +22,12 @@ describe '[Settings - Programs]', :settings, :app_client do
       expect(program_table.page_displayed?).to be_truthy
     }
 
-    it 'can edit existing program', :uuqa_355 do
+    it 'can create a new program', :uuqa_175 do
+      program_table.go_to_new_program_form
+      expect(program_form.page_displayed?).to be_truthy
+    end
+
+    it 'can edit existing program', :uuqa_175 do
       program_table.edit_program(name: 'Sciences Program')
       expect(program_form.get_program_title).to eql('Edit Sciences Program')
       program_form.save_changes

@@ -42,12 +42,29 @@ module Settings
         INPUT_PROGRAM_NAME = { css: '#program-name' }
         CHECKBOX_PROGRAM_REFERRAL = { css: 'label[for="program-referral-toggle"]' }
         TEXT_PROGRAM_REFERRAL_CONTENT = { css: '.referral-content' }
+        INPUT_PROGRAM_DESCRIPTION = { css: '#program-description' }
         INPUT_PAYMENT_OPTIONS = { css: '#program-payment-options' }
         INPUT_ACCESSIBILITY_OPTIONS = { css: '#program-accessibility-options' }
-        INPUT_TRANSPORTATION = { css: '#program-transportation-options-checkbox-0'}
-        INPUT_SERVICE_TYPES = { css: '.service-types-checkboxes'}
-        UPDATE_BTN  = { css: '#new-program-submit-btn'}
+        INPUT_TRANSPORTATION = { css: '#program-transportation-options' }
+        INPUT_SERVICE_DELIVERY = { css: 'div[aria-activedescendant^="choices-program-service-delivery-options-item-choice"]' }
+        INPUT_POPULATION_RESTRICTION = { css: 'div[aria-activedescendant^="choices-program-populations-restricted-to-item-choice"]' }
+        INPUT_POPULATION_CATERED = { css: 'div[aria-activedescendant^="choices-program-populations-catered-to-item-choice"]' }
+        INPUT_STATE = { css: 'div[aria-activedescendant^="choices-program-us-states-item-choice"]' }
+        INPUT_COUNTY = { css: 'label[for="program-us-counties"]' }
+        INPUT_CITIES = { css: 'label[for="program-us-cities"]' }
+        INPUT_LANGUAGE = { css: 'div[aria-activedescendant^="choices-program-languages-item-choice"]' }
+        INPUT_SERVICE_TYPES = { css: '.service-types-checkboxes' }
+        INPUT_PROGRAM_ELIGIBILITY = { css: '#program-eligibility' }
+        UPDATE_BTN  = { css: '#new-program-submit-btn' }
         
+        def page_displayed?
+            is_displayed?(INPUT_PROGRAM_NAME) && is_displayed?(CHECKBOX_PROGRAM_REFERRAL) && is_displayed?(INPUT_PROGRAM_DESCRIPTION) &&
+            is_displayed?(INPUT_PAYMENT_OPTIONS) && is_displayed?(INPUT_ACCESSIBILITY_OPTIONS) && is_displayed?(INPUT_TRANSPORTATION) &&
+            is_displayed?(INPUT_SERVICE_DELIVERY) && is_displayed?(INPUT_POPULATION_RESTRICTION) && is_displayed?(INPUT_POPULATION_CATERED) &&
+            is_displayed?(INPUT_STATE) && is_displayed?(INPUT_COUNTY) && is_displayed?(INPUT_CITIES) && is_displayed?(INPUT_LANGUAGE) &&
+            is_displayed?(INPUT_SERVICE_TYPES) && is_displayed?(INPUT_PROGRAM_ELIGIBILITY)
+        end
+
         def get_program_title
             text(PROGRAM_HEADER)
         end

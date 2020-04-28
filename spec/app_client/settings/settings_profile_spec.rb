@@ -21,7 +21,7 @@ describe '[Settings - Profile]', :settings, :app_client do
       expect(org_profile.page_displayed?).to be_truthy
     }
 
-    it 'can edit and save profile fields', :uuqa_175 do
+    it 'can edit and save profile fields', :uuqa_810 do
       #each editable field makes a request to the same endpoint with different info, so we aggragate all calls and to see if any are failing
       expect(org_profile.save_all_profile_fields).to all(be_truthy)
     end
