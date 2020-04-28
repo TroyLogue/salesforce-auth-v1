@@ -17,7 +17,7 @@ module MailtrapHelper
     if response.status.success? 
       return JSON.parse(response.body)
     else 
-      raise StandardError.new "Call to mailtrap API failed"
+      raise StandardError.new "Call to mailtrap API failed with status #{response.status}"
     end
   end
 
@@ -32,7 +32,7 @@ module MailtrapHelper
     if response.status.success?
       return response.body
     else
-      raise StandardError.new "Call to mailtrap API failed"
+      raise StandardError.new "Call to mailtrap API failed with status #{response.status}"
     end
   end
 
