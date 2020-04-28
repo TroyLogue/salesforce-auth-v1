@@ -87,6 +87,33 @@ RSpec.configure do |config|
     when 'ehr_production'
       ENV['base_url'] = 'http://emr.uniteus.io'
     end
+
+    # default auth_url is app-client staging; others can be passed as variables
+    case ENV['auth_url'] ||= 'https://app.auth.uniteusdev.com'
+    when 'devqa'
+      ENV['auth_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
+    when 'app_client_staging'
+      ENV['auth_url'] = 'https://app.auth.uniteusdev.com'
+    when 'app_client_training'
+      ENV['auth_url'] = 'https://app.auth.uniteustraining.com'
+    when 'app_client_production'
+      ENV['auth_url'] = 'https://app.auth.uniteus.io'
+    when 'ehr_staging'
+      ENV['auth_url'] = 'https://emr.auth.uniteusdev.com'
+    when 'ehr_training'
+      ENV['auth_url'] = 'https://emr.auth.uniteustraining.com'
+    when 'ehr_production'
+      ENV['auth_url'] = 'https://emr.auth.uniteus.io'
+    end
+
+    # define Mailtrap mailbox id for staging or training
+    # default will be staging id
+    case ENV['mailtrap_id'] ||= '99406'
+    when 'app_client_staging' 
+      ENV['mailtrap_id'] = '99406'
+    when 'app_client_training'
+      ENV['mailtrap_id'] = '531559'
+    end
   end
 
   config.before(:each) do
