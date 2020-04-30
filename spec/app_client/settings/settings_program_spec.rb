@@ -17,7 +17,7 @@ describe '[Settings - Programs]', :settings, :app_client do
   
   context('[as cc user]') do
     before {
-      log_in_as(Login::CC_HARVARD)
+      log_in_as(Login::SETTINGS_USER)
       org_menu.go_to_programs
       expect(program_table.page_displayed?).to be_truthy
     }
@@ -28,8 +28,8 @@ describe '[Settings - Programs]', :settings, :app_client do
     end
 
     it 'can edit existing program', :uuqa_175 do
-      program_table.edit_program(name: 'Sciences Program')
-      expect(program_form.get_program_title).to eql('Edit Sciences Program')
+      program_table.edit_program(name: 'Referred Out of Network')
+      expect(program_form.get_program_title).to eql('Edit Referred Out of Network')
       program_form.save_changes
       expect(program_table.are_changes_saved?).to be_truthy
     end

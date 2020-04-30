@@ -1,0 +1,5 @@
+{
+    "ruby.rubocop.executePath": "/Users/valeriemaldonado/.rvm/gems/ruby-2.7.0/bin/",
+    "ruby.intellisense": "rubyLocate",
+    "ruby.format": "rubocop"
+}

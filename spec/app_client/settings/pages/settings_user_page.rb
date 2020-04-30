@@ -1,3 +1,5 @@
+require_relative '../../root/pages/notifications'
+
 module Settings
 
     class UserTable < BasePage
@@ -33,7 +35,6 @@ module Settings
 
     class UserCard < BasePage
         USER_HEADER = { css: '.ui-base-card-header__title'}
-        SUCCESS_HEADER = { css: '.notification.success' }
 
         #NEW USER
         INPUT_FIRSTNAME = { css: '#first-name' }
@@ -101,7 +102,8 @@ module Settings
             sleep_for(1) #glide in animation
             is_displayed?(INPUT_EMAIL)
             click(BTN_SAVE_EMAIL)
-            is_displayed?(SUCCESS_HEADER)
+            is_not_displayed?(INPUT_EMAIL)
+            is_displayed?(Notifications::SUCCESS_BANNER)
         end
     end
 

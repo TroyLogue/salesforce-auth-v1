@@ -1,3 +1,5 @@
+require_relative '../../root/pages/notifications'
+
 module Settings
 
     class ProgramTable < BasePage
@@ -7,7 +9,6 @@ module Settings
         NEW_PROGRAM_BTN = { css: '.ui-button.ui-button--primary' }
         PROGRAMS_LIST = { css: ".ui-base-card-header__title" }
         PROGRAM_EDIT = { xpath: ".//h2[text()='%s']/following-sibling::div/div/button" }
-        SUCCESS_HEADER = { css: '.notification.success' }
 
         def page_displayed?
             is_not_displayed?(PROGRAMS_TABLE_LOAD)
@@ -32,7 +33,7 @@ module Settings
         end
 
         def are_changes_saved?
-            is_displayed?(SUCCESS_HEADER)
+            is_displayed?(Notifications::SUCCESS_BANNER)
         end
     end
 

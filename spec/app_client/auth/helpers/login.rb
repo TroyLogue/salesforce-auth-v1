@@ -48,6 +48,8 @@ end
     # used in dashboardNavigationSN.js
     # might become obsolete or applied to referrals tests
     SUPER_USER = 'super@best.com',
+    # settings user, QA network
+    SETTINGS_USER = 'qa.perms@auto.com'
   ]
 
   DEFAULT_PASSWORD = 'Uniteus1!'

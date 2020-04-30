@@ -44,6 +44,15 @@ class BasePage
     find(selector).send_keys :backspace
   end
 
+  def delete_all_char(selector)
+    element = find(selector)
+    #for input value fields and text fields
+    string = element.text != '' ? element.text : element.attribute("value")
+    string.split('').each do 
+      find(selector).send_keys :backspace
+    end
+  end
+
   def enter(text, selector)
     find(selector).send_keys text
   end

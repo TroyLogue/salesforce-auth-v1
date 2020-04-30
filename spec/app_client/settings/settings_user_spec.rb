@@ -17,7 +17,7 @@ describe '[Settings - Users]', :settings, :app_client do
   
   context('[as cc user]') do
     before {
-      log_in_as(Login::CC_HARVARD)
+      log_in_as(Login::SETTINGS_USER)
       org_menu.go_to_users_table
       expect(user_table.page_displayed?).to be_truthy
     }
@@ -33,8 +33,8 @@ describe '[Settings - Users]', :settings, :app_client do
     end
 
     it 'can view and edit existing user form', :uuqa_355 do
-      user_table.go_to_user(name: 'Ivy, harvard')
-      expect(user_form.get_user_title).to eql("harvard Ivy's Profile")
+      user_table.go_to_user(name: 'Permissions, QA')
+      expect(user_form.get_user_title).to eql("QA Permissions's Profile")
       expect(user_form.existing_user_fields_editable?).to be_truthy
       expect(user_form.save_email_field?).to be_truthy
     end
