@@ -46,10 +46,10 @@ RSpec.configure do |config|
       case ENV['browser'] ||= 'chrome'
       when 'chrome'
         @driver = if ENV['host'] == 'docker' 
-                  then Selenium::WebDriver.for(:remote, 
-                                              :url => "chrome://chrome:4444/wd/hub", 
-                                              :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
-                  else Selenium::WebDriver.for :chrome end 
+          then Selenium::WebDriver.for(:remote, 
+                                      :url => "chrome://chrome:4444/wd/hub", 
+                                      :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
+          else Selenium::WebDriver.for :chrome end 
       when 'chrome_headless'
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')

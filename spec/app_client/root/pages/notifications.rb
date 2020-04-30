@@ -5,6 +5,7 @@ class Notifications < BasePage
   NOTIFICATION_BANNER = { css: '#notifications' }
   ERROR_BANNER = { css: '#notifications .notification.error' }
   SUCCESS_BANNER = { css: '#notifications .notification.success' }
+  CLOSE_BANNER = { css: '.close' }
 
   BLANK_EMAIL_MESSAGE = "EmailAddress can't be blank"
   CASE_CREATED = 'Case Created'

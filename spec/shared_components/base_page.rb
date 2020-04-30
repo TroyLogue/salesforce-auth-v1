@@ -44,6 +44,15 @@ class BasePage
     find(selector).send_keys :backspace
   end
 
+  def delete_all_char(selector)
+    element = find(selector)
+    #for input value fields and text fields
+    string = element.text != '' ? element.text : element.attribute("value")
+    string.split('').each do 
+      find(selector).send_keys :backspace
+    end
+  end
+
   def enter(text, selector)
     find(selector).send_keys text
   end
@@ -97,7 +106,7 @@ class BasePage
 
   def is_displayed?(selector)
     begin
-      find(selector).displayed?
+      find(selector).displayed? ? true : print("E2E ERROR: Selector #{selector} was not present")
     rescue Selenium::WebDriver::Error::NoSuchElementError
       print "E2E ERROR NoSuchElementError at #{selector}"
       false
@@ -189,5 +198,9 @@ class BasePage
   def wait_for_spinner(spinner = { css: ".spinner-container"})
     wait_for(){ find_elements(spinner).length < 1 }
   end 
+
+  def is_selected?(selector)
+    find(selector).selected?
+  end
 
 end
