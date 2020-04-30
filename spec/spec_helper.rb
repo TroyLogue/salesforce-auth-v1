@@ -47,12 +47,11 @@ RSpec.configure do |config|
     # default browser is chrome; others can passed as variables
       case ENV['browser'] ||= 'chrome'
       when 'chrome'
-        options = Selenium::WebDriver::Chrome::Options.new
-        options.add_argument('--user-data-dir=/Users/valeriemaldonado/Library/Application Support/Google/Chrome/Guest Profile/')
-        options.add_argument('--profile-directory=Guest Profile')
-        Selenium::WebDriver::Chrome::Profile
-
-        @driver = Selenium::WebDriver.for :chrome, options: options
+        @driver = if ENV['host'] == 'docker' 
+          then Selenium::WebDriver.for(:remote, 
+                                      :url => "chrome://chrome:4444/wd/hub", 
+                                      :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
+          else Selenium::WebDriver.for :chrome end 
       when 'chrome_headless'
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')
@@ -73,22 +72,25 @@ RSpec.configure do |config|
       end
     end
 
+    # api endpoint for creating data
+    ENV['base_url'] ||= 'https://api.uniteusdev.com'  
+
     # default base_url is app-client staging; others can be passed as variables
-    case ENV['base_url'] ||= 'http://app.uniteusdev.com'
+    case ENV['base_web_url'] ||= 'http://app.uniteusdev.com'
     when 'devqa'
-      ENV['base_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
+      ENV['base_web_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
     when 'app_client_staging'
-      ENV['base_url'] = 'http://app.uniteusdev.com'
+      ENV['base_web_url'] = 'http://app.uniteusdev.com'
     when 'app_client_training'
-      ENV['base_url'] = 'http://app.uniteustraining.com'
+      ENV['base_web_url'] = 'http://app.uniteustraining.com'
     when 'app_client_production'
-      ENV['base_url'] = 'http://app.uniteus.io'
+      ENV['base_web_url'] = 'http://app.uniteus.io'
     when 'ehr_staging'
-      ENV['base_url'] = 'http://emr.uniteusdev.com'
+      ENV['base_web_url'] = 'http://emr.uniteusdev.com'
     when 'ehr_training'
-      ENV['base_url'] = 'http://emr.uniteustraining.com'
+      ENV['base_web_url'] = 'http://emr.uniteustraining.com'
     when 'ehr_production'
-      ENV['base_url'] = 'http://emr.uniteus.io'
+      ENV['base_web_url'] = 'http://emr.uniteus.io'
     end
   end
 
@@ -98,7 +100,7 @@ RSpec.configure do |config|
 
   # config.verbose_retry = false # recommended for development mode
   config.verbose_retry = true # show retry status in spec process
-  config.default_retry_count = 0
+  config.default_retry_count = 2
 
   # reporting
   config.after(:each) do |example|

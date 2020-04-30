@@ -29,3 +29,7 @@ end
 group :debugging do
   gem 'byebug' # https://github.com/deivid-rodriguez/byebug
 end
+
+group :internal do
+  gem 'api-integration', git: 'git@github.com:unite-us/api-integration-tests.git', branch: 'UU3-42351-gem'
+end
