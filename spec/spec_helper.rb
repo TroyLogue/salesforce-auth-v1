@@ -45,12 +45,11 @@ RSpec.configure do |config|
     # default browser is chrome; others can passed as variables
       case ENV['browser'] ||= 'chrome'
       when 'chrome'
-        options = Selenium::WebDriver::Chrome::Options.new
-        options.add_argument('--user-data-dir=/Users/valeriemaldonado/Library/Application Support/Google/Chrome/Guest Profile/')
-        options.add_argument('--profile-directory=Guest Profile')
-        Selenium::WebDriver::Chrome::Profile
-
-        @driver = Selenium::WebDriver.for :chrome, options: options
+        @driver = if ENV['host'] == 'docker' 
+          then Selenium::WebDriver.for(:remote, 
+                                      :url => "chrome://chrome:4444/wd/hub", 
+                                      :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
+          else Selenium::WebDriver.for :chrome end 
       when 'chrome_headless'
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')
@@ -96,7 +95,7 @@ RSpec.configure do |config|
 
   # config.verbose_retry = false # recommended for development mode
   config.verbose_retry = true # show retry status in spec process
-  config.default_retry_count = 0
+  config.default_retry_count = 2
 
   # reporting
   config.after(:each) do |example|
