@@ -17,7 +17,6 @@ module DataCreation
         def create(token:, group_id:)
             request_body = Payloads::Contacts::Create.new({first_name: @fname, last_name: @lname, date_of_birth: @dob })
             @contact_response = Requests::Contacts.create(token: token, group_id: group_id, contact: request_body)
-            @contact_id = JSON.parse(@contact_response, object_class: OpenStruct).data.id
         end
 
         def create_with_consent(token:, group_id:)
