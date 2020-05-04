@@ -1,6 +1,8 @@
 require 'api-integration'
 require 'faker'
 
+require_relative '../lib/file_helper'
+
 module DataCreation
     class Contact    
         attr_reader :fname, :fname, :dob, :contact_id
@@ -20,7 +22,7 @@ module DataCreation
 
         def create_with_consent(token:, group_id:)
             create(token: token, group_id: group_id)
-            @consent_response = Requests::Consent.post_on_screen_consent(token: token, group_id: group_id, contact_id: @contact_id)
+            @consent_response = Requests::Consent.post_on_screen_consent(token: token, group_id: group_id, contact_id: @contact_id, signature_image: get_signature_image)
         end
 
         def searchable_name

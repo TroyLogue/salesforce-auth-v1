@@ -27,14 +27,14 @@ describe '[Facesheet]', :app_client, :facesheet do
       @contact = DataCreation::Contact.new
       contact_response = @contact.create(token: base_page.get_uniteus_api_token, group_id: base_page.get_uniteus_group)
 
-      #Going to Clients page
-      search_bar.search_for(@contact.searchable_name)
-      search_bar.go_to_facesheet_of(@contact.searchable_name)
-
       # Going to remove this, but placing this for now because it takes a bit for a new client to be indexed into search
       # Since we will have the access to a clients id we can directly navigate to their facesheet
       print @contact.contact_id
       sleep(10) 
+
+      #Going to Clients page
+      search_bar.search_for(@contact.searchable_name)
+      search_bar.go_to_facesheet_of(@contact.searchable_name)
     } 
     #should not run until referrals are done
     it 'Rename resource document in uploads', :uuqa_341, :wip, :poc do
