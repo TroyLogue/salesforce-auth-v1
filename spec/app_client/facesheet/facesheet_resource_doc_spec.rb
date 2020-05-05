@@ -27,7 +27,7 @@ describe '[Facesheet]', :app_client, :facesheet do
       @contact = DataCreation::Contact.new
       contact_response = @contact.create(token: base_page.get_uniteus_api_token, group_id: base_page.get_uniteus_group)
       expect(contact_response.status.to_s).to eq('201 Created')
-      @contact.contact_id = JSON.parse(@contact_response, object_class: OpenStruct).data.id
+      @contact.contact_id = JSON.parse(contact_response, object_class: OpenStruct).data.id
 
       # Going to remove this, but placing this for now because it takes a bit for a new client to be indexed into search
       # Since we will have the access to a clients id we can directly navigate to their facesheet

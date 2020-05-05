@@ -5,7 +5,8 @@ require_relative '../lib/file_helper'
 
 module DataCreation
     class Contact    
-        attr_reader :fname, :fname, :dob, :contact_id
+        attr_reader :fname, :lname, :dob
+        attr_accessor :contact_id
 
         def initialize()
             @fname = Faker::Name.first_name
@@ -16,7 +17,7 @@ module DataCreation
   
         def create(token:, group_id:)
             request_body = Payloads::Contacts::Create.new({first_name: @fname, last_name: @lname, date_of_birth: @dob })
-            @contact_response = Requests::Contacts.create(token: token, group_id: group_id, contact: request_body)
+            contact_response = Requests::Contacts.create(token: token, group_id: group_id, contact: request_body)
         end
 
         def create_with_consent(token:, group_id:)
