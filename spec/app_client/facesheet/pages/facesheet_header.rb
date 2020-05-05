@@ -27,4 +27,10 @@ class Facesheet < BasePage
         click(OVERVIEW_TAB)
         wait_for_spinner
     end
+
+    def go_to_profile
+        click(PROFILE_TAB)
+        wait_for_spinner
+    end
+
 end
