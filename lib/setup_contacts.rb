@@ -3,7 +3,7 @@ require 'faker'
 
 require_relative '../lib/file_helper'
 
-module DataCreation
+module Setup
     class Contact    
         attr_reader :fname, :lname, :dob
         attr_accessor :contact_id
