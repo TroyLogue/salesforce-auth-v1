@@ -23,6 +23,7 @@ class Overview < BasePage
     CLIENT_TIMELINE_TYPE = { css: '#create-interaction-0-type' }
     CLIENT_TIMELINE_DURATION = { css: '#create-interaction-0-duration' } 
     CLIENT_TIMELINE_NOTE = { css: '#create-interaction-0-note > span > span'}
+    CLIENT_TIMELINE_GENERAL_ENTRY = { css: '.entry-context' }
 
     def page_displayed?
         is_displayed?(OVERVIEW)
@@ -54,4 +55,9 @@ class Overview < BasePage
         #Return a note struct we can compare to
         { :type => text(CLIENT_TIMELINE_TYPE), :duration => text(CLIENT_TIMELINE_DURATION).gsub('Duration: ', ''), :content => text(CLIENT_TIMELINE_NOTE) }
     end
+
+    def first_entry_in_timeline
+        text(CLIENT_TIMELINE_GENERAL_ENTRY)
+    end
+
 end  
