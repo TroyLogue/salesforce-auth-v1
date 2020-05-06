@@ -1,4 +1,4 @@
-require 'api-integration'
+require 'uniteus-api-client'
 require 'faker'
 
 require_relative '../lib/file_helper'

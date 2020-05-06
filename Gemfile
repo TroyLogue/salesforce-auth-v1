@@ -31,5 +31,5 @@ group :debugging do
 end
 
 group :internal do
-  gem 'api-integration', git: 'git@github.com:unite-us/api-integration-tests.git', branch: 'UU3-42351-gem'
+  gem 'uniteus-api-client', git: 'git@github.com:unite-us/api-integration-tests.git', branch: 'UU3-42351-gem'
 end
