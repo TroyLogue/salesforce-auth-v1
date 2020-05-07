@@ -71,7 +71,7 @@ RSpec.configure do |config|
     end
 
     # default web_url, auth_url and  api_url is app-client staging; others can be passed as variables
-    case ENV['environment']
+    case ENV['environment'] ||= 'app_client_staging'
     when 'devqa'
       ENV['web_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
       ENV['auth_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
@@ -100,10 +100,6 @@ RSpec.configure do |config|
       ENV['web_url'] = 'http://emr.uniteus.io'
       ENV['auth_url'] = 'https://emr.auth.uniteus.io'
       ENV['api_url'] = 'http://api.uniteus.io'
-    else
-      ENV['web_url'] = 'http://app.uniteusdev.com'
-      ENV['auth_url'] = 'https://app.auth.uniteusdev.com'
-      ENV['api_url'] = 'http://api.uniteusdev.com'
     end
 
     # define Mailtrap mailbox id for staging or training
