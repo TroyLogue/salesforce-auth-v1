@@ -9,7 +9,7 @@ namespace :local do
   desc 'Run app-client tests on staging by browser'
   task :app_client_staging, :browser do |t, args|
     ENV['browser'] = args[:browser]
-    ENV['base_url'] = 'app_client_staging'
+    ENV['environment'] = 'app_client_staging'
     exit run_in_parallel(2, 'app_client --tag app_client')
   end
 
@@ -19,7 +19,7 @@ namespace :local do
   desc 'Run tests on Dev QA bucket by browser and tag(s)'
   task :devqa, :browser, :tag do |t, args|
     ENV['browser'] = args[:browser]
-    ENV['base_url'] = 'devqa'
+    ENV['environment'] = 'devqa'
     exit run_in_parallel(2, "#{args[:tag]}")
   end
 
@@ -34,7 +34,7 @@ namespace :browserstack do
   desc 'Run tests by tag on app-client base url'
   task :app_client_staging_by_browser_and_tag, :os, :os_version, :browser, :browser_version, :tag do |t, args|
     ENV['host'] = 'browserstack'
-    ENV['base_url'] = 'app_client_staging'
+    ENV['environment'] = 'app_client_staging'
     ENV['os'] = args[:os]
     ENV['os_version'] = args[:os_version]
     ENV['browser'] = args[:browser]
@@ -47,7 +47,7 @@ namespace :browserstack do
   desc 'Run all app_client tests on Chrome'
   task :app_client_staging_chrome, :base_url, :os, :browser do |t, args|
     ENV['host'] = 'browserstack'
-    ENV['base_url'] = 'app_client_staging'
+    ENV['environment'] = 'app_client_staging'
     ENV['os'] = 'Windows'
     ENV['os_version'] = '10'
     ENV['browser'] = 'chrome'
@@ -61,7 +61,7 @@ namespace :browserstack do
   desc 'Run tests tagged app_client by OS, browser, and browser version on app-client staging'
   task :app_client_staging, :os, :os_version, :browser, :browser_version do |t, args|
     ENV['host'] = 'browserstack'
-    ENV['base_url'] = 'app_client_staging'
+    ENV['environment'] = 'app_client_staging'
     ENV['os'] = args[:os]
     ENV['os_version'] = args[:os_version]
     ENV['browser'] = args[:browser]
@@ -75,7 +75,7 @@ namespace :browserstack do
   desc 'Run app-client staging tests on IE 11 by tag(s)'
   task :app_client_staging_ie11, :tag do |t, args|
     ENV['host'] = 'browserstack'
-    ENV['base_url'] = 'app_client_staging'
+    ENV['environment'] = 'app_client_staging'
     ENV['os'] = 'Windows'
     ENV['os_version'] = '7'
     ENV['browser'] = 'IE'
@@ -88,7 +88,7 @@ namespace :browserstack do
   desc 'Run EHR staging tests on IE 10 by tag(s)'
   task :ehr_staging_ie10, :tag do |t, args|
     ENV['host'] = 'browserstack'
-    ENV['base_url'] = 'ehr_staging'
+    ENV['environment'] = 'ehr_staging'
     ENV['os'] = 'Windows'
     ENV['os_version'] = '7'
     ENV['browser'] = 'IE'

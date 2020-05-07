@@ -70,40 +70,40 @@ RSpec.configure do |config|
       end
     end
 
-    # default base_url is app-client staging; others can be passed as variables
-    case ENV['base_url'] ||= 'http://app.uniteusdev.com'
+    # default web_url, auth_url and  api_url is app-client staging; others can be passed as variables
+    case ENV['environment']
     when 'devqa'
-      ENV['base_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
-    when 'app_client_staging'
-      ENV['base_url'] = 'http://app.uniteusdev.com'
-    when 'app_client_training'
-      ENV['base_url'] = 'http://app.uniteustraining.com'
-    when 'app_client_production'
-      ENV['base_url'] = 'http://app.uniteus.io'
-    when 'ehr_staging'
-      ENV['base_url'] = 'http://emr.uniteusdev.com'
-    when 'ehr_training'
-      ENV['base_url'] = 'http://emr.uniteustraining.com'
-    when 'ehr_production'
-      ENV['base_url'] = 'http://emr.uniteus.io'
-    end
-
-    # default auth_url is app-client staging; others can be passed as variables
-    case ENV['auth_url'] ||= 'https://app.auth.uniteusdev.com'
-    when 'devqa'
+      ENV['web_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
       ENV['auth_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
+      ENV['api_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
     when 'app_client_staging'
+      ENV['web_url'] = 'http://app.uniteusdev.com'
       ENV['auth_url'] = 'https://app.auth.uniteusdev.com'
+      ENV['api_url'] = 'http://api.uniteusdev.com'
     when 'app_client_training'
+      ENV['web_url'] = 'http://app.uniteustraining.com'
       ENV['auth_url'] = 'https://app.auth.uniteustraining.com'
+      ENV['api_url'] = 'http://api.uniteustraining.com'
     when 'app_client_production'
+      ENV['web_url'] = 'http://app.uniteus.io'
       ENV['auth_url'] = 'https://app.auth.uniteus.io'
+      ENV['api_url'] = 'http://api.uniteus.io'
     when 'ehr_staging'
+      ENV['web_url'] = 'http://emr.uniteusdev.com'
       ENV['auth_url'] = 'https://emr.auth.uniteusdev.com'
+      ENV['api_url'] = 'http://api.uniteusdev.com'
     when 'ehr_training'
+      ENV['web_url'] = 'http://emr.uniteustraining.com'
       ENV['auth_url'] = 'https://emr.auth.uniteustraining.com'
+      ENV['api_url'] = 'http://api.uniteustraining.com'
     when 'ehr_production'
+      ENV['web_url'] = 'http://emr.uniteus.io'
       ENV['auth_url'] = 'https://emr.auth.uniteus.io'
+      ENV['api_url'] = 'http://api.uniteus.io'
+    else
+      ENV['web_url'] = 'http://app.uniteusdev.com'
+      ENV['auth_url'] = 'https://app.auth.uniteusdev.com'
+      ENV['api_url'] = 'http://api.uniteusdev.com'
     end
 
     # define Mailtrap mailbox id for staging or training

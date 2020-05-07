@@ -1,5 +1,5 @@
 require_relative '../../../shared_components/base_page'
-require_relative '../../../../lib/File_helper'
+require_relative '../../../../lib/file_helper'
 
 class Uploads < BasePage 
         
