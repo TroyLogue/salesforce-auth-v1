@@ -53,7 +53,7 @@ class Profile < BasePage
 
     def remove_phone_number
         click(EDIT_PHONE)
-        if is_displayed?(BTN_REMOVE_PHONE)
+        if is_present?(BTN_REMOVE_PHONE)
             click(BTN_REMOVE_PHONE)
             click(BTN_REMOVE_CONFIRM)
             wait_for_spinner
@@ -63,7 +63,7 @@ class Profile < BasePage
 
     def switch_phone_preferrences
         click(EDIT_PHONE)
-        if !is_displayed?(INPUT_PHONE)
+        if !is_present?(INPUT_PHONE)
             click(ADD_PHONE)
         end
         click(PHONE_CHECKBOX_MESSAGE)
@@ -82,7 +82,7 @@ class Profile < BasePage
 
     def remove_email
         click(EDIT_EMAIL)
-        if is_displayed?(BTN_REMOVE_EMAIL)
+        if is_present?(BTN_REMOVE_EMAIL)
             click(BTN_REMOVE_EMAIL)
             click(BTN_REMOVE_CONFIRM)
             wait_for_spinner
@@ -92,7 +92,7 @@ class Profile < BasePage
 
     def switch_email_preferrences
         click(EDIT_EMAIL)
-        if !is_displayed?(INPUT_EMAIL)
+        if !is_present?(INPUT_EMAIL)
             click(ADD_EMAIL)
         end
         click(EMAIL_CHECKBOX_MESSAGE)

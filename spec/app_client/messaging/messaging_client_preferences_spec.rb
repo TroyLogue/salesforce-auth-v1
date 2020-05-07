@@ -12,8 +12,8 @@ require_relative '../clients/pages/clients_page'
 describe '[Messaging - Facesheet - Preferrences]', :app_client, :messaging do
   include Login
 
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
   let(:left_nav) { LeftNav.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
@@ -30,36 +30,35 @@ describe '[Messaging - Facesheet - Preferrences]', :app_client, :messaging do
       facesheet_header.go_to_profile
     } 
 
-    it 'Add phone number and email for messaging', :uuqa_290 do
+    it 'Add phone number and email for messaging', :uuqa_290, :uuqa_291 do
+      facesheet_profile.switch_phone_preferrences
+      expect(facesheet_profile.get_error_message).to eql('Required')
+      facesheet_profile.close_modal
+
       facesheet_profile.add_phone_number(phone:Faker::PhoneNumber.cell_phone, type:'Mobile')
       facesheet_profile.switch_phone_preferrences
+
+      facesheet_profile.switch_email_preferrences
+      expect(facesheet_profile.get_error_message).to eql('Required')
+      facesheet_profile.close_modal
 
       facesheet_profile.add_email(email:Faker::Internet.email)
       facesheet_profile.switch_email_preferrences
     end
 
-    it 'A phone number and email is required for messaging', :uuqa_291 do
-      facesheet_profile.switch_phone_preferrences
-      expect(facesheet_profile.get_error_message).to eql('Required')
-      facesheet_profile.close_modal
-
-      facesheet_profile.switch_email_preferrences
-      expect(facesheet_profile.get_error_message).to eql('Required')
-      facesheet_profile.close_modal
-
-    end
-
     it 'Changing allowing notifications registers in timeline', :uuqa_306 do
-      new_phone_number = Faker::PhoneNumber.cell_phone
+      #Formatting used to display numbers => (999) 999-9999  
+      new_phone_number = "(#{Faker::Number.number(digits:3)}) #{Faker::Number.number(digits:3)}-#{Faker::Number.number(digits:4)}"
       facesheet_profile.add_phone_number(phone:new_phone_number, type:'Mobile')
       facesheet_profile.switch_phone_preferrences
 
       facesheet_header.go_to_overview
-      expect(facesheet_overview.first_entry_in_timeline).to include(new_phone_number)
-      facesheet_header.got_to_profile
+      expect(facesheet_overview.first_entry_in_timeline).to \
+      include("Notifications were enabled for #{facesheet_header.get_facesheet_name} at\n#{new_phone_number}\nby Columbia Ivy")
     end
 
     after { 
+      facesheet_header.go_to_profile
       facesheet_profile.remove_phone_number
       facesheet_profile.remove_email
     }

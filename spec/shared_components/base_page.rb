@@ -134,6 +134,22 @@ class BasePage
     end
   end
 
+  # Similar to is_displayed? but without the time wrapper, and therefore returns 
+  # without waiting the 30 secs. 
+  # This is to be used when we know in advance that an element will be present or not.
+  # For assertions we should still use is_displayed?
+  def is_present?(selector)
+    begin
+      driver.find_element(selector)
+    rescue Selenium::WebDriver::Error::NoSuchElementError
+      return false
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      return false
+    else
+      return true
+    end
+  end
+
   # Some text boxes glide into the page, making local development difficult
   # For now its an explicit wait, but we can change this to create a better solution
   def sleep_for(seconds=1)
