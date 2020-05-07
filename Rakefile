@@ -45,7 +45,7 @@ namespace :browserstack do
   # example:
   # rake browserstack:app_client_staging_chrome['80.0']
   desc 'Run all app_client tests on Chrome'
-  task :app_client_staging_chrome, :base_url, :os, :browser do |t, args|
+  task :app_client_staging_chrome, :environment, :os, :browser do |t, args|
     ENV['host'] = 'browserstack'
     ENV['environment'] = 'app_client_staging'
     ENV['os'] = 'Windows'
