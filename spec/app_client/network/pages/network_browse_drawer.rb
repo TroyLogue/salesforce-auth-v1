@@ -35,18 +35,19 @@ class NetworkBrowseDrawer < BasePage
 
   def close_drawer
     click(CLOSE_BUTTON)
-  end 
+  end
 
   def drawer_displayed?
-    is_displayed?(OPENED_DRAWER)
-    is_displayed?(CLOSE_BUTTON)
-    is_displayed?(SHARE_BUTTON)
+    sleep(1) #waiting for slide in animation
+    is_displayed?(OPENED_DRAWER) &&
+    is_displayed?(CLOSE_BUTTON) &&
+    is_displayed?(SHARE_BUTTON) &&
 
-    is_displayed?(PROIVDER_DETAILS_MAP)
-    is_displayed?(PROIVDER_DETAILS_DESCRIPTION)
-    is_displayed?(PROIVDER_DETAILS_CONTACT)
-    is_displayed?(PROIVDER_DETAILS_HOURS)
-    is_displayed?(PROIVDER_DETAILS_SERVICES)
+    is_displayed?(PROIVDER_DETAILS_MAP) &&
+    is_displayed?(PROIVDER_DETAILS_DESCRIPTION) &&
+    is_displayed?(PROIVDER_DETAILS_CONTACT) &&
+    is_displayed?(PROIVDER_DETAILS_HOURS) &&
+    is_displayed?(PROIVDER_DETAILS_SERVICES) &&
     is_displayed?(PROIVDER_DETAILS_PROGRAMS)
   end
 
@@ -65,4 +66,4 @@ class NetworkBrowseDrawer < BasePage
     click(SEND_BUTTON)
   end
 
-end 
+end

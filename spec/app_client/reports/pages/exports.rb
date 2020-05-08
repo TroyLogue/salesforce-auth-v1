@@ -36,7 +36,7 @@ class Exports < BasePage
   DAYS_90 = 'Last 90 Days'
 
   def page_displayed?
-    is_displayed?(NEW_EXPORT_BUTTON)
+    is_displayed?(NEW_EXPORT_BUTTON) &&
     is_displayed?(EXPORTS_TABLE)
   end
 
@@ -49,10 +49,10 @@ class Exports < BasePage
   def select_export_source
     click(EXPORT_FIELD.transform_values{|v| v % 'Export Source(s)'})
     is_displayed?(EXPORT_SOURCE_SELECT_LIST_OPEN)
-    
+
     click(EXPORT_SOURCE_CHOICE)
     is_displayed?(EXPORT_SOURCE_CHOICE_SELECTED)
-    
+
     click(EXPORT_SOURCE_CLOSE)
     is_not_displayed?(EXPORT_SOURCE_CLOSE, 0.5)
   end
@@ -83,7 +83,7 @@ class Exports < BasePage
     select_export_type(ASSESSMENT)
     select_comparison_field(CREATED)
     select_date_range(DAYS_30)
-  end 
+  end
 
   def submit_export_form
     click(SUBMIT_BUTTON)

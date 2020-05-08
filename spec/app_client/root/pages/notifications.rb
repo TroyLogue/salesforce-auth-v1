@@ -5,6 +5,7 @@ class Notifications < BasePage
   NOTIFICATION_BANNER = { css: '#notifications' }
   ERROR_BANNER = { css: '#notifications .notification.error' }
   SUCCESS_BANNER = { css: '#notifications .notification.success' }
+  CLOSE_BANNER = { css: '.close' }
 
   BLANK_EMAIL_MESSAGE = "EmailAddress can't be blank"
   CASE_CREATED = 'Case Created'
@@ -26,6 +27,8 @@ class Notifications < BasePage
   REFERRAL_REJECTED = 'Referral Rejected Successfully'
   REFERRAL_SENT = 'Referral Successfully Sent Out'
   SUPPORTING_ASSESSMENT_SAVED = 'Supporting Assessments Successfully Saved'
+  INSECURE_PASSWORD = "Password is not safe to use as it appears in a list of weak passwords. Please change your password to something more secure."
+  USER_UPDATED = 'User Successfully Updated' 
 
   def error_text
     find(ERROR_BANNER)

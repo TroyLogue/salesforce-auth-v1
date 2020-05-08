@@ -44,6 +44,15 @@ class BasePage
     find(selector).send_keys :backspace
   end
 
+  def delete_all_char(selector)
+    element = find(selector)
+    #for input value fields and text fields
+    string = element.text != '' ? element.text : element.attribute("value")
+    string.split('').each do 
+      find(selector).send_keys :backspace
+    end
+  end
+
   def enter(text, selector)
     find(selector).send_keys text
   end
@@ -84,7 +93,7 @@ class BasePage
   end
 
   def get(path)
-    driver.get ENV['base_web_url'] + path
+    driver.get ENV['web_url'] + path
   end
 
   def get_title
@@ -97,7 +106,7 @@ class BasePage
 
   def is_displayed?(selector)
     begin
-      find(selector).displayed?
+      find(selector).displayed? ? true : print("E2E ERROR: Selector #{selector} was not present")
     rescue Selenium::WebDriver::Error::NoSuchElementError
       print "E2E ERROR NoSuchElementError at #{selector}"
       false
@@ -182,9 +191,17 @@ class BasePage
     find(selector).text.include?(text)
   end
 
+  def wait_for_notification_to_disappear(notification = { css: "#notifications .notification" })
+    wait_for(){ find_elements(notification).length < 1 } 
+  end
+
   def wait_for_spinner(spinner = { css: ".spinner-container"})
     wait_for(){ find_elements(spinner).length < 1 }
   end 
+
+  def is_selected?(selector)
+    find(selector).selected?
+  end
 
   def get_uniteus_api_token
     JSON.parse(driver.execute_script('return window.sessionStorage.getItem("uniteusApiToken");'))["token"]
@@ -197,5 +214,4 @@ class BasePage
   def get_uniteus_group
     driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentGroup");')
   end
-
 end
