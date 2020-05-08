@@ -93,7 +93,7 @@ class BasePage
   end
 
   def get(path)
-    driver.get ENV['base_url'] + path
+    driver.get ENV['web_url'] + path
   end
 
   def get_title

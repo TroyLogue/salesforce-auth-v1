@@ -92,7 +92,7 @@ Call `rake -T` to list all tasks. Feel free to add useful tasks.
 
 ## Using RSpec Commands
 
-When running tests via `rspec` the default `base_url` and `browser` values defined in the `spec_helper` will be used unless otherwise specified before the `rspec` command.
+When running tests via `rspec` the default `web_url` and `browser` values defined in the `spec_helper` will be used unless otherwise specified before the `rspec` command.
 
 ### Running Tests Headlessly
 
@@ -103,7 +103,7 @@ When running tests via `rspec` the default `base_url` and `browser` values defin
 ### Passing a Dev QA URL
 
 You can pass a Dev QA URL at runtime, e.g.,
-`base_url='https://devqa.uniteusdev.com/uu3-#####' rspec --tag debug`
+`web_url='https://devqa.uniteusdev.com/uu3-#####' rspec --tag debug`
 
 Or set a value in `spec/spec_helper.rb` replacing `ENTER_URL_HERE`.
 
