@@ -6,7 +6,7 @@ require_relative '../lib/browserstack_credentials'
 # Specifies required dependencies per groups defined in Gemfile
 # When spec files require spec_helper, they have access to all the package gems
 # and do not need to require them individually
-Bundler.require(:drivers, :test_framework, :test_harness, :test_data, :debugging)
+Bundler.require(:default)
 
 Dir['./lib/tokens/*.rb'].each {|file| require file }
 
