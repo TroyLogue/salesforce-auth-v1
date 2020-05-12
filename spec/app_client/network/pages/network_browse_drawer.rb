@@ -46,7 +46,6 @@ class NetworkBrowseDrawer < BasePage
     is_displayed?(PROIVDER_DETAILS_MAP) &&
     is_displayed?(PROIVDER_DETAILS_DESCRIPTION) &&
     is_displayed?(PROIVDER_DETAILS_CONTACT) &&
-    is_displayed?(PROIVDER_DETAILS_HOURS) &&
     is_displayed?(PROIVDER_DETAILS_SERVICES) &&
     is_displayed?(PROIVDER_DETAILS_PROGRAMS)
   end
