@@ -13,7 +13,7 @@ describe '[Settings - Profile]', :settings, :app_client do
   let(:base_page) { BasePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:org_profile) { Settings::OrganizationProfile.new(@driver) }
-  
+
   context('[as cc user]') do
     before {
       log_in_as(Login::SETTINGS_USER)
@@ -25,9 +25,9 @@ describe '[Settings - Profile]', :settings, :app_client do
       # New Field Values
       description = Faker::Lorem.word
       phone = Faker::Number.number(digits: 10)
-      email = Faker::Internet.email       
+      email = Faker::Internet.email
       address = Faker::Address.street_name
-      weburl = Faker::Internet.url 
+      weburl = Faker::Internet.url
       time = "#{Faker::Number.between(from: 1, to: 10)}:00 AM"
 
       #Description
@@ -36,7 +36,7 @@ describe '[Settings - Profile]', :settings, :app_client do
 
       #Phone
       org_profile.save_phone(phone)
-      expect(org_profile.get_phone).to eq(phone)
+      expect(org_profile.get_phone).to eq(base_page.number_to_phone_format(phone))
 
       #Email
       org_profile.save_email(email)

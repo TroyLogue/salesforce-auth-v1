@@ -48,7 +48,7 @@ class BasePage
     element = find(selector)
     #for input value fields and text fields
     string = element.text != '' ? element.text : element.attribute("value")
-    string.split('').each do 
+    string.split('').each do
       find(selector).send_keys :backspace
     end
   end
@@ -76,7 +76,7 @@ class BasePage
   end
 
   def find_elements(selector)
-    wait_for { driver.find_elements(selector) }    
+    wait_for { driver.find_elements(selector) }
   end
 
   def find_within(context, selector)
@@ -84,7 +84,7 @@ class BasePage
   end
 
   def find_elements(selector)
-    wait_for { driver.find_elements(selector) }    
+    wait_for { driver.find_elements(selector) }
   end
 
   def generate_timestamp
@@ -120,8 +120,8 @@ class BasePage
   end
 
   def is_not_displayed?(selector, timeout=10)
-    begin 
-      wait_for(seconds = timeout) { !driver.find_element(selector).displayed? } 
+    begin
+      wait_for(seconds = timeout) { !driver.find_element(selector).displayed? }
     rescue Selenium::WebDriver::Error::NoSuchElementError
       return true
     rescue Selenium::WebDriver::Error::StaleElementReferenceError
@@ -132,6 +132,16 @@ class BasePage
       return false
       print "E2E ERROR: Selector #{selector} was present"
     end
+  end
+
+  # because all of our users and clients are U.S.-based,
+  # phone numbers are formatted accordingly
+  def number_to_phone_format(number)
+    string = number.to_s
+    area_code = string.slice(0,3)
+    exchange = string.slice(3,3)
+    line_number = string.slice(6,4)
+    return "(#{area_code}) #{exchange}-#{line_number}"
   end
 
   # Some text boxes glide into the page, making local development difficult
@@ -153,24 +163,24 @@ class BasePage
     find(selector).send_keys [:control, 'a'], text
   end
 
-  def scroll_to(selector) 
+  def scroll_to(selector)
     element = find(selector)
     driver.execute_script("arguments[0].scrollIntoView(true);", element);
   end
 
-  def submit(selector) 
+  def submit(selector)
     find(selector).submit
   end
 
-  def switch_to(frame) 
+  def switch_to(frame)
     iframe = find(frame)
     driver.switch_to.frame(iframe)
   end
 
-  def text(selector) 
+  def text(selector)
     find(selector).text
   end
-  
+
   def click_element_from_list_by_text(selector, text)
     list = find_elements(selector)
     found = false
@@ -192,12 +202,12 @@ class BasePage
   end
 
   def wait_for_notification_to_disappear(notification = { css: "#notifications .notification" })
-    wait_for(){ find_elements(notification).length < 1 } 
+    wait_for(){ find_elements(notification).length < 1 }
   end
 
   def wait_for_spinner(spinner = { css: ".spinner-container"})
     wait_for(){ find_elements(spinner).length < 1 }
-  end 
+  end
 
   def is_selected?(selector)
     find(selector).selected?
