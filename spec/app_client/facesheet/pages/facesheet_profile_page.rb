@@ -6,6 +6,8 @@ class Profile < BasePage
     ERROR_MESSAGE = { css: '.dialog.open .ui-form-field__error'}
     BTN_CLOSE = { css: '.dialog.open .title.title-closeable > a '}
 
+    CURRENT_PHONE = { css: '.phone-number-display > p > a' }
+    CURRENT_PHONE_NOTIFICATION = { css: '.phone-number-display .communication-additional-info' }
     EDIT_PHONE = { css: '#edit-phone-number-btn' }
     ADD_PHONE = { css: '#add-phone-link' }
     INPUT_PHONE = { css: 'input[id^="phoneNumber"]' }
@@ -17,6 +19,8 @@ class Profile < BasePage
     BTN_REMOVE_PHONE = { css: '.remove-phone-button' }
     BTN_REMOVE_CONFIRM = { css: '.confirm-confirmation'}
 
+    CURRENT_EMAIL = { css: '.email > p > a'}
+    CURRENT_EMAIL_NOTIFiCATION = { css: '.email .communication-additional-info'}
     EDIT_EMAIL = { css: '#edit-email-btn' }
     ADD_EMAIL = { css: '#add-email-link' }
     INPUT_EMAIL = { css: 'input[name="emails[0].email_address"]'}
@@ -39,6 +43,14 @@ class Profile < BasePage
 
     def get_error_message
         text(ERROR_MESSAGE)
+    end
+
+    def get_current_phone
+        text(CURRENT_PHONE)
+    end
+
+    def get_current_phone_notifications
+        text(CURRENT_PHONE_NOTIFICATION)
     end
 
     def add_phone_number(phone:, type:)
@@ -74,6 +86,15 @@ class Profile < BasePage
         click(PHONE_CHECKBOX_NOTIFICATION)
         click(BTN_SAVE_PHONE)
         wait_for_spinner
+        wait_for_notification_to_disappear
+    end
+
+    def get_current_email
+        text(CURRENT_EMAIL)
+    end
+
+    def get_current_email_notifications
+        text(CURRENT_EMAIL_NOTIFiCATION)
     end
 
     def add_email(email:) 
@@ -106,6 +127,7 @@ class Profile < BasePage
         click(EMAIL_CHECKBOX_NOTIFICATION)
         click(BTN_SAVE_EMAIL)
         wait_for_spinner
+        wait_for_notification_to_disappear
     end
 
     def close_modal
