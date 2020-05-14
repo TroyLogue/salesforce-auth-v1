@@ -2,12 +2,10 @@ require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
-require_relative '../root/pages/left_nav'
-require_relative '../clients/pages/clients_page'
+require_relative '../root/pages/right_nav'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../facesheet/pages/facesheet_profile_page'
 require_relative '../facesheet/pages/facesheet_overview_page'
-require_relative '../clients/pages/clients_page'
 
 describe '[Messaging - Facesheet - Preferrences]', :app_client, :messaging do
   include Login
@@ -15,8 +13,7 @@ describe '[Messaging - Facesheet - Preferrences]', :app_client, :messaging do
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
-  let(:left_nav) { LeftNav.new(@driver) }
-  let(:clients_page) { ClientsPage.new(@driver) }
+  let(:search_bar) { RightNav::SearchBar.new(@driver) }
   let(:facesheet_header) { Facesheet.new(@driver) }
   let(:facesheet_profile) { Profile.new(@driver) }
   let(:facesheet_overview) { Overview.new(@driver) }
@@ -24,9 +21,8 @@ describe '[Messaging - Facesheet - Preferrences]', :app_client, :messaging do
   context('[as org user]') do
     before {
       log_in_as(Login::ORG_COLUMBIA)
-      left_nav.go_to_clients
-      expect(clients_page.page_displayed?).to be_truthy
-      clients_page.go_to_facesheet_second_authorized_client
+      search_bar.search_for('Valerie Palerie')
+      search_bar.go_to_facesheet_of('Valerie Palerie')
       facesheet_header.go_to_profile
     } 
 
@@ -35,7 +31,7 @@ describe '[Messaging - Facesheet - Preferrences]', :app_client, :messaging do
       expect(facesheet_profile.get_error_message).to eql('Required')
       facesheet_profile.close_modal
 
-      facesheet_profile.add_phone_number(phone:Faker::PhoneNumber.cell_phone, type:'Mobile')
+      facesheet_profile.add_phone_number(phone: base_page.number_to_phone_format(Faker::Number.number(digits: 10)), type:'Mobile')
       facesheet_profile.switch_phone_preferrences
 
       facesheet_profile.switch_email_preferrences
@@ -46,9 +42,8 @@ describe '[Messaging - Facesheet - Preferrences]', :app_client, :messaging do
       facesheet_profile.switch_email_preferrences
     end
 
-    it 'Changing allowing notifications registers in timeline', :uuqa_306 do
-      #Formatting used to display numbers => (999) 999-9999  
-      new_phone_number = "(#{Faker::Number.number(digits:3)}) #{Faker::Number.number(digits:3)}-#{Faker::Number.number(digits:4)}"
+    it 'Changing notification preferences registers in timeline', :uuqa_306 do
+      new_phone_number = base_page.number_to_phone_format(Faker::Number.number(digits: 10))
       facesheet_profile.add_phone_number(phone:new_phone_number, type:'Mobile')
       facesheet_profile.switch_phone_preferrences
 

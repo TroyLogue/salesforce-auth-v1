@@ -43,7 +43,9 @@ class Profile < BasePage
 
     def add_phone_number(phone:, type:)
         click(EDIT_PHONE)
+        sleep_for(1) # slide in animation!
         click(ADD_PHONE)
+        click(INPUT_PHONE)
         enter(phone, INPUT_PHONE)
         click(EXPAND_TYPE_CHOICES)
         click_element_from_list_by_text(LIST_TYPE_CHOICES, type)
@@ -53,6 +55,7 @@ class Profile < BasePage
 
     def remove_phone_number
         click(EDIT_PHONE)
+        sleep_for(1) # slide in animation!
         if is_present?(BTN_REMOVE_PHONE)
             click(BTN_REMOVE_PHONE)
             click(BTN_REMOVE_CONFIRM)
@@ -63,6 +66,7 @@ class Profile < BasePage
 
     def switch_phone_preferrences
         click(EDIT_PHONE)
+        sleep_for(1) # slide in animation!
         if !is_present?(INPUT_PHONE)
             click(ADD_PHONE)
         end
@@ -74,6 +78,7 @@ class Profile < BasePage
 
     def add_email(email:) 
         click(EDIT_EMAIL)
+        sleep_for(1) # slide in animation!
         click(ADD_EMAIL)
         enter(email, INPUT_EMAIL)
         click(BTN_SAVE_EMAIL)
@@ -82,6 +87,7 @@ class Profile < BasePage
 
     def remove_email
         click(EDIT_EMAIL)
+        sleep_for(1) # slide in animation!
         if is_present?(BTN_REMOVE_EMAIL)
             click(BTN_REMOVE_EMAIL)
             click(BTN_REMOVE_CONFIRM)
@@ -92,6 +98,7 @@ class Profile < BasePage
 
     def switch_email_preferrences
         click(EDIT_EMAIL)
+        sleep_for(1) # slide in animation!
         if !is_present?(INPUT_EMAIL)
             click(ADD_EMAIL)
         end
@@ -107,6 +114,7 @@ class Profile < BasePage
   
     def change_contact_preferrences(method:, time:)
         click(EDIT_CONTACT_PREFERRENCES)
+        sleep_for(1) # slide in animation!
         click(EXPAND_METHOD_CHOICES)
         click_element_from_list_by_text(LIST_METHOD_CHOICES, method)
         click(EXPAND_TIME_CHOICES)
