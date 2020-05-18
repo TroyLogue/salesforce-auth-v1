@@ -2,7 +2,7 @@ require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
-require_relative '../root/pages/right_nav'
+require_relative '../root/pages/home_page'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../facesheet/pages/facesheet_profile_page'
 require_relative '../facesheet/pages/facesheet_overview_page'
@@ -13,7 +13,7 @@ describe '[Messaging - Facesheet - Preferences]', :app_client, :messaging do
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
-  let(:search_bar) { RightNav::SearchBar.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:facesheet_header) { Facesheet.new(@driver) }
   let(:facesheet_profile) { Profile.new(@driver) }
   let(:facesheet_overview) { Overview.new(@driver) }
@@ -21,9 +21,11 @@ describe '[Messaging - Facesheet - Preferences]', :app_client, :messaging do
   context('[as org user]') do
     before {
       log_in_as(Login::ORG_COLUMBIA)
-      search_bar.search_for('UUQA Messaging')
-      search_bar.go_to_facesheet_of('UUQA Messaging')
-      facesheet_header.go_to_profile
+      expect(home_page.page_displayed?).to be_truthy
+      # Opted to navigate straight to facesheet, search fails at times
+      # Test User: UUQA Testing Messaging
+      base_page.get("/facesheet/dbd10ef7-bd7a-48ae-9217-334b09db480d/profile")
+      expect(facesheet_profile.page_displayed?).to be_truthy
     }
 
     it 'Add phone number and email for messaging', :uuqa_290, :uuqa_291 do
