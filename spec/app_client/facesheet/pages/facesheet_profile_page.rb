@@ -1,6 +1,6 @@
 require_relative '../../../shared_components/base_page'
 
-class Profile < BasePage
+class FacesheetProfilePage < BasePage
 
   FACESHEET_PROFILE = { css: '.facesheet-profile' }
   ERROR_MESSAGE = { css: '.dialog.open .ui-form-field__error' }
@@ -36,73 +36,88 @@ class Profile < BasePage
   LIST_TIME_CHOICES = { css: 'div[id^="choices-best-time-to-contact-field-item-choice"]' }
   BTN_SAVE_PREFERENCES = { css: '#edit-communication-preferences-save-btn' }
 
+  BLANK_FIELD_ERROR_MESSAGE = 'Required'
+  INVALID_PHONE_ERROR_MESSAGE = 'Must be at least 10 digits'
+  ENABLED_NOTIFICATION_MESSAGE = '(message, notification)'
+  PHONE_TYPE_MOBILE = 'Mobile'
+  PHONE_TYPE_HOME = 'Home'
+  PHONE_TYPE_WORK = 'Work'
+  PHONE_TYPE_FAX = 'Fax'
+  PHONE_TYPE_UNKNOWN = 'Unknown'
+
   def page_displayed?
     is_displayed?(FACESHEET_PROFILE)
   end
 
-  def get_error_message
-    text(ERROR_MESSAGE)
+  def is_required_error_message_displayed?
+    text(ERROR_MESSAGE) == BLANK_FIELD_ERROR_MESSAGE
   end
 
-  def get_current_phone
+  def close_modal
+    click(BTN_CLOSE)
+  end
+
+  #Phone section
+  def get_current_phone_number
     text(CURRENT_PHONE)
   end
 
-  def get_current_phone_notifications
-    text(CURRENT_PHONE_NOTIFICATION)
+  def are_phone_notifications_enabled?
+    text(CURRENT_PHONE_NOTIFICATION) == ENABLED_NOTIFICATION_MESSAGE
   end
 
-  def add_phone_number(phone:, type:)
+  def add_mobile_phone_number_with_enabled_notifications(phone:)
     click(EDIT_PHONE)
     sleep_for(1) # slide in animation!
+    #Adding Phone Number
     click(ADD_PHONE)
     click(INPUT_PHONE)
     enter(phone, INPUT_PHONE)
     click(EXPAND_TYPE_CHOICES)
-    click_element_from_list_by_text(LIST_TYPE_CHOICES, type)
-    click(BTN_SAVE_PHONE)
-    wait_for_spinner
-  end
-
-  def remove_phone_number
-    click(EDIT_PHONE)
-    sleep_for(1) # slide in animation!
-    if is_present?(BTN_REMOVE_PHONE)
-      click(BTN_REMOVE_PHONE)
-      click(BTN_REMOVE_CONFIRM)
-      wait_for_spinner
-    end
-    click(BTN_CLOSE)
-  end
-
-  def switch_phone_preferences
-    click(EDIT_PHONE)
-    sleep_for(1) # slide in animation!
-    if !is_present?(INPUT_PHONE)
-      click(ADD_PHONE)
-    end
+    click_element_from_list_by_text(LIST_TYPE_CHOICES, PHONE_TYPE_MOBILE)
+    #Enabling notifications
     click(PHONE_CHECKBOX_MESSAGE)
     click(PHONE_CHECKBOX_NOTIFICATION)
+    #saving
     click(BTN_SAVE_PHONE)
     wait_for_spinner
     wait_for_notification_to_disappear
   end
 
+  def enable_phone_notifications_on_blank_field
+    click(EDIT_PHONE)
+    sleep_for(1) # slide in animation!
+    #Not adding phone number
+    click(ADD_PHONE)
+    #Enabling notifications
+    click(PHONE_CHECKBOX_MESSAGE)
+    click(PHONE_CHECKBOX_NOTIFICATION)
+    #saving
+    click(BTN_SAVE_PHONE)
+  end
+
+  # Email Section
   def get_current_email
     text(CURRENT_EMAIL)
   end
 
-  def get_current_email_notifications
-    text(CURRENT_EMAIL_NOTIFiCATION)
+  def are_email_notifications_enabled?
+    text(CURRENT_EMAIL_NOTIFiCATION) == ENABLED_NOTIFICATION_MESSAGE
   end
 
-  def add_email(email:)
+  def add_email_with_enabled_notifications(email:)
     click(EDIT_EMAIL)
     sleep_for(1) # slide in animation!
+    #Adding email
     click(ADD_EMAIL)
     enter(email, INPUT_EMAIL)
+    #Enabling notifications
+    click(EMAIL_CHECKBOX_MESSAGE)
+    click(EMAIL_CHECKBOX_NOTIFICATION)
+    #saving
     click(BTN_SAVE_EMAIL)
     wait_for_spinner
+    wait_for_notification_to_disappear
   end
 
   def remove_email
@@ -116,21 +131,16 @@ class Profile < BasePage
     click(BTN_CLOSE)
   end
 
-  def switch_email_preferences
+  def enable_email_notifications_on_blank_field
     click(EDIT_EMAIL)
     sleep_for(1) # slide in animation!
-    if !is_present?(INPUT_EMAIL)
-      click(ADD_EMAIL)
-    end
+    #Not adding email
+    click(ADD_EMAIL)
+    #Enabling notifications
     click(EMAIL_CHECKBOX_MESSAGE)
     click(EMAIL_CHECKBOX_NOTIFICATION)
+    #saving
     click(BTN_SAVE_EMAIL)
-    wait_for_spinner
-    wait_for_notification_to_disappear
-  end
-
-  def close_modal
-    click(BTN_CLOSE)
   end
 
   def change_contact_preferences(method:, time:)
@@ -140,6 +150,30 @@ class Profile < BasePage
     click_element_from_list_by_text(LIST_METHOD_CHOICES, method)
     click(EXPAND_TIME_CHOICES)
     click_element_from_list_by_text(LIST_TIME_CHOICES, time)
+  end
+
+  # Intended to be used for cleaning up of profile fields when re-using a client
+  def remove_profile_email_phone_fields_if_present
+    #Phone
+    click(EDIT_PHONE)
+    sleep_for(1) # slide in animation!
+
+    if is_present?(BTN_REMOVE_PHONE)
+      click(BTN_REMOVE_PHONE)
+      click(BTN_REMOVE_CONFIRM)
+      wait_for_spinner
+    end
+    click(BTN_CLOSE)
+
+    #Email
+    click(EDIT_EMAIL)
+    sleep_for(1) # slide in animation!
+    if is_present?(BTN_REMOVE_EMAIL)
+      click(BTN_REMOVE_EMAIL)
+      click(BTN_REMOVE_CONFIRM)
+      wait_for_spinner
+    end
+    click(BTN_CLOSE)
   end
 
 end

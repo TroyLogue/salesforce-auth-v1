@@ -1,6 +1,6 @@
 require_relative '../../../shared_components/base_page'
 
-class Facesheet < BasePage
+class FacesheetHeader < BasePage
   NAME_HEADER = { css: '.status-select__full-name.display' }
   OVERVIEW_TAB = { css: '#facesheet-overview-tab' }
   PROFILE_TAB = { css: '#facesheet-profile-tab' }

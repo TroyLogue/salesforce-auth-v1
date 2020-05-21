@@ -1,8 +1,8 @@
 require_relative '../../../shared_components/base_page'
 require_relative '../../../../lib/file_helper'
 
-class Uploads < BasePage 
-        
+class FacesheetUploadsPage < BasePage
+
     UPLOAD_DOCUMENT = { css: '#upload-document-btn' }
     DOCUMENT_UPLOAD_MODEL = { css: '.upload-and-attach-documents-form-fields' }
     DOCUMENT_UPLOAD_CONTEXT = { css: '#upload-document-modal' }
@@ -14,7 +14,7 @@ class Uploads < BasePage
     CLIENT_DOCUMENTS = { css: '.contact-documents__client-wrapper'}
     DOCUMENT_NAME = { xpath: ".//p[text()='%s']"}
     DOCUMENT_NAME_LIST = { css: ".contact-document-card-menu__title" }
-    DOCUMENT_MENU = { xpath: ".//p[text()='%s']/following-sibling::div" }   
+    DOCUMENT_MENU = { xpath: ".//p[text()='%s']/following-sibling::div" }
     DOCUMENT_MENU_RENAME = { css: '#document-menu-item-rename' }
     DOCUMENT_MENU_REMOVE = { css: '#document-menu-item-remove'}
 
@@ -46,7 +46,7 @@ class Uploads < BasePage
     def rename_document(current_file_name:, new_file_name:)
         #opening specified document menu
         click(DOCUMENT_MENU.transform_values{|v| v % current_file_name})
-        #opening rename dialog 
+        #opening rename dialog
         click_within(DOCUMENT_MENU.transform_values{|v| v % current_file_name}, DOCUMENT_MENU_RENAME)
         is_displayed?(DIALOG)
         clear(RENAME_TEXT_FIELD)
@@ -61,14 +61,14 @@ class Uploads < BasePage
     def remove_document(file_name)
         #opening specified document menu
         click(DOCUMENT_MENU.transform_values{|v| v % file_name})
-        #opening remove dialog 
+        #opening remove dialog
         click_within(DOCUMENT_MENU.transform_values{|v| v % file_name}, DOCUMENT_MENU_REMOVE)
         is_displayed?(DIALOG)
         click(REMOVE_BUTTON)
         refresh
         wait_for_spinner
-    end            
-    
+    end
+
     def is_document_removed?(file_name)
         # The method is_not_displayed? is throwing TimeOutErrors and returning True even when document is still present
         is_not_displayed?(DOCUMENT_NAME.transform_values{|v| v % file_name})
@@ -78,6 +78,6 @@ class Uploads < BasePage
     def delete_documents
         while is_displayed?(CLIENT_DOCUMENTS) do
             remove_document(text(DOCUMENT_NAME_LIST))
-        end 
+        end
     end
-end  
+end

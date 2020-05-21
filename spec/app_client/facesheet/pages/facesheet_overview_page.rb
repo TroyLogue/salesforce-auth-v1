@@ -1,6 +1,6 @@
 require_relative '../../../shared_components/base_page'
 
-class Overview < BasePage
+class FacesheetOverviewPage < BasePage
 
   OVERVIEW = { css: '.facesheet-overview' }
   INTERACTION_TAB = { css: '.interactions-interaction-tab' }
