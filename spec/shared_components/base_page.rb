@@ -8,12 +8,6 @@ class BasePage
     @driver = driver
   end
 
-  # explicit-wait wrapper for find_element methods to avoid flakiness caused by timing,
-  # e.g., wait on find_element before interacting with it or asserting its visibility
-  def wait_for(seconds = 30)
-    Selenium::WebDriver::Wait.new(:timeout => seconds).until { yield }
-  end
-
   def clear(selector)
     find(selector).clear
   end
@@ -31,6 +25,21 @@ class BasePage
     find(selector).click
   end
 
+  def click_element_from_list_by_text(selector, text)
+    list = find_elements(selector)
+    found = false
+    list.each do |element|
+      if element.text == text
+        element.click
+        found = true
+        break
+      end
+    end
+    if (!found)
+      raise StandardError.new "E2E ERROR: Option '#{text}' was not found in list of Selector #{selector}"
+    end
+  end
+
   def click_via_js(selector)
     element = find(selector)
     driver.execute_script("arguments[0].click();", element)
@@ -40,10 +49,6 @@ class BasePage
     find_within(context, selector).click
   end
 
-  def delete_char(selector)
-    find(selector).send_keys :backspace
-  end
-
   def delete_all_char(selector)
     element = find(selector)
     #for input value fields and text fields
@@ -51,6 +56,10 @@ class BasePage
     string.split('').each do
       find(selector).send_keys :backspace
     end
+  end
+
+  def delete_char(selector)
+    find(selector).send_keys :backspace
   end
 
   def enter(text, selector)
@@ -71,20 +80,16 @@ class BasePage
     wait_for { driver.find_element(selector) }
   end
 
+  def find_elements(selector)
+    wait_for { driver.find_elements(selector) }
+  end
+
   def find_element_with_text(selector, text)
     find(selector).text.include?(text)
   end
 
-  def find_elements(selector)
-    wait_for { driver.find_elements(selector) }
-  end
-
   def find_within(context, selector)
     wait_for { driver.find_element(context).find_element(selector) }
-  end
-
-  def find_elements(selector)
-    wait_for { driver.find_elements(selector) }
   end
 
   def generate_timestamp
@@ -134,6 +139,10 @@ class BasePage
     end
   end
 
+  def is_selected?(selector)
+    find(selector).selected?
+  end
+
   # because all of our users and clients are U.S.-based,
   # phone numbers are formatted accordingly
   def number_to_phone_format(number)
@@ -142,12 +151,6 @@ class BasePage
     exchange = string.slice(3,3)
     line_number = string.slice(6,4)
     return "(#{area_code}) #{exchange}-#{line_number}"
-  end
-
-  # Some text boxes glide into the page, making local development difficult
-  # For now its an explicit wait, but we can change this to create a better solution
-  def sleep_for(seconds=1)
-    sleep(seconds)
   end
 
   # for debugging race conditions and element visibility
@@ -168,6 +171,12 @@ class BasePage
     driver.execute_script("arguments[0].scrollIntoView(true);", element);
   end
 
+  # Some text boxes glide into the page, making local development difficult
+  # For now its an explicit wait, but we can change this to create a better solution
+  def sleep_for(seconds=1)
+    sleep(seconds)
+  end
+
   def submit(selector)
     find(selector).submit
   end
@@ -181,24 +190,14 @@ class BasePage
     find(selector).text
   end
 
-  def click_element_from_list_by_text(selector, text)
-    list = find_elements(selector)
-    found = false
-    list.each do |element|
-      if element.text == text
-        element.click
-        found = true
-        break
-      end
-    end
-    if (!found)
-      raise StandardError.new "E2E ERROR: Option '#{text}' was not found in list of Selector #{selector}"
-    end
-
-  end
-
   def text_include?(text, selector)
     find(selector).text.include?(text)
+  end
+
+  # explicit-wait wrapper for find_element methods to avoid flakiness caused by timing,
+  # e.g., wait on find_element before interacting with it or asserting its visibility
+  def wait_for(seconds = 30)
+    Selenium::WebDriver::Wait.new(:timeout => seconds).until { yield }
   end
 
   def wait_for_notification_to_disappear(notification = { css: "#notifications .notification" })
@@ -209,8 +208,5 @@ class BasePage
     wait_for(){ find_elements(spinner).length < 1 }
   end
 
-  def is_selected?(selector)
-    find(selector).selected?
-  end
 
 end
