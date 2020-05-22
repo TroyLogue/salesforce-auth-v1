@@ -3,16 +3,15 @@ require_relative '../pages/login_email'
 require_relative '../pages/login_password'
 
 module Login
-
-RSpec.configure do |config|
-  config.before(:each) do 
-    @login_email = LoginEmail.new(@driver)
-    @login_password = LoginPassword.new(@driver)
+  RSpec.configure do |config|
+    config.before(:each) do
+      @login_email = LoginEmail.new(@driver)
+      @login_password = LoginPassword.new(@driver)
+    end
   end
-end
 
-  attr_reader :email_address, :password 
-  
+  attr_reader :email_address, :password
+
   # TODO UU3-26998 UU3-26999 UU3-27000 UU3-27001
   # manage users per staging, training, and prod envs
   # evaluate feasibility of reducing array of users and generating machine tokens
@@ -56,7 +55,7 @@ end
 
   DEFAULT_PASSWORD = 'Uniteus1!'
   WRONG_PASSWORD = 'Uniteus' # can be passed to log_in_as method instance
-  INSECURE_PASSWORD = 'password123' 
+  INSECURE_PASSWORD = 'password123'
 
   def log_in_as(email_address, password = DEFAULT_PASSWORD)
     base_page.get ''
@@ -67,5 +66,4 @@ end
 
     login_password.submit(password)
   end
- 
 end

@@ -8,8 +8,8 @@ require_relative './pages/settings_profile_page'
 describe '[Settings - Profile]', :settings, :app_client do
   include Login
 
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:org_profile) { Settings::OrganizationProfile.new(@driver) }
@@ -54,6 +54,5 @@ describe '[Settings - Profile]', :settings, :app_client do
       org_profile.save_time(time)
       expect(org_profile.get_time).to include(time)
     end
-
   end
 end

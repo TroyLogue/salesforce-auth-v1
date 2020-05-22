@@ -11,8 +11,8 @@ describe '[Network - Browse Map - Browse Drawer]', :network, :app_client do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:network_browse_drawer) { NetworkBrowseDrawer.new(@driver) }
   let(:network_browse_map) { NetworkBrowseMap.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
@@ -42,5 +42,4 @@ describe '[Network - Browse Map - Browse Drawer]', :network, :app_client do
       expect(network_browse_drawer.drawer_not_displayed?).to be_truthy
     end
   end
-
 end

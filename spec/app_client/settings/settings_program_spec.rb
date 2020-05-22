@@ -13,8 +13,8 @@ describe '[Settings - Programs]', :settings, :app_client do
   let(:base_page) { BasePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:program_table) { Settings::ProgramTable.new(@driver) }
-  let(:program_form) { Settings::ProgramForm.new(@driver) }  
-  
+  let(:program_form) { Settings::ProgramForm.new(@driver) }
+
   context('[as cc user]') do
     before {
       log_in_as(Login::SETTINGS_USER)
@@ -40,6 +40,5 @@ describe '[Settings - Programs]', :settings, :app_client do
       program_form.toggle_program_referral
       expect(program_form.get_program_referral_dialog).to eql('All current referrals and cases will remain active but there will be no NEW incoming referrals for this program until the status is set back')
     end
-
   end
 end

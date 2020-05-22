@@ -10,11 +10,11 @@ class NetworkBrowseDrawer < BasePage
 
   # provider details
   PROIVDER_DETAILS_MAP = { css: '.group-details-content__map' }
-  PROIVDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable'}
-  PROIVDER_DETAILS_CONTACT = { css: '.group-details-content__contact'}
-  PROIVDER_DETAILS_HOURS = { css: '.group-details-content__hours'}
-  PROIVDER_DETAILS_SERVICES = { css: '.group-details-content__services'}
-  PROIVDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs'}
+  PROIVDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable' }
+  PROIVDER_DETAILS_CONTACT = { css: '.group-details-content__contact' }
+  PROIVDER_DETAILS_HOURS = { css: '.group-details-content__hours' }
+  PROIVDER_DETAILS_SERVICES = { css: '.group-details-content__services' }
+  PROIVDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs' }
 
   # share form
   SHARE_FORM = { css: '#group-details-send-message-share-form' }
@@ -64,5 +64,4 @@ class NetworkBrowseDrawer < BasePage
     enter(address, EMAIL_INPUT)
     click(SEND_BUTTON)
   end
-
 end

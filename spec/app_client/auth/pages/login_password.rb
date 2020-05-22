@@ -1,10 +1,9 @@
 require_relative '../../../shared_components/base_page'
 
 class LoginPassword < BasePage
-
   FORGOT_PASSWORD_LINK = { css: '#forgot-password-link' }
   INVALID_ALERT = { css: '#flash_alert' }
-  INVALID_TEXT = "Invalid Email or password."
+  INVALID_TEXT = 'Invalid Email or password.'
   NOT_YOU_LINK = { css: '#not-you-link' }
   PASSWORD_INPUT = { css: '#app_2_user_password' }
   SUBMIT_BUTTON = { css: 'input[value="Sign In"]' }
@@ -40,5 +39,4 @@ class LoginPassword < BasePage
     enter_via_js(password, PASSWORD_INPUT_ID)
     click_via_js(SUBMIT_BUTTON)
   end
-
 end

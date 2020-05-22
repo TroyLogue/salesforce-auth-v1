@@ -1,5 +1,4 @@
 class BasePage
-
   SPINNER = { css: '.spinner' }
 
   attr_reader :driver
@@ -42,7 +41,7 @@ class BasePage
 
   def click_via_js(selector)
     element = find(selector)
-    driver.execute_script("arguments[0].click();", element)
+    driver.execute_script('arguments[0].click();', element)
   end
 
   def click_within(context, selector)
@@ -52,7 +51,7 @@ class BasePage
   def delete_all_char(selector)
     element = find(selector)
     #for input value fields and text fields
-    string = element.text != '' ? element.text : element.attribute("value")
+    string = element.text != '' ? element.text : element.attribute('value')
     string.split('').each do
       find(selector).send_keys :backspace
     end
@@ -124,7 +123,7 @@ class BasePage
     end
   end
 
-  def is_not_displayed?(selector, timeout=10)
+  def is_not_displayed?(selector, timeout = 10)
     begin
       wait_for(seconds = timeout) { !driver.find_element(selector).displayed? }
     rescue Selenium::WebDriver::Error::NoSuchElementError
@@ -147,9 +146,9 @@ class BasePage
   # phone numbers are formatted accordingly
   def number_to_phone_format(number)
     string = number.to_s
-    area_code = string.slice(0,3)
-    exchange = string.slice(3,3)
-    line_number = string.slice(6,4)
+    area_code = string.slice(0, 3)
+    exchange = string.slice(3, 3)
+    line_number = string.slice(6, 4)
     return "(#{area_code}) #{exchange}-#{line_number}"
   end
 
@@ -168,12 +167,12 @@ class BasePage
 
   def scroll_to(selector)
     element = find(selector)
-    driver.execute_script("arguments[0].scrollIntoView(true);", element);
+    driver.execute_script('arguments[0].scrollIntoView(true);', element)
   end
 
   # Some text boxes glide into the page, making local development difficult
   # For now its an explicit wait, but we can change this to create a better solution
-  def sleep_for(seconds=1)
+  def sleep_for(seconds = 1)
     sleep(seconds)
   end
 
@@ -200,13 +199,11 @@ class BasePage
     Selenium::WebDriver::Wait.new(:timeout => seconds).until { yield }
   end
 
-  def wait_for_notification_to_disappear(notification = { css: "#notifications .notification" })
-    wait_for(){ find_elements(notification).length < 1 }
+  def wait_for_notification_to_disappear(notification = { css: '#notifications .notification' })
+    wait_for() { find_elements(notification).length < 1 }
   end
 
-  def wait_for_spinner(spinner = { css: ".spinner-container"})
-    wait_for(){ find_elements(spinner).length < 1 }
+  def wait_for_spinner(spinner = { css: '.spinner-container' })
+    wait_for() { find_elements(spinner).length < 1 }
   end
-
-
 end

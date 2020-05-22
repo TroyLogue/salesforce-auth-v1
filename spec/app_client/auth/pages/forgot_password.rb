@@ -21,5 +21,4 @@ class ForgotPassword < BasePage
   def click_to_send_email
     click(SUBMIT_BUTTON)
   end
-
 end

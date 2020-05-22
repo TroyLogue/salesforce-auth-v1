@@ -205,6 +205,11 @@ Running tests by tags rather than directory is optimal for its flexibility, but 
 
 - TODO [UU3-25213](https://uniteus.atlassian.net/browse/UU3-35213)
 
+Although we have not decided on a formatter, we do want to maintain some consistancy as this project grows and more people contribute. For now:
+- indent_size = 2
+- trim_trailing_whitespace = true
+- insert_final_newline = true
+
 ## Naming Conventions
 
 ### Specs
