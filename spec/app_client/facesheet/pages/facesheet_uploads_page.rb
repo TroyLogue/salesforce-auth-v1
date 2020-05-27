@@ -32,6 +32,8 @@ class Uploads < BasePage
     local_file_path = create_consent_file(file_name)
     #opening upload dialog
     click(UPLOAD_DOCUMENT)
+    sleep(1) #slide in animation
+
     is_displayed?(DOCUMENT_UPLOAD_MODEL)
     enter_within(local_file_path, DOCUMENT_UPLOAD_CONTEXT, DOCUMENT_UPLOAD_INPUT)
     is_displayed?(DOCUMENT_PREVIEW)
@@ -47,6 +49,8 @@ class Uploads < BasePage
     click(DOCUMENT_MENU.transform_values { |v| v % current_file_name })
     #opening rename dialog
     click_within(DOCUMENT_MENU.transform_values { |v| v % current_file_name }, DOCUMENT_MENU_RENAME)
+    sleep(1) # slide in animation
+
     is_displayed?(DIALOG)
     clear(RENAME_TEXT_FIELD)
     enter(new_file_name, RENAME_TEXT_FIELD)
@@ -62,6 +66,8 @@ class Uploads < BasePage
     click(DOCUMENT_MENU.transform_values { |v| v % file_name })
     #opening remove dialog
     click_within(DOCUMENT_MENU.transform_values { |v| v % file_name }, DOCUMENT_MENU_REMOVE)
+    sleep(1) # slide in animation
+
     is_displayed?(DIALOG)
     click(REMOVE_BUTTON)
     refresh
