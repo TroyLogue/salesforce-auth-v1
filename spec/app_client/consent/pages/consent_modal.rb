@@ -58,6 +58,7 @@ class ConsentModal < BasePage
     10.times { delete_char(PHONE_NUMBER_INPUT_FIELD) }
     enter(phone_number, PHONE_NUMBER_INPUT_FIELD)
     click(PHONE_NUMBER_SUBMIT_BTN)
+    wait_for_spinner
   end
 
   def scroll_down_consent(selector) # needs debugging on firefox

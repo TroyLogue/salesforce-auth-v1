@@ -91,6 +91,7 @@ class Exports < BasePage
 
   def has_pending?
     wait_for_spinner
+    wait_for_notification_to_disappear
     text_include?('Pending', EXPORTS_TABLE)
   end
 end
