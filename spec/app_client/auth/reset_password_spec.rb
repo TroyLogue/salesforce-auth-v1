@@ -10,7 +10,7 @@ require_relative '../root/pages/notifications'
 require_relative '../root/pages/right_nav'
 require_relative '../settings/pages/user_settings'
 
-describe '[Auth - Reset Password]', :app_client, :auth do
+describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
   include Login
   include MailtrapHelper
 
@@ -89,7 +89,7 @@ describe '[Auth - Reset Password]', :app_client, :auth do
       expect(notification_text).to include(Notifications::USER_UPDATED)
     end
 
-    #TODO - convert to API call
+    #TODO - convert to API call for cleanup and remove :order => :defined tag
     it 'resets password back to default password', :uuqa_247 do
       log_in_as(reset_user, new_pw)
       expect(home_page.page_displayed?).to be_truthy #checking for a successful login
