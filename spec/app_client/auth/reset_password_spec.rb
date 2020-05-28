@@ -69,6 +69,7 @@ describe '[Auth - Reset Password]', :app_client, :auth do
 
     it 'cannot reset password to an insecure password', :uuqa_803 do
       log_in_as(reset_user)
+      expect(home_page.page_displayed?).to be_truthy #checking for a successful login
       user_menu.go_to_user_settings
       expect(user_settings.page_displayed?).to be_truthy
 
@@ -79,6 +80,7 @@ describe '[Auth - Reset Password]', :app_client, :auth do
 
     it 'can reset password to a secure password', :uuqa_247 do
       log_in_as(reset_user)
+      expect(home_page.page_displayed?).to be_truthy #checking for a successful login
       user_menu.go_to_user_settings
       expect(user_settings.page_displayed?).to be_truthy
 
@@ -90,6 +92,7 @@ describe '[Auth - Reset Password]', :app_client, :auth do
     #TODO - convert to API call
     it 'resets password back to default password', :uuqa_247 do
       log_in_as(reset_user, new_pw)
+      expect(home_page.page_displayed?).to be_truthy #checking for a successful login
       user_menu.go_to_user_settings
       user_settings.change_password(Login::DEFAULT_PASSWORD)
       notification_text = notifications.success_text
