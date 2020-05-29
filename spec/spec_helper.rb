@@ -41,16 +41,25 @@ RSpec.configure do |config|
         :url => "http://#{BROWSERSTACK_USERNAME}:#{BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub",
         :desired_capabilities => caps,
       )
+      @driver.file_detector = lambda do |args|
+        str = args.first.to_s
+        str if File.exist?(str)
+      end
     else
       # default browser is chrome; others can passed as variables
       case ENV['browser'] ||= 'chrome'
       when 'chrome'
-        @driver = if ENV['host'] == 'docker'
-                    Selenium::WebDriver.for(:remote,
+        if ENV['host'] == 'docker'
+          @driver = Selenium::WebDriver.for(:remote,
                                             :url => 'chrome://chrome:4444/wd/hub',
                                             :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
-                  else Selenium::WebDriver.for :chrome
-                  end
+          @driver.file_detector = lambda do |args|
+            str = args.first.to_s
+            str if File.exist?(str)
+            end
+        else
+          @driver = Selenium::WebDriver.for :chrome
+        end
       when 'chrome_headless'
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')
@@ -60,12 +69,18 @@ RSpec.configure do |config|
 
         @driver = Selenium::WebDriver.for :chrome, options: options
       when 'firefox'
-        @driver = if ENV['host'] == 'docker'
-                    Selenium::WebDriver.for(:remote,
+        if ENV['host'] == 'docker'
+          @driver = Selenium::WebDriver.for(:remote,
                                             :url => 'firefox://firefox:4444/wd/hub',
                                             :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.firefox())
-                  else Selenium::WebDriver.for :firefox
-                  end
+
+          @driver.file_detector = lambda do |args|
+            str = args.first.to_s
+            str if File.exist?(str)
+          end
+        else
+          @driver = Selenium::WebDriver.for :firefox
+        end
       when 'safari'
         @driver = Selenium::WebDriver.for :safari
       end
