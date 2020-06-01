@@ -12,7 +12,7 @@ class NetworkBrowseMap < BasePage
   # https://drafts.csswg.org/selectors-4/#relational
   NETWORK_SCOPE_FILTER_FIRST_OPTION = { css: '#network-scope-filter .ui-filter__options div:nth-child(2)' }
   NETWORK_SCOPE_FILTER_FIRST_OPTION_LABEL = { css: '#network-scope-filter .ui-filter__options div:nth-child(2) label' }
-  NETWORK_SCOPE_FILTER_SELECTED_SPAN = { css: '#network-scope-filter div.selected-options span'}
+  NETWORK_SCOPE_FILTER_SELECTED_SPAN = { css: '#network-scope-filter div.selected-options span' }
 
   # providers list
   PROVIDER_CARD = { css: '.ui-provider-card.group-list-item' }
@@ -59,5 +59,4 @@ class NetworkBrowseMap < BasePage
   def text_of_first_network_scope
     return text(NETWORK_SCOPE_FILTER_FIRST_OPTION_LABEL)
   end
-
 end

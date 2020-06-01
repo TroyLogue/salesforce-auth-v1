@@ -1,7 +1,6 @@
 require_relative '../../../shared_components/base_page'
 
 class HomePage < BasePage
-
   NEW_REFERRAL_BTN = { css: '#incoming-new-referrals-tab' }
   NEW_AR_BTN = { css: '#incoming-assistance-requests-tab' }
   INCOMING_PENDING_BTN = { css: '#incoming-pending-consent-tab' }
@@ -34,5 +33,4 @@ class HomePage < BasePage
     is_displayed?(TIMELINE) &&
     is_not_displayed?(TIMELINE_LOADING)
   end
-
 end

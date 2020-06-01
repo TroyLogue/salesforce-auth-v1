@@ -9,8 +9,8 @@ describe '[Network - Browse Map]', :network, :app_client do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:network_browse_map) { NetworkBrowseMap.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
 
@@ -30,5 +30,4 @@ describe '[Network - Browse Map]', :network, :app_client do
       expect(network_browse_map.provider_card_oon_not_displayed?).to be_truthy
     end
   end
-
 end

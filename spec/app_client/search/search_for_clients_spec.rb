@@ -8,8 +8,8 @@ require_relative './pages/search_results_page'
 describe '[Search]', :app_client, :search do
   include Login
 
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
   let(:search_bar) { RightNav::SearchBar.new(@driver) }
   let(:search_results_page) { SearchResultsPage.new(@driver) }
@@ -17,7 +17,7 @@ describe '[Search]', :app_client, :search do
   context('[as org user]') do
     before {
       log_in_as(Login::ORG_YALE)
-    } 
+    }
 
     it 'Search Bar Results Table', :uuqa_170 do
       search_bar.search_for('E')
@@ -31,5 +31,4 @@ describe '[Search]', :app_client, :search do
       expect(search_results_page.get_search_name_list).to all(start_with('E'))
     end
   end
-  
 end

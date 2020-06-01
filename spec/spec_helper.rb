@@ -37,21 +37,31 @@ RSpec.configure do |config|
       caps['browser'] = ENV['browser']
       caps['browser_version'] = ENV['browser_version']
 
-    # remote driver for browserstack
-    @driver = Selenium::WebDriver.for(
-      :remote,
-      :url => "http://#{BROWSERSTACK_USERNAME}:#{BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub",
-      :desired_capabilities => caps)
-
+      # remote driver for browserstack
+      @driver = Selenium::WebDriver.for(
+        :remote,
+        :url => "http://#{BROWSERSTACK_USERNAME}:#{BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub",
+        :desired_capabilities => caps,
+      )
+      @driver.file_detector = lambda do |args|
+        str = args.first.to_s
+        str if File.exist?(str)
+      end
     else
-    # default browser is chrome; others can passed as variables
+      # default browser is chrome; others can passed as variables
       case ENV['browser'] ||= 'chrome'
       when 'chrome'
-        @driver = if ENV['host'] == 'docker' 
-          then Selenium::WebDriver.for(:remote, 
-                                      :url => "chrome://chrome:4444/wd/hub", 
-                                      :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
-          else Selenium::WebDriver.for :chrome end 
+        if ENV['host'] == 'docker'
+          @driver = Selenium::WebDriver.for(:remote,
+                                            :url => 'chrome://chrome:4444/wd/hub',
+                                            :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.chrome())
+          @driver.file_detector = lambda do |args|
+            str = args.first.to_s
+            str if File.exist?(str)
+            end
+        else
+          @driver = Selenium::WebDriver.for :chrome
+        end
       when 'chrome_headless'
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')
@@ -60,13 +70,19 @@ RSpec.configure do |config|
         options.add_argument('--remote-debugging-port=9222')
 
         @driver = Selenium::WebDriver.for :chrome, options: options
-
       when 'firefox'
-        @driver = if ENV['host'] == 'docker' 
-                  then Selenium::WebDriver.for(:remote, 
-                                              :url => "firefox://firefox:4444/wd/hub", 
-                                              :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.firefox())
-                  else Selenium::WebDriver.for :firefox end
+        if ENV['host'] == 'docker'
+          @driver = Selenium::WebDriver.for(:remote,
+                                            :url => 'firefox://firefox:4444/wd/hub',
+                                            :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.firefox())
+
+          @driver.file_detector = lambda do |args|
+            str = args.first.to_s
+            str if File.exist?(str)
+          end
+        else
+          @driver = Selenium::WebDriver.for :firefox
+        end
       when 'safari'
         @driver = Selenium::WebDriver.for :safari
       end
@@ -107,7 +123,7 @@ RSpec.configure do |config|
     # define Mailtrap mailbox id for staging or training
     # default will be staging id
     case ENV['mailtrap_id'] ||= '99406'
-    when 'app_client_staging' 
+    when 'app_client_staging'
       ENV['mailtrap_id'] = '99406'
     when 'app_client_training'
       ENV['mailtrap_id'] = '531559'
@@ -141,9 +157,9 @@ RSpec.configure do |config|
       if example.exception
         @driver.save_screenshot("#{results_directory}/#{example.metadata[:full_description]}-#{base_page.generate_timestamp}.png")
       end
-    # uncomment the lines below to save screenshot on every test, not just on failure
-    # else
-    #   @driver.save_screenshot(File.join(Dir.pwd, "#{results_directory}/visual-checks/#{example.metadata[:full_description]}-#{page.generate_timestamp}.png"))
+      # uncomment the lines below to save screenshot on every test, not just on failure
+      # else
+      #   @driver.save_screenshot(File.join(Dir.pwd, "#{results_directory}/visual-checks/#{example.metadata[:full_description]}-#{page.generate_timestamp}.png"))
     end
     @driver.quit
   end

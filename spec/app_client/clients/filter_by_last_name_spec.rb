@@ -9,8 +9,8 @@ describe '[Dashboard - Client - Filter]', :clients, :app_client do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
 
@@ -26,5 +26,4 @@ describe '[Dashboard - Client - Filter]', :clients, :app_client do
       expect(clients_page.get_client_name_list).to all(start_with('L'))
     end
   end
-
 end

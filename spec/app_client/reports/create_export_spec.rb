@@ -9,8 +9,8 @@ describe '[Reports - Create Export]', :reports, :app_client do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
-  let(:login_email) {LoginEmail.new(@driver) }
-  let(:login_password) {LoginPassword.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:exports) { Exports.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
 
