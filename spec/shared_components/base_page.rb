@@ -116,6 +116,14 @@ class BasePage
     driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentNetwork");')
   end
 
+  def get_uniteus_service_type(service_type)
+    networks = JSON.parse(driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentUser");'))['networks']
+    network_info = networks.find {|network| network['id'] == get_uniteus_network}
+    #uncomment to view all the service types available
+    #puts network_info['service_types']
+    network_info['service_types'].find { |service| service['name'] == service_type}['id']
+  end
+
   def hover_over(selector)
     driver.action.move_to(find(selector)).perform
   end
