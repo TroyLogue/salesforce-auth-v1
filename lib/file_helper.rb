@@ -6,3 +6,10 @@ end
 def delete_consent_file(file_name)
   File.delete(file_name)
 end
+
+def get_signature_image
+    file = File.open("lib/files/signature_image.txt")
+    file_content = file.read
+    file.close
+    return file_content
+end

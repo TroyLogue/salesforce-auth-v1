@@ -1,31 +1,28 @@
 source 'https://rubygems.org'
 
-group :drivers do
-  gem 'selenium-webdriver'
-end
+#drivers
+gem 'selenium-webdriver'
 
-group :test_framework do
-  gem 'rspec'
-  gem 'rspec-expectations'
-  gem 'rspec-retry'
-end
+#test_framework
+gem 'rspec'
+gem 'rspec-expectations'
+gem 'rspec-retry'
 
-group :test_harness do
-  gem 'parallel_tests'
-  gem 'rake'
-end
+#test_harness
+gem 'parallel_tests'
+gem 'rake'
 
-group :test_data do
-  gem 'faker'
-  gem 'http' 
-end
+#test_data
+gem 'faker'
+gem 'http' 
 
-group :browserstack do
-  # enables HTTP persistent connection in selenium bindings
-  # https://github.com/browserstack/fast-selenium-scripts/tree/master/fast-selenium-gem
-  gem 'fast-selenium'
-end
+#browserstack
+# enables HTTP persistent connection in selenium bindings
+# https://github.com/browserstack/fast-selenium-scripts/tree/master/fast-selenium-gem
+gem 'fast-selenium'
 
-group :debugging do
-  gem 'byebug' # https://github.com/deivid-rodriguez/byebug
-end
+#debugging
+gem 'byebug' # https://github.com/deivid-rodriguez/byebug
+
+#internal
+gem 'uniteus-api-client', git: 'git@github.com:unite-us/api-integration-tests.git', ref: 'UU3-42351-gem'

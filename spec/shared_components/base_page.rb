@@ -104,6 +104,18 @@ class BasePage
     wait_for { driver.title }
   end
 
+  def get_uniteus_api_token
+    JSON.parse(URI.decode("#{driver.manage.cookie_named("uniteusApiToken")[:value]}"))["access_token"]
+  end
+
+  def get_uniteus_group
+    driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentGroup");')
+  end
+
+  def get_uniteus_network
+    driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentNetwork");')
+  end
+
   def hover_over(selector)
     driver.action.move_to(find(selector)).perform
   end
