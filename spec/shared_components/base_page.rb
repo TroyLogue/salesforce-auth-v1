@@ -118,10 +118,14 @@ class BasePage
 
   def get_uniteus_service_type(service_type)
     networks = JSON.parse(driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentUser");'))['networks']
-    network_info = networks.find {|network| network['id'] == get_uniteus_network}
-    #uncomment to view all the service types available
-    #puts network_info['service_types']
-    network_info['service_types'].find { |service| service['name'] == service_type}['id']
+    user_network = networks.find { |network| network['id'] == get_uniteus_network }
+
+    user_network['service_types'].each do |service|
+      found = service['children'].find { |child| child['name'] == service_type }
+      if found
+        return found['id']
+      end
+    end
   end
 
   def hover_over(selector)
