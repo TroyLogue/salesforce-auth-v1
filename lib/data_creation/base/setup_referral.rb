@@ -50,8 +50,6 @@ class AcceptReferral
                                                      program_id: @program_id })
 
     accept_response = Requests::Referrals.accept(token: token, group_id: group_id, referral_id: referral_id, payload: request_body)
-    puts accept_response.status.to_s
-    puts accept_response.to_s
     expect(accept_response.status.to_s).to eq('200 OK')
   end
 end
