@@ -2,11 +2,11 @@ require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
-require_relative '../facesheet/pages/facesheet_forms'
+require_relative '../facesheet/pages/facesheet_forms_page'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
-require_relative '../shared_components/base_page'
+require_relative '../../shared_components/base_page'
 require_relative '../../../lib/setup_contacts'
 
 describe '[Assessments - Facesheet]', :assessments, :app_client do
@@ -19,7 +19,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
   let(:facesheet_forms) { FacesheetForms.new(@driver) }
   let(:facesheet_header) { Facesheet.new(@driver) }
 
-  const ASSESSMENT_NO_RULES = 'UI-Tests No Rules'
+  ASSESSMENT_NO_RULES = 'UI-Tests No Rules'
 
   context('[as org user]') do
     before {

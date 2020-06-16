@@ -2,7 +2,7 @@ require_relative '../../../shared_components/base_page'
 
 class FacesheetForms < BasePage
   MAIN_FORM_CONTAINER = { css: '.facesheet-assessments' }
-  INTAKES_TABLE = { css: '.intakes-table' }
+  INTAKES_TABLE = { css: '.intakes' }
   ASSESSMENTS_TABLE = { css: '.assessments-table' }
   ASSESSMENT_NAME = { xpath: './/p[text()="%s"]' }
 
