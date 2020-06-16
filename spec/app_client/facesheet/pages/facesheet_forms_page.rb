@@ -9,7 +9,7 @@ class FacesheetForms < BasePage
   def page_displayed?
     is_displayed?(MAIN_FORM_CONTAINER) &&
     is_displayed?(INTAKES_TABLE) &&
-    is_displayed(ASSESSMENTS_TABLE) &&
+    is_displayed?(ASSESSMENTS_TABLE) &&
     wait_for_spinner
   end
 
