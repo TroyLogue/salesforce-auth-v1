@@ -1,6 +1,6 @@
 require_relative '../base/setup_contacts'
-require_relative '../test_data/group_ids'
-require_relative '../test_data/network_ids'
+require_relative '../identifiers/group_ids'
+require_relative '../identifiers/network_ids'
 
 # helper methods to create clients in the Ivy Network
 module IvyNetworkClients

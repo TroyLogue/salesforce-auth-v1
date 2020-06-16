@@ -116,7 +116,13 @@ class BasePage
     driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentNetwork");')
   end
 
-  def get_uniteus_service_type(service_type)
+  def get_uniteus_first_service_type_id
+    networks = JSON.parse(driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentUser");'))['networks']
+    user_network = networks.find { |network| network['id'] == get_uniteus_network }
+    user_network['service_types'][0]['children'][0]['id']
+  end
+
+  def get_uniteus_service_type_id_by_name(service_type)
     networks = JSON.parse(driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentUser");'))['networks']
     user_network = networks.find { |network| network['id'] == get_uniteus_network }
 

@@ -1,7 +1,7 @@
 require 'uniteus-api-client'
 require 'faker'
 
-require_relative '../../file_helper'
+require_relative '../../../../lib/file_helper'
 
 # Object that represents a referral created by the user for a contact/client
 class CreateReferral

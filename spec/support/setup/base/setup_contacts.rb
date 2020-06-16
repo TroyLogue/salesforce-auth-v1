@@ -1,7 +1,7 @@
 require 'uniteus-api-client'
 require 'faker'
 
-require_relative '../../file_helper'
+require_relative '../../../../lib/file_helper'
 
 # An object that represents a contact/client created by a user in app-client
 class Contact

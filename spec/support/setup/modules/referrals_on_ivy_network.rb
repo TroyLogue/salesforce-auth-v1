@@ -1,8 +1,8 @@
 require_relative '../base/setup_referral'
-require_relative '../test_data/group_ids'
-require_relative '../test_data/network_ids'
-require_relative '../test_data/primary_worker_ids'
-require_relative '../test_data/program_ids'
+require_relative '../identifiers/group_ids'
+require_relative '../identifiers/network_ids'
+require_relative '../identifiers/primary_worker_ids'
+require_relative '../identifiers/program_ids'
 
 # helper methods for referrals in the Ivy Network
 module IvyNetworkReferrals
