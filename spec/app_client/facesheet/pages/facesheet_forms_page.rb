@@ -4,7 +4,7 @@ class FacesheetForms < BasePage
   MAIN_FORM_CONTAINER = { css: '.facesheet-assessments' }
   INTAKES_TABLE = { css: '.intakes' }
   ASSESSMENTS_TABLE = { css: '.assessments-table' }
-  ASSESSMENT_NAME = { xpath: './/p[text()="%s"]' }
+  ASSESSMENT_NAME = { xpath: '//td[text()="%s"]' }
 
   def page_displayed?
     is_displayed?(MAIN_FORM_CONTAINER) &&
