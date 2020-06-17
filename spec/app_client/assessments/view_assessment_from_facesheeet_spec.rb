@@ -22,6 +22,8 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
   let(:assessment) { Assessment.new(@driver) }
 
   ASSESSMENT_NO_RULES = 'UI-Tests No Rules'
+
+  #delete TEST_ID after development is complete
   TEST_ID = '82a88b91-06ab-4be6-84f2-2089ac791056'
 
   context('[as org user]') do
@@ -59,8 +61,14 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(assessment.page_displayed?).to be_truthy
       expect(assessment.header_text).to include(ASSESSMENT_NO_RULES)
 
+      # confirm assessment questions are displayed and not filled out:
+      expect(assessment.is_not_filled_out?)
+
       assessment.click_edit_button
       expect(assessment.edit_view_displayed?).to be_truthy
+
+      # fill out assessment
+
     end
 
   end
