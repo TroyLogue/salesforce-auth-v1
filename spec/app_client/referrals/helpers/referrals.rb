@@ -1,11 +1,11 @@
-require_relative '../base/setup_referral'
-require_relative '../identifiers/group_ids'
-require_relative '../identifiers/network_ids'
-require_relative '../identifiers/primary_worker_ids'
-require_relative '../identifiers/program_ids'
+require_relative '../../../../support/setup/base/referral'
+require_relative '../../../../support/setup/identifiers/group_ids'
+require_relative '../../../../support/setup/identifiers/network_ids'
+require_relative '../../../../support/setup/identifiers/primary_worker_ids'
+require_relative '../../../../support/setup/identifiers/program_ids'
 
 # helper methods for referrals in the Ivy Network
-module IvyNetworkReferrals
+module Setup
   def send_referral_from_harvard_to_princeton(token:, contact_id:, service_type_id:)
     referral = CreateReferral.new({ contact_id: contact_id,
                                     referred_by_network_id: IVY_NETWORK,
