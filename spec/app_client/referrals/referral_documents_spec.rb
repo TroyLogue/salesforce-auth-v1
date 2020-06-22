@@ -5,14 +5,9 @@ require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
 require_relative '../referrals/pages/dashboard_referral'
-require_relative '../../support/setup/modules/contacts_on_ivy_network'
-require_relative '../../support/setup/modules/referrals_on_ivy_network'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
-  include IvyNetworkClients
-  include IvyNetworkReferrals
-
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
@@ -25,12 +20,12 @@ describe '[Referrals]', :app_client, :referrals do
       log_in_as(Login::CC_HARVARD)
       expect(homepage.page_displayed?).to be_truthy
       # Create Contact
-      @contact = create_harvard_client_with_consent(token: base_page.get_uniteus_api_token)
+      @contact = Setup::Data.create_harvard_client_with_consent(token: base_page.get_uniteus_api_token)
 
       # Create Referral
-      @referral = send_referral_from_harvard_to_princeton(token: base_page.get_uniteus_api_token,
-                                                          contact_id: @contact.contact_id,
-                                                          service_type_id: base_page.get_uniteus_first_service_type_id)
+      @referral = Setup::Data.send_referral_from_harvard_to_princeton(token: base_page.get_uniteus_api_token,
+                                                                      contact_id: @contact.contact_id,
+                                                                      service_type_id: base_page.get_uniteus_first_service_type_id)
 
       user_menu.log_out
       expect(login_email.page_displayed?).to be_truthy
@@ -49,11 +44,10 @@ describe '[Referrals]', :app_client, :referrals do
       expect(new_referral.no_documents?).to be_truthy
     end
 
-
     after {
       # accepting referral
-      @accept_referral = accept_referral_from_harvard_in_princeton(token: base_page.get_uniteus_api_token,
-                                                                   referral_id: @referral.referral_id)
+      @accept_referral = Setup::Data.accept_referral_from_harvard_in_princeton(token: base_page.get_uniteus_api_token,
+                                                                               referral_id: @referral.referral_id)
     }
   end
 end

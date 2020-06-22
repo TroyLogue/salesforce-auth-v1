@@ -8,7 +8,9 @@ require_relative '../lib/browserstack_credentials'
 # and do not need to require them individually
 Bundler.require(:default)
 
-Dir['./lib/tokens/*.rb'].each {|file| require file }
+# Gives specs access to the data module that contains the methods
+# to create clients, referrals and other data dependencies
+Dir::glob('./spec/support/setup/data/*.rb').each { |file| require file }
 
 # before and after hooks for every spec
 RSpec.configure do |config|
