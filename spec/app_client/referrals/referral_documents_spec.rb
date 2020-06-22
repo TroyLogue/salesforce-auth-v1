@@ -8,6 +8,7 @@ require_relative '../referrals/pages/dashboard_referral'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
+
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
