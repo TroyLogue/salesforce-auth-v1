@@ -60,7 +60,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(assessment.header_text).to include(ASSESSMENT_NO_RULES)
 
       # confirm assessment questions are displayed and not filled out:
-      expect(assessment.is_not_filled_out?)
+      expect(assessment.is_not_filled_out?).to be_truthy
 
       assessment.click_edit_button
       expect(assessment.edit_view_displayed?).to be_truthy
