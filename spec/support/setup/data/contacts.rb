@@ -1,6 +1,5 @@
-require_relative '../../base/contacts'
-require_relative '../../identifiers/group_ids'
-require_relative '../../identifiers/network_ids'
+require_relative '../base/contacts'
+require_relative '../identifiers/group_ids'
 
 # helper methods to create clients in the Ivy Network
 module Setup
@@ -17,7 +16,7 @@ module Setup
       contact
     end
 
-    def create_princeton_client(token:)
+    def self.create_princeton_client(token:)
       contact = Contact.new
       contact.create(token: token, group_id: PRINCETON_GROUP)
       contact

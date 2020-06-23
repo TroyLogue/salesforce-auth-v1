@@ -41,7 +41,8 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(homepage.page_displayed?).to be_truthy
 
       #creating contact
-      @contact = Setup::Data.create_princeton_client
+      token = base_page.get_uniteus_api_token
+      @contact = Setup::Data.create_princeton_client(token: token)
     }
 
     it 'can view and edit an assessment from facesheet view', :uuqa_101 do

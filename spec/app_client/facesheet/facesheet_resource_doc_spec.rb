@@ -5,7 +5,7 @@ require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
 require_relative './pages/facesheet_header'
-require_relative '../../../lib/setup_contacts'
+require_relative '../../support/setup/base/contacts'
 
 describe '[Facesheet]', :app_client, :facesheet do
   include Login
