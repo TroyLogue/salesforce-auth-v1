@@ -75,8 +75,9 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       # verify information on assessment
       ASSESSMENT_FORM_VALUES = [SINGLE_LINE_TEXT, MULTI_LINE_TEXT, EMAIL_ADDRESS, RANDOM_NUMBER, DISPLAY_DATE]
 
+      assessment_text = assessment.assessment_text
       ASSESSMENT_FORM_VALUES.each do |value|
-        expect(assessment.assessment_text).to include(value.to_s)
+        expect(assessment_text).to include(value.to_s)
       end
     end
   end
