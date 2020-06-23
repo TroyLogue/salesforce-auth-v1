@@ -15,7 +15,7 @@ class Assessment < BasePage
   #UI-Tests No Rules fields:
   SINGLE_LINE_INPUT_FIELD = { xpath: '//div[@class="ui-form-renderer-question"][1]//input' }
   MULTI_LINE_INPUT_FIELD = { xpath: '//div[@class="ui-form-renderer-question"][2]//textarea' }
-  # THANK_YOU_TEXT is the third item
+  # The third item is 'Thank you for filling out assessment' text - no questions
   EMAIL_INPUT_FIELD = { xpath: '//div[@class="ui-form-renderer-question"][4]//input' }
   DROPDOWN_MENU = { css: '.ui-form-renderer-question .ui-select-field .choices' }
   DROPDOWN_OPTION_FIRST = { css: '.ui-form-renderer-question .ui-select-field .choices__item--selectable' }
@@ -46,6 +46,7 @@ class Assessment < BasePage
     is_displayed?(SAVE_BUTTON)
   end
 
+  #TODO UU3-20560 include duration fields when bug is fixed
   def fill_out_form(single_line_text:, multi_line_text:, email:, number:, date:)
     clear_then_enter(single_line_text, SINGLE_LINE_INPUT_FIELD)
     clear_then_enter(multi_line_text, MULTI_LINE_INPUT_FIELD)
