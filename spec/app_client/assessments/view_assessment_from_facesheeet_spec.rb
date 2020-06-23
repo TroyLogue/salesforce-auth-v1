@@ -9,7 +9,7 @@ require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative './pages/assessment_page'
 require_relative '../../shared_components/base_page'
-require_relative '../../../lib/setup_contacts'
+require_relative '../../support/setup/data/contacts'
 
 describe '[Assessments - Facesheet]', :assessments, :app_client do
   include Login
@@ -41,17 +41,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(homepage.page_displayed?).to be_truthy
 
       #creating contact
-      @contact = Setup::Contact.new
-      contact_response = @contact.create(
-        token: base_page.get_uniteus_api_token,
-        group_id: base_page.get_uniteus_group
-      )
-      expect(contact_response.status.to_s).to eq('201 Created')
-      @contact.contact_id = JSON.parse(
-        contact_response,
-        object_class: OpenStruct
-      ).data.id
-
+      @contact = Setup::Data.create_princeton_client
     }
 
     it 'can view and edit an assessment from facesheet view', :uuqa_101 do

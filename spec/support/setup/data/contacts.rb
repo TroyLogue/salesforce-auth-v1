@@ -16,5 +16,11 @@ module Setup
       contact.create_with_consent(token: token, group_id: HARVARD_GROUP)
       contact
     end
+
+    def create_princeton_client(token:)
+      contact = Contact.new
+      contact.create(token: token, group_id: PRINCETON_GROUP)
+      contact
+    end
   end
 end
