@@ -4,6 +4,9 @@ class Referral < BasePage
   TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }
   TAKE_ACTION_OPTIONS = { css: 'div[data-value="send"]' }
 
+  SENDER_INFO = { css: '#basic-table-sender-value' }
+  RECIPIENT_INFO = { css: '#basic-table-recipient-value'}
+
   DOCUMENT_ADD_LINK = { css: '#upload-document-link' }
   DOCUMENT_ATTACH_MODAL = { css: '.dialog.open.large'}
   DOCUMENT_ATTACH_BTN = { css: '#upload-submit-btn' }
@@ -19,6 +22,14 @@ class Referral < BasePage
 
   def go_to_new_referral_with_id(referral_id:)
     get("/dashboard/new/referrals/#{referral_id}")
+  end
+
+  def go_to_send_referral_with_id(referral_id:)
+    get("/dashboard/referrals/sent/all/#{referral_id}")
+  end
+
+  def recipient_info
+    text(RECIPIENT_INFO)
   end
 
   def send_referral_action
