@@ -23,5 +23,15 @@ module Setup
       referral.accept_in_network(token: token, group_id: PRINCETON_GROUP, referral_id: referral_id)
       referral
     end
+
+    def self.send_referral_from_yale_to_harvard(token:, contact_id:, service_type_id:)
+      referral = CreateReferral.new({ contact_id: contact_id,
+                                      referred_by_network_id: IVY_NETWORK,
+                                      referred_to_network_id: IVY_NETWORK,
+                                      referred_to_groups: [HARVARD_GROUP],
+                                      service_type_id: service_type_id })
+      referral.create(token: token, group_id: YALE_GROUP)
+      referral
+    end
   end
 end
