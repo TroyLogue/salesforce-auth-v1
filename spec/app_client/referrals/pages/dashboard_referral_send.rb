@@ -6,6 +6,7 @@ class SendReferral < BasePage
   SUGGESTED_ORG_SECTION = { css: '.referral-groups-programs' }
   BROWSE_MAP_LINK = { css: '#browse-map-button' }
   SELECTED_ORG_DROPDOWN = { css: '.referral-group-select div[aria-selected="true"]' }
+  SEND_REFERRAL_BTN = { css: '#send-referral-send-btn' }
 
   def page_displayed?
     is_displayed?(SEND_REFERRAL_FORM) &&
@@ -22,7 +23,7 @@ class SendReferral < BasePage
   end
 
   def send_referral
-    click(SEND_REFERRAL_FORM)
+    click(SEND_REFERRAL_BTN)
     wait_for_spinner
   end
 end

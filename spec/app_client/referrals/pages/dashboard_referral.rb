@@ -22,10 +22,12 @@ class Referral < BasePage
 
   def go_to_new_referral_with_id(referral_id:)
     get("/dashboard/new/referrals/#{referral_id}")
+    wait_for_spinner
   end
 
   def go_to_send_referral_with_id(referral_id:)
     get("/dashboard/referrals/sent/all/#{referral_id}")
+    wait_for_spinner
   end
 
   def recipient_info

@@ -28,7 +28,7 @@ class ReferralNetworkMap < BasePage
 
   def add_first_organization_from_list
     click(FIRST_ORG_ADD)
-    is_not_displayed?(FILTER_DRAWER)
+    is_not_displayed?(FILTER_DRAWER, 2)
     text(FIRST_ORG_CARD_NAME)
   end
 

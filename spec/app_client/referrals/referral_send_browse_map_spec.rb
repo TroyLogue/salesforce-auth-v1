@@ -39,9 +39,11 @@ describe '[Referrals]', :app_client, :referrals do
     }
 
     it 'user can send referral using Browse map' do
+      # Opening send referral page
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       referral.send_referral_action
 
+      # Opening browse map, clearing the filter and selecting the top most organization in list
       expect(send_referral.page_displayed?).to be_truthy
       send_referral.open_network_browse_map
 
