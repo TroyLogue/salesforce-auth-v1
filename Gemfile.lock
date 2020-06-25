@@ -1,3 +1,10 @@
+GIT
+  remote: git@github.com:unite-us/api-integration-tests.git
+  revision: cb671f20874280b6160b5b6d87281dc60960085a
+  ref: UU3-42351-gem
+  specs:
+    uniteus-api-client (1.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -72,6 +79,7 @@ DEPENDENCIES
   rspec-expectations
   rspec-retry
   selenium-webdriver
+  uniteus-api-client!
 
 BUNDLED WITH
    2.1.4
