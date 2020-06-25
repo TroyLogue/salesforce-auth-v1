@@ -7,9 +7,8 @@ require_relative '../facesheet/pages/facesheet_forms_page'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
-require_relative './pages/assessment_page'
+require_relative './pages/facesheet_assessment_page'
 require_relative '../../shared_components/base_page'
-require_relative '../../support/setup/data/contacts'
 
 describe '[Assessments - Facesheet]', :assessments, :app_client do
   include Login
@@ -20,7 +19,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
   let(:homepage) { HomePage.new(@driver) }
   let(:facesheet_forms) { FacesheetForms.new(@driver) }
   let(:facesheet_header) { Facesheet.new(@driver) }
-  let(:assessment) { Assessment.new(@driver) }
+  let(:assessment) { FacesheetAssessment.new(@driver) }
 
   ASSESSMENT_NO_RULES = 'UI-Tests No Rules'
 
