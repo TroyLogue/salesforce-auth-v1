@@ -38,7 +38,7 @@ describe '[Referrals]', :app_client, :referrals do
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'user can send referral using Browse map' do
+    it 'user can send referral using Browse map', :uuqa_134 do
       # Opening send referral page
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       referral.send_referral_action
@@ -52,10 +52,12 @@ describe '[Referrals]', :app_client, :referrals do
       org_name = network_map.add_first_organization_from_list
       network_map.add_organizations_to_referral
 
+      # Checking that the dropdown has the same org we selected in browse map
       expect(send_referral.page_displayed?).to be_truthy
       expect(send_referral.selected_organization).to eq(org_name)
       send_referral.send_referral
 
+      # On send a new referral id is created, but navigating with the old referral id redirects us to the new referral id
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       expect(referral.recipient_info).to eq(org_name)
     end
