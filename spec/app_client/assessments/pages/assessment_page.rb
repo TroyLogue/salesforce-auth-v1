@@ -11,8 +11,8 @@ class Assessment < BasePage
 
   #fields for Ivy League Intake Form
   IVY_INTAKE_NOT_FILLED_OUT_TEXT = "School section\nWhat is your school?\nLocation section\nWhere is the school located?"
-  IVY_INTAKE_INPUT_FIRST = { xpath: '//div[@class="ui-form-renderer-question"][1]//input' }
-  IVY_INTAKE_INPUT_SECOND = { xpath: '//div[@class="ui-form-renderer-question"][2]//input' }
+  IVY_INTAKE_INPUT_FIRST = { xpath: '(//div[@class="ui-form-renderer-question"]//input)[1]' }
+  IVY_INTAKE_INPUT_SECOND = { xpath: '(//div[@class="ui-form-renderer-question"]//input)[2]' }
 
   def page_displayed?
     is_displayed?(ASSESSMENT) &&
@@ -27,6 +27,12 @@ class Assessment < BasePage
 
   def click_edit_button
     click(EDIT_BUTTON)
+  end
+
+  def edit_and_save(responses)
+    click_edit_button
+    fill_out_form(question_one: responses[0], question_two: responses[1])
+    save
   end
 
   def edit_view_displayed?

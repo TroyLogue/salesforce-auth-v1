@@ -18,10 +18,15 @@ class Referral < BasePage
   DOCUMENT_REMOVE_MODAL = { css: '.dialog.open.mini'}
   DOCUMENT_REMOVE_BTN = { css: '.confirmation-dialog__actions--confirm'}
 
-  TAKE_ACTION_BUTTON = { css: '.action-select-container' }
+  TIMELINE_LOADING = { css: '.activity-stream .loading-entries__content' }
+  STATUS_TEXT = { css: '.detail-status-text' }
 
   def go_to_new_referral_with_id(referral_id:)
     get("/dashboard/new/referrals/#{referral_id}")
+  end
+
+  def go_to_sent_referral_with_id(referral_id:)
+    get("/dashboard/referrals/sent/all/#{referral_id}")
   end
 
   def attach_document_to_referral(file_name:)
@@ -51,15 +56,17 @@ class Referral < BasePage
     click(ASSESSMENT_LINK.transform_values { |v| v % assessment_name })
   end
 
+  def page_displayed?
+    wait_for_spinner
+    is_displayed?(STATUS_TEXT) &&
+    is_not_displayed?(TIMELINE_LOADING)
+  end
+
   def remove_document_from_referral(file_name:)
     hover_over(DOCUMENT_LINK.transform_values { |v| v % file_name })
     click(DOCUMENT_REMOVE.transform_values { |v| v % file_name })
     is_displayed?(DOCUMENT_REMOVE_MODAL)
     click(DOCUMENT_REMOVE_BTN)
-  end
-
-  def take_action_button_is_displayed?
-    is_displayed?(TAKE_ACTION_BUTTON)
   end
 
 end

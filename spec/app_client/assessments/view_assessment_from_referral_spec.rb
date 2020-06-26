@@ -10,7 +10,6 @@ require_relative '../referrals/pages/dashboard_referral'
 
 describe '[Assessments - Referrals]', :assessments, :app_client do
   include Login
-  IVY_INTAKE_ASSESSMENT = "Ivy League Intake Form"
 
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
@@ -20,46 +19,71 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
   let(:assessment) { Assessment.new(@driver) }
   let(:referral) { Referral.new(@driver) }
 
-  TEST_ID = '991c16a5-6ac2-446e-8ee5-b8e59c96b0bf'
+  # assessment data
+  IVY_INTAKE_ASSESSMENT = "Ivy League Intake Form"
+  QUESTION_ONE_TEXT = Faker::Lorem.sentence(word_count: 5)
+  QUESTION_TWO_TEXT = Faker::Lorem.sentence(word_count: 5)
+  ASSESSMENT_FORM_VALUES = [QUESTION_ONE_TEXT, QUESTION_TWO_TEXT]
+
   context('[as cc user] With a new referral') do
     before {
-=begin
       # Generate pending referral for CC user:
       log_in_as(Login::ORG_YALE)
       expect(homepage.page_displayed?).to be_truthy
+
       # Create Contact
       @contact = Setup::Data.create_yale_client_with_consent(token: base_page.get_uniteus_api_token)
 
       # Create Referral
-      # fill out assessment?
       @referral = Setup::Data.send_referral_from_yale_to_harvard(
         token: base_page.get_uniteus_api_token,
         contact_id: @contact.contact_id,
         service_type_id: base_page.get_uniteus_first_service_type_id
       )
+      referral.go_to_sent_referral_with_id(referral_id: @referral.referral_id)
+#      referral.go_to_sent_referral_with_id(referral_id: TEST_ID)
+      expect(referral.page_displayed?).to be_truthy
 
+      @assessment = IVY_INTAKE_ASSESSMENT
+      referral.open_assessment(assessment_name: @assessment)
+      expect(assessment.page_displayed?).to be_truthy
+      expect(assessment.header_text).to include(@assessment)
+      expect(assessment.is_not_filled_out?).to be_truthy
+
+      assessment.edit_and_save(ASSESSMENT_FORM_VALUES)
       user_menu.log_out
+
       expect(login_email.page_displayed?).to be_truthy
-=end
       log_in_as(Login::CC_HARVARD)
       expect(homepage.page_displayed?).to be_truthy
     }
 
     it 'can view an assessment from an incoming referral', :uuqa_326 do
-#      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
-      referral.go_to_new_referral_with_id(referral_id: TEST_ID)
-
-      expect(referral.take_action_button_is_displayed?).to be_truthy
-
-      #verify assessment name is displayed
-      @assessment = IVY_INTAKE_ASSESSMENT
+      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      expect(referral.page_displayed?).to be_truthy
       expect(referral.assessment_list).to include(@assessment)
 
       #click on assessment
       referral.open_assessment(assessment_name: @assessment)
       expect(assessment.page_displayed?).to be_truthy
       expect(assessment.header_text).to include(@assessment)
-      expect(assessment.is_not_filled_out?).to be_truthy
+
+      # verify assessment responses were saved
+      assessment_text = assessment.assessment_text
+      ASSESSMENT_FORM_VALUES.each do |value|
+        expect(assessment_text).to include(value.to_s)
+      end
     end
+
+# cleanup method - close referral helper doesn't exist yet
+=begin
+    after {
+      # close referral as cc
+      @close_referral = Setup::Data.close_referral_from_yale_in_harvard(
+        token: base_page.get_uniteus_api_token,
+        referral_id: @referral.referral_id
+      )
+    }
+=end
   end
 end
