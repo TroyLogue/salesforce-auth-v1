@@ -100,6 +100,7 @@ RSpec.configure do |config|
       ENV['web_url'] = 'https://app.uniteusdev.com'
       ENV['auth_url'] = 'https://app.auth.uniteusdev.com'
       ENV['api_url'] = 'https://api.uniteusdev.com'
+      ENV['widget_url'] = 'https://widgets.uniteusdev.com/assistance-request/7lCV515cZEd1oT8SJALFk2r_5YBjRxyRMdASLCju/'
     when 'app_client_training'
       ENV['web_url'] = 'https://app.uniteustraining.com'
       ENV['auth_url'] = 'https://app.auth.uniteustraining.com'
