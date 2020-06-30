@@ -23,5 +23,11 @@ module Setup
       referral.accept_in_network(token: token, group_id: PRINCETON_GROUP, referral_id: referral_id)
       referral
     end
+
+    def self.recall_referral_in_princeton(token:, referral_id:, note:)
+      referral = RecallReferral.new({ recall_note: note,
+                                      reason: 'Client No Longer Requires Service' })
+      referral.recall_referral(token: token, group_id: PRINCETON_GROUP, referral_id: referral_id)
+    end
   end
 end

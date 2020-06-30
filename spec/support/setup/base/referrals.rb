@@ -54,4 +54,22 @@ module Setup
       expect(accept_response.status.to_s).to eq('200 OK')
     end
   end
+
+  # Object that represents an existing referral being recalled by the user
+  class RecallReferral
+    include RSpec::Mocks::ExampleMethods::ExpectHost
+    include RSpec::Matchers
+    attr_accessor :recall_note, :reason
+
+    def initialize(**params)
+      @recall_note = params[:recall_note] || -> { raise ArgumentError, 'Note needed to recall referral' }
+      @reason = params[:reason] || -> { raise ArgumentError, 'Need reason to recall referral' }
+    end
+
+    def recall_referral(token:, group_id:, referral_id:)
+      request_body = Payloads::Referrals::Recall.new(note: @recall_note, reason: @reason).to_h
+      recall_response = Requests::Referrals.recall(token: token, group_id: group_id, referral_id: referral_id, payload: request_body)
+      expect(recall_response.status.to_s).to eq('200 OK')
+    end
+  end
 end

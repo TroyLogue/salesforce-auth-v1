@@ -30,6 +30,11 @@ class Referral < BasePage
     wait_for_spinner
   end
 
+  def current_referral_id
+    uri = URI.parse(driver.current_url)
+    uri.path.split('/').last
+  end
+
   def recipient_info
     text(RECIPIENT_INFO)
   end

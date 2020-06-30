@@ -34,11 +34,13 @@ describe '[Referrals]', :app_client, :referrals do
 
       user_menu.log_out
       expect(login_email.page_displayed?).to be_truthy
+
+      # login in as org user where referral was sent
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'user can send referral using Browse map', :uuqa_134 do
+    it 'user can send referral using Browse map', :uuqa_48 do
       # Opening send referral page
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       referral.send_referral_action
@@ -60,12 +62,14 @@ describe '[Referrals]', :app_client, :referrals do
       # On send a new referral id is created, but navigating with the old referral id redirects us to the new referral id
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       expect(referral.recipient_info).to eq(org_name)
+      @referral.referral_id = referral.current_referral_id
     end
 
     after {
-      # accepting referral
-      @accept_referral = Setup::Data.accept_referral_from_harvard_in_princeton(token: base_page.get_uniteus_api_token,
-                                                                               referral_id: @referral.referral_id)
+      # recalling referral for cleanup purposes
+      @resolve_referral = Setup::Data.recall_referral_in_princeton(token: base_page.get_uniteus_api_token,
+                                                                   referral_id: @referral.referral_id,
+                                                                   note: 'Data cleanup')
     }
   end
 end
