@@ -5,12 +5,16 @@ class Referral < BasePage
 
   TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }
   TAKE_ACTION_HOLD_OPTION =  { css: 'div[data-value="holdForReview"]' }
+  TAKE_ACTION_SEND_OPTION = { css: 'div[data-value="send"]' }
 
   HOLD_REFERRAL_MODAL = { css: '.dialog.open.large .hold-modal-form' }
   HOLD_REFERRAL_REASON_DROPDOWN = { css: '.referral-reason-field' }
   HOLD_REFERRAL_REASON_OPTION = { css: '.is-active .choices__item.choices__item--choice.choices__item--selectable' }
   HOLD_REFERRAL_NOTE = { css: '.hold-modal-form #noteInput' }
   HOLD_REFERRAL_BTN = { css: '#hold-referral-hold-btn' }
+
+  SENDER_INFO = { css: '#basic-table-sender-value' }
+  RECIPIENT_INFO = { css: '#basic-table-recipient-value'}
 
   DOCUMENT_ADD_LINK = { css: '#upload-document-link' }
   DOCUMENT_ATTACH_MODAL = { css: '.dialog.open.large'}
@@ -50,6 +54,25 @@ class Referral < BasePage
     enter(note, HOLD_REFERRAL_NOTE)
     click(HOLD_REFERRAL_BTN)
     wait_for_spinner
+  end
+
+  def go_to_send_referral_with_id(referral_id:)
+    get("/dashboard/referrals/sent/all/#{referral_id}")
+    wait_for_spinner
+  end
+
+  def current_referral_id
+    uri = URI.parse(driver.current_url)
+    uri.path.split('/').last
+  end
+
+  def recipient_info
+    text(RECIPIENT_INFO)
+  end
+
+  def send_referral_action
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_OPTIONS)
   end
 
   def attach_document_to_referral(file_name:)
