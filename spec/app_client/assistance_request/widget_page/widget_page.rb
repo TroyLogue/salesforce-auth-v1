@@ -38,10 +38,8 @@ class WidgetPage < BasePage
     HEADER = { css: 'h3' }
     LINK = { css: 'a'}
 
-    PATH = '/assistance-request/7lCV515cZEd1oT8SJALFk2r_5YBjRxyRMdASLCju/'
-    
-    def get_widget_page
-        driver.get ENV['widget_url'] + PATH
+    def get_widget_page(path)
+        driver.get ENV['widget_url'] + path
     end
 
     def fill_in_form
