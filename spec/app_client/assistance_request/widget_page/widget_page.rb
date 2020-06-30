@@ -83,4 +83,16 @@ class WidgetPage < BasePage
     def success_page_displayed?
         is_displayed?(CONTAINER) && is_displayed?(HEADER)
     end
+
+    def success_message
+        find_within(CONTAINER, HEADER).text
+    end
+
+    def success_link
+        find_within(CONTAINER, LINK).text
+    end
+
+    def success_pdf
+        find_within(CONTAINER, LINK).attribute('href')
+    end
 end
