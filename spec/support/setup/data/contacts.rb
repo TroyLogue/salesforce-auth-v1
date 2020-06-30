@@ -39,5 +39,11 @@ module Setup
       contact.create_with_consent(token: token, group_id: YALE_GROUP)
       contact
     end
+
+    def self.create_yale_client_with_military_and_consent(token:)
+      contact = Contact.new
+      contact.create_with_military_and_consent(token: token, group_id: YALE_GROUP)
+      contact
+    end
   end
 end

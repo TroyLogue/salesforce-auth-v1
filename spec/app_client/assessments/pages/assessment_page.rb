@@ -9,6 +9,10 @@ class Assessment < BasePage
   SAVE_BUTTON = { css: '#save-btn' }
   CANCEL_BUTTON = { css: '#cancel-btn' }
 
+  #Military Information view:
+  MILITARY_INFORMATION_CONTAINER = { css: '.referral-military-information' }
+  EDIT_MILITARY_BTN = { css: '#edit-military-btn' }
+
   #Ivy League Intake Form fields:
   IVY_LEAGUE_INTAKE_FORM = "Ivy League Intake Form"
   IVY_INTAKE_NOT_FILLED_OUT_TEXT = "School section\nWhat is your school?\nLocation section\nWhere is the school located?"
@@ -26,13 +30,17 @@ class Assessment < BasePage
     text(ASSESSMENT_BODY)
   end
 
+  def click_back_button
+    click(BACK_BUTTON)
+  end
+
   def click_edit_button
     click(EDIT_BUTTON)
   end
 
-  def edit_and_save(assessment:, responses:)
+  def edit_and_save(responses:)
     click_edit_button
-    fill_out_form(assessment: assessment, values: {question_one: responses[0], question_two: responses[1]})
+    fill_out_form(question_one: responses[0], question_two: responses[1])
     save
   end
 
@@ -43,16 +51,11 @@ class Assessment < BasePage
     is_displayed?(SAVE_BUTTON)
   end
 
-  def fill_out_form(assessment:, values:)
-    case assessment
-    when IVY_LEAGUE_INTAKE_FORM
-      fill_out_ivy_form(question_one: values[:question_one], question_two: values[:question_two])
-    else
-     raise StandardError.new("Assesment not recognized")
-    end
+  def edit_military_btn_text
+    text(EDIT_MILITARY_BTN)
   end
 
-  def fill_out_ivy_form(question_one:, question_two:)
+  def fill_out_form(question_one:, question_two:)
     clear_then_enter(question_one, IVY_INTAKE_INPUT_FIRST)
     clear_then_enter(question_two, IVY_INTAKE_INPUT_SECOND)
   end
@@ -63,6 +66,11 @@ class Assessment < BasePage
 
   def header_text
     text(ASSESSMENT_HEADER)
+  end
+
+  def military_information_page_displayed?
+    is_displayed?(MILITARY_INFORMATION_CONTAINER) &&
+    is_displayed?(EDIT_MILITARY_BTN)
   end
 
   def save

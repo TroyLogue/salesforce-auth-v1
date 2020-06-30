@@ -25,14 +25,17 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
   QUESTION_TWO_TEXT = Faker::Lorem.sentence(word_count: 5)
   ASSESSMENT_FORM_VALUES = [QUESTION_ONE_TEXT, QUESTION_TWO_TEXT]
 
-  context('[as cc user] With a new referral') do
+  # military assessment
+  MILITARY_INFORMATION = "Military Information"
+
+  context('[as cc user] On a new incoming referral') do
     before {
       # Generate pending referral for CC user:
       log_in_as(Login::ORG_YALE)
       expect(homepage.page_displayed?).to be_truthy
 
       # Create Contact
-      @contact = Setup::Data.create_yale_client_with_consent(token: base_page.get_uniteus_api_token)
+      @contact = Setup::Data.create_yale_client_with_military_and_consent(token: base_page.get_uniteus_api_token)
 
       # Create Referral
       @referral = Setup::Data.send_referral_from_yale_to_harvard(
@@ -45,12 +48,13 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       expect(referral.page_displayed?).to be_truthy
 
       @assessment = IVY_INTAKE_ASSESSMENT
+      @military_assessment = MILITARY_INFORMATION
       referral.open_assessment(assessment_name: @assessment)
       expect(assessment.page_displayed?).to be_truthy
       expect(assessment.header_text).to include(@assessment)
       expect(assessment.is_not_filled_out?).to be_truthy
 
-      assessment.edit_and_save(assessment: @assessment, responses: ASSESSMENT_FORM_VALUES)
+      assessment.edit_and_save(responses: ASSESSMENT_FORM_VALUES)
       user_menu.log_out
 
       expect(login_email.page_displayed?).to be_truthy
@@ -58,10 +62,17 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'can view an assessment from an incoming referral', :uuqa_326 do
+    it 'can view Military Information and an assessment', :uuqa_326, :uuqa_332 do
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       expect(referral.page_displayed?).to be_truthy
       expect(referral.assessment_list).to include(@assessment)
+      expect(referral.assessment_list).to include(@military_assessment)
+
+      #check military information first
+      referral.open_assessment(assessment_name: @military_assessment)
+      expect(assessment.military_information_page_displayed?).to be_truthy
+      expect(assessment.edit_military_btn_text).to include("Edit")
+      assessment.click_back_button
 
       #click on assessment
       referral.open_assessment(assessment_name: @assessment)
