@@ -50,7 +50,7 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       expect(assessment.header_text).to include(@assessment)
       expect(assessment.is_not_filled_out?).to be_truthy
 
-      assessment.edit_and_save(ASSESSMENT_FORM_VALUES)
+      assessment.edit_and_save(assessment: @assessment, responses: ASSESSMENT_FORM_VALUES)
       user_menu.log_out
 
       expect(login_email.page_displayed?).to be_truthy

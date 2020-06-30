@@ -1,15 +1,16 @@
 require_relative '../../../shared_components/base_page'
 
 class Assessment < BasePage
-  ASSESSMENT = { css: '.assessment-details-view' }
-  ASSESSMENT_BODY = { css: '.ui-base-card-body' }
+  ASSESSMENT = { css: '.assessments-show' }
+  ASSESSMENT_BODY = { css: '.assessments-show .ui-base-card-body' }
   ASSESSMENT_HEADER = { css: '.ui-base-card-header__title' }
   BACK_BUTTON = { css: '.back-button button' }
-  EDIT_BUTTON = { css: '#edit-assessment-btn' }
+  EDIT_BUTTON = { css: '#assessment-edit-btn' }
   SAVE_BUTTON = { css: '#save-btn' }
   CANCEL_BUTTON = { css: '#cancel-btn' }
 
-  #fields for Ivy League Intake Form
+  #Ivy League Intake Form fields:
+  IVY_LEAGUE_INTAKE_FORM = "Ivy League Intake Form"
   IVY_INTAKE_NOT_FILLED_OUT_TEXT = "School section\nWhat is your school?\nLocation section\nWhere is the school located?"
   IVY_INTAKE_INPUT_FIRST = { xpath: '(//div[@class="ui-form-renderer-question"]//input)[1]' }
   IVY_INTAKE_INPUT_SECOND = { xpath: '(//div[@class="ui-form-renderer-question"]//input)[2]' }
@@ -29,9 +30,9 @@ class Assessment < BasePage
     click(EDIT_BUTTON)
   end
 
-  def edit_and_save(responses)
+  def edit_and_save(assessment:, responses:)
     click_edit_button
-    fill_out_form(question_one: responses[0], question_two: responses[1])
+    fill_out_form(assessment: assessment, values: {question_one: responses[0], question_two: responses[1]})
     save
   end
 
@@ -42,7 +43,16 @@ class Assessment < BasePage
     is_displayed?(SAVE_BUTTON)
   end
 
-  def fill_out_form(question_one:, question_two:)
+  def fill_out_form(assessment:, values:)
+    case assessment
+    when IVY_LEAGUE_INTAKE_FORM
+      fill_out_ivy_form(question_one: values[:question_one], question_two: values[:question_two])
+    else
+     raise StandardError.new("Assesment not recognized")
+    end
+  end
+
+  def fill_out_ivy_form(question_one:, question_two:)
     clear_then_enter(question_one, IVY_INTAKE_INPUT_FIRST)
     clear_then_enter(question_two, IVY_INTAKE_INPUT_SECOND)
   end
@@ -58,5 +68,4 @@ class Assessment < BasePage
   def save
     click(SAVE_BUTTON)
   end
-
 end
