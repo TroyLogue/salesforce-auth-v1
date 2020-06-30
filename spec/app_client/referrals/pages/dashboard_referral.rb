@@ -72,7 +72,7 @@ class Referral < BasePage
 
   def send_referral_action
     click(TAKE_ACTION_DROP_DOWN)
-    click(TAKE_ACTION_OPTIONS)
+    click(TAKE_ACTION_SEND_OPTION)
   end
 
   def attach_document_to_referral(file_name:)
