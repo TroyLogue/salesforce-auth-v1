@@ -2,8 +2,6 @@ require_relative '../../../shared_components/base_page'
 require_relative '../../../spec_helper'
 
 class WidgetPage < BasePage
-    include RSpec::Matchers
-
     FIRST_NAME = { css: '#uu_contact_first_name' }
     LAST_NAME = { css: '#uu_contact_last_name' }
     MIDDLE_NAME_INITIAL = { css: '#uu_contact_middle_name' }
@@ -38,9 +36,12 @@ class WidgetPage < BasePage
 
     CONTAINER = { css: '#container' }
     HEADER = { css: 'h3' }
+    LINK = { css: 'a'}
+
+    PATH = '/assistance-request/7lCV515cZEd1oT8SJALFk2r_5YBjRxyRMdASLCju/'
     
     def get_widget_page
-        driver.get 'https://widgets.uniteusdev.com/assistance-request/7lCV515cZEd1oT8SJALFk2r_5YBjRxyRMdASLCju/'
+        driver.get ENV['widget_url'] + PATH
     end
 
     def fill_in_form
@@ -82,5 +83,4 @@ class WidgetPage < BasePage
     def success_page_displayed?
         is_displayed?(CONTAINER) && is_displayed?(HEADER)
     end
-
 end
