@@ -16,7 +16,6 @@ module Setup
       @lname = Faker::Name.last_name
       @dob = Requests::Contacts.random_dob
       @contact_id = 0
-      @military = { affiliation: "caregiver", deployment_ends_at: "", deployment_starts_at: "", entry_date: "", exit_date: "" }
     end
 
     def create(token:, group_id:)
@@ -28,7 +27,9 @@ module Setup
     end
 
     def create_with_military(token:, group_id:)
-      request_body = Payloads::Contacts::Create.new({ first_name: @fname, last_name: @lname, date_of_birth: @dob, military: @military })
+      military_affiliation_key = 'caregiver'
+      military = Payloads::Military::Create.new(affiliation: military_affiliation_key)
+      request_body = Payloads::Contacts::Create.new({ first_name: @fname, last_name: @lname, date_of_birth: @dob, military: military.to_h })
       contact_response = Requests::Contacts.create(token: token, group_id: group_id, contact: request_body)
 
       expect(contact_response.status.to_s).to eq('201 Created')
