@@ -1,13 +1,12 @@
 require_relative '../../spec_helper'
-require_relative '../auth/helpers/login'
-require_relative '../assistance_request/widget_page/widget_page'
+require_relative '../../shared_components/widgets/assistance_requests_widget.rb'
 require 'Faker'
 
 
 
 describe '[Assistance Request]', :ehr, :clients do
     let(:base_page) { BasePage.new(@driver) }
-    let(:widget_page) { WidgetPage.new(@driver) }
+    let(:widget_page) { AssistanceRequestWidget.new(@driver) }
 
     it 'creates an assistance request', :uuqa_689 do
         widget_page.get_widget_page

@@ -1,7 +1,7 @@
-require_relative '../../../shared_components/base_page'
-require_relative '../../../spec_helper'
+require_relative '../../shared_components/base_page'
+require_relative '../../spec_helper'
 
-class WidgetPage < BasePage
+class AssistanceRequestWidget < BasePage
     WIDGET_FORM = { css: 'form' }
     FIRST_NAME_INPUT = { css: '#uu_contact_first_name' }
     LAST_NAME_INPUT = { css: '#uu_contact_last_name' }
