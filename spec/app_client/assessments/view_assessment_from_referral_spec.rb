@@ -44,19 +44,19 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
         service_type_id: base_page.get_uniteus_first_service_type_id
       )
       referral.go_to_sent_referral_with_id(referral_id: @referral.referral_id)
-#      referral.go_to_sent_referral_with_id(referral_id: TEST_ID)
       expect(referral.page_displayed?).to be_truthy
 
       @assessment = IVY_INTAKE_ASSESSMENT
       @military_assessment = MILITARY_INFORMATION
+
+      # Fill out assessment from referral context
       referral.open_assessment(assessment_name: @assessment)
       expect(assessment.page_displayed?).to be_truthy
-      expect(assessment.header_text).to include(@assessment)
       expect(assessment.is_not_filled_out?).to be_truthy
-
       assessment.edit_and_save(responses: ASSESSMENT_FORM_VALUES)
       user_menu.log_out
 
+      # Log in as CC user to view referral
       expect(login_email.page_displayed?).to be_truthy
       log_in_as(Login::CC_HARVARD)
       expect(homepage.page_displayed?).to be_truthy
@@ -71,7 +71,6 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       #check military information first
       referral.open_assessment(assessment_name: @military_assessment)
       expect(assessment.military_information_page_displayed?).to be_truthy
-      expect(assessment.edit_military_btn_text).to include("Edit")
       assessment.click_back_button
 
       #click on assessment

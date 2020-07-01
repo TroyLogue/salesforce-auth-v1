@@ -12,6 +12,7 @@ class Assessment < BasePage
   #Military Information view:
   MILITARY_INFORMATION_CONTAINER = { css: '.referral-military-information' }
   EDIT_MILITARY_BTN = { css: '#edit-military-btn' }
+  EDIT_MILITARY_BTN_TEXT = { css: '#edit-military-btn .edit-modal__text' }
 
   #Ivy League Intake Form fields:
   IVY_LEAGUE_INTAKE_FORM = "Ivy League Intake Form"
@@ -52,7 +53,7 @@ class Assessment < BasePage
   end
 
   def edit_military_btn_text
-    text(EDIT_MILITARY_BTN)
+    text(EDIT_MILITARY_BTN_TEXT)
   end
 
   def fill_out_form(question_one:, question_two:)
