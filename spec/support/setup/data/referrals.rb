@@ -33,5 +33,11 @@ module Setup
       referral.create(token: token, group_id: YALE_GROUP)
       referral
     end
+
+    def self.close_referral_from_yale_in_harvard(token:, referral_id:)
+      referral = CloseReferral.new()
+      referral.close(token: token, group_id: HARVARD_GROUP, referral_id: referral_id)
+      referral
+    end
   end
 end

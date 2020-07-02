@@ -85,8 +85,6 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       end
     end
 
-# cleanup method - close referral helper doesn't exist yet
-=begin
     after {
       # close referral as cc
       @close_referral = Setup::Data.close_referral_from_yale_in_harvard(
@@ -94,6 +92,5 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
         referral_id: @referral.referral_id
       )
     }
-=end
   end
 end

@@ -54,4 +54,20 @@ module Setup
       expect(accept_response.status.to_s).to eq('200 OK')
     end
   end
+
+  class CloseReferral
+    include RSpec::Mocks::ExampleMethods::ExpectHost
+    include RSpec::Matchers
+    RESOLVED = 'ab4e4767-1e2f-4494-8b69-2e2cadf2312b'
+
+    def close(token:, group_id:, referral_id:)
+      closing = {
+        note: 'Data cleanup',
+        outcome_id: RESOLVED,
+        resolved: true
+      }
+      close_response = Requests::Referrals.close(token: token, group_id: group_id, referral_id: referral_id, closing: closing)
+      expect(close_response.status.to_s).to eq('200 OK')
+    end
+  end
 end
