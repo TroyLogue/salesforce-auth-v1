@@ -58,12 +58,11 @@ module Setup
   class CloseReferral
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
-    RESOLVED = 'ab4e4767-1e2f-4494-8b69-2e2cadf2312b'
 
-    def close(token:, group_id:, referral_id:)
+    def close(token:, group_id:, referral_id:, resolution:)
       closing = {
         note: 'Data cleanup',
-        outcome_id: RESOLVED,
+        outcome_id: resolution,
         resolved: true
       }
       close_response = Requests::Referrals.close(token: token, group_id: group_id, referral_id: referral_id, closing: closing)

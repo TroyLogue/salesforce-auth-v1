@@ -3,6 +3,7 @@ require_relative '../identifiers/group_ids'
 require_relative '../identifiers/network_ids'
 require_relative '../identifiers/primary_worker_ids'
 require_relative '../identifiers/program_ids'
+require_relative '../identifiers/resolution_ids'
 
 # helper methods for referrals in the Ivy Network
 module Setup
@@ -36,7 +37,7 @@ module Setup
 
     def self.close_referral_from_yale_in_harvard(token:, referral_id:)
       referral = CloseReferral.new()
-      referral.close(token: token, group_id: HARVARD_GROUP, referral_id: referral_id)
+      referral.close(token: token, group_id: HARVARD_GROUP, referral_id: referral_id, resolution: RESOLVED)
       referral
     end
   end

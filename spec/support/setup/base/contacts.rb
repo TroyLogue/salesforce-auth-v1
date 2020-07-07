@@ -8,7 +8,7 @@ module Setup
   class Contact
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
-    attr_reader :fname, :lname, :dob, :military
+    attr_reader :fname, :lname, :dob, :military_affiliation_key
     attr_accessor :contact_id
 
     def initialize
@@ -27,7 +27,7 @@ module Setup
     end
 
     def create_with_military(token:, group_id:)
-      military_affiliation_key = 'caregiver'
+      @military_affiliation_key = 'caregiver'
       military = Payloads::Military::Create.new(affiliation: military_affiliation_key)
       request_body = Payloads::Contacts::Create.new({ first_name: @fname, last_name: @lname, date_of_birth: @dob, military: military.to_h })
       contact_response = Requests::Contacts.create(token: token, group_id: group_id, contact: request_body)
