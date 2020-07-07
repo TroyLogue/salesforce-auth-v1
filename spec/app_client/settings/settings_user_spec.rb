@@ -13,8 +13,8 @@ describe '[Settings - Users]', :settings, :app_client do
   let(:base_page) { BasePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:user_table) { Settings::UserTable.new(@driver) }
-  let(:user_form) { Settings::UserCard.new(@driver) }  
-  
+  let(:user_form) { Settings::UserCard.new(@driver) }
+
   context('[as cc user]') do
     before {
       log_in_as(Login::SETTINGS_USER)
@@ -23,7 +23,7 @@ describe '[Settings - Users]', :settings, :app_client do
     }
 
     it 'displays users in alphabetical order', :uuqa_809 do
-      expect(user_table.get_list_of_user_names.each_cons(2).all? {|a, b| a.downcase <= b.downcase }).to be_truthy
+      expect(user_table.get_list_of_user_names.each_cons(2).all? { |a, b| a.downcase <= b.downcase }).to be_truthy
     end
 
     it 'can view new user form', :uuqa_354 do
@@ -38,6 +38,5 @@ describe '[Settings - Users]', :settings, :app_client do
       expect(user_form.existing_user_fields_editable?).to be_truthy
       expect(user_form.save_email_field?).to be_truthy
     end
-      
   end
 end

@@ -1,7 +1,6 @@
 require_relative '../../../shared_components/base_page'
 
 class FacesheetOverviewPage < BasePage
-
   OVERVIEW = { css: '.facesheet-overview' }
   INTERACTION_TAB = { css: '.interactions-interaction-tab' }
   PHONE_INTERACTION = { css: '#phone_call-label' }
@@ -45,14 +44,14 @@ class FacesheetOverviewPage < BasePage
 
     enter(note[:content], TEXT_BOX)
     click(POST_NOTE)
-    is_displayed?(SUCCESS_BANNER) #wait for banner to appear
+    is_displayed?(SUCCESS_BANNER) # wait for banner to appear
   end
 
   def first_note_in_timeline
-    #Wait for new entry to be displayed by waiting for banner to dissapear
+    # Wait for new entry to be displayed by waiting for banner to dissapear
     is_not_displayed?(SUCCESS_BANNER)
-    #Return a note struct we can compare to
-    { :type => text(CLIENT_TIMELINE_TYPE), :duration => text(CLIENT_TIMELINE_DURATION).gsub('Duration: ', ''), :content => text(CLIENT_TIMELINE_NOTE) }
+    # Return a note struct we can compare to
+    { type: text(CLIENT_TIMELINE_TYPE), duration: text(CLIENT_TIMELINE_DURATION).gsub('Duration: ', ''), content: text(CLIENT_TIMELINE_NOTE) }
   end
 
   def first_entry_in_timeline

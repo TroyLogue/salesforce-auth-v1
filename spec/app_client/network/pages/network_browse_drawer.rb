@@ -3,21 +3,21 @@ require_relative '../../../shared_components/base_page'
 class NetworkBrowseDrawer < BasePage
 
   # navigation
-  OPENED_DRAWER = { css: '.ui-drawer--opened.browse__drawer' }
+  OPENED_DRAWER = { css: '.ui-drawer--opened.browse__drawer .network-group-details.group-details' }
   CLOSE_BUTTON = { css: '.ui-drawer__close-btn--opened .ui-icon' }
 
   SHARE_BUTTON = { css: '#network-groups-drawer-share-btn' }
 
   # provider details
   PROIVDER_DETAILS_MAP = { css: '.group-details-content__map' }
-  PROIVDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable'}
-  PROIVDER_DETAILS_CONTACT = { css: '.group-details-content__contact'}
-  PROIVDER_DETAILS_HOURS = { css: '.group-details-content__hours'}
-  PROIVDER_DETAILS_SERVICES = { css: '.group-details-content__services'}
-  PROIVDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs'}
+  PROIVDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable' }
+  PROIVDER_DETAILS_CONTACT = { css: '.group-details-content__contact' }
+  PROIVDER_DETAILS_HOURS = { css: '.group-details-content__hours' }
+  PROIVDER_DETAILS_SERVICES = { css: '.group-details-content__services' }
+  PROIVDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs' }
 
   # share form
-  SHARE_FORM = { css: '#group-details-send-message-share-form' }
+  SHARE_FORM = { css: '.expandable-container__content.open .share-form' }
 
   SHARE_VIA_PHONE_OPTION = { css: '#sms-label' }
   PHONE_INPUT = { css: '#share-phone-field' }
@@ -63,6 +63,6 @@ class NetworkBrowseDrawer < BasePage
     click(EMAIL_INPUT)
     enter(address, EMAIL_INPUT)
     click(SEND_BUTTON)
+    wait_for_spinner
   end
-
 end

@@ -32,4 +32,8 @@ class FacesheetHeader < BasePage
     click(PROFILE_TAB)
     wait_for_spinner
   end
+
+  def go_to_facesheet_with_contact_id(id:, tab: '')
+    get("/facesheet/#{id}/#{tab}")
+  end
 end

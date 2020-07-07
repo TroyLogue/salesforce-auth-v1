@@ -1,13 +1,13 @@
-require_relative "../../spec_helper"
-require_relative "../auth/helpers/login"
-require_relative "../auth/pages/login_email"
-require_relative "../auth/pages/login_password"
-require_relative "../root/pages/left_nav"
-require_relative "../clients/pages/clients_page"
-require_relative "./pages/facesheet_header"
-require_relative "./pages/facesheet_uploads_page"
+require_relative '../../spec_helper'
+require_relative '../auth/helpers/login'
+require_relative '../auth/pages/login_email'
+require_relative '../auth/pages/login_password'
+require_relative '../root/pages/left_nav'
+require_relative '../clients/pages/clients_page'
+require_relative './pages/facesheet_header'
+require_relative './pages/facesheet_uploads_page'
 
-describe "[Facesheet]", :app_client, :facesheet do
+describe '[Facesheet]', :app_client, :facesheet do
   include Login
 
   let(:login_email) { LoginEmail.new(@driver) }
@@ -18,25 +18,25 @@ describe "[Facesheet]", :app_client, :facesheet do
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_uploads_page) { FacesheetUploadsPage.new(@driver) }
 
-  context("[as org user]") do
+  context('[as org user]') do
     before {
       log_in_as(Login::ORG_COLUMBIA)
       left_nav.go_to_clients
       expect(clients_page.page_displayed?).to be_truthy
       clients_page.go_to_facesheet_second_authorized_client
 
-      #Uploading as part of set up
+      # Uploading as part of set up
       facesheet_header.go_to_uploads
-      @file = Faker::Alphanumeric.alpha(number: 8) + ".txt"
+      @file = Faker::Alphanumeric.alpha(number: 8) + '.txt'
       expect(facesheet_uploads_page.upload_document(@file)).to be_truthy
     }
 
-    it "Rename client document in uploads", :uuqa_341 do
-      facesheet_uploads_page.rename_document(current_file_name: @file, new_file_name: "rename.txt")
-      expect(facesheet_uploads_page.is_document_renamed?("rename.txt")).to be_truthy
+    it 'Rename client document in uploads', :uuqa_341 do
+      facesheet_uploads_page.rename_document(current_file_name: @file, new_file_name: 'rename.txt')
+      expect(facesheet_uploads_page.is_document_renamed?('rename.txt')).to be_truthy
     end
 
-    it "Remove client document in uploads", :uuqa_342 do
+    it 'Remove client document in uploads', :uuqa_342 do
       facesheet_uploads_page.remove_document(@file)
       expect(facesheet_uploads_page.is_document_removed?(@file)).to be_truthy
     end
