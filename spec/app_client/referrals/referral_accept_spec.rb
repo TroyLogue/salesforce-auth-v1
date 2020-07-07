@@ -44,7 +44,7 @@ describe '[Referrals]', :app_client, :referrals do
 
       # Case is opened with correct status
       expect(new_case.page_displayed?).to be_truthy
-      expect(new_case.status).to eql(new_case.class::OPEN_STATUS)
+      expect(new_case.status).to eq(new_case.class::OPEN_STATUS)
 
       # Referral has updated status
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
