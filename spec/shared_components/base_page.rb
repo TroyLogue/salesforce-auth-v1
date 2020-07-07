@@ -168,6 +168,22 @@ class BasePage
     end
   end
 
+  # Similar to is_displayed? but without the time wrapper, and therefore returns
+  # without waiting the 30 secs.
+  # This is to be used when we know in advance that an element will be present or not.
+  # For assertions we should still use is_displayed?
+  def is_present?(selector)
+    begin
+      driver.find_element(selector)
+    rescue Selenium::WebDriver::Error::NoSuchElementError
+      false
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      false
+    else
+      true
+    end
+  end
+
   def is_selected?(selector)
     find(selector).selected?
   end
