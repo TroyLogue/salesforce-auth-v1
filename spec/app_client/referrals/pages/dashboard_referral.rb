@@ -1,6 +1,12 @@
 require_relative '../../../../lib/file_helper'
 
 class Referral < BasePage
+  TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }
+  TAKE_ACTION_OPTIONS = { css: 'div[data-value="send"]' }
+
+  SENDER_INFO = { css: '#basic-table-sender-value' }
+  RECIPIENT_INFO = { css: '#basic-table-recipient-value'}
+
   DOCUMENT_ADD_LINK = { css: '#upload-document-link' }
   DOCUMENT_ATTACH_MODAL = { css: '.dialog.open.large'}
   DOCUMENT_ATTACH_BTN = { css: '#upload-submit-btn' }
@@ -14,9 +20,29 @@ class Referral < BasePage
   DOCUMENT_REMOVE_MODAL = { css: '.dialog.open.mini'}
   DOCUMENT_REMOVE_BTN = { css: '.confirmation-dialog__actions--confirm'}
 
-
   def go_to_new_referral_with_id(referral_id:)
     get("/dashboard/new/referrals/#{referral_id}")
+    wait_for_spinner
+  end
+
+  def go_to_send_referral_with_id(referral_id:)
+    get("/dashboard/referrals/sent/all/#{referral_id}")
+    wait_for_spinner
+  end
+
+  def current_referral_id
+    uri = URI.parse(driver.current_url)
+    uri.path.split('/').last
+  end
+
+  def recipient_info
+    text(RECIPIENT_INFO)
+  end
+
+  def send_referral_action
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_OPTIONS)
+    wait_for_spinner
   end
 
   def attach_document_to_referral(file_name:)
