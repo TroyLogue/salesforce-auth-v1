@@ -17,7 +17,7 @@ describe '[Referrals]', :app_client, :referrals do
   let(:homepage) { HomePage.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:referral) { Referral.new(@driver) }
-  let(:send_referral) { SendReferral.new(@driver) }
+  let(:referral_send) { ReferralSend.new(@driver) }
   let(:network_map) { ReferralNetworkMap.new(@driver) }
 
   context('[as org user]') do
@@ -46,8 +46,8 @@ describe '[Referrals]', :app_client, :referrals do
       referral.send_referral_action
 
       # Opening browse map, clearing the filter and selecting the top most organization in list
-      expect(send_referral.page_displayed?).to be_truthy
-      send_referral.open_network_browse_map
+      expect(referral_send.page_displayed?).to be_truthy
+      referral_send.open_network_browse_map
 
       expect(network_map.page_displayed?).to be_truthy
       network_map.clear_all_filters
@@ -55,9 +55,9 @@ describe '[Referrals]', :app_client, :referrals do
       network_map.add_organizations_to_referral
 
       # Checking that the dropdown has the same org we selected in browse map
-      expect(send_referral.page_displayed?).to be_truthy
-      expect(send_referral.selected_organization).to eq(org_name)
-      send_referral.send_referral
+      expect(referral_send.page_displayed?).to be_truthy
+      expect(referral_send.selected_organization).to eq(org_name)
+      referral_send.send_referral
 
       # On send a new referral id is created, but navigating with the old referral id redirects us to the new referral id
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
