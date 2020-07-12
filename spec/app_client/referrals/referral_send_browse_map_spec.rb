@@ -4,9 +4,9 @@ require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
-require_relative '../referrals/pages/dashboard_referral'
-require_relative '../referrals/pages/dashboard_referral_send'
-require_relative '../referrals/pages/dashboard_referral_network_map'
+require_relative '../referrals/pages/referral'
+require_relative '../referrals/pages/referral_send'
+require_relative '../referrals/pages/referral_network_map'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
@@ -40,7 +40,7 @@ describe '[Referrals]', :app_client, :referrals do
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'user can send referral using Browse map', :uuqa_48 do
+    it 'user can send referral using Browse map', :uuqa_48, :uuqa_166 do
       # Opening send referral page
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       referral.send_referral_action

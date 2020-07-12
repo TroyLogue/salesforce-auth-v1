@@ -4,8 +4,8 @@ require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
-require_relative '../referrals/pages/dashboard_referral'
-require_relative '../referrals/pages/dashboard_referral_table'
+require_relative '../referrals/pages/referral'
+require_relative '../referrals/pages/referral_table'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
@@ -17,8 +17,6 @@ describe '[Referrals]', :app_client, :referrals do
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:referral) { Referral.new(@driver) }
   let(:referral_table) { ReferralTable.new(@driver) }
-
-  @referral_status = 'IN REVIEW'
 
   context('[as org user]') do
     before {
@@ -52,7 +50,7 @@ describe '[Referrals]', :app_client, :referrals do
     end
 
     after {
-      # accepting referral
+      # Clean up and accepting referral
       @accept_referral = Setup::Data.accept_referral_from_harvard_in_princeton(token: base_page.get_uniteus_api_token,
                                                                                referral_id: @referral.referral_id)
     }

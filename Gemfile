@@ -14,7 +14,7 @@ gem 'rake'
 
 #test_data
 gem 'faker'
-gem 'http' 
+gem 'http'
 
 #browserstack
 # enables HTTP persistent connection in selenium bindings
@@ -25,4 +25,4 @@ gem 'fast-selenium'
 gem 'byebug' # https://github.com/deivid-rodriguez/byebug
 
 #internal
-gem 'uniteus-api-client', git: 'git@github.com:unite-us/api-integration-tests.git', ref: 'UU3-42351-gem'
+gem 'uniteus-api-client', git: 'git@github.com:unite-us/api-integration-tests.git'
