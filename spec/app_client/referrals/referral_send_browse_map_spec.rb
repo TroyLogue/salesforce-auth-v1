@@ -4,9 +4,9 @@ require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
-require_relative '../referrals/pages/dashboard_referral'
-require_relative '../referrals/pages/dashboard_referral_send'
-require_relative '../referrals/pages/dashboard_referral_network_map'
+require_relative '../referrals/pages/referral'
+require_relative '../referrals/pages/referral_send'
+require_relative '../referrals/pages/referral_network_map'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
