@@ -31,15 +31,13 @@ describe '[Referrals]', :app_client, :referrals do
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(token: base_page.get_uniteus_api_token,
                                                                       contact_id: @contact.contact_id,
                                                                       service_type_id: base_page.get_uniteus_first_service_type_id)
-      puts @referral.referral_id
       user_menu.log_out
-
       expect(login_email.page_displayed?).to be_truthy
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'user can reject a new referral', :uuqa_1047 do
+    it 'user can reject a referral from a new client', :uuqa_1047 do
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       note = Faker::Lorem.sentence(word_count: 5)
 
@@ -47,8 +45,9 @@ describe '[Referrals]', :app_client, :referrals do
       referral.reject_referral_action(note: note)
       expect(referral_table.page_displayed?).to be_truthy
 
-      # User can no longer view that referral
-      referral.go_to_rejected_referral_with_id(referral_id: @referral.referral_id)
+      # User can no longer view the referral
+      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      expect(referral_table.page_displayed?).to be_truthy
       expect(notifications.error_text).to eql(notifications.class::ACCESS_DENIED)
     end
   end
