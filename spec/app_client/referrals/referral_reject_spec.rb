@@ -27,7 +27,7 @@ describe '[Referrals]', :app_client, :referrals do
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent(token: base_page.get_uniteus_api_token)
 
-      # Create Referral
+      # Create referral
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(token: base_page.get_uniteus_api_token,
                                                                       contact_id: @contact.contact_id,
                                                                       service_type_id: base_page.get_uniteus_first_service_type_id)
@@ -35,20 +35,23 @@ describe '[Referrals]', :app_client, :referrals do
       expect(login_email.page_displayed?).to be_truthy
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
+
+      # Select client in Princeton
+      @contact = Setup::Data.select_client_in_princeton(token: base_page.get_uniteus_api_token,
+                                                        contact: @contact)
     }
 
-    it 'user can reject a referral from a new client', :uuqa_1047 do
+    it 'user can reject a referral from an existing client', :uuqa_1048 do
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       note = Faker::Lorem.sentence(word_count: 5)
 
-      # After Rejecting user lands on new referrals dashboard view
+      # After user rejects referral, user lands on new referrals dashboard view
       referral.reject_referral_action(note: note)
       expect(referral_table.page_displayed?).to be_truthy
 
-      # User can no longer view the referral
+      # Referrals status is updated after rejecting
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
-      expect(referral_table.page_displayed?).to be_truthy
-      expect(notifications.error_text).to eql(notifications.class::ACCESS_DENIED)
+      expect(referral.status).to eq(referral.class::REJECTED_STATUS)
     end
   end
 end

@@ -34,6 +34,12 @@ module Setup
       expect(consent_response.status.to_s).to eq('200 OK')
     end
 
+    def select(token:, group_id:)
+      contact_response = Requests::Contacts.search_and_select(token: token, group_id: group_id,
+                                                              contact_id: @contact_id)
+      expect(contact_response.status.to_s).to eq('200 OK')
+    end
+
     def searchable_name
       "#{@fname} #{@lname}"
     end
