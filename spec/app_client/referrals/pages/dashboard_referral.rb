@@ -78,8 +78,9 @@ class Referral < BasePage
     click(TAKE_ACTION_REJECT_OPTION)
     is_displayed?(REJECT_REFERRAL_MODAL)
     click(REJECT_REFERRAL_REASON_DROPDOWN)
-    options = find_elements(REJECT_REFERRAL_REASON_OPTIONS).collect(&:text)
-    (options - REJECTED_OPTION).empty?
+
+    non_matching = find_elements(REJECT_REFERRAL_REASON_OPTIONS).collect(&:text) - REJECTED_OPTION
+    non_matching.empty? or print "Non-matching options: #{non_matching}"
   end
 
   def reject_referral_action(note:)
@@ -96,7 +97,7 @@ class Referral < BasePage
     enter(local_file_path, DOCUMENT_FILE_INPUT)
     is_displayed?(DOCUMENT_PREVIEW)
     click(DOCUMENT_ATTACH_BTN)
-    #deleting local file
+    # deleting local file
     delete_consent_file(file_name)
   end
 
