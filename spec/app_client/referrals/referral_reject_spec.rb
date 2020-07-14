@@ -45,6 +45,9 @@ describe '[Referrals]', :app_client, :referrals do
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       note = Faker::Lorem.sentence(word_count: 5)
 
+      # Options for rejection are available
+      expect(referral.reject_referral_options_displayed?).to be_truthy
+
       # After user rejects referral, user lands on new referrals dashboard view
       referral.reject_referral_action(note: note)
       expect(referral_table.page_displayed?).to be_truthy

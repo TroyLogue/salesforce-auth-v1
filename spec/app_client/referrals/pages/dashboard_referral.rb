@@ -13,6 +13,7 @@ class Referral < BasePage
   REJECT_REFERRAL_MODAL = { css: '.reject-modal-dialog .open' }
   REJECT_REFERRAL_REASON_DROPDOWN = { css: '.referral-reject-display .referral-reason-field .choices__inner' }
   REJECT_REFERRAL_REASON_OPTION = { css: '.referral-reason-field .choices.is-open #choices-reject-reason-input-item-choice-1' }
+  REJECT_REFERRAL_REASON_OPTIONS = { css: '.referral-reason-field div[id^="choices-reject-reason-input-item-choice-"]' }
   REJECT_REFERRAL_NOTE = { css: '#reject-note-input'}
   REJECT_BTN = { css: '.referral-reject-display__reject-modal-form #reject-referral-reject-btn'}
 
@@ -30,6 +31,13 @@ class Referral < BasePage
   DOCUMENT_REMOVE_BTN = { css: '.confirmation-dialog__actions--confirm'}
 
   REJECTED_STATUS = 'REJECTED'
+  REJECTED_OPTION = [
+    'Client is not eligible for our services',
+    'Duplicate, case already exists in the system',
+    'We do not have capacity to serve client',
+    'We do not provide the services requested/needed',
+    'We were unable to contact the client',
+    'Other']
 
   def go_to_new_referral_with_id(referral_id:)
     get("/dashboard/new/referrals/#{referral_id}")
@@ -65,16 +73,20 @@ class Referral < BasePage
     wait_for_spinner
   end
 
-  def reject_referral_action(note:)
+  def reject_referral_options_displayed?
     click(TAKE_ACTION_DROP_DOWN)
     click(TAKE_ACTION_REJECT_OPTION)
     is_displayed?(REJECT_REFERRAL_MODAL)
     click(REJECT_REFERRAL_REASON_DROPDOWN)
+    options = find_elements(REJECT_REFERRAL_REASON_OPTIONS).collect(&:text)
+    (options - REJECTED_OPTION).empty?
+  end
+
+  def reject_referral_action(note:)
     click(REJECT_REFERRAL_REASON_OPTION)
     enter(note, REJECT_REFERRAL_NOTE)
     click(REJECT_BTN)
     wait_for_spinner
-    sleep(10)
   end
 
   def attach_document_to_referral(file_name:)
