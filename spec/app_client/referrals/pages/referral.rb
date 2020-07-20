@@ -4,9 +4,25 @@ class Referral < BasePage
   ASSESSMENT_LIST = { css: '.detail-info__relationship-files' }
   ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }
   MILITARY_ASSESSMENT = { css: '#military-information-link' }
+  REFERRAL_STATUS = { css: '.detail-status-text.uppercase' }
 
   TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }
-  TAKE_ACTION_OPTIONS = { css: 'div[data-value="send"]' }
+  TAKE_ACTION_HOLD_OPTION =  { css: 'div[data-value="holdForReview"]' }
+  TAKE_ACTION_SEND_OPTION = { css: 'div[data-value="send"]' }
+  TAKE_ACTION_ACCEPT_OPTION = { css: 'div[data-value="accept"]' }
+
+  ACCEPT_MODAL = { css: '.accept-modal-dialog .dialog.open.large .dialog-paper'}
+  ACCEPT_PROGRAM_OPTIONS = { css: 'div[aria-activedescendant="choices-programSelect-item-choice-1"]' }
+  ACCEPT_FIRST_PROGRAM_OPTION = { css: '#choices-programSelect-item-choice-1' }
+  ACCEPT_PRIMARY_WORKER_OPTIONS =  { css: '.accept-referral-primary-worker-select .choices:not(.is-disabled)' }
+  ACCEPT_FIRST_PRIMARY_WORKER_OPTION = { css: '#choices-workerSelect-item-choice-1' }
+  ACCEPT_SAVE_BTN = { css: '#accept-referral-submit-btn' }
+
+  HOLD_REFERRAL_MODAL = { css: '.dialog.open.large .hold-modal-form' }
+  HOLD_REFERRAL_REASON_DROPDOWN = { css: '.referral-reason-field' }
+  HOLD_REFERRAL_REASON_OPTION = { css: '.is-active .choices__item.choices__item--choice.choices__item--selectable' }
+  HOLD_REFERRAL_NOTE = { css: '.hold-modal-form #noteInput' }
+  HOLD_REFERRAL_BTN = { css: '#hold-referral-hold-btn' }
 
   SENDER_INFO = { css: '#basic-table-sender-value' }
   RECIPIENT_INFO = { css: '#basic-table-recipient-value'}
@@ -27,8 +43,16 @@ class Referral < BasePage
   TIMELINE_LOADING = { css: '.activity-stream .loading-entries__content' }
   STATUS_TEXT = { css: '.detail-status-text' }
 
+  IN_REVIEW_STATUS = 'IN REVIEW'
+  ACCEPTED_STATUS = 'ACCEPTED'
+
   def go_to_new_referral_with_id(referral_id:)
     get("/dashboard/new/referrals/#{referral_id}")
+    wait_for_spinner
+  end
+
+  def go_to_in_review_referral_with_id(referral_id:)
+    get("/dashboard/referrals/in-review/#{referral_id}")
     wait_for_spinner
   end
 
@@ -37,18 +61,37 @@ class Referral < BasePage
     wait_for_spinner
   end
 
+  def status
+    text(REFERRAL_STATUS)
+  end
+
   def current_referral_id
     uri = URI.parse(driver.current_url)
     uri.path.split('/').last
   end
 
-  def recipient_info
-    text(RECIPIENT_INFO)
+  # ACCEPT
+  def accept_action
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_ACCEPT_OPTION)
+    is_displayed?(ACCEPT_MODAL)
+    click(ACCEPT_PROGRAM_OPTIONS)
+    click(ACCEPT_FIRST_PROGRAM_OPTION)
+    click(ACCEPT_PRIMARY_WORKER_OPTIONS)
+    click(ACCEPT_FIRST_PRIMARY_WORKER_OPTION)
+    click(ACCEPT_SAVE_BTN)
+    wait_for_spinner
   end
 
-  def send_referral_action
+  # HOLD FOR REVIEW
+  def hold_for_review_action(note:)
     click(TAKE_ACTION_DROP_DOWN)
-    click(TAKE_ACTION_OPTIONS)
+    click(TAKE_ACTION_HOLD_OPTION)
+    is_displayed?(HOLD_REFERRAL_MODAL)
+    click(HOLD_REFERRAL_REASON_DROPDOWN)
+    click(HOLD_REFERRAL_REASON_OPTION)
+    enter(note, HOLD_REFERRAL_NOTE)
+    click(HOLD_REFERRAL_BTN)
     wait_for_spinner
   end
 
@@ -56,6 +99,17 @@ class Referral < BasePage
     get("/dashboard/referrals/sent/all/#{referral_id}")
   end
 
+  # SEND
+  def send_referral_action
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_SEND_OPTION)
+  end
+
+  def recipient_info
+    text(RECIPIENT_INFO)
+  end
+
+  # DOCUMENTS
   def attach_document_to_referral(file_name:)
     click(DOCUMENT_ADD_LINK)
     is_displayed?(DOCUMENT_ATTACH_MODAL)

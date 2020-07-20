@@ -1,6 +1,6 @@
 require_relative '../../../../lib/file_helper'
 
-class SendReferral < BasePage
+class ReferralSend < BasePage
   SEND_REFERRAL_FORM = { css: '.send-referral-form' }
 
   SUGGESTED_ORG_SECTION = { css: '.referral-groups-programs' }

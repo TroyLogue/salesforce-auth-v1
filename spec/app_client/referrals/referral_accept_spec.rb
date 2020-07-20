@@ -4,6 +4,7 @@ require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
+require_relative '../cases/pages/case'
 require_relative '../referrals/pages/referral'
 
 describe '[Referrals]', :app_client, :referrals do
@@ -14,7 +15,8 @@ describe '[Referrals]', :app_client, :referrals do
   let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
-  let(:new_referral) { Referral.new(@driver) }
+  let(:referral) { Referral.new(@driver) }
+  let(:new_case) { Case.new(@driver) }
 
   context('[as org user]') do
     before {
@@ -34,21 +36,19 @@ describe '[Referrals]', :app_client, :referrals do
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'user can add and remove document on a new referral', :uuqa_134, :uuqa_136 do
-      new_referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
-      @document = Faker::Alphanumeric.alpha(number: 8) + '.txt'
+    it 'user can accept referral and case is opened', :uuqa_1012 do
+      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
 
-      new_referral.attach_document_to_referral(file_name: @document)
-      expect(new_referral.document_list).to include(@document)
+      # Accept referral into a program
+      referral.accept_action
 
-      new_referral.remove_document_from_referral(file_name: @document)
-      expect(new_referral.no_documents?).to be_truthy
+      # Case is opened with correct status
+      expect(new_case.page_displayed?).to be_truthy
+      expect(new_case.status).to eq(new_case.class::OPEN_STATUS)
+
+      # Referral has updated status
+      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      expect(referral.status).to eq(referral.class::ACCEPTED_STATUS)
     end
-
-    after {
-      # accepting referral
-      @accept_referral = Setup::Data.accept_referral_from_harvard_in_princeton(token: base_page.get_uniteus_api_token,
-                                                                               referral_id: @referral.referral_id)
-    }
   end
 end
