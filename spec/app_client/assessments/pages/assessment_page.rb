@@ -9,20 +9,15 @@ class Assessment < BasePage
   SAVE_BUTTON = { css: '#save-btn' }
   CANCEL_BUTTON = { css: '#cancel-btn' }
 
-  #data for UI-Tests No Rules
-  NOT_FILLED_OUT_TEXT = "Text Fields\nOne Line Input Question\nMulti Line Text Question\nThank you for completing the screening. Someone will be in touch with you if any needs were identified.\nEmail question\nSelect Fields\nDrop Down Question\nRadio Input\nCheckbox Question\nNumber Fields\nInteger and Decimals Question\nDate Question\nDuration Question"
+  #Military Information view:
+  MILITARY_INFORMATION_CONTAINER = { css: '.referral-military-information' }
+  EDIT_MILITARY_BTN = { css: '#edit-military-btn' }
 
-  #UI-Tests No Rules fields:
-  SINGLE_LINE_INPUT_FIELD = { xpath: '//div[@class="ui-form-renderer-question"][1]//input' }
-  MULTI_LINE_INPUT_FIELD = { xpath: '//div[@class="ui-form-renderer-question"][2]//textarea' }
-  # The third item is 'Thank you for filling out assessment' text - no questions
-  EMAIL_INPUT_FIELD = { xpath: '//div[@class="ui-form-renderer-question"][4]//input' }
-  DROPDOWN_MENU = { css: '.ui-form-renderer-question .ui-select-field .choices' }
-  DROPDOWN_OPTION_FIRST = { css: '.ui-form-renderer-question .ui-select-field .choices__item--selectable' }
-  RADIO_BUTTON_FIRST = { css: '.ui-form-renderer-question .ui-radio-field__item' }
-  CHECKBOX_FIRST = { css: '.ui-form-checkbox-group .ui-checkbox-field label' }
-  NUMBER_INPUT_FIELD = { css: '.ui-form-renderer-question .ui-input-field input[type=number]' }
-  DATE_INPUT_FIELD = { css: '.ui-form-renderer-question .ui-date-field input[type=text]' }
+  #Ivy League Intake Form fields:
+  IVY_LEAGUE_INTAKE_FORM = "Ivy League Intake Form"
+  IVY_INTAKE_NOT_FILLED_OUT_TEXT = "School section\nWhat is your school?\nLocation section\nWhere is the school located?"
+  IVY_INTAKE_INPUT_FIRST = { xpath: '(//div[@class="ui-form-renderer-question"]//input)[1]' }
+  IVY_INTAKE_INPUT_SECOND = { xpath: '(//div[@class="ui-form-renderer-question"]//input)[2]' }
 
   def page_displayed?
     is_displayed?(ASSESSMENT) &&
@@ -35,8 +30,18 @@ class Assessment < BasePage
     text(ASSESSMENT_BODY)
   end
 
+  def click_back_button
+    click(BACK_BUTTON)
+  end
+
   def click_edit_button
     click(EDIT_BUTTON)
+  end
+
+  def edit_and_save(responses:)
+    click_edit_button
+    fill_out_form(question_one: responses[0], question_two: responses[1])
+    save
   end
 
   def edit_view_displayed?
@@ -46,25 +51,22 @@ class Assessment < BasePage
     is_displayed?(SAVE_BUTTON)
   end
 
-  #TODO UU3-20560 include duration fields when bug is fixed
-  def fill_out_form(single_line_text:, multi_line_text:, email:, number:, date:)
-    clear_then_enter(single_line_text, SINGLE_LINE_INPUT_FIELD)
-    clear_then_enter(multi_line_text, MULTI_LINE_INPUT_FIELD)
-    clear_then_enter(email, EMAIL_INPUT_FIELD)
-    click(DROPDOWN_MENU)
-    click(DROPDOWN_OPTION_FIRST)
-    click(RADIO_BUTTON_FIRST)
-    click(CHECKBOX_FIRST)
-    clear_then_enter(number, NUMBER_INPUT_FIELD)
-    clear_then_enter(date, DATE_INPUT_FIELD)
+  def fill_out_form(question_one:, question_two:)
+    clear_then_enter(question_one, IVY_INTAKE_INPUT_FIRST)
+    clear_then_enter(question_two, IVY_INTAKE_INPUT_SECOND)
   end
 
   def is_not_filled_out?
-    assessment_text.eql?(NOT_FILLED_OUT_TEXT)
+    assessment_text.eql?(IVY_INTAKE_NOT_FILLED_OUT_TEXT)
   end
 
   def header_text
     text(ASSESSMENT_HEADER)
+  end
+
+  def military_information_page_displayed?
+    is_displayed?(MILITARY_INFORMATION_CONTAINER) &&
+    is_displayed?(EDIT_MILITARY_BTN)
   end
 
   def save
