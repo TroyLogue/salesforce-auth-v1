@@ -22,11 +22,12 @@ class ConfirmClient < BasePage
     find_elements(CONTACT_NAMES).collect(&:text)
   end
 
+  # Follows 0 indexing
   def select_nth_client(index:)
     clients = find_elements(CONTACT_LIST)
     raise Selenium::WebDriver::Error::NoSuchElementError, "#{CONTACT_LIST}: no elements found" if clients.empty?
 
-    click_within(clients[index], CONTACT_BUTTON)
+    clients[index].find_element(CONTACT_BUTTON).click
   end
 
   def select_client_with_dob(dob:)

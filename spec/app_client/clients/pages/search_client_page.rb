@@ -7,9 +7,9 @@ class SearchClient < BasePage
   SEARCH_BTN = { css: '#search-records-btn' }
 
   def page_displayed?
-    is_displayed(FIRSTNAME_INPUT) &&
+    is_displayed?(FIRSTNAME_INPUT) &&
     is_displayed?(LASTNAME_INPUT) &&
-    is_displayed?(DOB)
+    is_displayed?(DOB_INPUT)
   end
 
   def search_client(fname:, lname:, dob:)

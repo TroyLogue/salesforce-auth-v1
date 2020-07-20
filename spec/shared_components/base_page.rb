@@ -239,6 +239,10 @@ class BasePage
     find(selector).text.include?(text)
   end
 
+  def value(selector)
+    find(selector).attribute('value')
+  end
+
   # explicit-wait wrapper for find_element methods to avoid flakiness caused by timing,
   # e.g., wait on find_element before interacting with it or asserting its visibility
   def wait_for(seconds = 30)
