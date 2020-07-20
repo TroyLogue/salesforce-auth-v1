@@ -4,8 +4,8 @@ require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
+require_relative '../cases/pages/case'
 require_relative '../referrals/pages/referral'
-require_relative '../referrals/pages/referral_table'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
@@ -16,7 +16,7 @@ describe '[Referrals]', :app_client, :referrals do
   let(:homepage) { HomePage.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:referral) { Referral.new(@driver) }
-  let(:referral_table) { ReferralTable.new(@driver) }
+  let(:new_case) { Case.new(@driver) }
 
   context('[as org user]') do
     before {
@@ -25,34 +25,30 @@ describe '[Referrals]', :app_client, :referrals do
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent(token: base_page.get_uniteus_api_token)
 
-      # Create referral
+      # Create Referral
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(token: base_page.get_uniteus_api_token,
                                                                       contact_id: @contact.contact_id,
                                                                       service_type_id: base_page.get_uniteus_first_service_type_id)
+
       user_menu.log_out
       expect(login_email.page_displayed?).to be_truthy
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
-
-      # Select client in Princeton
-      @contact = Setup::Data.select_client_in_princeton(token: base_page.get_uniteus_api_token,
-                                                        contact: @contact)
     }
 
-    it 'user can reject a referral from an existing client', :uuqa_1048 do
+    it 'user can accept referral and case is opened', :uuqa_1012 do
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
-      note = Faker::Lorem.sentence(word_count: 5)
 
-      # Options for rejection are available
-      expect(referral.reject_referral_options_displayed?).to be_truthy
+      # Accept referral into a program
+      referral.accept_action
 
-      # After user rejects referral, user lands on new referrals dashboard view
-      referral.reject_referral_action(note: note)
-      expect(referral_table.page_displayed?).to be_truthy
+      # Case is opened with correct status
+      expect(new_case.page_displayed?).to be_truthy
+      expect(new_case.status).to eq(new_case.class::OPEN_STATUS)
 
-      # Referrals status is updated after rejecting
+      # Referral has updated status
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
-      expect(referral.status).to eq(referral.class::REJECTED_STATUS)
+      expect(referral.status).to eq(referral.class::ACCEPTED_STATUS)
     end
   end
 end
