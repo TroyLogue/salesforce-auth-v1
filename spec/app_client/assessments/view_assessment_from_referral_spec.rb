@@ -6,7 +6,7 @@ require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative './pages/assessment_page'
 require_relative '../../shared_components/base_page'
-require_relative '../referrals/pages/dashboard_referral'
+require_relative '../referrals/pages/referral'
 
 describe '[Assessments - Referrals]', :assessments, :app_client do
   include Login
