@@ -27,5 +27,29 @@ module Setup
       contact.select(token: token, group_id: PRINCETON_GROUP)
       contact
     end
+
+    def self.create_princeton_client_with_consent(token:)
+      contact = Contact.new
+      contact.create_with_consent(token: token, group_id: PRINCETON_GROUP)
+      contact
+    end
+
+    def self.create_yale_client(token:)
+      contact = Contact.new
+      contact.create(token: token, group_id: YALE_GROUP)
+      contact
+    end
+
+    def self.create_yale_client_with_consent(token:)
+      contact = Contact.new
+      contact.create_with_consent(token: token, group_id: YALE_GROUP)
+      contact
+    end
+
+    def self.create_yale_client_with_military_and_consent(token:)
+      contact = Contact.new
+      contact.create_with_military_and_consent(token: token, group_id: YALE_GROUP)
+      contact
+    end
   end
 end

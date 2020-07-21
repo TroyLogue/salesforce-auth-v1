@@ -8,7 +8,7 @@ module Setup
   class Contact
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
-    attr_reader :fname, :lname, :dob
+    attr_reader :fname, :lname, :dob, :military_affiliation_key
     attr_accessor :contact_id
 
     def initialize
@@ -20,6 +20,16 @@ module Setup
 
     def create(token:, group_id:)
       request_body = Payloads::Contacts::Create.new({ first_name: @fname, last_name: @lname, date_of_birth: @dob })
+      contact_response = Requests::Contacts.create(token: token, group_id: group_id, contact: request_body)
+
+      expect(contact_response.status.to_s).to eq('201 Created')
+      @contact_id = JSON.parse(contact_response, object_class: OpenStruct).data.id
+    end
+
+    def create_with_military(token:, group_id:)
+      @military_affiliation_key = 'caregiver'
+      military = Payloads::Military::Create.new(affiliation: military_affiliation_key)
+      request_body = Payloads::Contacts::Create.new({ first_name: @fname, last_name: @lname, date_of_birth: @dob, military: military.to_h })
       contact_response = Requests::Contacts.create(token: token, group_id: group_id, contact: request_body)
 
       expect(contact_response.status.to_s).to eq('201 Created')
@@ -38,6 +48,14 @@ module Setup
       contact_response = Requests::Contacts.search_and_select(token: token, group_id: group_id,
                                                               contact_id: @contact_id)
       expect(contact_response.status.to_s).to eq('200 OK')
+    end
+
+    def create_with_military_and_consent(token:, group_id:)
+      create_with_military(token: token, group_id: group_id)
+      consent_response = Requests::Consent.post_on_screen_consent(token: token, group_id: group_id,
+                                                                  contact_id: @contact_id,
+                                                                  signature_image: get_signature_image)
+      expect(consent_response.status.to_s).to eq('200 OK')
     end
 
     def searchable_name

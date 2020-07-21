@@ -1,6 +1,9 @@
 require_relative '../../../../lib/file_helper'
 
 class Referral < BasePage
+  ASSESSMENT_LIST = { css: '.detail-info__relationship-files' }
+  ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }
+  MILITARY_ASSESSMENT = { css: '#military-information-link' }
   REFERRAL_STATUS = { css: '.detail-status-text.uppercase' }
 
   TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }
@@ -45,9 +48,12 @@ class Referral < BasePage
   DOCUMENT_REMOVE_MODAL = { css: '.dialog.open.mini'}
   DOCUMENT_REMOVE_BTN = { css: '.confirmation-dialog__actions--confirm'}
 
-  REJECTED_STATUS = 'REJECTED'
+  TIMELINE_LOADING = { css: '.activity-stream .loading-entries__content' }
+  STATUS_TEXT = { css: '.detail-status-text' }
+
   IN_REVIEW_STATUS = 'IN REVIEW'
   ACCEPTED_STATUS = 'ACCEPTED'
+  REJECTED_STATUS = 'REJECTED'
 
   REJECTED_OPTION = [
     'Client is not eligible for our services',
@@ -67,7 +73,7 @@ class Referral < BasePage
     wait_for_spinner
   end
 
-  def go_to_send_referral_with_id(referral_id:)
+  def go_to_sent_referral_with_id(referral_id:)
     get("/dashboard/referrals/sent/all/#{referral_id}")
     wait_for_spinner
   end
@@ -75,6 +81,12 @@ class Referral < BasePage
   def go_to_rejected_referral_with_id(referral_id:)
     get("/dashboard/referrals/rejected/#{referral_id}")
     wait_for_spinner
+  end
+
+  def page_displayed?
+    wait_for_spinner
+    is_displayed?(STATUS_TEXT) &&
+    is_not_displayed?(TIMELINE_LOADING)
   end
 
   def status
@@ -151,6 +163,14 @@ class Referral < BasePage
     delete_consent_file(file_name)
   end
 
+  def document_list
+    text(DOCUMENT_LIST)
+  end
+
+  def no_documents?
+    is_displayed?(DOCUMENT_EMPTY_LIST)
+  end
+
   def remove_document_from_referral(file_name:)
     hover_over(DOCUMENT_LINK.transform_values { |v| v % file_name })
     click(DOCUMENT_REMOVE.transform_values { |v| v % file_name })
@@ -158,11 +178,12 @@ class Referral < BasePage
     click(DOCUMENT_REMOVE_BTN)
   end
 
-  def document_list
-    text(DOCUMENT_LIST)
+  # ASSSESMENTS
+  def assessment_list
+    text(ASSESSMENT_LIST)
   end
 
-  def no_documents?
-    is_displayed?(DOCUMENT_EMPTY_LIST)
+  def open_assessment(assessment_name:)
+    click(ASSESSMENT_LINK.transform_values { |v| v % assessment_name })
   end
 end
