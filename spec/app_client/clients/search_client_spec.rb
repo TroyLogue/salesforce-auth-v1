@@ -26,8 +26,7 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       expect(homepage.page_displayed?).to be_truthy
 
       # Create Contact
-      @contact = Setup::Data.create_harvard_client_with_consent(token: base_page.get_uniteus_api_token)
-      puts @contact.contact_id
+      @contact = Setup::Data.create_harvard_client_with_all_fields(token: base_page.get_uniteus_api_token)
     }
 
     it 'Search Existing Client' do
@@ -47,10 +46,10 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       expect(add_client_page.is_info_prefilled?(
         fname: @contact.fname,
         lname: @contact.lname,
-        dob: @contact.dob_formatted)).to be_truthy
-
-      # Updating fields works
-
+        dob: @contact.dob_formatted,
+        phone: @contact.formatted_phone,
+        addresses: @contact.formatted_address,
+        military_affiliation: @contact.military_affiliation_key)).to be_truthy
     end
   end
 end

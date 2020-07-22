@@ -45,5 +45,11 @@ module Setup
       contact.create_with_military_and_consent(token: token, group_id: YALE_GROUP)
       contact
     end
+
+    def self.create_harvard_client_with_all_fields(token:)
+      contact = Contact.new
+      contact.create_with_all_fields(token: token, group_id: HARVARD_GROUP)
+      contact
+    end
   end
 end
