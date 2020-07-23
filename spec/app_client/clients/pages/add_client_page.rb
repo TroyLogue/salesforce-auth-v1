@@ -27,12 +27,31 @@ class AddClient < BasePage
   end
 
   def is_info_prefilled?(**params)
-    value(FIRSTNAME_INPUT) == params[:fname] &&
-    value(LASTNAME_INPUT) == params[:lname] &&
-    value(DOB_INPUT) == params[:dob] &&
-    single_lined_address == params[:addresses] &&
-    value(PHONE_INPUT) == params[:phone] &&
-    value(MILITARY_AFFILIATION_INPUT) == params[:military_affiliation]
+    if params.key?(:fname) && value(FIRSTNAME_INPUT) != params[:fname]
+      print "First Name value saved '#{params[:fname]}' do not equal value displayed '#{params[:fname]}'"
+      return false
+    end
+    if params.key?(:lname) && value(LASTNAME_INPUT) != params[:lname]
+      print "Last Name value saved '#{params[:lname]}' do not equal value displayed '#{value(LASTNAME_INPUT)}'"
+      return false
+    end
+    if params.key?(:dob) && value(DOB_INPUT) != params[:dob]
+      print "Dob value saved '#{params[:dob]}' do not equal value displayed '#{value(DOB_INPUT)}'"
+      return false
+    end
+    if params.key?(:addresses) && single_lined_address != params[:addresses]
+      print "Address value saved '#{params[:addresses]}' do not equal value displayed '#{single_lined_address}'"
+      return false
+    end
+    if params.key?(:phone) && value(PHONE_INPUT) != params[:phone]
+      print "Phone value saved '#{params[:phone]}' do not equal value displayed '#{value(PHONE_INPUT)}'"
+      return false
+    end
+    if params.key?(:military_affiliation) && value(MILITARY_AFFILIATION_INPUT) != params[:military_affiliation]
+      print "Phone value saved '#{params[:military_affiliation]}' do not equal value displayed '#{value(MILITARY_AFFILIATION_INPUT)}'"
+      return false
+    end
+    true
   end
 
   # If a param is not set, it will not be typed
@@ -41,6 +60,11 @@ class AddClient < BasePage
     enter(params[:lname], LASTNAME_INPUT) if params.key?(:lname)
     enter(params[:dob], DOB_INPUT) if params.key?(:dob)
     enter(params[:ss], SS_INPUT) if params.key?(:ss)
+    enter(params[:phone], PHONE_INPUT) if params.key?(:phone)
+    enter(params[:email], EMAIL_INPUT) if params.key?(:email)
+    enter(params[:address_line_1], ADDRESS_LINE1_INPUT) if params.key?(:address_line_1)
+    enter(params[:address_line_2], ADDRESS_LINE2_INPUT) if params.ket?(:address_line_2)
+    enter(params[:address_city], ADDRESS_CITY_INPUT) if params.key?(:address_city)
   end
 
   def single_lined_address

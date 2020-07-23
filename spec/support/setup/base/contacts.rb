@@ -18,7 +18,7 @@ module Setup
       @addresses = []
       @phones = []
       @insurance = []
-      @dob_formatted = ime.at(@dob).strftime('%m/%d/%Y')
+      @dob_formatted = Time.at(@dob).strftime('%m/%d/%Y')
       @contact_id = 0
     end
 
@@ -93,7 +93,7 @@ module Setup
       phone_response = Requests::Contacts.add_phone_number(token:token, group_id: group_id, contact_id: @contact_id, payload: @phone_number)
       expect(phone_response.status.to_s).to eq('201 Created')
 
-      Adding consent
+      # Adding consent
       consent_response = Requests::Consent.post_on_screen_consent(token: token, group_id: group_id,
                                                                   contact_id: @contact_id,
                                                                   signature_image: get_signature_image)

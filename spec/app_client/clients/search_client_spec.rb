@@ -24,12 +24,12 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
     before {
       log_in_as(Login::NEXTGATE_USER)
       expect(homepage.page_displayed?).to be_truthy
-
-      # Create Contact
-      @contact = Setup::Data.create_harvard_client_with_all_fields(token: base_page.get_uniteus_api_token)
     }
 
-    it 'Search Existing Client' do
+    it 'Search for an existing client', :uuqa_1301 do
+      # Create Contact
+      @contact = Setup::Data.create_harvard_client_with_all_fields(token: base_page.get_uniteus_api_token)
+
       create_menu.start_new_client
       expect(search_client_page.page_displayed?).to be_truthy
 
@@ -50,6 +50,25 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
         phone: @contact.formatted_phone,
         addresses: @contact.formatted_address,
         military_affiliation: @contact.military_affiliation_key)).to be_truthy
+    end
+
+    it 'Search for a non-existing client', :uuqa_1300 do
+      fname = Faker::Name.first_name
+      lname = Faker::Name.last_name
+      dob = Faker::Time.backward(days: 1000).strftime('%m/%d/%Y')
+
+      create_menu.start_new_client
+      expect(search_client_page.page_displayed?).to be_truthy
+
+      # Search newly created client with info from above
+      search_client_page.search_client(fname: fname, lname: lname, dob: dob)
+
+      # Fields are pre-filled with latest information
+      expect(add_client_page.page_displayed?).to be_truthy
+      expect(add_client_page.is_info_prefilled?(
+        fname: fname,
+        lname: lname,
+        dob: dob)).to be_truthy
     end
   end
 end
