@@ -55,6 +55,21 @@ module Setup
     end
   end
 
+  class CloseReferral
+    include RSpec::Mocks::ExampleMethods::ExpectHost
+    include RSpec::Matchers
+
+    def close(token:, group_id:, referral_id:, resolution:)
+      closing = {
+        note: 'Data cleanup',
+        outcome_id: resolution,
+        resolved: true
+      }
+      close_response = Requests::Referrals.close(token: token, group_id: group_id, referral_id: referral_id, closing: closing)
+      expect(close_response.status.to_s).to eq('200 OK')
+    end
+  end
+
   # Object that represents an existing referral being recalled by the user
   class RecallReferral
     include RSpec::Mocks::ExampleMethods::ExpectHost

@@ -5,6 +5,7 @@ require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
 require_relative '../referrals/pages/referral'
+require_relative '../referrals/pages/referral_table'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
@@ -14,7 +15,8 @@ describe '[Referrals]', :app_client, :referrals do
   let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
-  let(:new_referral) { Referral.new(@driver) }
+  let(:referral) { Referral.new(@driver) }
+  let(:referral_table) { ReferralTable.new(@driver) }
 
   context('[as org user]') do
     before {
@@ -34,19 +36,21 @@ describe '[Referrals]', :app_client, :referrals do
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'user can add and remove document on a new referral', :uuqa_134, :uuqa_136 do
-      new_referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
-      @document = Faker::Alphanumeric.alpha(number: 8) + '.txt'
+    it 'user can hold referral for review', :uuqa_909 do
+      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      note = Faker::Lorem.sentence(word_count: 5)
 
-      new_referral.attach_document_to_referral(file_name: @document)
-      expect(new_referral.document_list).to include(@document)
+      # Hold Referral and wait for table to load
+      referral.hold_for_review_action(note: note)
+      expect(referral_table.page_displayed?).to be_truthy
 
-      new_referral.remove_document_from_referral(file_name: @document)
-      expect(new_referral.no_documents?).to be_truthy
+      # Navigate to In Review Referral and verify status
+      referral.go_to_in_review_referral_with_id(referral_id: @referral.referral_id)
+      expect(referral.status).to eq(referral.class::IN_REVIEW_STATUS)
     end
 
     after {
-      # accepting referral
+      # Clean up and accepting referral
       @accept_referral = Setup::Data.accept_referral_from_harvard_in_princeton(token: base_page.get_uniteus_api_token,
                                                                                referral_id: @referral.referral_id)
     }
