@@ -38,7 +38,7 @@ def checkout() {
     branch = 'master'
 
     git(branch: branch,
-        credentialsId: 'github_ssh',
+        credentialsId: 'github_end-to-end-tests',
         url: 'git@github.com:unite-us/end-to-end-tests.git'
     )
 }
@@ -52,10 +52,11 @@ def build() {
         apt-get install -y google-chrome-stable
     '''
 
-    // Install ChromeDriver. Major version must match google-chrome-stable
+    // Install ChromeDriver. Major version must match google-chrome-stable. Find current version
+    // in Jenkins logs from the output of the above apt-get install command.
     // Find the latest version at https://sites.google.com/a/chromium.org/chromedriver/downloads
-    // then get the path to the chromedriver_linux64.zip file
-    chromedriver_version = '81.0.4044.69'
+    // that matches major versions, then use that version here
+    chromedriver_version = '83.0.4103.39'
     sh """
         wget https://chromedriver.storage.googleapis.com/$chromedriver_version/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
@@ -64,11 +65,18 @@ def build() {
     """
 
     // Install gems
-    sh '''
-        gem install bundler rake
-        bundle update --bundler
-        bundle install
-    '''
+    sshagent(['github_api-integration-tests']) {
+        sh '''
+            mkdir ~/.ssh
+            ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
+        '''
+
+        sh '''
+            gem install bundler rake
+            bundle update --bundler
+            bundle install
+        '''
+    }
 
     withCredentials([file(credentialsId: 'browserstack_credentials', variable: 'browserstack_credentials_file')]) {
         sh "cp '$browserstack_credentials_file' lib/browserstack_credentials.rb"
