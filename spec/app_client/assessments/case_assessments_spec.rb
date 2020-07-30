@@ -62,7 +62,7 @@ describe '[Assessments - Cases]', :assessments, :app_client do
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'can view Military Information and an assessment', :uuqa_326, :uuqa_332 do
+    it 'can view Military Information and an assessment', :uuqa_328, :uuqa_334 do
       case_page.go_to_new_referral_with_id(case_id: @case.referral_id)
       expect(case_page.page_displayed?).to be_truthy
       expect(case_page.assessment_list).to include(@assessment)
