@@ -22,6 +22,12 @@ module Setup
       contact
     end
 
+    # Requires an existing Contact object
+    def self.select_client_in_princeton(token:, contact:)
+      contact.select(token: token, group_id: PRINCETON_GROUP)
+      contact
+    end
+
     def self.create_princeton_client_with_consent(token:)
       contact = Contact.new
       contact.create_with_consent(token: token, group_id: PRINCETON_GROUP)

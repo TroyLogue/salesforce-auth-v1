@@ -15,10 +15,10 @@ module Setup
       @fname = Faker::Name.first_name
       @lname = Faker::Name.last_name
       @dob = Requests::Contacts.random_dob
+      @dob_formatted = Time.at(@dob).strftime('%m/%d/%Y')
       @addresses = []
       @phones = []
       @insurance = []
-      @dob_formatted = Time.at(@dob).strftime('%m/%d/%Y')
       @contact_id = 0
     end
 
@@ -46,6 +46,12 @@ module Setup
                                                                   contact_id: @contact_id,
                                                                   signature_image: get_signature_image)
       expect(consent_response.status.to_s).to eq('200 OK')
+    end
+
+    def select(token:, group_id:)
+      contact_response = Requests::Contacts.search_and_select(token: token, group_id: group_id,
+                                                              contact_id: @contact_id)
+      expect(contact_response.status.to_s).to eq('200 OK')
     end
 
     def create_with_military_and_consent(token:, group_id:)

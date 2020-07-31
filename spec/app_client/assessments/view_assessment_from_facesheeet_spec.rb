@@ -18,7 +18,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
   let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:facesheet_forms) { FacesheetForms.new(@driver) }
-  let(:facesheet_header) { Facesheet.new(@driver) }
+  let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:assessment) { FacesheetAssessment.new(@driver) }
 
   ASSESSMENT_NO_RULES = 'UI-Tests No Rules'

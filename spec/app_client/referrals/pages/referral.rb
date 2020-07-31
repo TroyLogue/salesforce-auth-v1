@@ -10,6 +10,8 @@ class Referral < BasePage
   TAKE_ACTION_HOLD_OPTION =  { css: 'div[data-value="holdForReview"]' }
   TAKE_ACTION_SEND_OPTION = { css: 'div[data-value="send"]' }
   TAKE_ACTION_ACCEPT_OPTION = { css: 'div[data-value="accept"]' }
+  TAKE_ACTION_REJECT_OPTION = { css: 'div[data-value="reject"]'}
+  TAKE_ACTION_INTAKE_OPTION = { css: 'div[data-value="startIntake"]'}
 
   ACCEPT_MODAL = { css: '.accept-modal-dialog .dialog.open.large .dialog-paper'}
   ACCEPT_PROGRAM_OPTIONS = { css: 'div[aria-activedescendant="choices-programSelect-item-choice-1"]' }
@@ -25,7 +27,14 @@ class Referral < BasePage
   HOLD_REFERRAL_BTN = { css: '#hold-referral-hold-btn' }
 
   SENDER_INFO = { css: '#basic-table-sender-value' }
-  RECIPIENT_INFO = { css: '#basic-table-recipient-value'}
+  RECIPIENT_INFO = { css: '#basic-table-recipient-value' }
+
+  REJECT_REFERRAL_MODAL = { css: '.reject-modal-dialog .open' }
+  REJECT_REFERRAL_REASON_DROPDOWN = { css: '.referral-reject-display .referral-reason-field .choices__inner' }
+  REJECT_REFERRAL_REASON_OPTION = { css: '.referral-reason-field .choices.is-open #choices-reject-reason-input-item-choice-1' }
+  REJECT_REFERRAL_REASON_OPTIONS = { css: '.referral-reason-field div[id^="choices-reject-reason-input-item-choice-"]' }
+  REJECT_REFERRAL_NOTE = { css: '#reject-note-input'}
+  REJECT_BTN = { css: '.referral-reject-display__reject-modal-form #reject-referral-reject-btn'}
 
   DOCUMENT_ADD_LINK = { css: '#upload-document-link' }
   DOCUMENT_ATTACH_MODAL = { css: '.dialog.open.large'}
@@ -43,8 +52,18 @@ class Referral < BasePage
   TIMELINE_LOADING = { css: '.activity-stream .loading-entries__content' }
   STATUS_TEXT = { css: '.detail-status-text' }
 
+  NEEDS_ACTION_STATUS = 'NEEDS ACTION'
   IN_REVIEW_STATUS = 'IN REVIEW'
   ACCEPTED_STATUS = 'ACCEPTED'
+  REJECTED_STATUS = 'REJECTED'
+
+  REJECTED_OPTION = [
+    'Client is not eligible for our services',
+    'Duplicate, case already exists in the system',
+    'We do not have capacity to serve client',
+    'We do not provide the services requested/needed',
+    'We were unable to contact the client',
+    'Other']
 
   def go_to_new_referral_with_id(referral_id:)
     get("/dashboard/new/referrals/#{referral_id}")
@@ -56,9 +75,20 @@ class Referral < BasePage
     wait_for_spinner
   end
 
-  def go_to_send_referral_with_id(referral_id:)
+  def go_to_sent_referral_with_id(referral_id:)
     get("/dashboard/referrals/sent/all/#{referral_id}")
     wait_for_spinner
+  end
+
+  def go_to_rejected_referral_with_id(referral_id:)
+    get("/dashboard/referrals/rejected/#{referral_id}")
+    wait_for_spinner
+  end
+
+  def page_displayed?
+    wait_for_spinner
+    is_displayed?(STATUS_TEXT) &&
+    is_not_displayed?(TIMELINE_LOADING)
   end
 
   def status
@@ -68,6 +98,10 @@ class Referral < BasePage
   def current_referral_id
     uri = URI.parse(driver.current_url)
     uri.path.split('/').last
+  end
+
+  def recipient_info
+    text(RECIPIENT_INFO)
   end
 
   # ACCEPT
@@ -95,8 +129,22 @@ class Referral < BasePage
     wait_for_spinner
   end
 
-  def go_to_sent_referral_with_id(referral_id:)
-    get("/dashboard/referrals/sent/all/#{referral_id}")
+  # REJECT
+  def reject_referral_options_displayed?
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_REJECT_OPTION)
+    is_displayed?(REJECT_REFERRAL_MODAL)
+    click(REJECT_REFERRAL_REASON_DROPDOWN)
+
+    non_matching = find_elements(REJECT_REFERRAL_REASON_OPTIONS).collect(&:text) - REJECTED_OPTION
+    non_matching.empty? or print "Non-matching options: #{non_matching}"
+  end
+
+  def reject_referral_action(note:)
+    click(REJECT_REFERRAL_REASON_OPTION)
+    enter(note, REJECT_REFERRAL_NOTE)
+    click(REJECT_BTN)
+    wait_for_spinner
   end
 
   # SEND
@@ -105,8 +153,10 @@ class Referral < BasePage
     click(TAKE_ACTION_SEND_OPTION)
   end
 
-  def recipient_info
-    text(RECIPIENT_INFO)
+  # INTAKE
+  def start_intake_action
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_INTAKE_OPTION)
   end
 
   # DOCUMENTS
@@ -117,12 +167,8 @@ class Referral < BasePage
     enter(local_file_path, DOCUMENT_FILE_INPUT)
     is_displayed?(DOCUMENT_PREVIEW)
     click(DOCUMENT_ATTACH_BTN)
-    #deleting local file
+    # deleting local file
     delete_consent_file(file_name)
-  end
-
-  def assessment_list
-    text(ASSESSMENT_LIST)
   end
 
   def document_list
@@ -133,16 +179,6 @@ class Referral < BasePage
     is_displayed?(DOCUMENT_EMPTY_LIST)
   end
 
-  def open_assessment(assessment_name:)
-    click(ASSESSMENT_LINK.transform_values { |v| v % assessment_name })
-  end
-
-  def page_displayed?
-    wait_for_spinner
-    is_displayed?(STATUS_TEXT) &&
-    is_not_displayed?(TIMELINE_LOADING)
-  end
-
   def remove_document_from_referral(file_name:)
     hover_over(DOCUMENT_LINK.transform_values { |v| v % file_name })
     click(DOCUMENT_REMOVE.transform_values { |v| v % file_name })
@@ -150,4 +186,12 @@ class Referral < BasePage
     click(DOCUMENT_REMOVE_BTN)
   end
 
+  # ASSSESMENTS
+  def assessment_list
+    text(ASSESSMENT_LIST)
+  end
+
+  def open_assessment(assessment_name:)
+    click(ASSESSMENT_LINK.transform_values { |v| v % assessment_name })
+  end
 end
