@@ -8,13 +8,14 @@ module Setup
   class Contact
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
-    attr_reader :fname, :lname, :dob, :military_affiliation_key
+    attr_reader :fname, :lname, :dob_formatted, :military_affiliation_key
     attr_accessor :contact_id
 
     def initialize
       @fname = Faker::Name.first_name
       @lname = Faker::Name.last_name
       @dob = Requests::Contacts.random_dob
+      @dob_formatted = Time.at(@dob).strftime('%m/%d/%Y')
       @contact_id = 0
     end
 
