@@ -28,11 +28,39 @@ module RightNav
 
     def get_search_name_list
       names = find_elements(SEARCH_RESULT_CLIENT_NAME_LIST)
-      names_array = names.collect(&:text)
+      names.collect(&:text)
     end
 
     def are_results_not_displayed?
       is_not_displayed?(SEARCH_RESULT_TABLE, 3)
+    end
+  end
+
+  class CreateMenu < BasePage
+    PLUS_ICON = { css: '#right-nav-create-menu-btn' }
+    NEW_REFERRAL_BTN = { css: '#right-nav-create-referral-btn' }
+    NEW_CLIENT_BTN = { css: '#right-nav-create-client-btn' }
+    NEW_INTAKE_BTN = { css: '#right-nav-create-intake-btn' }
+    NEW_SCREENING_BTN = { css: '#right-nav-create-screening-btn' }
+
+    def start_new_referral
+      click(PLUS_ICON)
+      click(NEW_REFERRAL_BTN)
+    end
+
+    def start_new_client
+      click(PLUS_ICON)
+      click(NEW_CLIENT_BTN)
+    end
+
+    def start_new_intake
+      click(PLUS_ICON)
+      click(NEW_INTAKE_BTN)
+    end
+
+    def start_new_screening
+      click(PLUS_ICON)
+      click(NEW_SCREENING_BTN)
     end
   end
 
