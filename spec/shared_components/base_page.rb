@@ -105,7 +105,8 @@ class BasePage
   end
 
   def get_uniteus_api_token
-    JSON.parse(URI.decode("#{driver.manage.cookie_named("uniteusApiToken")[:value]}"))["access_token"]
+    # should resolve warning: URI.unescape is obsolete
+    JSON.parse(URI.decode_www_form_component("#{driver.manage.cookie_named("uniteusApiToken")[:value]}"))["access_token"]
   end
 
   def get_uniteus_group
