@@ -3,7 +3,7 @@ require_relative '../../../shared_components/base_page'
 class FacesheetProfilePage < BasePage
 
   FACESHEET_PROFILE = { css: '.facesheet-profile' }
-  ERROR_MESSAGE = { css: '.dialog.open .ui-form-field__error' }
+  ERROR_MESSAGE = { css: '.ui-input-field--has-error .ui-form-field__error' }
   BTN_CLOSE = { css: '.dialog.open .title.title-closeable > a ' }
 
   CURRENT_PHONE = { css: '.phone-number-display > p > a' }
