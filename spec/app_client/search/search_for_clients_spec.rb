@@ -21,8 +21,7 @@ describe '[Search]', :app_client, :search do
 
     it 'Search Bar Results Table', :uuqa_170 do
       search_bar.search_for('E')
-      # expect(search_bar.get_search_name_list.count).to be < 13
-      expect(search_bar.get_search_name_list.count).to be > 99 # simulate failure
+      expect(search_bar.get_search_name_list.count).to be < 13
       expect(search_bar.get_search_name_list).to all(start_with('E'))
     end
 
