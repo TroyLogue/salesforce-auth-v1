@@ -35,7 +35,8 @@ podTemplate(containers: [
 }
 
 def checkout() {
-    branch = 'master'
+    // branch = 'master'
+    branch = 'UU3-35214_basic-reporting'
 
     git(branch: branch,
         credentialsId: 'github_end-to-end-tests',
@@ -87,12 +88,10 @@ def test() {
     def result = null
 
     withEnv(["browser=chrome_headless"]) {
-        result = sh(script: "bundle exec rspec -t app_client", returnStatus: true)
+        // result = sh(script: "bundle exec rspec -t app_client", returnStatus: true)
+        result = sh(script: "bundle exec rspec -t uuqa_170 --format RspecJunitFormatter  --out result.xml", returnStatus: true) // tag changed for demo purposes - do not check in
     }
-
-    // withEnv(["browser=chrome"]) {
-    //     result = sh(script: "bundle exec rake local:by_tag[app_client_staging,chrome,app_client_smoke]", returnStatus: true)
-    // }
+    junit 'result.xml'
 
     if (result == 0) {
         currentBuild.result = 'SUCCESS'

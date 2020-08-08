@@ -1,5 +1,6 @@
 GIT
   remote: git@github.com:unite-us/api-integration-tests.git
+  revision: 62b9c665fbba5e6c4f606464d3c9394a46cfb8ab
   specs:
     uniteus-api-client (1.0.0)
 
@@ -55,6 +56,8 @@ GEM
     rspec-retry (0.6.1)
       rspec-core (> 3.3)
     rspec-support (3.9.0)
+    rspec_junit_formatter (0.4.1)
+      rspec-core (>= 2, < 4, != 2.12.0)
     rubyzip (2.0.0)
     selenium-webdriver (3.142.6)
       childprocess (>= 0.5, < 4.0)
@@ -76,6 +79,7 @@ DEPENDENCIES
   rspec
   rspec-expectations
   rspec-retry
+  rspec_junit_formatter
   selenium-webdriver
   uniteus-api-client!
 
