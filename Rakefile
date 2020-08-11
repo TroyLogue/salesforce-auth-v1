@@ -3,18 +3,11 @@ def run_in_parallel(processes: 2, tag:)
 end
 
 namespace :jenkins do
-  desc 'demo rake task in Jenkins job'
-  task :uuqa_292 do |t|
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(processes: 1, tag: 'uuqa_292')
-  end
-
   desc 'specs tagged app_client on chrome headless'
   task :app_client do |t|
     ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(processes: 2, tag: 'app_client')
+    exit run_in_parallel(processes: 1, tag: 'app_client')
   end
 end
 
