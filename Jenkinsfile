@@ -87,12 +87,9 @@ def test() {
     def result = null
 
     withEnv(["browser=chrome_headless"]) {
-        result = sh(script: "bundle exec rspec -t app_client", returnStatus: true)
+        result = sh(script: "bundle exec rspec -t app_client --format RspecJunitFormatter  --out result.xml", returnStatus: true)
     }
-
-    // withEnv(["browser=chrome"]) {
-    //     result = sh(script: "bundle exec rake local:by_tag[app_client_staging,chrome,app_client_smoke]", returnStatus: true)
-    // }
+    junit 'result.xml'
 
     if (result == 0) {
         currentBuild.result = 'SUCCESS'
