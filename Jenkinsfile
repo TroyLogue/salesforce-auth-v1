@@ -85,10 +85,9 @@ def build() {
 
 def test() {
     def result = null
+    def taskName = "${env.JOB_NAME}".split('/').last()
 
-    withEnv(["browser=chrome_headless"]) {
-        result = sh(script: "bundle exec rspec -t app_client --format RspecJunitFormatter  --out result.xml", returnStatus: true)
-    }
+    result = sh(script: "bundle exec rake jenkins:${taskName}", returnStatus: true)
     junit 'result.xml'
 
     if (result == 0) {
