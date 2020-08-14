@@ -41,8 +41,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
 
     it 'sends reset password email', :uuqa_11, :uuqa_171 do
       forgot_password.click_to_send_email
-
-      expect(login_email.page_displayed?).to be_truthy
+      expect(login_password.page_displayed?).to be_truthy
       expect(login_email.password_reset_message_displayed?).to be_truthy
 
       # verify in mailtrap:

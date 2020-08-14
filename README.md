@@ -41,6 +41,14 @@ Clone this repository and install its dependencies:
 
 `cd end-to-end-tests/ && bundle install`
 
+## Update Project
+
+The `end-to-end-tests` repository leverages our API to setup data for tests via an [internal gem in the api-integration-tests repository](https://github.com/unite-us/api-integration-tests/blob/master/lib/uniteus-api-client.rb). In order to always access the latest-and-greatest contents of the `api-integration-tests` `lib` directory (i.e., contents of the `uniteus-api-client` gem), the update workflow when working in this project should be:
+
+`git fetch origin && git pull && bundle update uniteus-api-client`
+
+It may be useful to add an alias for that command.
+
 ## Install Web Drivers
 
 This repository has to date been optimized to run on OS X. If you are setting up this project on an alternate OS please contribute to these instructions.
@@ -275,9 +283,9 @@ Error handling is defined in the base page object, `pages/page.rb`.
 - Jenkins
 
   - [ ]  TODO [UU3-35212](https://uniteus.atlassian.net/browse/UU3-35212)
-    - [ ] configure server to run tests headlessly
+    - [x] configure server to run tests headlessly
     - [ ] configure server to send tests to BrowserStack
-    - [ ] install plugin for test results
+    - [x] install plugin for test results
 
 - BrowserStack
   - [x] configure Video on Failure

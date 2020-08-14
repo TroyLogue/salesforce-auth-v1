@@ -109,7 +109,7 @@ class BasePage
   end
 
   def get_uniteus_api_token
-    JSON.parse(URI.decode("#{driver.manage.cookie_named("uniteusApiToken")[:value]}"))["access_token"]
+    JSON.parse(URI.decode_www_form_component("#{driver.manage.cookie_named("uniteusApiToken")[:value]}"))["access_token"]
   end
 
   def get_uniteus_group
@@ -241,6 +241,10 @@ class BasePage
 
   def text_include?(text, selector)
     find(selector).text.include?(text)
+  end
+
+  def value(selector)
+    find(selector).attribute('value')
   end
 
   # explicit-wait wrapper for find_element methods to avoid flakiness caused by timing,

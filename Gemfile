@@ -21,6 +21,9 @@ gem 'http'
 # https://github.com/browserstack/fast-selenium-scripts/tree/master/fast-selenium-gem
 gem 'fast-selenium'
 
+# reporting used for Jenkins jobs
+gem 'rspec_junit_formatter'
+
 #debugging
 gem 'byebug' # https://github.com/deivid-rodriguez/byebug
 

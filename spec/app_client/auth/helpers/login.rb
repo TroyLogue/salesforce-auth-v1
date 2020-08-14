@@ -50,7 +50,9 @@ module Login
     # might become obsolete or applied to referrals tests
     SUPER_USER = 'super@best.com',
     # settings user, QA network
-    SETTINGS_USER = 'qa.perms@auto.com'
+    SETTINGS_USER = 'qa.perms@auto.com',
+    # next gate temp user
+    NEXTGATE_USER = 'client-search@auto.com'
   ]
 
   DEFAULT_PASSWORD = 'Uniteus1!'

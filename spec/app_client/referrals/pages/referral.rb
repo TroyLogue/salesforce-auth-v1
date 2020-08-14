@@ -11,6 +11,7 @@ class Referral < BasePage
   TAKE_ACTION_SEND_OPTION = { css: 'div[data-value="send"]' }
   TAKE_ACTION_ACCEPT_OPTION = { css: 'div[data-value="accept"]' }
   TAKE_ACTION_REJECT_OPTION = { css: 'div[data-value="reject"]'}
+  TAKE_ACTION_INTAKE_OPTION = { css: 'div[data-value="startIntake"]'}
 
   ACCEPT_MODAL = { css: '.accept-modal-dialog .dialog.open.large .dialog-paper'}
   ACCEPT_PROGRAM_OPTIONS = { css: 'div[aria-activedescendant="choices-programSelect-item-choice-1"]' }
@@ -51,6 +52,7 @@ class Referral < BasePage
   TIMELINE_LOADING = { css: '.activity-stream .loading-entries__content' }
   STATUS_TEXT = { css: '.detail-status-text' }
 
+  NEEDS_ACTION_STATUS = 'NEEDS ACTION'
   IN_REVIEW_STATUS = 'IN REVIEW'
   ACCEPTED_STATUS = 'ACCEPTED'
   REJECTED_STATUS = 'REJECTED'
@@ -149,6 +151,12 @@ class Referral < BasePage
   def send_referral_action
     click(TAKE_ACTION_DROP_DOWN)
     click(TAKE_ACTION_SEND_OPTION)
+  end
+
+  # INTAKE
+  def start_intake_action
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_INTAKE_OPTION)
   end
 
   # DOCUMENTS
