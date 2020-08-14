@@ -18,8 +18,6 @@ namespace :jenkins do
   end
 end
 
-
-
 namespace :docker do
   desc 'Build End-To-End Test Cases'
   task :build do
