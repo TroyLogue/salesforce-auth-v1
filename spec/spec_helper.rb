@@ -110,6 +110,7 @@ RSpec.configure do |config|
       ENV['web_url'] = 'https://app.uniteus.io'
       ENV['auth_url'] = 'https://app.auth.uniteus.io'
       ENV['api_url'] = 'https://api.uniteus.io'
+      ENV['resource_directory_url'] = 'https://nccare.resource-directory.uniteus.io/'
     when 'ehr_staging'
       ENV['web_url'] = 'https://emr.uniteusdev.com'
       ENV['auth_url'] = 'https://emr.auth.uniteusdev.com'
