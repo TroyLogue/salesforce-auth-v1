@@ -9,7 +9,7 @@ class AssistanceRequestWidget < BasePage
   DOB_INPUT = { css: '#uu_contact_date_of_birth' }
   PHONE_INPUT = { css: '#uu_contact_phone_number' }
   EMAIL_INPUT = { css: '#uu_contact_email_address' }
-  ADDRESS_DROPDOWN = { css: '.address-field > .row:nth-of-type(2) > div > .form-group:nth-of-type(1) > .field-container > .control-container > .form-control.is-searchable > div' } 
+  ADDRESS_DROPDOWN = { css: '.address-field > .row:nth-of-type(2) > div > .form-group:nth-of-type(1) > .field-container > .control-container > .form-control.is-searchable > div' }
   ADDRESS_TYPE_FIRST_OPTION = { css: '#react-select-2--option-1' }
   ADDRESS_LINE_1_INPUT = { css: '#uu_contact_address-line1' }
   ADDRESS_LINE_2_INPUT = { css: '#uu_contact_address-line2' }
@@ -17,20 +17,22 @@ class AssistanceRequestWidget < BasePage
   STATE_DROPDOWN = { css: '.address-field > .row:nth-of-type(3) > div:nth-of-type(1) > .form-group > .field-container > .control-container > .form-control.is-searchable > div' }
   STATE_FIFTH_OPTION = { css: '#react-select-3--option-5' }
   ZIP_INPUT = { css: '#uu_contact_address-postal-code' }
-  GENDER_DROPDOWN = { css: '#react-select-4--value' }
-  GENDER_FIRST_OPTION = { css: '#react-select-4--option-1' }
-  RACE_DROPDOWN = { css: '#react-select-5--value' }
-  RACE_SECOND_OPTION = { css: '#react-select-5--option-2' }
-  ETHNICITY_DROPDOWN = { css: '#react-select-6--value' }
-  ETHNICITY_FIRST_OPTION = { css: '#react-select-6--option-0' }
+  CITIZENSHIP_DROPDOWN = { css: '#react-select-4--value' }
+  CITIZENSHIP_OPTION = { css: '#react-select-4--option-1' }
+  GENDER_DROPDOWN = { css: '#react-select-5--value' }
+  GENDER_FIRST_OPTION = { css: '#react-select-5--option-1' }
+  RACE_DROPDOWN = { css: '#react-select-6--value' }
+  RACE_SECOND_OPTION = { css: '#react-select-6--option-2' }
+  ETHNICITY_DROPDOWN = { css: '#react-select-7--value' }
+  ETHNICITY_FIRST_OPTION = { css: '#react-select-7--option-0' }
   SSN_INPUT = { css: '#uu_contact_ssn' }
   GROSS_MONTHLY_INCOME_INPUT = { css: '#uu_contact_gross_monthly_income' }
-  MILITARY_AFFILIATION_DROPDOWN = { css: '#react-select-7--value' }
-  MILITARY_AFFILIATION_FIRST_OPTION = { css: '#react-select-7--option-1' }
+  MILITARY_AFFILIATION_DROPDOWN = { css: '#react-select-8--value' }
+  MILITARY_AFFILIATION_FIRST_OPTION = { css: '#react-select-8--option-1' }
   SCHOOL_INPUT = { css: '#undefined-s0-q0' }
   SCHOOL_LOCATION_INPUT = { css: '#undefined-s1-q0' }
-  SERVICES_DROPDOWN = { css: '#react-select-14--value'}
-  SERVICES_SECOND_OPTION = { css: '#react-select-14--option-2' }
+  SERVICES_DROPDOWN = { css: '#react-select-15--value'}
+  SERVICES_SECOND_OPTION = { css: '#react-select-15--option-2' }
   DESCRIPTION_TEXTAREA = { css: '#uu_description' }
   SIG_PAD = { css: '.m-signature-pad--body > canvas' }
   SUBMIT_BUTTON = { css: '.button-submit'}
@@ -79,6 +81,8 @@ class AssistanceRequestWidget < BasePage
     click(STATE_DROPDOWN)
     click(STATE_FIFTH_OPTION)
     enter(zip, ZIP_INPUT)
+    click(CITIZENSHIP_DROPDOWN)
+    click(CITIZENSHIP_OPTION)
     click(GENDER_DROPDOWN)
     click(GENDER_FIRST_OPTION)
     click(RACE_DROPDOWN)
