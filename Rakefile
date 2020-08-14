@@ -11,6 +11,15 @@ namespace :jenkins do
   end
 end
 
+namespace :jenkins do
+  desc 'specs tagged resource_directory on chrome headless'
+  task :resource_directory do |t|
+    ENV['browser'] = 'chrome_headless'
+    ENV['environment'] = 'app_client_staging'
+    exit run_in_parallel(processes: 1, tag: 'resource_directory')
+  end
+end
+
 namespace :docker do
   desc 'Build End-To-End Test Cases'
   task :build do
