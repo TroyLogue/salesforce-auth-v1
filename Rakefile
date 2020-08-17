@@ -62,7 +62,7 @@ namespace :local do
   task :devqa, :browser, :tag do |t, args|
     ENV['browser'] = args[:browser]
     ENV['environment'] = 'devqa'
-    exit run_in_parallel(1, tag: "#{args[:tag]}")
+    exit run_in_parallel(tag: "#{args[:tag]}")
   end
 
   # example:
