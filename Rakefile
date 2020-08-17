@@ -1,7 +1,3 @@
-def run(tag:)
-  system("rspec --tag #{tag}")
-end
-
 def run_in_parallel(processes: 2, tag:)
   system("parallel_rspec -n #{processes} --test-options '-r rspec --order random --tag #{tag} --format RspecJunitFormatter  --out result.xml' spec")
 end
@@ -66,12 +62,12 @@ namespace :local do
   end
 
   # example:
-  # rake local:resource_directory_staging
-  desc 'Run resource directory tests on staging in chrome'
-  task :resource_directory_staging do |t|
-    ENV['browser'] = 'chrome'
+  # rake local:resource_directory_staging[chrome]
+  desc 'Run resource directory tests on staging by browser'
+  task :resource_directory_staging do |t, args|
+    ENV['browser'] = args[:browser]
     ENV['environment'] = 'resource_directory_staging'
-    exit run(tag: 'resource_directory')
+    exit run_in_parallel(processes: 1, tag: 'resource_directory')
   end
 end
 
