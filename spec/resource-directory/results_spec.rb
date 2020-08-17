@@ -7,7 +7,7 @@ describe '[Resource Directory]', :resource_directory do
   let(:resource_directory) { ResourceDirectory.new(@driver) }
 
   before {
-    base_page.get_resource_directory
+    base_page.get ''
     expect(resource_directory.page_displayed?).to be_truthy
   }
 

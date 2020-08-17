@@ -100,10 +100,6 @@ class BasePage
     driver.get ENV['web_url'] + path
   end
 
-  def get_resource_directory
-    driver.get ENV['resource_directory_url']
-  end
-
   def get_title
     wait_for { driver.title }
   end

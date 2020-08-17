@@ -1,3 +1,7 @@
+def run(tag:)
+  system("rspec --tag #{tag}")
+end
+
 def run_in_parallel(processes: 2, tag:)
   system("parallel_rspec -n #{processes} --test-options '-r rspec --order random --tag #{tag} --format RspecJunitFormatter  --out result.xml' spec")
 end
@@ -13,7 +17,7 @@ namespace :jenkins do
   desc 'specs tagged resource_directory on chrome headless'
   task :resource_directory do |t|
     ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'app_client_staging'
+    ENV['environment'] = 'resource_directory_staging'
     exit run_in_parallel(processes: 1, tag: 'resource_directory')
   end
 end
@@ -58,7 +62,16 @@ namespace :local do
   task :devqa, :browser, :tag do |t, args|
     ENV['browser'] = args[:browser]
     ENV['environment'] = 'devqa'
-    exit run_in_parallel(tag: "#{args[:tag]}")
+    exit run_in_parallel(1, tag: "#{args[:tag]}")
+  end
+
+  # example:
+  # rake local:resource_directory_staging
+  desc 'Run resource directory tests on staging in chrome'
+  task :resource_directory_staging do |t|
+    ENV['browser'] = 'chrome'
+    ENV['environment'] = 'resource_directory_staging'
+    exit run(tag: 'resource_directory')
   end
 end
 
