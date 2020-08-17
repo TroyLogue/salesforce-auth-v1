@@ -123,7 +123,17 @@ RSpec.configure do |config|
       ENV['web_url'] = 'https://emr.uniteus.io'
       ENV['auth_url'] = 'https://emr.auth.uniteus.io'
       ENV['api_url'] = 'https://api.uniteus.io'
+    when 'resource_directory_staging'
+      ENV['web_url'] = 'https://public-rd.uniteusdev.com/'
+      ENV['api_url'] = 'https://api.uniteusdev.com'
+    when 'resource_directory_training'
+      ENV['web_url'] = '' #currently no training env for PRD
+      ENV['api_url'] = 'https://api.uniteustraining.com'
+    when 'resource_directory_production'
+      ENV['web_url'] = 'https://nccare.resource-directory.uniteus.io/'
+      ENV['api_url'] = 'https://api.uniteus.io'
     end
+
 
     # define Mailtrap mailbox id for staging or training
     # default will be staging id
