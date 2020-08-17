@@ -134,7 +134,6 @@ RSpec.configure do |config|
       ENV['api_url'] = 'https://api.uniteus.io'
     end
 
-
     # define Mailtrap mailbox id for staging or training
     # default will be staging id
     case ENV['mailtrap_id'] ||= '99406'
