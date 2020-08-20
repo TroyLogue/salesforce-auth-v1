@@ -9,6 +9,13 @@ namespace :jenkins do
     ENV['environment'] = 'app_client_staging'
     exit run_in_parallel(processes: 1, tag: 'app_client')
   end
+
+  desc 'specs tagged resource_directory on chrome headless'
+  task :resource_directory do |t|
+    ENV['browser'] = 'chrome_headless'
+    ENV['environment'] = 'resource_directory_staging'
+    exit run_in_parallel(processes: 1, tag: 'resource_directory')
+  end
 end
 
 namespace :docker do
@@ -52,6 +59,15 @@ namespace :local do
     ENV['browser'] = args[:browser]
     ENV['environment'] = 'devqa'
     exit run_in_parallel(tag: "#{args[:tag]}")
+  end
+
+  # example:
+  # rake local:resource_directory_staging[chrome]
+  desc 'Run resource directory tests on staging by browser'
+  task :resource_directory_staging do |t, args|
+    ENV['browser'] = args[:browser]
+    ENV['environment'] = 'resource_directory_staging'
+    exit run_in_parallel(processes: 1, tag: 'resource_directory')
   end
 end
 
