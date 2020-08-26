@@ -56,7 +56,7 @@ def build() {
     // in Jenkins logs from the output of the above apt-get install command.
     // Find the latest version at https://sites.google.com/a/chromium.org/chromedriver/downloads
     // that matches major versions, then use that version here
-    chromedriver_version = '83.0.4103.39'
+    chromedriver_version = '85.0.4183.83'
     sh """
         wget https://chromedriver.storage.googleapis.com/$chromedriver_version/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
