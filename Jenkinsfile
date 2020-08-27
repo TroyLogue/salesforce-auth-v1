@@ -55,8 +55,13 @@ def build() {
     // Install ChromeDriver. Major version must match google-chrome-stable. Find current version
     // in Jenkins logs from the output of the above apt-get install command.
     // Find the latest version at https://sites.google.com/a/chromium.org/chromedriver/downloads
-    // that matches major versions, then use that version here
-    chromedriver_version = '85.0.4183.83'
+    // that matches major versions, then use that version here.
+    //
+    // This now automatically retrieves the version used by google-chrome-stable, but it also assumes
+    // that a chromedriver version exists that is an exact match of the google-chrome-stable version.
+    // 2020-08-26: 85.0.4183.83
+    chromedriver_version = sh(script: 'google-chrome-stable --version', returnStdout: true).trim().split(' ').last()
+
     sh """
         wget https://chromedriver.storage.googleapis.com/$chromedriver_version/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
