@@ -57,5 +57,11 @@ module Setup
       contact.create_with_all_fields(token: token, group_id: HARVARD_GROUP)
       contact
     end
+
+    def self.create_columbia_client_with_all_fields(token:)
+      contact = Contact.new
+      contact.create_with_all_fields(token: token, group_id: COLUMBIA_GROUP)
+      contact
+    end
   end
 end
