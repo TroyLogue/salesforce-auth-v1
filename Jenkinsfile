@@ -35,7 +35,7 @@ podTemplate(containers: [
 }
 
 def checkout() {
-    branch = 'master'
+    branch = getGitBranchName()
 
     git(branch: branch,
         credentialsId: 'github_end-to-end-tests',
@@ -105,4 +105,8 @@ def test() {
     }
 
     return result
+}
+
+def getGitBranchName() {
+    return scm.branches[0].name
 }
