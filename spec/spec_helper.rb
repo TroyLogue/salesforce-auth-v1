@@ -157,6 +157,10 @@ RSpec.configure do |config|
   config.verbose_retry = true # show retry status in spec process
   config.default_retry_count = 2
 
+  config.retry_callback = proc do |ex|
+    @driver.quit
+  end
+
   # reporting
   config.after(:each) do |example|
     if ENV['host'] == 'browserstack'
@@ -170,15 +174,15 @@ RSpec.configure do |config|
       end
     else
       # if results directory doesn't exist, create it
-      results_directory = File.join(Dir.pwd, 'results/')
-      Dir.mkdir(results_directory) unless File.exists?(results_directory)
+      results_directory = File.join(Dir.pwd, 'results')
+      Dir.mkdir(results_directory) unless File.exist?(results_directory)
 
       if example.exception
-        @driver.save_screenshot("#{results_directory}/#{example.metadata[:full_description]}-#{base_page.generate_timestamp}.png")
+        @driver.save_screenshot("#{results_directory}/#{example.metadata[:full_description]}-#{Time.now.strftime('%m%d%Y%H%M%S')}.png")
       end
       # uncomment the lines below to save screenshot on every test, not just on failure
       # else
-      #   @driver.save_screenshot(File.join(Dir.pwd, "#{results_directory}/visual-checks/#{example.metadata[:full_description]}-#{page.generate_timestamp}.png"))
+      #   @driver.save_screenshot(File.join(Dir.pwd, "#{results_directory}/visual-checks/#{example.metadata[:full_description]}-#{Time.now.strftime('%m%d%Y%H%M%S')}.png"))
     end
     @driver.quit
   end
