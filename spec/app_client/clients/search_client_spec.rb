@@ -28,7 +28,7 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
 
     it 'Search for an existing client', :uuqa_1301 do
       # Create Contact
-      @contact = Setup::Data.create_harvard_client_with_all_fields(token: base_page.get_uniteus_api_token)
+      @contact = Setup::Data.create_columbia_client_with_all_fields(token: base_page.get_uniteus_api_token)
 
       create_menu.start_new_client
       expect(search_client_page.page_displayed?).to be_truthy
