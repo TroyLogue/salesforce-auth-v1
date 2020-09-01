@@ -35,7 +35,7 @@ podTemplate(containers: [
 }
 
 def checkout() {
-    branch = 'login-clean-up'
+    branch = env.BRANCH_NAME
 
     git(branch: branch,
         credentialsId: 'github_end-to-end-tests',
@@ -92,7 +92,7 @@ def test() {
     def result = null
     def taskName = "${env.JOB_NAME}".split('/').last()
 
-    result = sh(script: "bundle exec rake jenkins:${taskName}", returnStatus: true)
+    result = sh(script: "bundle exec rake jenkins:app-client", returnStatus: true)
     junit 'result.xml'
 
     if (result == 0) {
