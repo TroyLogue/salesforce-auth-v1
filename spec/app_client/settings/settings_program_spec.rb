@@ -1,16 +1,10 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative './pages/settings_programs_page'
 
 describe '[Settings - Programs]', :settings, :app_client do
   include Login
 
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:program_table) { Settings::ProgramTable.new(@driver) }
   let(:program_form) { Settings::ProgramForm.new(@driver) }

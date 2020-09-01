@@ -1,16 +1,14 @@
-require_relative '../../../spec_helper'
 require_relative '../pages/login_email'
 require_relative '../pages/login_password'
 
 module Login
+  attr_accessor :login_email, :login_password
   RSpec.configure do |config|
     config.before(:each) do
       @login_email = LoginEmail.new(@driver)
       @login_password = LoginPassword.new(@driver)
     end
   end
-
-  attr_reader :email_address, :password
 
   # TODO UU3-26998 UU3-26999 UU3-27000 UU3-27001
   # manage users per staging, training, and prod envs
@@ -60,12 +58,12 @@ module Login
   INSECURE_PASSWORD = 'password123'
 
   def log_in_as(email_address, password = DEFAULT_PASSWORD)
-    base_page.get ''
-    expect(login_email.page_displayed?).to be_truthy
+    @login_email.get ''
+    expect(@login_email.page_displayed?).to be_truthy
 
-    login_email.submit(email_address)
-    expect(login_password.page_displayed?).to be_truthy
+    @login_email.submit(email_address)
+    expect(@login_password.page_displayed?).to be_truthy
 
-    login_password.submit(password)
+    @login_password.submit(password)
   end
 end

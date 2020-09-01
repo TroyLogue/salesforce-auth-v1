@@ -1,9 +1,6 @@
-require_relative '../../spec_helper'
 require_relative '../../../lib/mailtrap_helper'
 require_relative '../auth/helpers/login'
 require_relative '../auth/pages/forgot_password'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../auth/pages/reset_password'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
@@ -17,8 +14,6 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
   let(:base_page) { BasePage.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
   let(:forgot_password) { ForgotPassword.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:reset_password) { ResetPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }

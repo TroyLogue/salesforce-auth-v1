@@ -1,6 +1,7 @@
 require 'bundler'
 require 'fileutils'
 require 'rubygems'
+require 'date'
 require_relative '../lib/browserstack_credentials'
 
 # Specifies required dependencies per groups defined in Gemfile
