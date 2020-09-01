@@ -2,7 +2,7 @@ require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 
-describe '[Auth - Login/Logout]', :app_client, :auth, :login do
+describe '[Auth - Login - Logout]', :app_client, :auth, :login do
   include Login
 
   let(:home_page) { HomePage.new(@driver) }
