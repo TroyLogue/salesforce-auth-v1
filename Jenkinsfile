@@ -35,7 +35,7 @@ podTemplate(containers: [
 }
 
 def checkout() {
-    branch = 'master'
+    branch = 'login-clean-up'
 
     git(branch: branch,
         credentialsId: 'github_end-to-end-tests',
