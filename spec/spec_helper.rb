@@ -151,6 +151,7 @@ RSpec.configure do |config|
 
   config.before(:each) do
     @driver.manage.delete_all_cookies
+    @driver.manage.window.maximize
   end
 
   # config.verbose_retry = false # recommended for development mode
