@@ -92,7 +92,7 @@ def test() {
     def result = null
     def taskName = "${env.JOB_NAME}".split('/').last()
 
-    result = sh(script: "bundle exec rake jenkins:app_client", returnStatus: true)
+    result = sh(script: "bundle exec rake jenkins:${taskName}", returnStatus: true)
     junit 'result.xml'
 
     if (result == 0) {
