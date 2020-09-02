@@ -1,6 +1,7 @@
 require 'bundler'
 require 'fileutils'
 require 'rubygems'
+require 'date'
 require_relative '../lib/browserstack_credentials'
 
 # Specifies required dependencies per groups defined in Gemfile
@@ -144,7 +145,7 @@ RSpec.configure do |config|
         ENV['mailtrap_id'] = '531559'
       end
     rescue Exception => e
-      p "Exception in spec_helper.rb: #{e}"
+      p "Exception in spec_helper.rb - before hook: #{e}"
     end
   end
 
@@ -158,26 +159,31 @@ RSpec.configure do |config|
 
   # reporting
   config.after(:each) do |example|
-    if ENV['host'] == 'browserstack'
-      caps = Selenium::WebDriver::Remote::Capabilities.send(ENV['browser'])
-      if example.exception.nil?
-        # do not upload video if test passed
-        caps['browserstack.video'] = 'false'
+    begin
+      if ENV['host'] == 'browserstack'
+        caps = Selenium::WebDriver::Remote::Capabilities.send(ENV['browser'])
+        if example.exception.nil?
+          # do not upload video if test passed
+          caps['browserstack.video'] = 'false'
+        else
+          # true is the default value but stating explicitly for readability
+          caps['browserstack.video'] = 'true'
+        end
       else
-        # true is the default value but stating explicitly for readability
-        caps['browserstack.video'] = 'true'
-      end
-    else
-      # if results directory doesn't exist, create it
-      results_directory = File.join(Dir.pwd, 'results/')
-      Dir.mkdir(results_directory) unless File.exists?(results_directory)
+        # if results directory doesn't exist, create it
+        results_directory = File.join(Dir.pwd, 'results')
+        Dir.mkdir(results_directory) unless File.exist?(results_directory)
 
-      if example.exception
-        @driver.save_screenshot("#{results_directory}/#{example.metadata[:full_description]}-#{base_page.generate_timestamp}.png")
+        if example.exception
+          @driver.save_screenshot("#{results_directory}/#{example.metadata[:full_description]}-#{Time.now.strftime('%m%d%Y%H%M%S')}.png")
+        end
+        # uncomment the lines below to save screenshot on every test, not just on failure
+        # else
+        #   @driver.save_screenshot(File.join(Dir.pwd, "#{results_directory}/visual-checks/#{example.metadata[:full_description]}-#{Time.now.strftime('%m%d%Y%H%M%S')}.png"))
+
       end
-      # uncomment the lines below to save screenshot on every test, not just on failure
-      # else
-      #   @driver.save_screenshot(File.join(Dir.pwd, "#{results_directory}/visual-checks/#{example.metadata[:full_description]}-#{page.generate_timestamp}.png"))
+    rescue Exception => e
+      p "Exception in spec_helper.rb - after hook: #{e}"
     end
     @driver.quit
   end

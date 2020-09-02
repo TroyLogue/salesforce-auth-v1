@@ -1,18 +1,12 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative './pages/assessment_page'
-require_relative '../../shared_components/base_page'
 require_relative '../referrals/pages/referral'
 
 describe '[Assessments - Referrals]', :assessments, :app_client do
   include Login
 
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }

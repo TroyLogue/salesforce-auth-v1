@@ -1,5 +1,3 @@
-require_relative '../spec_helper'
-require_relative '../shared_components/base_page'
 require_relative './pages/resource_directory'
 
 describe '[Resource Directory]', :resource_directory do
