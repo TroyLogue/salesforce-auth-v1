@@ -16,13 +16,6 @@ namespace :jenkins do
     ENV['environment'] = 'resource_directory_staging'
     exit run_in_parallel(processes: 1, tag: 'resource_directory')
   end
-
-  desc 'specs tagged resource_directory on chrome headless'
-  task :uuqa_1344 do |t|
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(processes: 1, tag: 'uuqa_1344')
-  end
 end
 
 namespace :docker do
