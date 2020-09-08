@@ -61,12 +61,30 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
     let (:reset_user) { Login::RESET_PW_USER }
     let (:new_pw) { 'Uniteus123' }
 
+    it 'cancels password reset while logged in', :uuqa_1493 do
+      log_in_as(reset_user)
+      expect(home_page.page_displayed?).to be_truthy #checking for a successful login
+      user_menu.go_to_user_settings
+      expect(user_settings.page_displayed?).to be_truthy
+
+      # user_settings.click_reset_pw
+      # expect (reset_password.page_displayed?).to be_truthy
+
+      # forgot_password.cancel_password_reset
+      # should be back on the user settings page:
+      # expect(user_settings.page_displayed?).to be_truthy
+    end
+
     it 'cannot reset password to an insecure password', :uuqa_803 do
       log_in_as(reset_user)
       expect(home_page.page_displayed?).to be_truthy #checking for a successful login
       user_menu.go_to_user_settings
       expect(user_settings.page_displayed?).to be_truthy
 
+      # user_settings.click_reset_pw
+      # expect (reset_password.page_displayed?).to be_truthy
+
+      # update the below:
       user_settings.change_password(Login::INSECURE_PASSWORD)
       notification_text = notifications.error_text
       expect(notification_text).to include(Notifications::INSECURE_PASSWORD)
@@ -78,6 +96,10 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
       user_menu.go_to_user_settings
       expect(user_settings.page_displayed?).to be_truthy
 
+      # user_settings.click_reset_pw
+      # expect (reset_password.page_displayed?).to be_truthy
+
+      # change the below:
       user_settings.change_password(new_pw)
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::USER_UPDATED)
@@ -88,6 +110,10 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
       log_in_as(reset_user, new_pw)
       expect(home_page.page_displayed?).to be_truthy #checking for a successful login
       user_menu.go_to_user_settings
+      # user_settings.click_reset_pw
+      # expect (reset_password.page_displayed?).to be_truthy
+
+      # change the below:
       user_settings.change_password(Login::DEFAULT_PASSWORD)
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::USER_UPDATED)
