@@ -10,6 +10,8 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
 
   let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:facesheet_forms) { FacesheetForms.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:assessment) { FacesheetAssessment.new(@driver) }

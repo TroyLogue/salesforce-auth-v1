@@ -6,6 +6,8 @@ describe '[Dashboard - Client - Filter]', :clients, :app_client do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
 
   context('[as cc user]') do

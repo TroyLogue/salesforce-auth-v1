@@ -8,6 +8,8 @@ describe '[Referrals]', :app_client, :referrals do
 
   let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:new_referral) { Referral.new(@driver) }
 

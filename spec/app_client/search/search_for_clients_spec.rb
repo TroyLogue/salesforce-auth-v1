@@ -5,6 +5,8 @@ require_relative './pages/search_results_page'
 describe '[Search]', :app_client, :search do
   include Login
 
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:search_bar) { RightNav::SearchBar.new(@driver) }
   let(:search_results_page) { SearchResultsPage.new(@driver) }
 

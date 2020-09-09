@@ -10,6 +10,8 @@ describe '[Menu - New Client - Search]', :clients, :app_client do
 
   let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:create_menu) { RightNav::CreateMenu.new(@driver) }
   let(:search_client_page) { SearchClient.new(@driver) }
   let(:confirm_client_page) { ConfirmClient.new(@driver) }

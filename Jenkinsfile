@@ -66,7 +66,7 @@ def build() {
         script: "curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$chrome_major_version",
         returnStdout: true
         ).trim()
-
+  
     sh """
         wget https://chromedriver.storage.googleapis.com/$chromedriver_version/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip

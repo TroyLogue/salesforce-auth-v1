@@ -9,6 +9,8 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
 
   let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:assessment) { Assessment.new(@driver) }
   let(:referral) { Referral.new(@driver) }

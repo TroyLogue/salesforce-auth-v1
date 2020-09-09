@@ -5,6 +5,8 @@ require_relative './pages/settings_programs_page'
 describe '[Settings - Programs]', :settings, :app_client do
   include Login
 
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:program_table) { Settings::ProgramTable.new(@driver) }
   let(:program_form) { Settings::ProgramForm.new(@driver) }

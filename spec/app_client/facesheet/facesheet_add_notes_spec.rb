@@ -9,6 +9,8 @@ describe '[Facesheet]', :app_client, :facesheet do
   let(:left_nav) { LeftNav.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
   let(:facesheet_overview_page) { FacesheetOverviewPage.new(@driver)}
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
 
   context('[as org user]') do
     before {

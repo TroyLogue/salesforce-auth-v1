@@ -8,6 +8,8 @@ describe '[Facesheet]', :app_client, :facesheet do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_uploads_page) { FacesheetUploadsPage.new(@driver) }

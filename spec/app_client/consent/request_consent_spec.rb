@@ -10,6 +10,8 @@ describe '[Consent - Request Consent]', :consent, :app_client do
   let(:base_page) { BasePage.new(@driver) }
   let(:consent_modal) { ConsentModal.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:pending_consent_page) { PendingConsentPage.new(@driver) }
 

@@ -10,6 +10,15 @@ namespace :jenkins do
     exit run_in_parallel(processes: 1, tag: 'app_client')
   end
 
+  # UU3-48174 DEBUG errors running tests in multiple processes:
+  # To troubleshoot, use any tag(s) that efficiently reproduce the errors being debugged.
+  # The end goal is to update the app_client task with 2 processes and to delete this task.
+  task :app_client_2 do |t|
+    ENV['browser'] = 'chrome_headless'
+    ENV['environment'] = 'app_client_staging'
+    exit run_in_parallel(processes: 2, tag: 'referrals')
+  end
+
   desc 'specs tagged resource_directory on chrome headless'
   task :resource_directory do |t|
     ENV['browser'] = 'chrome_headless'
@@ -48,7 +57,7 @@ namespace :local do
   task :app_client_staging, :browser do |t, args|
     ENV['browser'] = args[:browser]
     ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(tag: 'app_client --tag app_client')
+    exit run_in_parallel(tag: 'app_client')
   end
 
   # presupposes a url is set in spec_helper

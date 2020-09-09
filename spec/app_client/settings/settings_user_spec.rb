@@ -5,6 +5,8 @@ require_relative './pages/settings_user_page'
 describe '[Settings - Users]', :settings, :app_client do
   include Login
 
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:user_table) { Settings::UserTable.new(@driver) }
   let(:user_form) { Settings::UserCard.new(@driver) }
