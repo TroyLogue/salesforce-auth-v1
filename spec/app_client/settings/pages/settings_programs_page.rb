@@ -7,6 +7,8 @@ module Settings
     NEW_PROGRAM_BTN = { css: '.ui-button.ui-button--primary' }
     PROGRAMS_LIST = { css: '.ui-base-card-header__title' }
     PROGRAM_EDIT = { xpath: './/h2[text()="%s"]/following-sibling::div/div/button' }
+    NEW_PROGRAM_BTN = { css: '[aria-label="New Program"]' }
+    PROGRAMS_CARD = { css: '.program-card' }
 
     def page_displayed?
       is_not_displayed?(PROGRAMS_TABLE_LOAD)
