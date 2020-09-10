@@ -1,4 +1,4 @@
-require_relative '../../../shared_components/base_page'
+require_ielative '../../../shared_components/base_page'
 
 module RightNav
   class SearchBar < BasePage
