@@ -6,6 +6,8 @@ describe '[Auth - Login - Logout]', :app_client, :auth, :login do
   include Login
 
   let(:home_page) { HomePage.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
 
   it 'Logs in with a valid email, then logs out', :uuqa_5 do

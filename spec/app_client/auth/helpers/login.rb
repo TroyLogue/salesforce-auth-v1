@@ -1,12 +1,12 @@
-require_relative '../pages/login_email'
-require_relative '../pages/login_password'
+# require_relative '../pages/login_email' # UU3-48209 uncomment login page-objects when task is addressed
+# require_relative '../pages/login_password'
 
 module Login
   attr_accessor :login_email, :login_password
   RSpec.configure do |config|
     config.before(:each) do
-      @login_email = LoginEmail.new(@driver)
-      @login_password = LoginPassword.new(@driver)
+      login_email = LoginEmail.new(@driver)
+      login_password = LoginPassword.new(@driver)
     end
   end
 
@@ -58,12 +58,12 @@ module Login
   INSECURE_PASSWORD = 'password123'
 
   def log_in_as(email_address, password = DEFAULT_PASSWORD)
-    @login_email.get ''
-    expect(@login_email.page_displayed?).to be_truthy
+    login_email.get ''
+    expect(login_email.page_displayed?).to be_truthy
 
-    @login_email.submit(email_address)
-    expect(@login_password.page_displayed?).to be_truthy
+    login_email.submit(email_address)
+    expect(login_password.page_displayed?).to be_truthy
 
-    @login_password.submit(password)
+    login_password.submit(password)
   end
 end

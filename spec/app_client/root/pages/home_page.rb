@@ -14,7 +14,6 @@ class HomePage < BasePage
   TIMELINE = { css: '.activity-stream' }
   TIMELINE_LOADING = { css: '.loading-entries__content' }
   INTERCOM_IFRAME = { css: '.intercom-launcher-frame' }
-  # Revisit INTERCOM_BTN selector once selector migration plan is complete
   INTERCOM_BTN = { css: '.intercom-launcher' }
   CLOSE_INTERCOM_BTN = INTERCOM_BTN
   PENDING_CONSENT_BTN = { css: '#incoming-pending-consent-tab' }

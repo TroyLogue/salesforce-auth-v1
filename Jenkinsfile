@@ -57,11 +57,16 @@ def build() {
     // Find the latest version at https://sites.google.com/a/chromium.org/chromedriver/downloads
     // that matches major versions, then use that version here.
     //
-    // This now automatically retrieves the version used by google-chrome-stable, but it also assumes
-    // that a chromedriver version exists that is an exact match of the google-chrome-stable version.
-    // 2020-08-26: 85.0.4183.83
-    chromedriver_version = sh(script: 'google-chrome-stable --version', returnStdout: true).trim().split(' ').last()
-
+    // This now automatically retrieves the version used by google-chrome-stable and sets the major version to a var.
+    // chromedriver and google-chrome-stable minor versions may differ.
+    // 2020-09-08: 85.0.4183.87
+    chrome_version = sh(script: 'google-chrome-stable --version', returnStdout: true).trim().split(' ').last()
+    chrome_major_version = chrome_version.substring(0,2)
+    chromedriver_version = sh(
+        script: "curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$chrome_major_version",
+        returnStdout: true
+        ).trim()
+  
     sh """
         wget https://chromedriver.storage.googleapis.com/$chromedriver_version/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip

@@ -9,6 +9,8 @@ describe '[Messaging - Facesheet - Preferences]', :app_client, :messaging do
   let(:home_page) { HomePage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_profile_page) { FacesheetProfilePage.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
 
   context('[as org user]') do
     before {

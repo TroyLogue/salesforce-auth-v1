@@ -1,6 +1,8 @@
 require_relative '../../shared_components/widgets/assistance_requests_widget.rb'
 
 describe '[Assistance Request]', :app_client, :assistance_request do
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:widget_page) { AssistanceRequestWidget.new(@driver) }
 
   it 'creates an assistance request', :uuqa_689 do

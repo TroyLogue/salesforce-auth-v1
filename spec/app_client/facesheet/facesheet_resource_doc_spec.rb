@@ -10,6 +10,8 @@ describe '[Facesheet]', :app_client, :facesheet do
 
   let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:new_referral) { Referral.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
