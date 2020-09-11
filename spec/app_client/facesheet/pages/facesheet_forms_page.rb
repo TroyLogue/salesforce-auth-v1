@@ -5,8 +5,8 @@ class FacesheetForms < BasePage
   INTAKES_TABLE = { css: '.intakes' }
   ASSESSMENTS_TABLE = { css: '.assessments-table' }
   ASSESSMENT_NAME = { xpath: '//td[text()="%s"]' }
-  CREATE_NEW_INTAKE_BTN = {css: '#create-new-intake-btn'}
-
+  CREATE_NEW_INTAKE_BTN = { css: '#create-new-intake-btn' }
+  FACESHEET_ASSESSMENTS = {css: '.facesheet-assessments'}
 
   def page_displayed?
     wait_for_spinner
@@ -21,6 +21,10 @@ class FacesheetForms < BasePage
   
   def create_new_intake
     click(CREATE_NEW_INTAKE_BTN)
+  end
+  
+  def assessments_displayed?
+    is_displayed?(FACESHEET_ASSESSMENTS)
   end
 
 end

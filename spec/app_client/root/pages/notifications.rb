@@ -29,6 +29,7 @@ class Notifications < BasePage
   INSECURE_PASSWORD = 'Password is not safe to use as it appears in a list of weak passwords. Please change your password to something more secure.'
   USER_UPDATED = 'User Successfully Updated'
   ACCESS_DENIED = 'Access to the requested resource has been forbidden.'
+  INTAKE_CREATED = 'Intake Successfully Created'
 
   def error_text
     find(ERROR_BANNER)

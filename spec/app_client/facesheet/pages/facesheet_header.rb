@@ -8,7 +8,6 @@ class FacesheetHeader < BasePage
   FORMS_TAB = { css: '#facesheet-forms-tab' }
   UPLOADS_TAB = { css: '#facesheet-uploads-tab' }
   REFERALS_TAB = { css: '#facesheet-referrals-tab' }
-  NOTIFICATION_SUCCESS = {css: 'div.notification.success'}
   FACESHEET_ASSESSMENTS = {css: '.facesheet-assessments'}
 
   def page_displayed?
@@ -42,14 +41,5 @@ class FacesheetHeader < BasePage
   def go_to_forms
     click(FORMS_TAB)
     wait_for_spinner 
-  end
-
-  def green_ribbon_displayed?
-    is_displayed?(NOTIFICATION_SUCCESS)
-  end
-
-  def assessments_displayed?
-    is_displayed?(FACESHEET_ASSESSMENTS)
-    end
-
+  end  
 end
