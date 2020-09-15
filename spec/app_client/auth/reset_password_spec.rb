@@ -90,8 +90,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
       user_settings.click_reset_pw
       expect(user_edit_password.page_displayed?).to be_truthy
 
-      user_edit_password.update_password(original_pw, insecure_pw)
-      expect(user_edit_password.page_displayed?).to be_truthy
+      user_edit_password.update_password(current_pw: original_pw, new_pw: insecure_pw)
       expect(user_edit_password.insecure_pw_message_displayed?).to be_truthy
     end
 
@@ -104,7 +103,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
       user_settings.click_reset_pw
       expect(user_edit_password.page_displayed?).to be_truthy
 
-      user_edit_password.update_password(original_pw, new_pw)
+      user_edit_password.update_password(current_pw: original_pw, new_pw: new_pw)
 
       # verify success:
       expect(login_email.page_displayed?).to be_truthy
@@ -119,7 +118,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
       user_settings.click_reset_pw
       expect(user_edit_password.page_displayed?).to be_truthy
 
-      user_edit_password.update_password(new_pw, original_pw)
+      user_edit_password.update_password(current_pw: new_pw, new_pw: original_pw)
 
       # verify success:
       expect(login_email.page_displayed?).to be_truthy

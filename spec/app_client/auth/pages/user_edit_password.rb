@@ -23,7 +23,7 @@ class UserEditPassword < BasePage
     is_displayed?(CANCEL_BUTTON)
   end
 
-  def update_password(current_pw, new_pw)
+  def update_password(current_pw:, new_pw:)
     enter(current_pw, CURRENT_PASSWORD_INPUT)
     enter(new_pw, NEW_PASSWORD_INPUT)
     enter(new_pw, CONFIRM_NEW_PASSWORD)
