@@ -23,7 +23,6 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:user_settings) { UserSettings.new(@driver) }
 
-=begin
   context('[as cc user] From login page,') do
     let(:email) { Login::CC_HARVARD }
 
@@ -61,7 +60,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, :order => :defined do
       expect(login_email.page_displayed?).to be_truthy
     end
   end
-=end
+
   context('[as org user] From user settings page,') do
     let (:reset_user) { Login::RESET_PW_USER }
     let (:original_pw) { Login::DEFAULT_PASSWORD }
