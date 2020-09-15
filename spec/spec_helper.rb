@@ -98,7 +98,7 @@ RSpec.configure do |config|
       # default web_url, auth_url and  api_url is app-client staging; others can be passed as variables
       case ENV['environment'] ||= 'app_client_staging'
       when 'devqa'
-        ENV['web_url'] = 'https://devqa.uniteusdev.com/uu3-do-98' # add bucket here or pass at runtime
+        ENV['web_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
         ENV['auth_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
         ENV['api_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
       when 'app_client_staging'
