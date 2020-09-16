@@ -19,13 +19,14 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
   IVY_INTAKE_ASSESSMENT = "Ivy League Intake Form"
   QUESTION_ONE_TEXT = Faker::Lorem.sentence(word_count: 5)
   QUESTION_TWO_TEXT = Faker::Lorem.sentence(word_count: 5)
-  ASSESSMENT_FORM_VALUES = [QUESTION_ONE_TEXT, QUESTION_TWO_TEXT]
 
   # military assessment
   MILITARY_INFORMATION = "Military Information"
 
   context('[as cc user] On a new incoming referral') do
     before {
+      @assessment_form_values = [QUESTION_ONE_TEXT, QUESTION_TWO_TEXT]
+
       # Generate pending referral for CC user:
       log_in_as(Login::ORG_YALE)
       expect(homepage.page_displayed?).to be_truthy
@@ -49,7 +50,7 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       referral.open_assessment(assessment_name: @assessment)
       expect(assessment.page_displayed?).to be_truthy
       expect(assessment.is_not_filled_out?).to be_truthy
-      assessment.edit_and_save(responses: ASSESSMENT_FORM_VALUES)
+      assessment.edit_and_save(responses: @assessment_form_values)
       user_menu.log_out
 
       # Log in as CC user to view referral
@@ -76,7 +77,7 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
 
       # verify assessment responses were saved
       assessment_text = assessment.assessment_text
-      ASSESSMENT_FORM_VALUES.each do |value|
+      @assessment_form_values.each do |value|
         expect(assessment_text).to include(value.to_s)
       end
     end

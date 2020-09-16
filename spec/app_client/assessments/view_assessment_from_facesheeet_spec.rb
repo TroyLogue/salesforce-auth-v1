@@ -67,10 +67,10 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(assessment.page_displayed?).to be_truthy
 
       # verify information on assessment
-      ASSESSMENT_FORM_VALUES = [SINGLE_LINE_TEXT, MULTI_LINE_TEXT, EMAIL_ADDRESS, RANDOM_NUMBER, DISPLAY_DATE]
+      assessment_form_values = [SINGLE_LINE_TEXT, MULTI_LINE_TEXT, EMAIL_ADDRESS, RANDOM_NUMBER, DISPLAY_DATE]
 
       assessment_text = assessment.assessment_text
-      ASSESSMENT_FORM_VALUES.each do |value|
+      assessment_form_values.each do |value|
         expect(assessment_text).to include(value.to_s)
       end
     end
