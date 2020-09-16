@@ -35,7 +35,7 @@ podTemplate(containers: [
 }
 
 def checkout() {
-    branch = 'master'
+    branch = getGitBranchName()
 
     git(branch: branch,
         credentialsId: 'github_end-to-end-tests',
@@ -55,8 +55,18 @@ def build() {
     // Install ChromeDriver. Major version must match google-chrome-stable. Find current version
     // in Jenkins logs from the output of the above apt-get install command.
     // Find the latest version at https://sites.google.com/a/chromium.org/chromedriver/downloads
-    // that matches major versions, then use that version here
-    chromedriver_version = '83.0.4103.39'
+    // that matches major versions, then use that version here.
+    //
+    // This now automatically retrieves the version used by google-chrome-stable and sets the major version to a var.
+    // chromedriver and google-chrome-stable minor versions may differ.
+    // 2020-09-08: 85.0.4183.87
+    chrome_version = sh(script: 'google-chrome-stable --version', returnStdout: true).trim().split(' ').last()
+    chrome_major_version = chrome_version.substring(0,2)
+    chromedriver_version = sh(
+        script: "curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$chrome_major_version",
+        returnStdout: true
+        ).trim()
+  
     sh """
         wget https://chromedriver.storage.googleapis.com/$chromedriver_version/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
@@ -100,4 +110,8 @@ def test() {
     }
 
     return result
+}
+
+def getGitBranchName() {
+    return scm.branches[0].name
 }

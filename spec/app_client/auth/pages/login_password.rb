@@ -6,7 +6,7 @@ class LoginPassword < BasePage
   INVALID_TEXT = 'Invalid Email or password.'.freeze
   NOT_YOU_LINK = { css: '#not-you-link' }.freeze
   PASSWORD_INPUT = { css: '#app_2_user_password' }.freeze
-  SUBMIT_BUTTON = { css: 'input[value="Sign In"]' }.freeze
+  SUBMIT_BUTTON = { css: 'input[value="Sign in"]' }.freeze
   USER_EMAIL = { css: '#user-email' }.freeze
 
   # string to pass to enter_via_js which uses getElementById

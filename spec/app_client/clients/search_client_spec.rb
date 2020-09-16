@@ -1,14 +1,11 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative '../clients/pages/search_client_page'
 require_relative '../clients/pages/confirm_client_page'
 require_relative '../clients/pages/add_client_page'
 
-describe '[Dashboard - Client - Search]', :clients, :app_client do
+describe '[Menu - New Client - Search]', :clients, :app_client do
   include Login
 
   let(:base_page) { BasePage.new(@driver) }
@@ -28,7 +25,7 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
 
     it 'Search for an existing client', :uuqa_1301 do
       # Create Contact
-      @contact = Setup::Data.create_harvard_client_with_all_fields(token: base_page.get_uniteus_api_token)
+      @contact = Setup::Data.create_columbia_client_with_all_fields(token: base_page.get_uniteus_api_token)
 
       create_menu.start_new_client
       expect(search_client_page.page_displayed?).to be_truthy

@@ -1,7 +1,4 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative './pages/search_results_page'
 
@@ -10,7 +7,6 @@ describe '[Search]', :app_client, :search do
 
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
   let(:search_bar) { RightNav::SearchBar.new(@driver) }
   let(:search_results_page) { SearchResultsPage.new(@driver) }
 
@@ -28,7 +24,7 @@ describe '[Search]', :app_client, :search do
     it 'Search Page Results Table', :uuqa_663 do
       search_bar.go_to_search_results_page('E')
       expect(search_bar.are_results_not_displayed?).to be_truthy
-      expect(search_results_page.get_search_name_list).to all(start_with('E'))
+      expect(search_results_page.get_search_name_list).to all(include('E'))
     end
   end
 end

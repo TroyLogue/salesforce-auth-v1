@@ -7,6 +7,9 @@ module Settings
     USER_LIST = { css: '.ui-table-body > tr > td:nth-child(1) > a' }
     USER_NAME = { xpath: './/*[@class="ui-table-body"]/tr/td/a[text()="%s"]' }
     ADD_USER_BTN = { css: '#add-user-btn' }
+    ADD_USER_BTN = { css: '#add-user-btn' }
+    USERS_TABLE = { css: '.ui-table-body' }
+    USERS_SEARCH_BOX = { css: '#search-text' }
 
     def page_displayed?
       wait_for_table_load

@@ -1,7 +1,4 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/left_nav'
 require_relative '../clients/pages/clients_page'
 require_relative './pages/facesheet_overview_page'
@@ -9,12 +6,11 @@ require_relative './pages/facesheet_overview_page'
 describe '[Facesheet]', :app_client, :facesheet do
   include Login
 
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
   let(:left_nav) { LeftNav.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
   let(:facesheet_overview_page) { FacesheetOverviewPage.new(@driver)}
+  let(:login_email) { LoginEmail.new(@driver) }
+  let(:login_password) { LoginPassword.new(@driver) }
 
   context('[as org user]') do
     before {

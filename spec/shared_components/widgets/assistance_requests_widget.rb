@@ -1,5 +1,4 @@
 require_relative '../../shared_components/base_page'
-require_relative '../../spec_helper'
 
 class AssistanceRequestWidget < BasePage
   WIDGET_FORM = { css: 'form' }

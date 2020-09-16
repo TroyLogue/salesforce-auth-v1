@@ -1,7 +1,4 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative './pages/settings_profile_page'
 
@@ -10,7 +7,6 @@ describe '[Settings - Profile]', :settings, :app_client do
 
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:org_profile) { Settings::OrganizationProfile.new(@driver) }
 
@@ -36,7 +32,7 @@ describe '[Settings - Profile]', :settings, :app_client do
 
       #Phone
       org_profile.save_phone(phone)
-      expect(org_profile.get_phone).to eq(base_page.number_to_phone_format(phone))
+      expect(org_profile.get_phone).to eq(org_profile.number_to_phone_format(phone))
 
       #Email
       org_profile.save_email(email)

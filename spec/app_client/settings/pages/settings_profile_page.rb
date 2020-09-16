@@ -35,6 +35,9 @@ module Settings
     SAVE_HOURS = { css: '#edit-hours-modal-save-btn' }
     TEXT_HOURS = { css: '.ui-hours-of-operation-day__hours' }
 
+    EDIT_PENCIL_ICON = { css: '.ui-icon' }
+    ORG_PROFILE_DESCRIPTION = { css: '.org-profile-description' }
+
     def page_displayed?
       is_displayed?(EDIT_DESCRIPTION)
     end

@@ -1,7 +1,4 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative './pages/settings_user_page'
 
@@ -10,7 +7,6 @@ describe '[Settings - Users]', :settings, :app_client do
 
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:user_table) { Settings::UserTable.new(@driver) }
   let(:user_form) { Settings::UserCard.new(@driver) }

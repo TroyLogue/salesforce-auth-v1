@@ -1,7 +1,4 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/left_nav'
 require_relative '../root/pages/notifications'
 require_relative './pages/network_browse_drawer'
@@ -16,7 +13,6 @@ describe '[Network - Browse Map - Browse Drawer]', :network, :app_client do
   let(:network_browse_drawer) { NetworkBrowseDrawer.new(@driver) }
   let(:network_browse_map) { NetworkBrowseMap.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
 
   context('[as cc user]') do
     before {
