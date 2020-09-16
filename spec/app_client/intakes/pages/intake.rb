@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class Intake < BasePage
+  # frozen_string_literal: true
   INTAKE_NAVIGATION = { css: '.intake-container__navigation' }.freeze
   INTAKE_FORM = { css: '.intake-container__content' }.freeze
 
@@ -12,13 +15,13 @@ class Intake < BasePage
 
   # Intake Navigation
   # Program Services
-  BASIC_INFORMATION = { css: '#basic-information-nav-item'}.freeze
-  CONTACT_INFORMATION = {id: 'contact-information-nav-item'}.freeze
-  LOCATION_INFORMATION = {id: 'location-information-nav-item'}.freeze
-  HOUSEHOLD_INFORMATION = {id: 'household-information-nav-item'}.freeze
-  OTHER_INFORMATION = {id: 'other-information-nav-item'}.freeze
-  MILITARY_INFORMATION = {id: 'military-information-nav-item'}.freeze
-  GENERAL_NOTES = {id: 'general-notes-nav-item'}.freeze
+  BASIC_INFORMATION = { css: '#basic-information-nav-item' }.freeze
+  CONTACT_INFORMATION = { id: 'contact-information-nav-item' }.freeze
+  LOCATION_INFORMATION = { id: 'location-information-nav-item' }.freeze
+  HOUSEHOLD_INFORMATION = { id: 'household-information-nav-item' }.freeze
+  OTHER_INFORMATION = { id: 'other-information-nav-item' }.freeze
+  MILITARY_INFORMATION = { id: 'military-information-nav-item' }.freeze
+  GENERAL_NOTES = { id: 'general-notes-nav-item' }.freeze
   SERVICE_INFORMATION = {link_text: 'Service Information'}.freeze
   CARE_COORDINATOR = {id: 'care-coordinator-nav-item'}.freeze
 
@@ -74,7 +77,7 @@ class Intake < BasePage
     click(OTHER_INFORMATION)
   end
 
-  def select_marital_status 
+  def select_marital_status
     click(MARITAL_STATUS)
     click(MARITAL_STATUS_OPTION)
   end
