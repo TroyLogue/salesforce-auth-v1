@@ -4,9 +4,7 @@ require_relative '../root/pages/notifications'
 require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
-require_relative '../clients/pages/clients_page'
 require_relative '../root/pages/home_page'
-require_relative '../root/pages/left_nav'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../intakes/pages/intake'
 require_relative '../facesheet/pages/facesheet_forms_page'
@@ -17,13 +15,10 @@ describe '[Intake]', :app_client, :intake do
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
-  let(:clients_page) { ClientsPage.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
-  let(:left_nav) { LeftNav.new(@driver) }
   let(:facesheet_forms_page) { FacesheetForms.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
-  let(:intake_page) { Intake.new(@driver)}
-  let(:facesheet_profile_page) {FacesheetProfilePage.new(@driver)}
+  let(:intake_page) { Intake.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
   context('[as org user]') do

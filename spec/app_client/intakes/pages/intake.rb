@@ -22,12 +22,12 @@ class Intake < BasePage
   OTHER_INFORMATION = { id: 'other-information-nav-item' }.freeze
   MILITARY_INFORMATION = { id: 'military-information-nav-item' }.freeze
   GENERAL_NOTES = { id: 'general-notes-nav-item' }.freeze
-  SERVICE_INFORMATION = {link_text: 'Service Information'}.freeze
-  CARE_COORDINATOR = {id: 'care-coordinator-nav-item'}.freeze
+  SERVICE_INFORMATION = { link_text: 'Service Information' }.freeze
+  CARE_COORDINATOR = { id: 'care-coordinator-nav-item' }.freeze
 
   # Other Information fields
-  MARITAL_STATUS = {css: '#marital-status + .choices__list'}.freeze
-  GENDER = {css: '#gender + .choices__list'}.freeze
+  MARITAL_STATUS = { css: '#marital-status + .choices__list' }.freeze
+  GENDER = { css: '#gender + .choices__list'}.freeze
   RACE = {css: '#race + .choices__list'}.freeze
   ETHNICITY = {css: '#ethnicity + .choices__list'}.freeze
   CITIZENSHIP = {css: '#citizenship + .choices__list'}.freeze
