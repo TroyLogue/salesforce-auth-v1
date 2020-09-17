@@ -31,7 +31,7 @@ describe '[Intake]', :app_client, :intake do
         base_page.get_uniteus_api_token)
     end
 
-    it 'creates and saves new intake', :uuqa_81 do
+    it 'creates and saves new intake', :uuqa_81, :uuqa_77 do
       facesheet_header.go_to_facesheet_with_contact_id(
         id: @contact.contact_id,
         tab: 'forms'
@@ -62,11 +62,11 @@ describe '[Intake]', :app_client, :intake do
       # add intake note
       intake_note = Faker::Lorem.sentence(word_count: 5)
       intake_page.add_note(intake_note)
-      intake_page.get_text_of_first_marital_status
-      intake_page.get_text_of_first_gender
-      intake_page.get_text_of_first_race
-      intake_page.get_text_of_first_ethnicity
-      intake_page.get_text_of_first_citizenship
+      marital_status = intake_page.get_text_of_selected_marital_status
+      gender = intake_page.get_text_of_selected_gender
+      race = intake_page.get_text_of_selected_race
+      ethnicity = intake_page.get_text_of_selected_ethnicity
+      citizenship = intake_page.get_text_of_selected_citizenship
 
       # check need action checkbox and save
       intake_page.check_needs_action
@@ -77,7 +77,9 @@ describe '[Intake]', :app_client, :intake do
       expect(notification_text).to include(Notifications::INTAKE_CREATED)
       expect(facesheet_forms_page.assessments_displayed?).to be_truthy
       # verify selected and inputted other information display
-      expect(intake_page.verify_other_information).to be_truthy
+      facesheet_forms_page.view_intake
+      expect(intake_page.other_information_displayed?).to be_truthy
+      expect(intake_page.selected_options_saved?(marital_status: marital_status, gender: gender, race: race, ethnicity: ethnicity, citizenship: citizenship)).to be_truthy
     end
   end
 end

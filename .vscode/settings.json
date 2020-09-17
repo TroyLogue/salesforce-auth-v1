@@ -1,7 +1,0 @@
-{
-    "ruby.lint": {
-      "standard": true
-    },
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": false
-  }

@@ -20,10 +20,23 @@ class Intake < BasePage
   LOCATION_INFORMATION = { id: 'location-information-nav-item' }.freeze
   HOUSEHOLD_INFORMATION = { id: 'household-information-nav-item' }.freeze
   OTHER_INFORMATION = { id: 'other-information-nav-item' }.freeze
+  INSURANCE_INFORMATION = { id: 'insurance-information-nav-item' }.freeze
   MILITARY_INFORMATION = { id: 'military-information-nav-item' }.freeze
   GENERAL_NOTES = { id: 'general-notes-nav-item' }.freeze
   SERVICE_INFORMATION = { link_text: 'Service Information' }.freeze
   CARE_COORDINATOR = { id: 'care-coordinator-nav-item' }.freeze
+  SERVICE_NEED = { css: '#select-need + .choices__list' }.freeze
+
+  # service need
+  SERVICE_TYPE_LINK = { css: '.service-type.active' }.freeze
+  SERVICE_NEED_CARD = { css: '.needtarget' }.freeze
+  REMOVE_BUTTON = { css: 'a[title = "Remove intake need"]' }.freeze
+
+  # insurance information
+  MEDICARE_BENIFIARY_ID_INPUT = { id: '#insurance-id-0' }.freeze
+  MEDICAID_ID_INPUT = { id: '#insurance-id-1' }.freeze
+  STATE = { css: '#insurance-state-1 + .choices__list' }.freeze
+  DEFAULT_STATE_NEW_YORK = { id: 'choices-insurance-state-1-item-choice-38' }.freeze
 
   # Other Information fields
   MARITAL_STATUS = { css: '#marital-status + .choices__list' }.freeze
@@ -34,13 +47,12 @@ class Intake < BasePage
   SSN_INPUT = { css: 'input#ssn' }.freeze
 
   # dropdown menu first options
-  MARITAL_STATUS_OPTION = { id: 'choices-marital-status-item-choice-1' }.freeze
-  # gender first option locator is having locator as a second option, but actually is a first option
-  GENDER_OPTION = { id: 'choices-gender-item-choice-2' }.freeze
-  RACE_OPTION = { id: 'choices-race-item-choice-1' }.freeze
-  ETHNICITY_OPTION = { id: 'choices-ethnicity-item-choice-1' }.freeze
-  # citizenship first option is having locator as a third option, but actually is a first option
-  CITIZENSHIP_OPTION = { id: 'choices-citizenship-item-choice-3' }.freeze
+  MARITAL_STATUS_FIRST_OPTION = { id: 'choices-marital-status-item-choice-1' }.freeze
+  GENDER_FIRST_OPTION = { id: 'choices-gender-item-choice-2' }.freeze
+  RACE_FIRST_OPTION = { id: 'choices-race-item-choice-1' }.freeze
+  ETHNICITY_FIRST_OPTION = { id: 'choices-ethnicity-item-choice-1' }.freeze
+  CITIZENSHIP_FIRST_OPTION = { id: 'choices-citizenship-item-choice-3' }.freeze
+  SERVICE_FIRST_OPTION = { id: '#choices-select-need-item-choice-2' }.freeze
 
   # selected options
   SELECTED_MARITAL_STATUS = { css: '#marital-status option[selected]' }.freeze
@@ -56,9 +68,13 @@ class Intake < BasePage
   NEEDS_ACTION_CHECKBOX = { css: '#needs-action-checkbox-field + label' }.freeze
 
   # verify or view intake
-  VIEW_BUTTON = { css: '.text-center a' }.freeze
   INTAKE_DETAIL_OTHER_INFORMATION = { css: '.intake-detail-other-information' }.freeze
   NOTES_TEXT = { css: '.intake-card__info-result.normal-text' }.freeze
+  MARITAL_STATUS_TEXT = { css: '#other-information div:nth-child(3) div' }.freeze
+  GENDER_TEXT = { css: '#other-information div:nth-child(4) div' }.freeze
+  RACE_TEXT = { css: '#other-information div:nth-child(5) div' }.freeze
+  ETHNICITY_TEXT = { css: '#other-information div:nth-child(6) div' }.freeze
+  CITIZENSHIP_TEXT = { css: '#other-information div:nth-child(7) div' }.freeze
 
   def page_displayed?
     is_displayed?(INTAKE_NAVIGATION) &&
@@ -93,27 +109,27 @@ class Intake < BasePage
 
   def select_marital_status_first_option
     click(MARITAL_STATUS)
-    click(MARITAL_STATUS_OPTION)
+    click(MARITAL_STATUS_FIRST_OPTION)
   end
 
   def select_gender_first_option
     click(GENDER)
-    click(GENDER_OPTION)
+    click(GENDER_FIRST_OPTION)
   end
 
   def select_race_first_option
     click(RACE)
-    click(RACE_OPTION)
+    click(RACE_FIRST_OPTION)
   end
 
   def select_ethnicity_first_option
     click(ETHNICITY)
-    click(ETHNICITY_OPTION)
+    click(ETHNICITY_FIRST_OPTION)
   end
 
   def select_citzenship_first_option
     click(CITIZENSHIP)
-    click(CITIZENSHIP_OPTION)
+    click(CITIZENSHIP_FIRST_OPTION)
   end
 
   def input_ssn(ssn_number)
@@ -129,29 +145,36 @@ class Intake < BasePage
     click(NEEDS_ACTION_CHECKBOX)
   end
 
-  def get_text_of_first_marital_status
+  def get_text_of_selected_marital_status
     text(SELECTED_MARITAL_STATUS)
   end
 
-  def get_text_of_first_gender
+  def get_text_of_selected_gender
     text(SELECTED_GENDER)
   end
 
-  def get_text_of_first_race
+  def get_text_of_selected_race
     text(SELECTED_RACE)
   end
 
-  def get_text_of_first_ethnicity
+  def get_text_of_selected_ethnicity
     text(SELECTED_ETHNICITY)
   end
 
-  def get_text_of_first_citizenship
+  def get_text_of_selected_citizenship
     text(SELECTED_CITIZENSHIP)
   end
 
-  def verify_other_information
-    click(VIEW_BUTTON)
+  def other_information_displayed?
     is_displayed?(INTAKE_DETAIL_OTHER_INFORMATION) &&
       is_displayed?(NOTES_TEXT)
+  end
+
+  def selected_options_saved?(marital_status:, gender:, race:, ethnicity:, citizenship:)
+    text_include?(marital_status, MARITAL_STATUS_TEXT) &&
+      text_include?(gender, GENDER_TEXT) &&
+      text_include?(race, RACE_TEXT) &&
+      text_include?(ethnicity, ETHNICITY_TEXT) &&
+      text_include?(citizenship, CITIZENSHIP_TEXT)
   end
 end

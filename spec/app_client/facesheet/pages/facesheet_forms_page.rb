@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class FacesheetForms < BasePage
@@ -7,6 +9,7 @@ class FacesheetForms < BasePage
   ASSESSMENT_NAME = { xpath: '//td[text()="%s"]' }.freeze
   CREATE_NEW_INTAKE_BTN = { css: '#create-new-intake-btn' }.freeze
   FACESHEET_ASSESSMENTS = { css: '.facesheet-assessments' }.freeze
+  VIEW_BUTTON = { css: '.text-center a' }.freeze
 
   def page_displayed?
     wait_for_spinner
@@ -25,5 +28,10 @@ class FacesheetForms < BasePage
 
   def assessments_displayed?
     is_displayed?(FACESHEET_ASSESSMENTS)
+  end
+
+  def view_intake
+    click(VIEW_BUTTON)
+    wait_for_spinner
   end
 end
