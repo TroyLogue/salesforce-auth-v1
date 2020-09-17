@@ -42,28 +42,31 @@ describe '[Intake]', :app_client, :intake do
       # create new intake from facesheet form
       facesheet_forms_page.create_new_intake
       expect(intake_page.page_displayed?).to be_truthy
-      expect(intake_page.is_info_prefilled?(new_user: @contact)).to be_truthy
+      # Basic info is prefilled
+      expect(intake_page.is_info_prefilled?(
+               fname: @contact.fname,
+               lname: @contact.lname,
+               dob: @contact.dob_formatted
+             )).to be_truthy
 
       # enter other information
       intake_page.select_other_information
-      marital_status = intake_page.select_marital_status
-      gender = intake_page.select_gender
-      race = intake_page.select_race
-      ethnicity = intake_page.select_ethnicity
-      citizenship = intake_page.select_citzenship
+      intake_page.select_marital_status_first_option
+      intake_page.select_gender_first_option
+      intake_page.select_race_first_option
+      intake_page.select_ethnicity_first_option
+      intake_page.select_citzenship_first_option
       # Generate a valid US Social Security number
       ssn_number = Faker::IDNumber.valid
       intake_page.input_ssn(ssn_number)
       # add intake note
       intake_note = Faker::Lorem.sentence(word_count: 5)
       intake_page.add_note(intake_note)
-      expect(intake_page.get_text_of_first_marital_status).to eq(marital_status)
-      expect(intake_page.get_text_of_first_gender).to eq(gender)
-      expect(intake_page.get_text_of_first_race).to eq(race)
-      expect(intake_page.get_text_of_first_ethnicity).to eq(ethnicity)
-      expect(intake_page.get_text_of_first_citizenship).to eq(citizenship)
-      intake_page.get_text_of_ssn
-      intake_page.get_text_of_note
+      intake_page.get_text_of_first_marital_status
+      intake_page.get_text_of_first_gender
+      intake_page.get_text_of_first_race
+      intake_page.get_text_of_first_ethnicity
+      intake_page.get_text_of_first_citizenship
 
       # check need action checkbox and save
       intake_page.check_needs_action
@@ -73,6 +76,8 @@ describe '[Intake]', :app_client, :intake do
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::INTAKE_CREATED)
       expect(facesheet_forms_page.assessments_displayed?).to be_truthy
+      # verify selected and inputted other information display
+      expect(intake_page.verify_other_information).to be_truthy
     end
   end
 end

@@ -35,9 +35,11 @@ class Intake < BasePage
 
   # dropdown menu first options
   MARITAL_STATUS_OPTION = { id: 'choices-marital-status-item-choice-1' }.freeze
+  # gender first option locator is having locator as a second option, but actually is a first option
   GENDER_OPTION = { id: 'choices-gender-item-choice-2' }.freeze
   RACE_OPTION = { id: 'choices-race-item-choice-1' }.freeze
   ETHNICITY_OPTION = { id: 'choices-ethnicity-item-choice-1' }.freeze
+  # citizenship first option is having locator as a third option, but actually is a first option
   CITIZENSHIP_OPTION = { id: 'choices-citizenship-item-choice-3' }.freeze
 
   # selected options
@@ -52,6 +54,11 @@ class Intake < BasePage
 
   # checkbox
   NEEDS_ACTION_CHECKBOX = { css: '#needs-action-checkbox-field + label' }.freeze
+
+  # verify or view intake
+  VIEW_BUTTON = { css: '.text-center a' }.freeze
+  INTAKE_DETAIL_OTHER_INFORMATION = { css: '.intake-detail-other-information' }.freeze
+  NOTES_TEXT = { css: '.intake-card__info-result.normal-text' }.freeze
 
   def page_displayed?
     is_displayed?(INTAKE_NAVIGATION) &&
@@ -84,27 +91,27 @@ class Intake < BasePage
     click(OTHER_INFORMATION)
   end
 
-  def select_marital_status
+  def select_marital_status_first_option
     click(MARITAL_STATUS)
     click(MARITAL_STATUS_OPTION)
   end
 
-  def select_gender
+  def select_gender_first_option
     click(GENDER)
     click(GENDER_OPTION)
   end
 
-  def select_race
+  def select_race_first_option
     click(RACE)
     click(RACE_OPTION)
   end
 
-  def select_ethnicity
+  def select_ethnicity_first_option
     click(ETHNICITY)
     click(ETHNICITY_OPTION)
   end
 
-  def select_citzenship
+  def select_citzenship_first_option
     click(CITIZENSHIP)
     click(CITIZENSHIP_OPTION)
   end
@@ -123,30 +130,28 @@ class Intake < BasePage
   end
 
   def get_text_of_first_marital_status
-    puts value(SELECTED_MARITAL_STATUS).to_s
+    text(SELECTED_MARITAL_STATUS)
   end
 
   def get_text_of_first_gender
-    puts value(SELECTED_GENDER).to_s
+    text(SELECTED_GENDER)
   end
 
   def get_text_of_first_race
-    puts value(SELECTED_RACE).to_s
+    text(SELECTED_RACE)
   end
 
   def get_text_of_first_ethnicity
-    puts value(SELECTED_ETHNICITY).to_s
+    text(SELECTED_ETHNICITY)
   end
 
   def get_text_of_first_citizenship
-    puts value(SELECTED_CITIZENSHIP).to_s
+    text(SELECTED_CITIZENSHIP)
   end
 
-  def get_text_of_ssn
-    puts value(SSN_INPUT).to_s
-  end
-
-  def get_text_of_note
-    puts text(GENERAL_NOTES).to_s
+  def verify_other_information
+    click(VIEW_BUTTON)
+    is_displayed?(INTAKE_DETAIL_OTHER_INFORMATION) &&
+      is_displayed?(NOTES_TEXT)
   end
 end
