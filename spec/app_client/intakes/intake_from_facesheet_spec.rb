@@ -51,8 +51,8 @@ describe '[Intake]', :app_client, :intake do
       race = intake_page.select_race
       ethnicity = intake_page.select_ethnicity
       citizenship = intake_page.select_citzenship
-      # add ssn number
-      ssn_number = Faker::Number.number(digits: 9)
+      # Generate a valid US Social Security number
+      ssn_number = Faker::IDNumber.valid
       intake_page.input_ssn(ssn_number)
       # add intake note
       intake_note = Faker::Lorem.sentence(word_count: 5)
@@ -62,6 +62,8 @@ describe '[Intake]', :app_client, :intake do
       expect(intake_page.get_text_of_first_race).to eq(race)
       expect(intake_page.get_text_of_first_ethnicity).to eq(ethnicity)
       expect(intake_page.get_text_of_first_citizenship).to eq(citizenship)
+      intake_page.get_text_of_ssn
+      intake_page.get_text_of_note
 
       # check need action checkbox and save
       intake_page.check_needs_action

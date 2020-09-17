@@ -27,24 +27,31 @@ class Intake < BasePage
 
   # Other Information fields
   MARITAL_STATUS = { css: '#marital-status + .choices__list' }.freeze
-  GENDER = { css: '#gender + .choices__list'}.freeze
-  RACE = {css: '#race + .choices__list'}.freeze
-  ETHNICITY = {css: '#ethnicity + .choices__list'}.freeze
-  CITIZENSHIP = {css: '#citizenship + .choices__list'}.freeze
+  GENDER = { css: '#gender + .choices__list' }.freeze
+  RACE = { css: '#race + .choices__list' }.freeze
+  ETHNICITY = { css: '#ethnicity + .choices__list' }.freeze
+  CITIZENSHIP = { css: '#citizenship + .choices__list' }.freeze
   SSN_INPUT = { css: 'input#ssn' }.freeze
 
   # dropdown menu first options
-  MARITAL_STATUS_OPTION = {id: 'choices-marital-status-item-choice-1'}.freeze
-  GENDER_OPTION = {id: 'choices-gender-item-choice-2'}.freeze
-  RACE_OPTION = {id: 'choices-race-item-choice-1'}.freeze
-  ETHNICITY_OPTION = {id: 'choices-ethnicity-item-choice-1'}.freeze
-  CITIZENSHIP_OPTION = {id: 'choices-citizenship-item-choice-3'}.freeze
+  MARITAL_STATUS_OPTION = { id: 'choices-marital-status-item-choice-1' }.freeze
+  GENDER_OPTION = { id: 'choices-gender-item-choice-2' }.freeze
+  RACE_OPTION = { id: 'choices-race-item-choice-1' }.freeze
+  ETHNICITY_OPTION = { id: 'choices-ethnicity-item-choice-1' }.freeze
+  CITIZENSHIP_OPTION = { id: 'choices-citizenship-item-choice-3' }.freeze
+
+  # selected options
+  SELECTED_MARITAL_STATUS = { css: '#marital-status option[selected]' }.freeze
+  SELECTED_GENDER = { css: '#gender option[selected]' }.freeze
+  SELECTED_RACE = { css: '#race option[selected]' }.freeze
+  SELECTED_ETHNICITY = { css: '#ethnicity option[selected]' }.freeze
+  SELECTED_CITIZENSHIP = { css: '#citizenship option[selected]' }.freeze
 
   # general notes
-  GENERAL_NOTES = {css: '.ui-gradient #general-notes'}.freeze
+  GENERAL_NOTES = { css: '.ui-gradient #general-notes' }.freeze
 
   # checkbox
-  NEEDS_ACTION_CHECKBOX = {css: '#needs-action-checkbox-field + label'}.freeze
+  NEEDS_ACTION_CHECKBOX = { css: '#needs-action-checkbox-field + label' }.freeze
 
   def page_displayed?
     is_displayed?(INTAKE_NAVIGATION) &&
@@ -103,6 +110,7 @@ class Intake < BasePage
   end
 
   def input_ssn(ssn_number)
+    click(SSN_INPUT)
     enter(ssn_number, SSN_INPUT)
   end
 
@@ -115,22 +123,30 @@ class Intake < BasePage
   end
 
   def get_text_of_first_marital_status
-    value(MARITAL_STATUS)
+    puts value(SELECTED_MARITAL_STATUS).to_s
   end
 
   def get_text_of_first_gender
-    value(GENDER)
+    puts value(SELECTED_GENDER).to_s
   end
 
   def get_text_of_first_race
-    value(RACE)
+    puts value(SELECTED_RACE).to_s
   end
 
   def get_text_of_first_ethnicity
-    value(ETHNICITY)
+    puts value(SELECTED_ETHNICITY).to_s
   end
 
   def get_text_of_first_citizenship
-    value(CITIZENSHIP)
+    puts value(SELECTED_CITIZENSHIP).to_s
+  end
+
+  def get_text_of_ssn
+    puts value(SSN_INPUT).to_s
+  end
+
+  def get_text_of_note
+    puts text(GENERAL_NOTES).to_s
   end
 end
