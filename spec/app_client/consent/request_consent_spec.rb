@@ -20,6 +20,12 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       log_in_as(Login::CC_HARVARD)
       expect(home_page.page_displayed?).to be_truthy
 
+      # create contact
+      @contact = Setup::Data.create_yale_client
+
+      # create referral
+      @referral = Setup::Data.send_referral_from_yale_to_harvard(contact_id: @contact.contact_id)
+
       home_page.go_to_pending_consent
       expect(pending_consent_page.page_displayed?).to be_truthy
     }

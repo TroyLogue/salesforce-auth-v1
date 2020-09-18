@@ -7,7 +7,6 @@ require_relative '../referrals/pages/referral'
 describe '[Assessments - Referrals]', :assessments, :app_client do
   include Login
 
-  let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
@@ -32,13 +31,11 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       expect(homepage.page_displayed?).to be_truthy
 
       # Create Contact
-      @contact = Setup::Data.create_yale_client_with_military_and_consent(token: base_page.get_uniteus_api_token)
+      @contact = Setup::Data.create_yale_client_with_military_and_consent
 
       # Create Referral
       @referral = Setup::Data.send_referral_from_yale_to_harvard(
-        token: base_page.get_uniteus_api_token,
-        contact_id: @contact.contact_id,
-        service_type_id: base_page.get_uniteus_first_service_type_id
+        contact_id: @contact.contact_id
       )
       referral.go_to_sent_referral_with_id(referral_id: @referral.referral_id)
       expect(referral.page_displayed?).to be_truthy
@@ -85,7 +82,6 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
     after {
       # close referral as cc
       @close_referral = Setup::Data.close_referral_from_yale_in_harvard(
-        token: base_page.get_uniteus_api_token,
         referral_id: @referral.referral_id
       )
     }

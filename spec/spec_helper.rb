@@ -4,7 +4,6 @@ require 'bundler'
 require 'fileutils'
 require 'rubygems'
 require 'date'
-require_relative '../lib/browserstack_credentials'
 require_relative './app_client/auth/pages/login_email' # UU3-48209 Currently all tests login through the UI and so these files are needed throughout the repo.
 require_relative './app_client/auth/pages/login_password' # With UU3-48209 we should not require login_email and login_password in the spec_helper, and only require them in specs testing login.
 
@@ -12,6 +11,15 @@ require_relative './app_client/auth/pages/login_password' # With UU3-48209 we sh
 # When spec files require spec_helper, they have access to all the package gems
 # and do not need to require them individually
 Bundler.require(:default)
+
+# Setting and grabbing environment specific vars
+ENV['environment'] ||= 'app_client_staging'
+
+domain = ENV['environment'].split('_')[-1]
+application = ENV['environment'].gsub('_' + domain, '')
+
+Dotenv.load(".env.#{domain}")
+ENV['web_url'] = ENV[application + '_url']
 
 # Gives specs access to the data module that contains the methods
 # to create clients, referrals and other data dependencies
@@ -47,7 +55,7 @@ RSpec.configure do |config|
       # remote driver for browserstack
       @driver = Selenium::WebDriver.for(
         :remote,
-        url: "http://#{BROWSERSTACK_USERNAME}:#{BROWSERSTACK_ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub",
+        url: "http://#{ENV[BROWSERSTACK_USERNAME]}:#{ENV[BROWSERSTACK_ACCESS_KEY]}@hub-cloud.browserstack.com/wd/hub",
         desired_capabilities: caps
       )
       @driver.file_detector = lambda do |args|
@@ -60,7 +68,7 @@ RSpec.configure do |config|
       when 'chrome'
         if ENV['host'] == 'docker'
           @driver = Selenium::WebDriver.for(:remote,
-                                            url: 'chrome://chrome:4444/wd/hub',
+                                            url: 'http://chrome:4444/wd/hub',
                                             desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome)
           @driver.file_detector = lambda do |args|
             str = args.first.to_s
@@ -81,7 +89,7 @@ RSpec.configure do |config|
       when 'firefox'
         if ENV['host'] == 'docker'
           @driver = Selenium::WebDriver.for(:remote,
-                                            url: 'firefox://firefox:4444/wd/hub',
+                                            url: 'http://firefox:4444/wd/hub',
                                             desired_capabilities: Selenium::WebDriver::Remote::Capabilities.firefox)
 
           @driver.file_detector = lambda do |args|
@@ -94,59 +102,6 @@ RSpec.configure do |config|
       when 'safari'
         @driver = Selenium::WebDriver.for :safari
       end
-    end
-
-    # default web_url, auth_url and  api_url is app-client staging; others can be passed as variables
-    case ENV['environment'] ||= 'app_client_staging'
-    when 'devqa'
-      ENV['web_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
-      ENV['auth_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
-      ENV['api_url'] = 'ENTER_URL_HERE' # add bucket here or pass at runtime
-    when 'app_client_staging'
-      ENV['web_url'] = 'https://app.uniteusdev.com'
-      ENV['auth_url'] = 'https://app.auth.uniteusdev.com'
-      ENV['api_url'] = 'https://api.uniteusdev.com'
-      ENV['assistance_request_url'] = 'https://widgets.uniteusdev.com/assistance-request/7lCV515cZEd1oT8SJALFk2r_5YBjRxyRMdASLCju/'
-      ENV['resource_directory_url'] = 'https://public-rd.uniteusdev.com'
-    when 'app_client_training'
-      ENV['web_url'] = 'https://app.uniteustraining.com'
-      ENV['auth_url'] = 'https://app.auth.uniteustraining.com'
-      ENV['api_url'] = 'https://api.uniteustraining.com'
-    when 'app_client_production'
-      ENV['web_url'] = 'https://app.uniteus.io'
-      ENV['auth_url'] = 'https://app.auth.uniteus.io'
-      ENV['api_url'] = 'https://api.uniteus.io'
-      ENV['resource_directory_url'] = 'https://nccare.resource-directory.uniteus.io/'
-    when 'ehr_staging'
-      ENV['web_url'] = 'https://emr.uniteusdev.com'
-      ENV['auth_url'] = 'https://emr.auth.uniteusdev.com'
-      ENV['api_url'] = 'https://api.uniteusdev.com'
-    when 'ehr_training'
-      ENV['web_url'] = 'https://emr.uniteustraining.com'
-      ENV['auth_url'] = 'https://emr.auth.uniteustraining.com'
-      ENV['api_url'] = 'https://api.uniteustraining.com'
-    when 'ehr_production'
-      ENV['web_url'] = 'https://emr.uniteus.io'
-      ENV['auth_url'] = 'https://emr.auth.uniteus.io'
-      ENV['api_url'] = 'https://api.uniteus.io'
-    when 'resource_directory_staging'
-      ENV['web_url'] = 'https://public-rd.uniteusdev.com/'
-      ENV['api_url'] = 'https://api.uniteusdev.com'
-    when 'resource_directory_training'
-      ENV['web_url'] = '' # currently no training env for PRD
-      ENV['api_url'] = 'https://api.uniteustraining.com'
-    when 'resource_directory_production'
-      ENV['web_url'] = 'https://nccare.resource-directory.uniteus.io/'
-      ENV['api_url'] = 'https://api.uniteus.io'
-    end
-
-    # define Mailtrap mailbox id for staging or training
-    # default will be staging id
-    case ENV['mailtrap_id'] ||= '99406'
-    when 'app_client_staging'
-      ENV['mailtrap_id'] = '99406'
-    when 'app_client_training'
-      ENV['mailtrap_id'] = '531559'
     end
   rescue Exception => e
     p "Exception in spec_helper.rb - before hook: #{e}"

@@ -40,7 +40,7 @@ namespace :docker do
     `docker network create qa-network`
     `docker run --network=qa-network -d -p 4444:4444 -v /dev/shm:/dev/shm --name #{args[:browser]} selenium/standalone-#{args[:browser]}:latest`
     `sleep 2` # waiting for ^container to be up and running
-    `docker run --network=qa-network --name qa-tests -e browser=#{args[:browser]} -e host=docker end-to-end rake "local:app_client_staging[#{args[:browser]}]"`
+    `docker run --network=qa-network --name qa-tests --env-file .env.staging -e browser=#{args[:browser]} -e host=docker end-to-end rake "local:app_client_staging[#{args[:browser]}]"`
   end
 
   desc 'Clean'

@@ -89,6 +89,10 @@ We run tests on Windows browsers using [BrowserStack](http://www.browserstack.co
 
 The full test result output including screenshots and video is available in BrowserStack's [Automate view](https://www.browserstack.com/automate). BrowserStack results configs are set in the `spec_helper` file.
 
+## Local enviroment variables
+
+A template `.env.example` file is provided but in order to run against staging create a `.env.staging` file and replace the appropriate tokens with those shared in 1Password.
+
 # Running Tests Locally
 
 Run tests from the root path of this project in a Terminal window.

@@ -17,10 +17,12 @@ describe '[Messaging - Facesheet - Preferences]', :app_client, :messaging do
       log_in_as(Login::ORG_COLUMBIA)
       expect(home_page.page_displayed?).to be_truthy
 
-      # TODO - convert to creating client through endpoint - UU3-43972
-      # Opted to navigate straight to facesheet, search fails at times
-      # Test User: UUQA Testing Messaging
-      base_page.get("/facesheet/dbd10ef7-bd7a-48ae-9217-334b09db480d/profile")
+      @contact = Setup::Data.create_columbia_client_with_consent
+
+      facesheet_header.go_to_facesheet_with_contact_id(
+        id: @contact.contact_id,
+        tab: 'profile'
+      )
       expect(facesheet_profile_page.page_displayed?).to be_truthy
     }
 

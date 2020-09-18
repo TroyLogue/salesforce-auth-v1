@@ -7,7 +7,6 @@ require_relative '../referrals/pages/referral_table'
 describe '[Referrals]', :app_client, :referrals do
   include Login
 
-  let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
@@ -17,23 +16,21 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as org user]') do
     before {
-      log_in_as(Login::CC_HARVARD)
-      expect(homepage.page_displayed?).to be_truthy
       # Create Contact
-      @contact = Setup::Data.create_harvard_client_with_consent(token: base_page.get_uniteus_api_token)
+      @contact = Setup::Data.create_harvard_client_with_consent
 
       # Create referral
-      @referral = Setup::Data.send_referral_from_harvard_to_princeton(token: base_page.get_uniteus_api_token,
-                                                                      contact_id: @contact.contact_id,
-                                                                      service_type_id: base_page.get_uniteus_first_service_type_id)
-      user_menu.log_out
-      expect(login_email.page_displayed?).to be_truthy
+      @referral = Setup::Data.send_referral_from_harvard_to_princeton(
+        contact_id: @contact.contact_id
+      )
+
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
 
       # Select client in Princeton
-      @contact = Setup::Data.select_client_in_princeton(token: base_page.get_uniteus_api_token,
-                                                        contact: @contact)
+      @contact = Setup::Data.select_client_in_princeton(
+        contact: @contact
+      )
     }
 
     it 'user can reject a referral from an existing client', :uuqa_1048 do

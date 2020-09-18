@@ -15,6 +15,7 @@ gem 'rake'
 #test_data
 gem 'faker'
 gem 'http'
+gem 'dotenv'
 
 #browserstack
 # enables HTTP persistent connection in selenium bindings
