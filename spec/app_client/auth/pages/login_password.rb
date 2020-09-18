@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class LoginPassword < BasePage
-  FORGOT_PASSWORD_LINK = { css: '#forgot-password-link' }
-  INVALID_ALERT = { css: '#flash_alert' }
+  FORGOT_PASSWORD_LINK = { css: '#forgot-password-link' }.freeze
+  INVALID_ALERT = { css: '#flash_alert' }.freeze
   INVALID_TEXT = 'Invalid Email or password.'
-  NOT_YOU_LINK = { css: '#not-you-link' }
-  PASSWORD_INPUT = { css: '#app_2_user_password' }
-  SUBMIT_BUTTON = { css: 'input[value="Sign in"]' }
-  USER_EMAIL = { css: '#user-email' }
+  NOT_YOU_LINK = { css: '#not-you-link' }.freeze
+  PASSWORD_INPUT = { css: '#app_2_user_password' }.freeze
+  SUBMIT_BUTTON = { css: 'input[value="Sign in"]' }.freeze
+  USER_EMAIL = { css: '#user-email' }.freeze
 
   # string to pass to enter_via_js which uses getElementById
   PASSWORD_INPUT_ID = 'app_2_user_password'
@@ -22,14 +24,14 @@ class LoginPassword < BasePage
 
   def invalid_alert_text
     find(INVALID_ALERT)
-    return text(INVALID_ALERT)
+    text(INVALID_ALERT)
   end
 
   def page_displayed?
     is_displayed?(FORGOT_PASSWORD_LINK) &&
-    is_displayed?(NOT_YOU_LINK) &&
-    is_displayed?(USER_EMAIL) &&
-    is_displayed?(PASSWORD_INPUT)
+      is_displayed?(NOT_YOU_LINK) &&
+      is_displayed?(USER_EMAIL) &&
+      is_displayed?(PASSWORD_INPUT)
   end
 
   def submit(password)

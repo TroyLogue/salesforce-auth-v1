@@ -1,5 +1,6 @@
 # test-run artifacts
 results/
+result.xml
 
 # account credentials
 lib/browserstack_credentials.rb
