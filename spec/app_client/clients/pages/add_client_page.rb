@@ -22,6 +22,9 @@ class AddClient < BasePage
 
   MILITARY_AFFILIATION_INPUT = { css: '#affiliation > option' }
 
+  SAVE_BTN = { css: '#save-client-btn' }
+  GO_BACK_BTN = { css: '#go-back-btn' }
+
   def page_displayed?
     is_displayed?(ADD_CONTACT_FORM)
   end
@@ -78,5 +81,10 @@ class AddClient < BasePage
     value(INSURANCE_MBID_INPUT) + ' ' +
     value(INSURANCE_MID_INPUT) + ' ' +
     text(INSURANCE_STATE_INPUT).sub!('Remove item','').strip!
+  end
+
+  def save_client
+    click(SAVE_BTN)
+    wait_for_spinner
   end
 end

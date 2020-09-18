@@ -39,4 +39,9 @@ class Notifications < BasePage
     find(SUCCESS_BANNER)
     return text(NOTIFICATION_BANNER)
   end
+
+  def close_banner
+    is_displayed?(SUCCESS_BANNER)
+    click_within(SUCCESS_BANNER, CLOSE_BANNER)
+  end
 end

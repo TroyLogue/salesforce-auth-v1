@@ -43,9 +43,12 @@ module Login
     SUPER_USER = 'super@best.com'.freeze,
     # settings user, QA network
     SETTINGS_USER = 'qa.perms@auto.com'.freeze,
-    # next gate temp user
-    NEXTGATE_USER = 'client-search@auto.com'.freeze
-  ].freeze
+    # next gate temp user, this user is licensed in a NG tagged organization
+    # and has New-Search Feature Flag enabled
+    NEXTGATE_USER = 'test-perms9@auto.com'.freeze,
+    # columbia org with New-Search Feature Flag enabled
+    NEW_SEARCH_USER = 'client-search@auto.com'.freeze
+  ]
 
   DEFAULT_PASSWORD = 'Uniteus1!'.freeze
   WRONG_PASSWORD = 'Uniteus'.freeze # can be passed to log_in_as method instance
