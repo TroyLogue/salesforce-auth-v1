@@ -35,7 +35,7 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       @dob = Faker::Time.backward(days: 1000).strftime('%m/%d/%Y')
     }
 
-    it 'Create a consented nehii client', :uuqa_901, :uuqa_903 do
+    it 'Create a consented NextGate client', :uuqa_901, :uuqa_903 do
       # Start creation process by searching for non-existant client
       create_menu.start_new_client
       expect(search_client_page.page_displayed?).to be_truthy
@@ -76,6 +76,9 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
     before {
       log_in_as(Login::NEW_SEARCH_USER)
       expect(homepage.page_displayed?).to be_truthy
+      @fname = Faker::Name.first_name
+      @lname = Faker::Name.last_name
+      @dob = Faker::Time.backward(days: 1000).strftime('%m/%d/%Y')
     }
 
     it 'Create a consented client', :uuqa_1300, :uuqa_1301 do
