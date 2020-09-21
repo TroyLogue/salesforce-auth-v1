@@ -20,6 +20,7 @@ application = ENV['environment'].gsub('_' + domain, '')
 
 Dotenv.load(".env.#{domain}")
 ENV['web_url'] = ENV[application + '_url']
+ENV['auth_url'] = ENV[application + '_auth_url']
 
 # Gives specs access to the data module that contains the methods
 # to create clients, referrals and other data dependencies
