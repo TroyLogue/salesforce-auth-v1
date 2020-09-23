@@ -5,7 +5,6 @@ require_relative './pages/facesheet_header'
 require_relative './pages/facesheet_uploads_page'
 require_relative '../referrals/pages/referral.rb'
 
-
 describe '[Facesheet]', :app_client, :facesheet do
   include Login
 
