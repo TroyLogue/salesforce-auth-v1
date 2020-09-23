@@ -23,13 +23,12 @@ describe '[Settings Navigation CC]', :navigation, :settings do
   let(:program_table) { Settings::ProgramTable.new(@driver) }
   let(:user_table) { Settings::UserTable.new(@driver) }
   let(:user_settings) { UserSettings.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
 
   context('[As a cc user]') do
     before {
       log_in_as(Login::CC_HARVARD)
     }
-  
+
     it 'Navigate through Org Settings Tabs', :uuqa_323, :uuqa_322, :uuqa_321 do
       org_menu.go_to_users_table()
       org_tabs.go_to_profile_tab()

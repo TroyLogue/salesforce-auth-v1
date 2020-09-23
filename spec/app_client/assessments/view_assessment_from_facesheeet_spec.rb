@@ -8,7 +8,6 @@ require_relative './pages/facesheet_assessment_page'
 describe '[Assessments - Facesheet]', :assessments, :app_client do
   include Login
 
-  let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
@@ -35,8 +34,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(homepage.page_displayed?).to be_truthy
 
       #creating contact
-      token = base_page.get_uniteus_api_token
-      @contact = Setup::Data.create_princeton_client(token: token)
+      @contact = Setup::Data.create_princeton_client
     }
 
     it 'can view and edit an assessment from facesheet view', :uuqa_101 do
@@ -67,10 +65,10 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(assessment.page_displayed?).to be_truthy
 
       # verify information on assessment
-      ASSESSMENT_FORM_VALUES = [SINGLE_LINE_TEXT, MULTI_LINE_TEXT, EMAIL_ADDRESS, RANDOM_NUMBER, DISPLAY_DATE]
+      assessment_form_values = [SINGLE_LINE_TEXT, MULTI_LINE_TEXT, EMAIL_ADDRESS, RANDOM_NUMBER, DISPLAY_DATE]
 
       assessment_text = assessment.assessment_text
-      ASSESSMENT_FORM_VALUES.each do |value|
+      assessment_form_values.each do |value|
         expect(assessment_text).to include(value.to_s)
       end
     end
