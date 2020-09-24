@@ -152,7 +152,7 @@ namespace :browserstack do
     ENV['environment'] = 'app_client_staging'
     ENV['os'] = 'Windows'
     ENV['os_version'] = '7'
-    ENV['browser'] = 'IE'
+    ENV['browser'] = 'ie'
     ENV['browser_version'] = '11.0'
     exit run_in_parallel(tag: (args[:tag]).to_s)
   end
@@ -165,8 +165,22 @@ namespace :browserstack do
     ENV['environment'] = 'ehr_staging'
     ENV['os'] = 'Windows'
     ENV['os_version'] = '7'
-    ENV['browser'] = 'IE'
+    ENV['browser'] = 'ie'
     ENV['browser_version'] = '10.0'
     exit run_in_parallel(tag: (args[:tag]).to_s)
   end
+
+  # example:
+  # rake browserstack:ehr_staging_ie10
+  desc 'Run all EHR staging tests on IE 10'
+  task :ehr_staging_ie10_all do |args|
+    ENV['host'] = 'browserstack'
+    ENV['environment'] = 'ehr_staging'
+    ENV['os'] = 'Windows'
+    ENV['os_version'] = '7'
+    ENV['browser'] = 'ie'
+    ENV['browser_version'] = '10.0'
+    exit run_in_parallel(tag: 'ehr')
+  end
+
 end

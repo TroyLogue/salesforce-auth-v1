@@ -60,7 +60,7 @@ RSpec.configure do |config|
       # remote driver for browserstack
       @driver = Selenium::WebDriver.for(
         :remote,
-        url: "http://#{ENV[BROWSERSTACK_USERNAME]}:#{ENV[BROWSERSTACK_ACCESS_KEY]}@hub-cloud.browserstack.com/wd/hub",
+        url: "http://#{ENV['BROWSERSTACK_USERNAME']}:#{ENV['BROWSERSTACK_ACCESS_KEY']}@hub-cloud.browserstack.com/wd/hub",
         desired_capabilities: caps
       )
       @driver.file_detector = lambda do |args|
