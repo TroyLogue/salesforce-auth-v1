@@ -2,13 +2,12 @@ require_relative '../../root/pages/notifications'
 
 module Settings
   class ProgramTable < BasePage
-    PROGRAMS_TABLE = { css: '.programs' }
-    PROGRAMS_TABLE_LOAD = { xpath: 'h2[text()="Loading Programs..."]' }
-    NEW_PROGRAM_BTN = { css: '.ui-button.ui-button--primary' }
-    PROGRAMS_LIST = { css: '.ui-base-card-header__title' }
-    PROGRAM_EDIT = { xpath: './/h2[text()="%s"]/following-sibling::div/div/button' }
-    NEW_PROGRAM_BTN = { css: '[aria-label="New Program"]' }
-    PROGRAMS_CARD = { css: '.program-card' }
+    PROGRAMS_TABLE = { css: '.programs' }.freeze
+    PROGRAMS_TABLE_LOAD = { xpath: 'h2[text()="Loading Programs..."]' }.freeze
+    PROGRAMS_LIST = { css: '.ui-base-card-header__title' }.freeze
+    PROGRAM_EDIT = { xpath: './/h2[text()="%s"]/following-sibling::div/div/button' }.freeze
+    NEW_PROGRAM_BTN = { css: '[aria-label="New Program"]' }.freeze
+    PROGRAMS_CARD = { css: '.program-card' }.freeze
 
     def page_displayed?
       is_not_displayed?(PROGRAMS_TABLE_LOAD)
@@ -38,31 +37,31 @@ module Settings
   end
 
   class ProgramForm < BasePage
-    PROGRAM_HEADER = { css: '.ui-base-card-header__title' }
-    INPUT_PROGRAM_NAME = { css: '#program-name' }
-    CHECKBOX_PROGRAM_REFERRAL = { css: 'label[for="program-referral-toggle"]' }
-    TEXT_PROGRAM_REFERRAL_CONTENT = { css: '.referral-content' }
-    INPUT_PROGRAM_DESCRIPTION = { css: '#program-description' }
-    INPUT_PAYMENT_OPTIONS = { css: '#program-payment-options' }
-    INPUT_ACCESSIBILITY_OPTIONS = { css: '#program-accessibility-options' }
-    INPUT_TRANSPORTATION = { css: '#program-transportation-options' }
-    INPUT_SERVICE_DELIVERY = { css: 'div[aria-activedescendant^="choices-program-service-delivery-options-item-choice"]' }
-    INPUT_POPULATION_RESTRICTION = { css: 'div[aria-activedescendant^="choices-program-populations-restricted-to-item-choice"]' }
-    INPUT_POPULATION_CATERED = { css: 'div[aria-activedescendant^="choices-program-populations-catered-to-item-choice"]' }
-    INPUT_STATE = { css: 'div[aria-activedescendant^="choices-program-us-states-item-choice"]' }
-    INPUT_COUNTY = { css: 'label[for="program-us-counties"]' }
-    INPUT_CITIES = { css: 'label[for="program-us-cities"]' }
-    INPUT_LANGUAGE = { css: 'div[aria-activedescendant^="choices-program-languages-item-choice"]' }
-    INPUT_SERVICE_TYPES = { css: '.service-types-checkboxes' }
-    INPUT_PROGRAM_ELIGIBILITY = { css: '#program-eligibility' }
-    UPDATE_BTN = { css: '#new-program-submit-btn' }
+    PROGRAM_HEADER = { css: '.ui-base-card-header__title' }.freeze
+    INPUT_PROGRAM_NAME = { css: '#program-name' }.freeze
+    CHECKBOX_PROGRAM_REFERRAL = { css: 'label[for="program-referral-toggle"]' }.freeze
+    TEXT_PROGRAM_REFERRAL_CONTENT = { css: '.referral-content' }.freeze
+    INPUT_PROGRAM_DESCRIPTION = { css: '#program-description' }.freeze
+    INPUT_PAYMENT_OPTIONS = { css: '#program-payment-options' }.freeze
+    INPUT_ACCESSIBILITY_OPTIONS = { css: '#program-accessibility-options' }.freeze
+    INPUT_TRANSPORTATION = { css: '#program-transportation-options' }.freeze
+    INPUT_SERVICE_DELIVERY = { css: 'div[aria-activedescendant^="choices-program-service-delivery-options-item-choice"]' }.freeze
+    INPUT_POPULATION_RESTRICTION = { css: 'div[aria-activedescendant^="choices-program-populations-restricted-to-item-choice"]' }.freeze
+    INPUT_POPULATION_CATERED = { css: 'div[aria-activedescendant^="choices-program-populations-catered-to-item-choice"]' }.freeze
+    INPUT_STATE = { css: 'div[aria-activedescendant^="choices-program-us-states-item-choice"]' }.freeze
+    INPUT_COUNTY = { css: 'label[for="program-us-counties"]' }.freeze
+    INPUT_CITIES = { css: 'label[for="program-us-cities"]' }.freeze
+    INPUT_LANGUAGE = { css: 'div[aria-activedescendant^="choices-program-languages-item-choice"]' }.freeze
+    INPUT_SERVICE_TYPES = { css: '.service-types-checkboxes' }.freeze
+    INPUT_PROGRAM_ELIGIBILITY = { css: '#program-eligibility' }.freeze
+    UPDATE_BTN = { css: '#new-program-submit-btn' }.freeze
 
     def page_displayed?
       is_displayed?(INPUT_PROGRAM_NAME) && is_displayed?(CHECKBOX_PROGRAM_REFERRAL) && is_displayed?(INPUT_PROGRAM_DESCRIPTION) &&
-      is_displayed?(INPUT_PAYMENT_OPTIONS) && is_displayed?(INPUT_ACCESSIBILITY_OPTIONS) && is_displayed?(INPUT_TRANSPORTATION) &&
-      is_displayed?(INPUT_SERVICE_DELIVERY) && is_displayed?(INPUT_POPULATION_RESTRICTION) && is_displayed?(INPUT_POPULATION_CATERED) &&
-      is_displayed?(INPUT_STATE) && is_displayed?(INPUT_COUNTY) && is_displayed?(INPUT_CITIES) && is_displayed?(INPUT_LANGUAGE) &&
-      is_displayed?(INPUT_SERVICE_TYPES) && is_displayed?(INPUT_PROGRAM_ELIGIBILITY)
+        is_displayed?(INPUT_PAYMENT_OPTIONS) && is_displayed?(INPUT_ACCESSIBILITY_OPTIONS) && is_displayed?(INPUT_TRANSPORTATION) &&
+        is_displayed?(INPUT_SERVICE_DELIVERY) && is_displayed?(INPUT_POPULATION_RESTRICTION) && is_displayed?(INPUT_POPULATION_CATERED) &&
+        is_displayed?(INPUT_STATE) && is_displayed?(INPUT_COUNTY) && is_displayed?(INPUT_CITIES) && is_displayed?(INPUT_LANGUAGE) &&
+        is_displayed?(INPUT_SERVICE_TYPES) && is_displayed?(INPUT_PROGRAM_ELIGIBILITY)
     end
 
     def get_program_title
