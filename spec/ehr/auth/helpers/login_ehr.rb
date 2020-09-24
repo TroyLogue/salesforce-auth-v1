@@ -25,6 +25,7 @@ module LoginEhr
 
     login_email_ehr.submit(email_address)
     expect(login_password_ehr.page_displayed?).to be_truthy
+
     login_password_ehr.select_dashboard
     login_password_ehr.submit(password)
   end
