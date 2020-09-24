@@ -1,5 +1,5 @@
-require_relative '../pages/login_email_ehr'
-require_relative '../pages/login_password_ehr'
+# require_relative '../pages/login_email_ehr' # UU3-48209 uncomment login page-objects when task is addressed
+# require_relative '../pages/login_password_ehr'
 
 module LoginEhr
   attr_accessor :login_email_ehr, :login_password_ehr
@@ -20,8 +20,6 @@ module LoginEhr
     INSIGHTS_USER = 'insights@auto.com'.freeze,
     # used in createIntakeOrgIntakeUser.js
     INTAKE_USER = 'intake@auto.com'.freeze,
-    # same as nolicense; should be consolidated
-    INVALID_USER = 'martin@auto.com'.freeze,
     # used in parts/login/nonLicensedUser.js
     NOLICENSE_MARTIN = 'martin@auto.com'.freeze,
     # used in 3 tests and 2 helper scripts
