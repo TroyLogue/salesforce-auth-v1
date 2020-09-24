@@ -15,7 +15,6 @@ describe '[Login –– ]', :ehr, :auth, :login do
 
   it 'with unlicensed email address', :uuqa_ do
     log_in_dashboard_as(LoginEhr::NOLICENSE_MARTIN)
-    # verify incorrect error
     expect(login_email_ehr.incorrect_error_displayed?).to be_truthy
   end
 end
