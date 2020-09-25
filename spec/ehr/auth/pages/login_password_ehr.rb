@@ -33,11 +33,11 @@ class LoginPasswordEhr < BasePage
 
   def page_displayed?
     is_displayed?(FORGOT_PASSWORD_LINK) &&
-      is_displayed?(NOT_YOU_LINK) &&
-      is_displayed?(USER_EMAIL) &&
-      is_displayed?(PASSWORD_INPUT) &&
-      is_displayed?(LAUNCH_DROPDOWN) &&
-      is_displayed?(PATIENT_CONTEXT_INPUT)
+    is_displayed?(NOT_YOU_LINK) &&
+    is_displayed?(USER_EMAIL) &&
+    is_displayed?(PASSWORD_INPUT) &&
+    is_displayed?(LAUNCH_DROPDOWN) &&
+    is_displayed?(PATIENT_CONTEXT_INPUT)
   end
 
   def select_dashboard
