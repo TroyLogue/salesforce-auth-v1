@@ -13,7 +13,7 @@ describe '[Login –– ]', :ehr, :auth, :login do
     expect(login_password_ehr.invalid_alert_displayed?).to be_truthy
   end
 
-  it 'with unlicensed email address', :uuqa_ do
+  it 'with unlicensed email address', :uuqa_1531 do
     log_in_dashboard_as(LoginEhr::NOLICENSE_MARTIN)
     expect(login_email_ehr.incorrect_error_displayed?).to be_truthy
   end
