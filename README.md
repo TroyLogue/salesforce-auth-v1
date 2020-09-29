@@ -215,12 +215,7 @@ Running tests by tags rather than directory is optimal for its flexibility, but 
 
 ## Coding Style
 
-- TODO [UU3-25213](https://uniteus.atlassian.net/browse/UU3-35213)
-
-Although we have not decided on a formatter, we do want to maintain some consistancy as this project grows and more people contribute. For now:
-- indent_size = 2
-- trim_trailing_whitespace = true
-- insert_final_newline = true
+We are using [RuboCop](https://docs.rubocop.org/rubocop/index.html) for code formatting. Please find details in the [QA Confluence space](https://uniteus.atlassian.net/wiki/spaces/QA/pages/1656258561/RuboCop+Ruby+formatting).
 
 ## Naming Conventions
 

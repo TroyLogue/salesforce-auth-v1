@@ -1,12 +1,16 @@
 AllCops: 
   NewCops: enable 
 
+# The following rules are ignored because for this project they generate more noise than value
+
+# Rspec can yield long describe blocks
 Metrics/BlockLength:
   Enabled: false
 
+# Page-Object classes tend to exceed rule length
 Metrics/ClassLength:
   Enabled: false
 
+# Identifiers may exceed rule length
 Metrics/ModuleLength:
   Enabled: false
-
