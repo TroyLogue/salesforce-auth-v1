@@ -66,7 +66,7 @@ def build() {
         script: "curl https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$chrome_major_version",
         returnStdout: true
         ).trim()
-  
+
     sh """
         wget https://chromedriver.storage.googleapis.com/$chromedriver_version/chromedriver_linux64.zip
         unzip chromedriver_linux64.zip
@@ -88,8 +88,34 @@ def build() {
         '''
     }
 
-    withCredentials([file(credentialsId: 'browserstack_credentials', variable: 'browserstack_credentials_file')]) {
-        sh "cp '$browserstack_credentials_file' lib/browserstack_credentials.rb"
+    // Grabbing tokens saved in Jenkin Credentials and mapping those values
+    // in our local .env.staging file. This is to avoid potentital formatting issues
+    // such as inline-comments and spaces between '=' as well as to
+    // not overwrite other stored env vars such as URLs
+    withCredentials([file(credentialsId: 'machine_tokens_staging', variable: 'machine_tokens_file')]) {
+        sh '''
+        cp .env.example .env.staging
+        echo "Grabbing Machine Tokens"
+        set +x
+        while read token ; do \
+            key=$(echo $token | cut -d '=' -f1 | tr -d ' '); \
+            value=$(echo $token | cut -d '=' -f2 | tr -d ' '); \
+            sed -i -e "s/{$key}/$value/" .env.staging; \
+        done < $machine_tokens_file
+        set -x
+        '''
+    }
+     withCredentials([file(credentialsId: 'browserstack_credentials', variable: 'browserstack_credentials_file')]) {
+        sh '''
+        echo "Grabbing Browserstack Credentials"
+        set +x
+        while read token ; do \
+            key=$(echo $token | cut -d '=' -f1 | tr -d ' '); \
+            value=$(echo $token | cut -d '=' -f2 | tr -d ' '); \
+            sed -i -e "s/{$key}/$value/" .env.staging; \
+        done < $browserstack_credentials_file
+        set -x
+        '''
     }
 }
 

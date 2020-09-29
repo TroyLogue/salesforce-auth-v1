@@ -2,7 +2,6 @@ require 'http'
 require 'json'
 
 module MailtrapHelper
-  API_TOKEN = '6b245be8870dcd04019455d0a918421b'
   PASSWORD_RESET_SUBJECT = 'Reset password instructions'
 
   def find_reset_link(str)
@@ -12,7 +11,7 @@ module MailtrapHelper
 
   def get_messages(mailbox_id: ENV['mailtrap_id'])
     response = HTTP.get("https://mailtrap.io/api/v1/inboxes/#{mailbox_id}/messages",
-                        :params => { :api_token => API_TOKEN })
+                        :params => { :api_token => ENV['API_TOKEN'] })
     if response.status.success?
       return JSON.parse(response.body)
     else
@@ -27,7 +26,7 @@ module MailtrapHelper
 
   def get_html_of_message(message_id:, mailbox_id: ENV['mailtrap_id'])
     response = HTTP.get("https://mailtrap.io/api/v1/inboxes/#{mailbox_id}/messages/#{message_id}/body.html",
-                        :params => { :api_token => API_TOKEN })
+                        :params => { :api_token => ENV['API_TOKEN'] })
     if response.status.success?
       return response.body
     else

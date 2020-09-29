@@ -7,7 +7,6 @@ require_relative '../intakes/pages/intake'
 describe '[Referrals]', :app_client, :referrals do
   include Login
 
-  let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
@@ -17,18 +16,14 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as org user]') do
     before {
-      log_in_as(Login::CC_HARVARD)
-      expect(homepage.page_displayed?).to be_truthy
       # Create Contact
-      @contact = Setup::Data.create_harvard_client_with_consent(token: base_page.get_uniteus_api_token)
+      @contact = Setup::Data.create_harvard_client_with_consent
 
       # Create Referral
-      @referral = Setup::Data.send_referral_from_harvard_to_princeton(token: base_page.get_uniteus_api_token,
-                                                                      contact_id: @contact.contact_id,
-                                                                      service_type_id: base_page.get_uniteus_first_service_type_id)
+      @referral = Setup::Data.send_referral_from_harvard_to_princeton(
+        contact_id: @contact.contact_id
+      )
 
-      user_menu.log_out
-      expect(login_email.page_displayed?).to be_truthy
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
     }
@@ -53,8 +48,9 @@ describe '[Referrals]', :app_client, :referrals do
 
     after {
       # accepting referral for clean up purposes
-      @accept_referral = Setup::Data.accept_referral_from_harvard_in_princeton(token: base_page.get_uniteus_api_token,
-                                                                               referral_id: @referral.referral_id)
+      @accept_referral = Setup::Data.accept_referral_from_harvard_in_princeton(
+        referral_id: @referral.referral_id
+      )
     }
   end
 end
