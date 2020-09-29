@@ -6,6 +6,10 @@ require 'rubygems'
 require 'date'
 require_relative './app_client/auth/pages/login_email' # UU3-48209 Currently all tests login through the UI and so these files are needed throughout the repo.
 require_relative './app_client/auth/pages/login_password' # With UU3-48209 we should not require login_email and login_password in the spec_helper, and only require them in specs testing login.
+# adding login pages for EHR as well:
+require_relative './ehr/auth/pages/login_email_ehr' # UU3-48209 Currently all tests login through the UI and so these files are needed throughout the repo.
+require_relative './ehr/auth/pages/login_password_ehr' # With UU3-48209 we should not require login_email and login_password in the spec_helper, and only require them in specs testing login.
+
 
 # Specifies required dependencies per groups defined in Gemfile
 # When spec files require spec_helper, they have access to all the package gems
@@ -56,7 +60,7 @@ RSpec.configure do |config|
       # remote driver for browserstack
       @driver = Selenium::WebDriver.for(
         :remote,
-        url: "http://#{ENV[BROWSERSTACK_USERNAME]}:#{ENV[BROWSERSTACK_ACCESS_KEY]}@hub-cloud.browserstack.com/wd/hub",
+        url: "http://#{ENV['BROWSERSTACK_USERNAME']}:#{ENV['BROWSERSTACK_ACCESS_KEY']}@hub-cloud.browserstack.com/wd/hub",
         desired_capabilities: caps
       )
       @driver.file_detector = lambda do |args|
