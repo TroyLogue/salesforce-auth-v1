@@ -66,6 +66,7 @@ class Intake < BasePage
 
   # checkbox
   NEEDS_ACTION_CHECKBOX = { css: '#needs-action-checkbox-field + label' }.freeze
+  FIRST_CARE_COORDINATOR = { css: 'label[for="care-coordinator-0"]' }.freeze
 
   # verify or view intake
   INTAKE_DETAIL_OTHER_INFORMATION = { css: '.intake-detail-other-information' }.freeze
@@ -145,6 +146,10 @@ class Intake < BasePage
     click(NEEDS_ACTION_CHECKBOX)
   end
 
+  def check_first_care_coordinator
+    click(FIRST_CARE_COORDINATOR)
+  end
+
   def get_text_of_selected_marital_status
     text(SELECTED_MARITAL_STATUS)
   end
@@ -176,5 +181,15 @@ class Intake < BasePage
       text_include?(race, RACE_TEXT) &&
       text_include?(ethnicity, ETHNICITY_TEXT) &&
       text_include?(citizenship, CITIZENSHIP_TEXT)
+  end
+
+  def complete_required_information(ssn_number)
+    select_other_information
+    select_marital_status_first_option
+    select_gender_first_option
+    select_race_first_option
+    select_ethnicity_first_option
+    select_citzenship_first_option
+    input_ssn(ssn_number)
   end
 end
