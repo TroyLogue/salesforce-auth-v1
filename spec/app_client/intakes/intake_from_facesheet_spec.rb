@@ -27,8 +27,7 @@ describe '[Intake]', :app_client, :intake do
       expect(home_page.page_displayed?).to be_truthy
 
       # Create Contact
-      @contact = Setup::Data.create_yale_client_with_consent(token:
-        base_page.get_uniteus_api_token)
+      @contact = Setup::Data.create_yale_client_with_consent
     end
 
     it 'creates and saves new intake', :uuqa_81, :uuqa_77 do
