@@ -22,7 +22,7 @@ namespace :jenkins do
   end
 
   desc 'specs tagged ehr on chrome headless'
-  task :resource_directory do
+  task :ehr do
     ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'ehr_staging'
     exit run_in_parallel(tag: 'ehr')
@@ -73,7 +73,7 @@ namespace :local do
   # rake local:ehr_staging
   desc 'Run ehr tests on staging in chrome'
   task :ehr_staging, :browser do |args|
-    ENV['browser'] = 'chrome'
+    ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'ehr_staging'
     exit run_in_parallel(tag: 'ehr')
   end
