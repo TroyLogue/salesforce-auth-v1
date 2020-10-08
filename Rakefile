@@ -21,6 +21,13 @@ namespace :jenkins do
     exit run_in_parallel(tag: 'referrals', processes: 2)
   end
 
+  desc 'specs tagged ehr on chrome headless'
+  task :resource_directory do
+    ENV['browser'] = 'chrome_headless'
+    ENV['environment'] = 'ehr_staging'
+    exit run_in_parallel(tag: 'ehr')
+  end
+
   desc 'specs tagged resource_directory on chrome headless'
   task :resource_directory do
     ENV['browser'] = 'chrome_headless'
