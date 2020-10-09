@@ -71,7 +71,7 @@ namespace :local do
 
   # example:
   # rake local:ehr_staging
-  desc 'Run ehr tests on staging in chrome'
+  desc 'Run ehr tests on staging in chrome headless'
   task :ehr_staging, :browser do |args|
     ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'ehr_staging'
