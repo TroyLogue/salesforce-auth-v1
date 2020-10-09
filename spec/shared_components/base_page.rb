@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../../lib/state_name_abbr'
+
 class BasePage
   SPINNER = { css: '.spinner' }.freeze
 

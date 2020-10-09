@@ -1,6 +1,7 @@
 require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../facesheet/pages/facesheet_profile_page'
+require_relative '../facesheet/pages/facesheet_header'
 
 describe '[Messaging - Facesheet - Preferences]', :app_client, :messaging do
   include Login
@@ -33,7 +34,7 @@ describe '[Messaging - Facesheet - Preferences]', :app_client, :messaging do
 
       new_phone_number = base_page.number_to_phone_format(Faker::Number.number(digits: 10))
       facesheet_profile_page.add_mobile_phone_number_with_enabled_notifications(phone:new_phone_number)
-      expect(facesheet_profile_page.get_current_phone_number).to eql(new_phone_number)
+      expect(facesheet_profile_page.current_phone_number).to eql(new_phone_number)
       expect(facesheet_profile_page.are_phone_notifications_enabled?).to be_truthy
 
       facesheet_profile_page.enable_email_notifications_on_blank_field
@@ -42,7 +43,7 @@ describe '[Messaging - Facesheet - Preferences]', :app_client, :messaging do
 
       new_email = Faker::Internet.email
       facesheet_profile_page.add_email_with_enabled_notifications(email:new_email)
-      expect(facesheet_profile_page.get_current_email).to eql(new_email)
+      expect(facesheet_profile_page.current_email).to eql(new_email)
       expect(facesheet_profile_page.are_email_notifications_enabled?).to be_truthy
     end
 
