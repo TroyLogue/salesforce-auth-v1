@@ -78,6 +78,14 @@ namespace :local do
     exit run_in_parallel(tag: 'ehr')
   end
 
+  # rake local:ehr_staging_tag[uuqa_1548]
+  desc 'Run ehr tests on staging by tag'
+  task :ehr_staging_tag, [:tag] do |task, args|
+    ENV['browser'] = 'chrome_headless'
+    ENV['environment'] = 'ehr_staging'
+    exit run_in_parallel(tag: (args[:tag]).to_s)
+  end
+
   # presupposes a url is set in spec_helper
   # example:
   # rake local:devqa[chrome,uuqa_292]

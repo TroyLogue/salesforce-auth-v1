@@ -1,9 +1,11 @@
 require_relative '../../../shared_components/base_page'
 
 class Network < BasePage
+  BAR_LOADER = { css: '.bar-loader' }
   INDEX_EHR = { css: '.network-directory-index' }
-  NTH_PROVIDER_CARD = { css: '.ui-provider-select-cards > .ui_provider_card:nth_child("%d")' }
-  NTH_PROVIDER_CARD_NAME = { css: '.ui_provider_card:nth_child("%d") > .ui-provider-card__name' }
+  PROVIDER_CARDS_CONTAINER = { css: '.ui-provider-select-cards' }
+  PROVIDER_CARD = { css: '.ui-provider-card' }
+  FIRST_PROVIDER_CARD_NAME = { css: '.ui-provider-card:nth-child(1) .ui-provider-card__name' }
   SERVICE_TYPE_FILTER = { css: '#service-type-filter' }
   NETWORK_FILTER = { css: '#network-filter' }
   SEARCH_FILTER = { css: '#referral-search-filter' }
@@ -15,12 +17,13 @@ class Network < BasePage
 
   def nth_provider_card(index)
     # css indexes start at 1 not 0:
-    NTH_PROVIDER_CARD.transform_values { |v| v % (index + 1) }
+    @nth_provider_card = { css: ".ui-provider-select-cards .ui-provider-card:nth-child(#{index + 1})" }
   end
 
   def nth_provider_name(index)
     # css indexes start at 1 not 0:
-    text(NTH_PROVIDER_CARD_NAME.transform_values { |v| v % (index + 1) })
+    @nth_provider_card_name = { css: ".ui-provider-card:nth-child(#{index + 1}) .ui-provider-card__name" }
+    text(@nth_provider_card_name)
   end
 
   def page_displayed?
@@ -32,6 +35,10 @@ class Network < BasePage
 
   def search_by_text(text:)
     enter(text, SEARCH_FILTER)
+
+    # wait for results to update:
+    is_displayed?(BAR_LOADER)
+    is_not_displayed?(BAR_LOADER)
   end
 
   def search_result_text
