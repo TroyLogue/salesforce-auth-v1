@@ -3,7 +3,7 @@ require_relative '../root/pages/home_page'
 require_relative '../root/pages/navbar'
 require_relative './pages/network'
 
-describe '[Network Filter Panel –– ]', :ehr, :network do
+describe 'Network', :ehr, :network do
   include LoginEhr
 
   let(:homepage) { HomePage.new(@driver) }
@@ -16,12 +16,17 @@ describe '[Network Filter Panel –– ]', :ehr, :network do
     before {
       log_in_dashboard_as(LoginEhr::CC_HARVARD)
       expect(homepage.page_displayed?).to be_truthy
-      homepage.go_to_my_network
+      navbar.go_to_my_network
       expect(network.page_displayed?).to be_truthy
     }
 
     it 'can filter by text', :uuqa_ do
-
+      @provider_search_text = "Princeton"
+      # TODO: create a provider via API, save the name and search by that name
+      network.search_by_text(text: @provider_search_text)
+      # verify at least one result:
+      expect(network.search_result_text).to include("result")
+      expect(network.first_provider_name).to include(@provider_search_text)
     end
 
     it 'can filter by service type, distance, and address type' do
