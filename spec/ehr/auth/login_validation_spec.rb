@@ -3,7 +3,6 @@ require_relative '../auth/helpers/login_ehr'
 describe '[Login –– ]', :ehr, :auth, :login do
   include LoginEhr
 
-  let(:home_page) { HomePage.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
 

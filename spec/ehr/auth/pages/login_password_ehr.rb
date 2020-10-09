@@ -4,8 +4,8 @@ require_relative '../../../shared_components/base_page'
 
 class LoginPasswordEhr < BasePage
   FORGOT_PASSWORD_LINK = { css: '#forgot-password-link' }.freeze
-  INVALID_ALERT = { css: '#flash_alert' }.freeze
-  INVALID_TEXT = 'Invalid Email or password.'
+  INVALID_ALERT = { css: 'div.flash_alert-container:nth-child(7) > p.flash_alert' }.freeze
+  INVALID_TEXT = 'Invalid Email or password.'.freeze
   LAUNCH_DROPDOWN = { css: '#launch-page-select' }.freeze
   DEFAULT_LAUNCH = { xpath: '//*[@id="launch-page-select"]/option[1]' }.freeze
   DASHBOARD_LAUNCH = { xpath: '//*[@id="launch-page-select"]/option[2]' }.freeze
