@@ -5,17 +5,16 @@ class Network < BasePage
   INDEX_EHR = { css: '.network-directory-index' }
   PROVIDER_CARDS_CONTAINER = { css: '.ui-provider-select-cards' }
   PROVIDER_CARD = { css: '.ui-provider-card' }
-  FIRST_PROVIDER_CARD_NAME = { css: '.ui-provider-card:nth-child(1) .ui-provider-card__name' }
   SERVICE_TYPE_FILTER = { css: '#service-type-filter' }
   NETWORK_FILTER = { css: '#network-filter' }
   SEARCH_FILTER = { css: '#referral-search-filter' }
-  RESULT_TEXT_DIV = { css: '.filter-summary__results-text' }
+  RESULT_TEXT_DIV= { css: '.filter-summary__results-text' }
 
   def first_provider_name
     nth_provider_name(0)
   end
 
-  def nth_provider_card(index)
+  def nth_provider_card_selector(index)
     # css indexes start at 1 not 0:
     @nth_provider_card = { css: ".ui-provider-select-cards .ui-provider-card:nth-child(#{index + 1})" }
   end
@@ -37,7 +36,6 @@ class Network < BasePage
     enter(text, SEARCH_FILTER)
 
     # wait for results to update:
-    is_displayed?(BAR_LOADER)
     is_not_displayed?(BAR_LOADER)
   end
 
