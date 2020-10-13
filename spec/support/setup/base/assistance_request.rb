@@ -4,7 +4,7 @@ require 'faker'
 require_relative '../../../../lib/file_helper'
 
 module Setup
-  # An object that represents a contact/client created by a user in app-client
+  # An object that represents a Assistance request created by a user in app-client
   class AssistanceRequest
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
@@ -47,8 +47,14 @@ module Setup
     include RSpec::Matchers
     
     def close(token:, group_id:, contact_id:, resolution:)
-      close_ar_body = Payloads::AssistanceRequest::Close.new({outcome_id: resolution})
-      close_response = Requests::AssistanceRequest.close(token: token, group_id: group_id, contact_id: contact_id, payload: close_ar_body)
+      payload = {
+        closing:{
+          outcome_id: resolution,
+          resolved: 'resolved',
+          note: 'Data cleanup'
+        }
+      }
+      close_response = Requests::AssistanceRequest.close(token: token, group_id: group_id, contact_id: contact_id, payload: payload)
       expect(close_response.status.to_s).to eq('200 OK')
     end
   end

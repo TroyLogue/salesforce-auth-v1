@@ -14,7 +14,7 @@ describe '[AR start intake]', :app_client, :assistance_request do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
-  let(:ar_dashboard_page) { DashboardPage.new(@driver) }
+  let(:ar_page) { AsistanceRequest.new(@driver) }
   let(:intake_page) { Intake.new(@driver) }
 
   before {
@@ -24,20 +24,18 @@ describe '[AR start intake]', :app_client, :assistance_request do
     expect(homepage.page_displayed?).to be_truthy
   }
 
-  after {
-    Setup::Data::close_assistance_request(contact_id: @ar_id)
-  }
-
   it 'start intake from AR', :uuqa_1402 do
-    base_page.get("/dashboard/new/assistance-requests/#{@ar_id}")
-    ar_dashboard_page.select_start_intake_action
+    ar_page.go_to_new_ar_with_id(ar_id: @ar_id)
+    ar_page.select_start_intake_action
+    full_name = intake_page.get_clients_full_name
     ssn_number = Faker::IDNumber.valid
     intake_page.complete_required_information(ssn_number)
-    intake_note = Faker::Lorem.sentence(word_count: 5)
-    intake_page.add_note(intake_note)
-    intake_page.check_first_care_coordinator
-    intake_page.check_needs_action
     intake_page.save_intake
-    expect(ar_dashboard_page.facesheet_link_text).to eq('GO TO FACE SHEET')
+    ar_page.ar_details_page_displayed?
+    expect(ar_page.intake_created_text).to include("Intake created for #{full_name}")
   end
+
+  after {
+    Setup::Data::close_columbia_assistance_request(contact_id: @ar_id)
+  }
 end

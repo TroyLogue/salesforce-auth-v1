@@ -170,6 +170,10 @@ class Intake < BasePage
     text(SELECTED_CITIZENSHIP)
   end
 
+  def get_clients_full_name
+    value(FIRSTNAME_INPUT) + ' ' + value(LASTNAME_INPUT)
+  end
+
   def other_information_displayed?
     is_displayed?(INTAKE_DETAIL_OTHER_INFORMATION) &&
       is_displayed?(NOTES_TEXT)
