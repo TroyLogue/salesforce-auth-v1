@@ -38,7 +38,7 @@ module Setup
                                                                 })
       ar_response = Requests::AssistanceRequest.create(payload: ar_request_body)
       expect(ar_response.status.to_s).to eq('201 Created')
-      @ar_id = JSON.parse(ar_response, object_class: OpenStruct).data.id
+      @ar_data = JSON.parse(ar_response, object_class: OpenStruct).data
     end
   end
 

@@ -18,24 +18,20 @@ describe '[AR start intake]', :app_client, :assistance_request do
   let(:intake_page) { Intake.new(@driver) }
 
   before {
-    @ar_id = Setup::Data::submit_assistance_request_to_columbia_org
+    @ar_data = Setup::Data::submit_assistance_request_to_columbia_org
 
     log_in_as(Login::ORG_COLUMBIA)
     expect(homepage.page_displayed?).to be_truthy
   }
 
   it 'start intake from AR', :uuqa_1402 do
-    ar_page.go_to_new_ar_with_id(ar_id: @ar_id)
+    ar_page.go_to_new_ar_with_id(ar_id: @ar_data.id)
     ar_page.select_start_intake_action
-    full_name = intake_page.get_clients_full_name
-    ssn_number = Faker::IDNumber.valid
-    intake_page.complete_required_information(ssn_number)
-    intake_page.save_intake
-    ar_page.ar_details_page_displayed?
-    expect(ar_page.intake_created_text).to include("Intake created for #{full_name}")
+    intake_page.page_displayed?
+    expect(intake_page.get_clients_full_name).to eq(@ar_data.requestor.full_name)
   end
 
   after {
-    Setup::Data::close_columbia_assistance_request(contact_id: @ar_id)
+    Setup::Data::close_columbia_assistance_request(contact_id: @ar_data.id)
   }
 end
