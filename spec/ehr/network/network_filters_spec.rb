@@ -28,5 +28,12 @@ describe '[Network]', :ehr, :network do
       expect(network.search_result_text).to include("result")
       expect(network.first_provider_name).to include(@provider_search_text)
     end
+
+    it 'can filter by service type, distance, and address', :uuqa_1558 do
+      @service_type = SERVICE_TYPES.disability
+      network.select_service_type(@service_type)
+      @service_type_name = @service_type.name.capitalize
+      expect(network.search_result_text).to include(@service_type_name)
+    end
   end
 end

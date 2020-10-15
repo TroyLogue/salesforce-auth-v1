@@ -42,4 +42,7 @@ class Network < BasePage
   def search_result_text
     text(RESULT_TEXT_DIV)
   end
+
+  def select_service_type(service_type)
+  end
 end
