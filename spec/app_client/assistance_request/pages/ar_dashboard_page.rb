@@ -1,4 +1,4 @@
-require_relative '../../../../shared_components/base_page'
+require_relative '../../../shared_components/base_page'
 
 class AsistanceRequest < BasePage
   TAKE_ACTION = { css: '.choices__item' }.freeze

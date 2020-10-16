@@ -1,11 +1,11 @@
-require_relative '../../../spec_helper'
-require_relative '../../../shared_components/base_page.rb'
-require_relative '../../auth/helpers/login'
-require_relative '../../auth/pages/login_email'
-require_relative '../../auth/pages/login_password'
-require_relative '../../root/pages/home_page'
-require_relative '../ar_dashboard_org/pages/ar_dashboard_page.rb'
-require_relative '../../intakes/pages/intake.rb'
+require_relative '../../spec_helper'
+require_relative '../../shared_components/base_page.rb'
+require_relative '../auth/helpers/login'
+require_relative '../auth/pages/login_email'
+require_relative '../auth/pages/login_password'
+require_relative '../root/pages/home_page'
+require_relative 'pages/ar_dashboard_page.rb'
+require_relative '../intakes/pages/intake.rb'
 
 describe '[AR start intake]', :app_client, :assistance_request do
   include Login
