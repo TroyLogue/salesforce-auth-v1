@@ -3,6 +3,8 @@ require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative './pages/facesheet_header'
 require_relative './pages/facesheet_profile_page'
+require_relative '../root/pages/left_nav'
+require_relative '../clients/pages/clients_page'
 
 describe '[Facesheet][Profile]', :app_client, :facesheet do
   include Login
@@ -119,6 +121,30 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
         facesheet_profile.edit_military_affiliation(affiliation: @affiliation)
         expect(facesheet_profile.current_military_info).to eql(@affiliation)
       end
+    end
+  end
+
+  context('[as non-military and non-insurance forcused org]') do
+    let(:left_nav) { LeftNav.new(@driver) }
+    let(:clients_page) { ClientsPage.new(@driver) }
+
+    before {
+      log_in_as(Login::ORG_PRINCETON)
+      expect(home_page.page_displayed?).to be_truthy
+
+      # Navigate to any existing contact's profile
+      left_nav.go_to_clients
+      expect(clients_page.page_displayed?).to be_truthy
+      clients_page.go_to_facesheet_second_authorized_client
+      facesheet_header.go_to_profile
+    }
+
+    it 'insurance profile section does not display', :uuqa_1560 do
+      expect(facesheet_profile.is_insurance_displayed?).to be_falsey
+    end
+
+    it 'military profile section does not display', :uuqa_1559 do
+      expect(facesheet_profile.is_military_displayed?).to be_falsey
     end
   end
 end
