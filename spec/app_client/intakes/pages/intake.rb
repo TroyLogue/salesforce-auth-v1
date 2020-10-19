@@ -22,7 +22,6 @@ class Intake < BasePage
   OTHER_INFORMATION = { id: 'other-information-nav-item' }.freeze
   INSURANCE_INFORMATION = { id: 'insurance-information-nav-item' }.freeze
   MILITARY_INFORMATION = { id: 'military-information-nav-item' }.freeze
-  GENERAL_NOTES = { id: 'general-notes-nav-item' }.freeze
   SERVICE_INFORMATION = { link_text: 'Service Information' }.freeze
   CARE_COORDINATOR = { id: 'care-coordinator-nav-item' }.freeze
   SERVICE_NEED = { css: '#select-need + .choices__list' }.freeze
