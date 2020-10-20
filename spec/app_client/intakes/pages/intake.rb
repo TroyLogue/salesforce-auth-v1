@@ -22,7 +22,6 @@ class Intake < BasePage
   OTHER_INFORMATION = { id: 'other-information-nav-item' }.freeze
   INSURANCE_INFORMATION = { id: 'insurance-information-nav-item' }.freeze
   MILITARY_INFORMATION = { id: 'military-information-nav-item' }.freeze
-  GENERAL_NOTES = { id: 'general-notes-nav-item' }.freeze
   SERVICE_INFORMATION = { link_text: 'Service Information' }.freeze
   CARE_COORDINATOR = { id: 'care-coordinator-nav-item' }.freeze
   SERVICE_NEED = { css: '#select-need + .choices__list' }.freeze
@@ -165,6 +164,10 @@ class Intake < BasePage
     text(SELECTED_CITIZENSHIP)
   end
 
+  def get_clients_full_name
+    value(FIRSTNAME_INPUT) + ' ' + value(LASTNAME_INPUT)
+  end
+
   def other_information_displayed?
     is_displayed?(INTAKE_DETAIL_OTHER_INFORMATION) &&
       is_displayed?(NOTES_TEXT)
@@ -178,3 +181,4 @@ class Intake < BasePage
       text_include?(citizenship, CITIZENSHIP_TEXT)
   end
 end
+

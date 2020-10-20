@@ -35,7 +35,7 @@ describe '[Intake]', :app_client, :intake do
         id: @contact.contact_id,
         tab: 'forms'
       )
-      expect(facesheet_header.get_facesheet_name).to eql(@contact.searchable_name)
+      expect(facesheet_header.facesheet_name).to eql(@contact.searchable_name)
       expect(facesheet_forms_page.page_displayed?).to be_truthy
 
       # create new intake from facesheet form

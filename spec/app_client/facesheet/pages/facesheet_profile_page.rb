@@ -522,6 +522,7 @@ class FacesheetProfilePage < BasePage
   include HouseHold
 
   module Insurance
+    INSURANCE_SECTION = { css: '.profile-panel.insurance-information' }.freeze
     CURRENT_INSURANCE = { css: '.insurance-information__id' }.freeze
     CURRENT_INSURANCE_STATE = { css: '.insurance-information__state' }.freeze
     ADD_INSURANCE_ICON = { css: '#add-insurance-button' }.freeze
@@ -531,6 +532,10 @@ class FacesheetProfilePage < BasePage
     EXPAND_MED_STATE_CHOICES = { css: '#insurance-state-0 + div' }.freeze
     LIST_MED_STATE_CHOICES = { css: 'div[id^="choices-insurance-state"]' }.freeze
     BTN_SAVE_INSURANCE = { css: '#edit-insurance-save-btn' }.freeze
+
+    def is_insurance_displayed?
+      is_present?(INSURANCE_SECTION)
+    end
 
     def current_insurance
       # Returns Medicare, Medicaid and State in string ex: "1EG4TE5MK73 9997686 New Jersey"
@@ -553,6 +558,7 @@ class FacesheetProfilePage < BasePage
   include Insurance
 
   module Military
+    MILITARY_SECTION = { css: '.profile-panel.military-information' }.freeze
     CURRENT_MILITARY_INFO = { css: '.military-information-display .display-line-value' }.freeze
     LINK_ADD_MILITARY_INFO = { css: '.military-information-add-info' }.freeze
     EDIT_MILITARY_INFO = { css: '#edit-military-btn' }.freeze
@@ -567,6 +573,10 @@ class FacesheetProfilePage < BasePage
     AFFILIATION_SPOUSE = 'Military Spouse'
     AFFILIATION_UNDISCLOSED = 'Prefer Not to Disclose'
     AFFILIATION_WIDOW = 'Widow/er'
+
+    def is_military_displayed?
+      is_present?(MILITARY_SECTION)
+    end
 
     def current_military_info
       text(CURRENT_MILITARY_INFO)

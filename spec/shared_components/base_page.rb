@@ -11,6 +11,10 @@ class BasePage
     @driver = driver
   end
 
+  def attribute(selector, attribute)
+    find(selector).attribute(attribute)
+  end
+
   def clear(selector)
     find(selector).clear
   end
@@ -174,6 +178,10 @@ class BasePage
 
   def is_selected?(selector)
     find(selector).selected?
+  end
+
+  def new_tab_opened?
+    driver.window_handles.first != driver.window_handles.last
   end
 
   # because all of our users and clients are U.S.-based,
