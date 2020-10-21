@@ -43,7 +43,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
         id: @contact.contact_id,
         tab: 'forms'
       )
-      expect(facesheet_header.get_facesheet_name).to eql(@contact.searchable_name)
+      expect(facesheet_header.facesheet_name).to eql(@contact.searchable_name)
       expect(facesheet_forms.page_displayed?).to be_truthy
 
       #find unstarted assessment

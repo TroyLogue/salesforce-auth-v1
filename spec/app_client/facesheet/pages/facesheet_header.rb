@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class FacesheetHeader < BasePage
@@ -9,13 +11,29 @@ class FacesheetHeader < BasePage
   UPLOADS_TAB = { css: '#facesheet-uploads-tab' }.freeze
   REFERALS_TAB = { css: '#facesheet-referrals-tab' }.freeze
 
+  CONSENT_STATUS = { css: '#status-select-options > option' }.freeze
+  EXPAND_CONSENT_OPTIONS = { css: '#status-select-options + div' }.freeze
+  LIST_CONSENT_OPTIONS = { css: 'div[id^="choices-status"]' }.freeze
+
+  SEND_SMS = 'Send SMS'
+  SEND_EMAIL = 'Send Email'
+  REQUEST_ONSCREEN = 'Request On-Screen'
+  UPLOAD_PAPER = 'Upload Signed Paper'
+  UPLOAD_AUDIO = 'Upload Audio File'
+  PROVIDE_ATTESTATION = 'Provide Attestation'
+  VIEW = 'View'
+
   def page_displayed?
     is_displayed?(FILTER_BAR)
     wait_for_spinner
   end
 
-  def get_facesheet_name
+  def facesheet_name
     text(NAME_HEADER)
+  end
+
+  def consent_status
+    attribute(CONSENT_STATUS, 'textContent')
   end
 
   def go_to_uploads
@@ -40,5 +58,10 @@ class FacesheetHeader < BasePage
   def go_to_forms
     click(FORMS_TAB)
     wait_for_spinner
+  end
+
+  def select_consent_option(option:)
+    click(EXPAND_CONSENT_OPTIONS)
+    click_element_from_list_by_text(LIST_CONSENT_OPTIONS, option)
   end
 end

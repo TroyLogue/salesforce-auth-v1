@@ -22,7 +22,8 @@ describe '[Network]', :ehr, :network do
 
     it 'can filter by text', :uuqa_1548 do
       @provider_search_text = "Princeton"
-      # TODO: create a provider via API, save the name and search by that name
+      # TODO: https://uniteus.atlassian.net/browse/UU3-48920
+      # replace hardcoded search term with provider name from API
       network.search_by_text(text: @provider_search_text)
       # verify at least one result:
       expect(network.search_result_text).to include("result")

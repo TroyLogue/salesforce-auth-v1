@@ -51,7 +51,7 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       # Save client, user should land on facesheet of newly created client and now search for client
       add_client_page.save_client
       consent_modal.add_consent_by_document_upload
-      expect(facesheet_header.get_facesheet_name).to eql("#{@fname} #{@lname}")
+      expect(facesheet_header.facesheet_name).to eql("#{@fname} #{@lname}")
       notifications.close_banner
 
       # Client created on NG is now searchable
@@ -97,7 +97,7 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       # Save client, user should land on facesheet of newly created client and now search for client
       add_client_page.save_client
       consent_modal.add_consent_by_document_upload
-      expect(facesheet_header.get_facesheet_name).to eql("#{@fname} #{@lname}")
+      expect(facesheet_header.facesheet_name).to eql("#{@fname} #{@lname}")
       notifications.close_banner
 
       # Client is now searchable

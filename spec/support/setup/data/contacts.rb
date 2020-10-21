@@ -6,26 +6,20 @@ require_relative '../identifiers/machine_tokens'
 module Setup
   module Data
     def self.create_harvard_client
-      contact = Contact.new
-      contact.create(token: MachineTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
+      contact = Contact.new(token: MachineTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
+      contact.create
       contact
     end
 
     def self.create_harvard_client_with_consent
-      contact = Contact.new
-      contact.create_with_consent(token: MachineTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
-      contact
-    end
-
-    def self.create_harvard_client_with_all_fields
-      contact = Contact.new
-      contact.create_with_all_fields(token: MachineTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
+      contact = Contact.new(token: MachineTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
+      contact.create_with_consent
       contact
     end
 
     def self.create_princeton_client
-      contact = Contact.new
-      contact.create(token: MachineTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
+      contact = Contact.new(token: MachineTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
+      contact.create
       contact
     end
 
@@ -36,38 +30,38 @@ module Setup
     end
 
     def self.create_princeton_client_with_consent
-      contact = Contact.new
-      contact.create_with_consent(token: MachineTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
+      contact = Contact.new(token: MachineTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
+      contact.create_with_consent
       contact
     end
 
     def self.create_yale_client
-      contact = Contact.new
-      contact.create(token: MachineTokens::ORG_YALE, group_id: Providers::ORG_YALE)
+      contact = Contact.new(token: MachineTokens::ORG_YALE, group_id: Providers::ORG_YALE)
+      contact.create
       contact
     end
 
     def self.create_yale_client_with_consent
-      contact = Contact.new
-      contact.create_with_consent(token: MachineTokens::ORG_YALE, group_id: Providers::ORG_YALE)
+      contact = Contact.new(token: MachineTokens::ORG_YALE, group_id: Providers::ORG_YALE)
+      contact.create_with_consent
       contact
     end
 
     def self.create_yale_client_with_military_and_consent
-      contact = Contact.new
-      contact.create_with_military_and_consent(token: MachineTokens::ORG_YALE, group_id: Providers::ORG_YALE)
+      contact = Contact.new(token: MachineTokens::ORG_YALE, group_id: Providers::ORG_YALE)
+      contact.create_with_military_and_consent
+      contact
+    end
+
+    def self.create_columbia_client
+      contact = Contact.new(token: MachineTokens::ORG_COLUMBIA, group_id: Providers::ORG_COLUMBIA)
+      contact.create
       contact
     end
 
     def self.create_columbia_client_with_consent
-      contact = Contact.new
-      contact.create_with_consent(token: MachineTokens::ORG_COLUMBIA, group_id: Providers::ORG_COLUMBIA)
-      contact
-    end
-
-    def self.create_columbia_client_with_all_fields
-      contact = Contact.new
-      contact.create_with_all_fields(token: MachineTokens::ORG_COLUMBIA, group_id: Providers::ORG_COLUMBIA)
+      contact = Contact.new(token: MachineTokens::ORG_COLUMBIA, group_id: Providers::ORG_COLUMBIA)
+      contact.create_with_consent
       contact
     end
   end

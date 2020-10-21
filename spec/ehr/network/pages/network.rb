@@ -14,11 +14,6 @@ class Network < BasePage
     nth_provider_name(0)
   end
 
-  def nth_provider_card_selector(index)
-    # css indexes start at 1 not 0:
-    @nth_provider_card = { css: ".ui-provider-select-cards .ui-provider-card:nth-child(#{index + 1})" }
-  end
-
   def nth_provider_name(index)
     # css indexes start at 1 not 0:
     @nth_provider_card_name = { css: ".ui-provider-card:nth-child(#{index + 1}) .ui-provider-card__name" }
