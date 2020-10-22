@@ -24,7 +24,7 @@ describe '[Close assistance request]', :app_client, :assistance_request do
     expect(homepage.page_displayed?).to be_truthy
   }
 
-  it 'closes assistance rquest', :uuqa_1561 do
+  it 'closes assistance request', :uuqa_1561 do
     ar_page.go_to_new_ar_with_id(ar_id: @ar_data.id)
     expect(ar_page.status_detail_text).to eq("NEEDS ACTION")
     note = Faker::Lorem.sentence(word_count: 5)
