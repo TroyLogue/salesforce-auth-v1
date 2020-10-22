@@ -5,9 +5,9 @@ require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
 require_relative 'pages/ar_dashboard_page.rb'
-require_relative '../intakes/pages/intake.rb'
+require_relative 'pages/closed_ar_page.rb'
 
-describe '[AR start intake]', :app_client, :assistance_request do
+describe '[Close assistance request]', :app_client, :assistance_request do
   include Login
   
   let(:login_email) { LoginEmail.new(@driver) }
@@ -15,7 +15,7 @@ describe '[AR start intake]', :app_client, :assistance_request do
   let(:homepage) { HomePage.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
   let(:ar_page) { AssistanceRequest.new(@driver) }
-  let(:intake_page) { Intake.new(@driver) }
+  let(:closed_ar_page) { ClosedAssistanceRequest.new(@driver) }
 
   before {
     @ar_data = Setup::Data::submit_assistance_request_to_columbia_org
@@ -24,14 +24,12 @@ describe '[AR start intake]', :app_client, :assistance_request do
     expect(homepage.page_displayed?).to be_truthy
   }
 
-  it 'start intake from AR', :uuqa_1402 do
+  it 'closes assistance rquest', :uuqa_1561 do
     ar_page.go_to_new_ar_with_id(ar_id: @ar_data.id)
-    ar_page.select_start_intake_action
-    intake_page.page_displayed?
-    expect(intake_page.get_clients_full_name).to eq(@ar_data.requestor.full_name)
+    expect(ar_page.status_detail_text).to eq("NEEDS ACTION")
+    note = Faker::Lorem.sentence(word_count: 5)
+    ar_page.close_assistance_request(note)
+    ar_page.go_to_closed_ar_with_id(ar_id: @ar_data.id)
+    expect(closed_ar_page.status_detail_text).to eq("CLOSED")
   end
-
-  after {
-    Setup::Data::close_columbia_assistance_request(contact_id: @ar_data.id)
-  }
 end
