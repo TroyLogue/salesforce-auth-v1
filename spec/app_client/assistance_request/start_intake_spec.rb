@@ -4,7 +4,7 @@ require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
-require_relative 'pages/ar_dashboard_page.rb'
+require_relative 'pages/assistance_request_dashboard_page.rb'
 require_relative '../intakes/pages/intake.rb'
 
 describe '[AR start intake]', :app_client, :assistance_request do
@@ -14,7 +14,7 @@ describe '[AR start intake]', :app_client, :assistance_request do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
-  let(:ar_page) { AssistanceRequest.new(@driver) }
+  let(:assistance_request_dashboard_page) { AssistanceRequestDashboardPage.new(@driver) }
   let(:intake_page) { Intake.new(@driver) }
 
   before {
@@ -25,8 +25,8 @@ describe '[AR start intake]', :app_client, :assistance_request do
   }
 
   it 'start intake from AR', :uuqa_1402 do
-    ar_page.go_to_new_ar_with_id(ar_id: @ar_data.id)
-    ar_page.select_start_intake_action
+    assistance_request_dashboard_page.go_to_new_ar_with_id(ar_id: @ar_data.id)
+    assistance_request_dashboard_page.select_start_intake_action
     intake_page.page_displayed?
     expect(intake_page.get_clients_full_name).to eq(@ar_data.requestor.full_name)
   end

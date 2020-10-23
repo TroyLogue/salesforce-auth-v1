@@ -1,18 +1,17 @@
 require_relative '../../../shared_components/base_page'
 
-class AssistanceRequest < BasePage
+class AssistanceRequestDashboardPage < BasePage
   TAKE_ACTION = { css: '.choices__item' }.freeze
   START_INTAKE_CHOICE = { css: '#choices-assistance-request-action-select-item-choice-2' }.freeze
   REQUEST_CLOSE = { css: '#choices-assistance-request-action-select-item-choice-5' }
   IS_RESOLVED = { css: '#resolved-input' }
-  RESOLVED = { css: '#choices-resolved-input-item-choice-1' }
+  RESOLUTION_INPUT = { css: '.choices__input--cloned' }
   OUTCOME = { css: '#outcome-input' }
   OUTCOME_CHOICE = { css: '#choices-outcome-input-item-choice-1' }
   CLOSING_NOTE = { css: '#note-input' }
   CLOSE_BUTTON = { css: '#close-ar-close-btn' }
   STATUS_DETAIL = { css: '.detail-status-text' }
   AR_CLOSE_MODAL = { css: '.close-ar__inputs' }
-  DASHBOARD_TABLE = { css: '#new-assistance-requests-table-header-row' }
   
   def go_to_new_ar_with_id(ar_id:)
     get("/dashboard/new/assistance-requests/#{ar_id}")
@@ -30,7 +29,7 @@ class AssistanceRequest < BasePage
   end
 
   def select_close_assistance_request
-    find(STATUS_DETAIL)
+    is_displayed?(STATUS_DETAIL)
     click(TAKE_ACTION)
     is_displayed?(REQUEST_CLOSE)
     click(REQUEST_CLOSE)
@@ -40,39 +39,35 @@ class AssistanceRequest < BasePage
     is_displayed?(AR_CLOSE_MODAL)
   end
 
-  def close_ar_resolution_field
+  def enter_close_ar_resolution(resolution_type)
     click_via_js(IS_RESOLVED)
-    click(RESOLVED)
+    enter(resolution_type, RESOLUTION_INPUT)
+    find(RESOLUTION_INPUT).send_keys :enter
   end
 
-  def close_ar_outcome_field
+  def select_close_ar_outcome
     click_via_js(OUTCOME)
     click(OUTCOME_CHOICE)
   end
 
-  def close_ar_note_field(note)
+  def enter_close_ar_note(note)
     enter(note, CLOSING_NOTE)
   end
 
-  def close_ar_modal
+  def submit_close_ar
     click(CLOSE_BUTTON)
-  end
-
-  def new_ar_dashboard_displayed?
-    is_displayed?(DASHBOARD_TABLE)
   end
 
   def status_detail_text
     text(STATUS_DETAIL)
   end
 
-  def close_assistance_request(note)
+  def close_assistance_request(note, resolution_type)
     select_close_assistance_request
     close_ar_modal_displayed?
-    close_ar_resolution_field
-    close_ar_outcome_field
-    close_ar_note_field(note)
-    close_ar_modal
-    new_ar_dashboard_displayed?
+    enter_close_ar_resolution(resolution_type)
+    select_close_ar_outcome
+    enter_close_ar_note(note)
+    submit_close_ar
   end
 end
