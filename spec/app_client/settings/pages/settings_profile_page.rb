@@ -2,41 +2,41 @@ require_relative '../../root/pages/notifications'
 
 module Settings
   class OrganizationProfile < BasePage
-    DIALOG_MODAL = { css: '.dialog.open' }
+    DIALOG_MODAL = { css: '.dialog.open' }.freeze
 
-    EDIT_DESCRIPTION = { css: '#edit-description-btn' }
-    INPUT_DESCRIPTION = { css: '.public-DraftStyleDefault-block > span' }
-    SAVE_DESCRIPTION = { css: '#edit-description-save-btn' }
-    TEXT_DESCRIPTION = { css: '.html-parsed-text' }
+    EDIT_DESCRIPTION = { css: '#edit-description-btn' }.freeze
+    INPUT_DESCRIPTION = { css: '.public-DraftStyleDefault-block > span' }.freeze
+    SAVE_DESCRIPTION = { css: '#edit-description-save-btn' }.freeze
+    TEXT_DESCRIPTION = { css: '.html-parsed-text' }.freeze
 
-    EDIT_PHONE = { css: '#edit-phone-number-btn' }
-    INPUT_PHONE = { css: 'input[id^="phoneNumber"]' }
-    SAVE_PHONE = { css: '#edit-phone-number-save-btn' }
-    TEXT_PHONE = { css: '.phone-number-display > p' }
+    EDIT_PHONE = { css: '#edit-phone-number-btn' }.freeze
+    INPUT_PHONE = { css: 'input[id^="phoneNumber"]' }.freeze
+    SAVE_PHONE = { css: '#edit-phone-number-save-btn' }.freeze
+    TEXT_PHONE = { css: '.phone-number-display > p' }.freeze
 
-    EDIT_EMAIL = { css: '#edit-email-btn' }
-    INPUT_EMAIL = { css: 'input[name="emails[0].email_address"]' }
-    SAVE_EMAIL = { css: '#edit-email-save-btn' }
-    TEXT_EMAIL = { css: '.email > p' }
+    EDIT_EMAIL = { css: '#edit-email-btn' }.freeze
+    INPUT_EMAIL = { css: 'input[name="emails[0].email_address"]' }.freeze
+    SAVE_EMAIL = { css: '#edit-email-save-btn' }.freeze
+    TEXT_EMAIL = { css: '.email > p' }.freeze
 
-    EDIT_ADDRESS = { css: '#edit-address-btn' }
-    INPUT_ADDRESS = { css: 'input[name="addresses[0].line_2"]' }
-    SAVE_ADDRESS = { css: '#edit-address-save-btn' }
-    TEXT_ADDRESS = { css: '.address__content' }
+    EDIT_ADDRESS = { css: '#edit-address-btn' }.freeze
+    INPUT_ADDRESS = { css: 'input[name="addresses[0].attributes.line_2"]' }.freeze
+    SAVE_ADDRESS = { css: '#edit-address-save-btn' }.freeze
+    TEXT_ADDRESS = { css: '.address__content' }.freeze
 
-    EDIT_WEBSITE = { css: '#edit-website-btn' }
-    INPUT_WEBSITE = { css: '#website-url' }
-    SAVE_WEBSITE = { css: '#edit-url-modal-save-btn' }
-    TEXT_WEBSITE = { css: '#website-url-link' }
+    EDIT_WEBSITE = { css: '#edit-website-btn' }.freeze
+    INPUT_WEBSITE = { css: '#website-url' }.freeze
+    SAVE_WEBSITE = { css: '#edit-url-modal-save-btn' }.freeze
+    TEXT_WEBSITE = { css: '#website-url-link' }.freeze
 
-    EDIT_HOURS = { css: '#edit-hours-btn' }
-    INPUT_HOURS = { css: '.hours-of-operation-day-fields__opens-at .choices__item.choices__item--selectable' }
-    LIST_HOURS = { css: 'div[id^="choices-group-hours-of-operation-fields-day-field-0-opens-at-item-choice"]' }
-    SAVE_HOURS = { css: '#edit-hours-modal-save-btn' }
-    TEXT_HOURS = { css: '.ui-hours-of-operation-day__hours' }
+    EDIT_HOURS = { css: '#edit-hours-btn' }.freeze
+    INPUT_HOURS = { css: '.hours-of-operation-day-fields__opens-at .choices__item.choices__item--selectable' }.freeze
+    LIST_HOURS = { css: 'div[id^="choices-group-hours-of-operation-fields-day-field-0-opens-at-item-choice"]' }.freeze
+    SAVE_HOURS = { css: '#edit-hours-modal-save-btn' }.freeze
+    TEXT_HOURS = { css: '.ui-hours-of-operation-day__hours' }.freeze
 
-    EDIT_PENCIL_ICON = { css: '.ui-icon' }
-    ORG_PROFILE_DESCRIPTION = { css: '.org-profile-description' }
+    EDIT_PENCIL_ICON = { css: '.ui-icon' }.freeze
+    ORG_PROFILE_DESCRIPTION = { css: '.org-profile-description' }.freeze
 
     def page_displayed?
       is_displayed?(EDIT_DESCRIPTION)

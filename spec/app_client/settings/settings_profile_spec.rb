@@ -22,31 +22,31 @@ describe '[Settings - Profile]', :settings, :app_client do
       description = Faker::Lorem.word
       phone = Faker::Number.number(digits: 10)
       email = Faker::Internet.email
-      address = Faker::Address.street_name
+      address = "#{Faker::Number.between(from: 1, to: 10)} Apt"
       weburl = Faker::Internet.url
       time = "#{Faker::Number.between(from: 1, to: 10)}:00 AM"
 
-      #Description
+      # Description
       org_profile.save_description(description)
       expect(org_profile.get_description).to eq(description)
 
-      #Phone
+      # Phone
       org_profile.save_phone(phone)
       expect(org_profile.get_phone).to eq(org_profile.number_to_phone_format(phone))
 
-      #Email
+      # Email
       org_profile.save_email(email)
       expect(org_profile.get_email).to eq(email)
 
-      #Address
+      # Address
       org_profile.save_address(address)
       expect(org_profile.get_address).to include(address)
 
-      #Url
+      # Url
       org_profile.save_website(weburl)
       expect(org_profile.get_website).to eq(weburl)
 
-      #Hours
+      # Hours
       org_profile.save_time(time)
       expect(org_profile.get_time).to include(time)
     end
