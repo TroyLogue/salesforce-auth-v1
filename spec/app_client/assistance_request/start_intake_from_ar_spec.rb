@@ -7,7 +7,7 @@ require_relative '../root/pages/home_page'
 require_relative 'pages/assistance_request_dashboard_page.rb'
 require_relative '../intakes/pages/intake.rb'
 
-describe '[AR start intake]', :app_client, :assistance_request do
+describe '[start intake from AR]', :app_client, :assistance_request do
   include Login
   
   let(:login_email) { LoginEmail.new(@driver) }
