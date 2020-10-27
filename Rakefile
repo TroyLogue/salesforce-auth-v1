@@ -63,7 +63,7 @@ namespace :local do
   # example:
   # rake local:app_client_staging[chrome]
   desc 'Run app-client tests on staging by browser'
-  task :app_client_staging, :browser do |t, args|
+  task :app_client_staging, [:browser] do |t, args|
     ENV['browser'] = args[:browser]
     ENV['environment'] = 'app_client_staging'
     exit run_in_parallel(tag: 'app_client')
