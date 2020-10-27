@@ -97,10 +97,10 @@ namespace :local do
   end
 
   # example:
-  # rake local:resource_directory_staging[chrome]
+  # rake local:resource_directory_staging
   desc 'Run resource directory tests on staging by browser'
   task :resource_directory_staging do |args|
-    ENV['browser'] = args[:browser]
+    ENV['browser'] = 'chrome'
     ENV['environment'] = 'resource_directory_staging'
     exit run_in_parallel(tag: 'resource_directory')
   end
