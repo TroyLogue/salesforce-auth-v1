@@ -70,6 +70,10 @@ class BasePage
     find(selector).send_keys text
   end
 
+  def enter_and_return(text, selector)
+    find(selector).send_keys text, :return
+  end
+
   # debugging tip: to verify value set, run
   # driver.execute_script("return document.getElementById(`#{selector_id}`).value")
   def enter_via_js(text, selector_id)

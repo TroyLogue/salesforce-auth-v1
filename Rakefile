@@ -34,6 +34,13 @@ namespace :jenkins do
     ENV['environment'] = 'resource_directory_staging'
     exit run_in_parallel(tag: 'resource_directory')
   end
+
+  desc 'specs tagged widgets on chrome headless'
+  task :widgets do
+    ENV['browser'] = 'chrome_headless'
+    ENV['environment'] = 'widgets_staging'
+    exit run_in_parallel(tag: 'widgets')
+  end
 end
 
 namespace :docker do
