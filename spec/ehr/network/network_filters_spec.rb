@@ -2,6 +2,7 @@ require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/navbar'
 require_relative './pages/network'
+require_relative './pages/network_filter_drawer'
 
 describe '[Network]', :ehr, :network do
   include LoginEhr
@@ -11,6 +12,7 @@ describe '[Network]', :ehr, :network do
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:navbar) { Navbar.new(@driver) }
   let(:network) { Network.new(@driver) }
+  let(:network_filter_drawer) { NetworkFilterDrawer.new(@driver) }
 
   context('[as a cc user] in the Dashboard view') do
     before {
@@ -31,10 +33,30 @@ describe '[Network]', :ehr, :network do
     end
 
     it 'can filter by service type, distance, and address', :uuqa_1558 do
-      @service_type = SERVICE_TYPES.disability
+      # filter by service type
+      @service_type = "Disability Benefits"
       network.select_service_type(@service_type)
-      @service_type_name = @service_type.name.capitalize
-      expect(network.search_result_text).to include(@service_type_name)
+      # not sure if this line is needed?
+#      @service_type_name = @service_type.name.capitalize
+      expect(network.search_result_text).to include(@service_type)
+
+      # open filter drawer
+      network.open_filter_drawer
+      expect(network_filter_drawer.page_displayed?).to be_truthy
+
+      # filter by distance
+      const distance = "25"
+      network_filter_drawer.filter_distance_by_miles(distance)
+      expect(network.search_result_text).to include(distance + ' miles');
+
+      # filter by address
+      # UU3-27063 uncomment when fixed
+#      network_filter_drawer.submit_other_address(nycFiDiOfficeAddress)
+#      expect(network.search_result_text).to include(nycFiDiOfficeAddress)
+
+      # close filter drawer
+      network_filter_drawer.close_drawer
+      expect(network_filter_drawer.page_displayed?).to be_falsy
     end
   end
 end
