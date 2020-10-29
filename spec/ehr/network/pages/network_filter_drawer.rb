@@ -11,19 +11,19 @@ class NetworkFilterDrawer < BasePage
   DISTANCE_OPTION = { css: '.ui-geo-filter__distance-select .choices__item' }
   ADDRESS_TYPE_SELECT = { css: '.ui-geo-filter__address-type-select .choices' }
   ADDRESS_TYPE_OPTION = { css: '.ui-geo-filter__address-type-select .choices__item' }
-  ADDRESS_INPUT = { css: '.ui-form-field .ui-geo-filter__address-select' }
+  ADDRESS_SELECT = { css: '.ui-form-field .ui-geo-filter__address-select' }
 
   def close_drawer
     click(CLOSE_DRAWER_BTN)
   end
 
   def filter_address_type_by_text(type)
-    click(ADDRESS_TYPE_CHOICES)
+    click(ADDRESS_TYPE_SELECT)
     click_element_from_list_by_text(ADDRESS_TYPE_OPTION, type)
   end
 
   def filter_distance_by_miles(distance)
-    click(DISTANCE_DROPDOWN)
+    click(DISTANCE_SELECT)
     click_element_from_list_by_text(DISTANCE_OPTION, distance)
   end
 
@@ -36,7 +36,8 @@ class NetworkFilterDrawer < BasePage
 
   def submit_other_address(address)
     this.filter_address_type_by_text("Other");
-    click(ADDRESS_INPUT)
+    click(ADDRESS_SELECT)
     # enter address:
+    # TODO finish
   end
 end

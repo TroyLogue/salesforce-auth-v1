@@ -7,7 +7,7 @@ class Network < BasePage
   PROVIDER_CARDS_CONTAINER = { css: '.ui-provider-select-cards' }
   PROVIDER_CARD = { css: '.ui-provider-card' }
   SERVICE_TYPE_FILTER = { css: '#service-type-filter' }
-  SERVICE_TYPE_OPTION = { css: '.ui-filter-option level-1' }
+  SERVICE_TYPE_OPTION = { css: '.ui-filter-option.level-1' }
   NETWORK_FILTER = { css: '#network-filter' }
   SEARCH_FILTER = { css: '#referral-search-filter' }
   RESULT_TEXT_DIV= { css: '.filter-summary__results-text' }
