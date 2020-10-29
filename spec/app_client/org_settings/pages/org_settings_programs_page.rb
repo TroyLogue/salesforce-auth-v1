@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require_relative '../../root/pages/notifications'
 
-module Settings
+module OrgSettings
   class ProgramTable < BasePage
     PROGRAMS_TABLE = { css: '.programs' }.freeze
     PROGRAMS_TABLE_LOAD = { xpath: 'h2[text()="Loading Programs..."]' }.freeze

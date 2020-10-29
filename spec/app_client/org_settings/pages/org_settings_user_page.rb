@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require_relative '../../root/pages/notifications'
 
-module Settings
+module OrgSettings
   class UserTable < BasePage
     USER_TABLE = { css: '.ui-table > table > tbody > tr > td > a' }.freeze
     USER_TABLE_LOAD = { xpath: './/tbody/tr/td[text()="Loading"]' }.freeze

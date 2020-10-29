@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require_relative '../../root/pages/notifications'
 
-module Settings
-  class OrganizationProfile < BasePage
+module OrgSettings
+  class Profile < BasePage
     DIALOG_MODAL = { css: '.dialog.open' }.freeze
 
     EDIT_DESCRIPTION = { css: '#edit-description-btn' }.freeze
@@ -89,7 +91,7 @@ module Settings
 
     def save_time(time)
       click(EDIT_HOURS)
-      sleep_for(1) #glide in animation
+      sleep_for(1) # glide in animation
       is_displayed?(DIALOG_MODAL)
       click(INPUT_HOURS)
       click_element_from_list_by_text(LIST_HOURS, time)
@@ -106,10 +108,10 @@ module Settings
 
     def save_field(edit_button:, save_button:, input_field:, text_value:)
       click(edit_button)
-      sleep_for(1) #glide in animation
+      sleep_for(1) # glide in animation
       is_displayed?(DIALOG_MODAL)
 
-      #deleting everything before entering
+      # deleting everything before entering
       delete_all_char(input_field)
       enter(text_value, input_field)
       click(save_button)

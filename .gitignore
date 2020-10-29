@@ -4,6 +4,7 @@ result.xml
 
 # account credentials
 lib/browserstack_credentials.rb
+.env.devqa
 .env.staging
 .env.training
 .env.prod
