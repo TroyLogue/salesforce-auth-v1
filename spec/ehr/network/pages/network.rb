@@ -4,6 +4,7 @@ class Network < BasePage
   BAR_LOADER = { css: '.bar-loader' }
   INDEX_EHR = { css: '.network-directory-index' }
   FILTERS_BTN = { css: '#common-card-title-filter-button' }
+  FILTER_DRAWER_OPEN = { css: '.ui-drawer.ui-drawer--secondary.ui-drawer--opened' }
   PROVIDER_CARDS_CONTAINER = { css: '.ui-provider-select-cards' }
   PROVIDER_CARD = { css: '.ui-provider-card' }
   SERVICE_TYPE_FILTER = { css: '#service-type-filter' }
@@ -11,6 +12,14 @@ class Network < BasePage
   NETWORK_FILTER = { css: '#network-filter' }
   SEARCH_FILTER = { css: '#referral-search-filter' }
   RESULT_TEXT_DIV= { css: '.filter-summary__results-text' }
+
+  def filter_drawer_open?
+    is_present?(FILTER_DRAWER_OPEN)
+  end
+
+  def filter_drawer_closed?
+    !is_present?(FILTER_DRAWER_OPEN)
+  end
 
   def first_provider_name
     nth_provider_name(0)
