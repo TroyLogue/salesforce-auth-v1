@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
 require_relative '../intakes/pages/intakes_search'
@@ -11,14 +9,12 @@ require_relative '../intakes/pages/intake'
 describe '[Intake]', :app_client, :intake do
   include Login
 
-  let(:login_email) { LoginEmail.new(@driver) }
+    let(:login_email) { LoginEmail.new(@driver) }
     let(:login_password) { LoginPassword.new(@driver) }
-    let(:base_page) { BasePage.new(@driver) }
     let(:create_menu) { RightNav::CreateMenu.new(@driver) }
     let(:home_page) {HomePage.new(@driver)}
     let(:intake_page) {Intake.new(@driver)}
     let(:intakes_search_page) {IntakesSearch.new(@driver)}
-    let(:clients_page) {ClientsPage.new(@driver)}
 
   context('[as org user]') do
     before {
@@ -29,15 +25,13 @@ describe '[Intake]', :app_client, :intake do
 
     it 'starts intake from menu', :uuqa_82 do
       # fill out required fields
-      first_name_input = Faker::Name.male_first_name
-      last_name_input = Faker::Name.last_name
+      fname_input = Faker::Name.male_first_name
+      lname_input = Faker::Name.last_name
       dob_input = Faker::Time.backward(days: 1000).strftime('%m/%d/%Y')
-      intakes_search_page.input_first_name(first_name_input)
-      intakes_search_page.input_last_name(last_name_input)
-      intakes_search_page.input_dob(dob_input)
+      intakes_search_page.input_fname_lname_dob(fname_input, lname_input, dob_input)
 
       # verify required fields are not empty
-      expect(intakes_search_page.input_present?).to be_truthy
+      expect(intakes_search_page.are_fields_empty?).not_to be_empty
 
       # creates new client record
       intakes_search_page.search_records

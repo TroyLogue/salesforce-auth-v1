@@ -13,22 +13,16 @@ class IntakesSearch < BasePage
     is_displayed?(CREATE_INTAKE)
   end
 
-  def input_first_name(fname)
+  def input_fname_lname_dob(fname, lname, date_of_birth)
     enter(fname, FIRSTNAME_INPUT)
-  end
-
-  def input_last_name(lname)
     enter(lname, LASTNAME_INPUT)
-  end
-
-  def input_dob(date_of_birth)
     enter(date_of_birth, DOB_INPUT)
   end
 
-  def input_present?
-    text(FIRSTNAME_INPUT) &&
-      text(LASTNAME_INPUT) &&
-      text(DOB_INPUT)
+  def are_fields_empty?
+    value(FIRSTNAME_INPUT)&&
+    value(LASTNAME_INPUT)&&
+    value(DOB_INPUT)
   end
 
   def search_records
