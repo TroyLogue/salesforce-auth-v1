@@ -81,7 +81,7 @@ namespace :local do
   # rake local:ehr_staging_tag[uuqa_1548]
   desc 'Run ehr tests on staging by tag'
   task :ehr_staging_tag, [:tag] do |task, args|
-    ENV['browser'] = 'firefox'
+    ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'ehr_staging'
     exit run_in_parallel(tag: (args[:tag]).to_s)
   end
