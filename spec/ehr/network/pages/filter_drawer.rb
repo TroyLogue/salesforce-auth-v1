@@ -2,7 +2,7 @@ require_relative '../../../shared_components/base_page'
 
 class FilterDrawer < BasePage
   OPENED_DRAWER = { css: '.ui-drawer--opened' }
-  CLOSE_DRAWER_BTN = { css: '.ui-drawer__close-btn > a > .ui-icon' };
+  CLOSE_DRAWER_BTN = { css: '.ui-drawer__close-btn > a > .ui-icon' }
   TITLE = { css: '.filters-title__text' }
   CLEAR_ALL_BTN = { css: '#clear-all-btn' }
 
@@ -37,7 +37,7 @@ class FilterDrawer < BasePage
   end
 
   def submit_other_address(address)
-    filter_address_type_by_text("Other");
+    filter_address_type_by_text("Other")
     click(ADDRESS_SELECT)
     # enter address:
     enter(address, ADDRESS_TEXT_INPUT)
