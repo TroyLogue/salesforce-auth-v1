@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class FilterDrawer < BasePage

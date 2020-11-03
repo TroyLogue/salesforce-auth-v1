@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class Network < BasePage
   BAR_LOADER = { css: '.bar-loader' }
   INDEX_EHR = { css: '.network-directory-index' }
   FILTERS_BTN = { css: '#common-card-title-filter-button' }
-  FILTER_DRAWER_OPEN = { css: '.ui-drawer.ui-drawer--secondary.ui-drawer--opened' }
+  DRAWER_OPEN = { css: '.ui-drawer.ui-drawer--secondary.ui-drawer--opened' }
   PROVIDER_CARDS_CONTAINER = { css: '.ui-provider-select-cards' }
   PROVIDER_CARD = { css: '.ui-provider-card' }
   SERVICE_TYPE_FILTER = { css: '#service-type-filter' }
@@ -13,12 +15,17 @@ class Network < BasePage
   SEARCH_FILTER = { css: '#referral-search-filter' }
   RESULT_TEXT_DIV= { css: '.filter-summary__results-text' }
 
-  def filter_drawer_open?
-    is_present?(FILTER_DRAWER_OPEN)
+  def click_first_provider_card
+    @first_provider_card = { css: ".ui-provider-card:nth-child(#{1})" }
+    click(@first_provider_card)
   end
 
-  def filter_drawer_closed?
-    !is_present?(FILTER_DRAWER_OPEN)
+  def drawer_open?
+    is_present?(DRAWER_OPEN)
+  end
+
+  def drawer_closed?
+    !is_present?(DRAWER_OPEN)
   end
 
   def first_provider_name

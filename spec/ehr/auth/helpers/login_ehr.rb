@@ -9,6 +9,7 @@ module LoginEhr
   # evaluate feasibility of reducing array of users and generating machine tokens
   TEST_USERS = [
     CC_HARVARD = 'harvard@auto.com'.freeze,
+    NETWORK_DIRECTORY_USER = 'cc@bi.test'.freeze,
     NOLICENSE_MARTIN = 'martin@auto.com'.freeze,
   ]
 
