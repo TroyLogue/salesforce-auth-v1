@@ -4,6 +4,7 @@ require_relative '../root/pages/home_page'
 require_relative '../referrals/pages/referral'
 require_relative '../referrals/pages/referral_send'
 require_relative '../referrals/pages/referral_network_map'
+require_relative '../referrals/pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
@@ -13,6 +14,7 @@ describe '[Referrals]', :app_client, :referrals do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:referral) { Referral.new(@driver) }
+  let(:sent_referral_dashboard) { ReferralDashboard::Sent.new(@driver) }
   let(:referral_send) { ReferralSend.new(@driver) }
   let(:network_map) { ReferralNetworkMap.new(@driver) }
 
@@ -42,17 +44,28 @@ describe '[Referrals]', :app_client, :referrals do
 
       expect(network_map.page_displayed?).to be_truthy
       network_map.clear_all_filters
-      org_name = network_map.add_first_organization_from_list
+      recipient = network_map.add_first_organization_from_list
       network_map.add_organizations_to_referral
 
       # Checking that the dropdown has the same org we selected in browse map
       expect(referral_send.page_displayed?).to be_truthy
-      expect(referral_send.selected_organization).to eq(org_name)
+      expect(referral_send.selected_organization).to eq(recipient)
       referral_send.send_referral
+
+      # Newly created referral should display on sent all referral dashboard
+      sender = 'Princeton Ivy'
+      servicetype = 'Disability Benefits'
+      status = 'Needs Action'
+      date = Time.now.strftime('%l:%M %P').strip
+
+      expect(sent_referral_dashboard.page_displayed?).to be_truthy
+      expect(sent_referral_dashboard.headers_displayed?).to be_truthy
+      expect(sent_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}"))
+        .to include(sender, recipient, status, servicetype, date)
 
       # On send a new referral id is created, but navigating with the old referral id redirects us to the new referral id
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
-      expect(referral.recipient_info).to eq(org_name)
+      expect(referral.recipient_info).to eq(recipient)
       @referral.referral_id = referral.current_referral_id
     end
 

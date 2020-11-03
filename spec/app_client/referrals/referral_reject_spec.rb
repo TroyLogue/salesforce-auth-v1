@@ -2,7 +2,7 @@ require_relative '../auth/helpers/login'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
 require_relative '../referrals/pages/referral'
-require_relative '../referrals/pages/referral_table'
+require_relative '../referrals/pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
@@ -12,7 +12,7 @@ describe '[Referrals]', :app_client, :referrals do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:referral) { Referral.new(@driver) }
-  let(:referral_table) { ReferralTable.new(@driver) }
+  let(:new_referral_dashboard) { ReferralDashboard::New.new(@driver) }
 
   context('[as org user]') do
     before {
@@ -42,7 +42,7 @@ describe '[Referrals]', :app_client, :referrals do
 
       # After user rejects referral, user lands on new referrals dashboard view
       referral.reject_referral_action(note: note)
-      expect(referral_table.page_displayed?).to be_truthy
+      expect(new_referral_dashboard.page_displayed?).to be_truthy
 
       # Referrals status is updated after rejecting
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
