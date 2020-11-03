@@ -1,7 +1,7 @@
 require_relative '../auth/helpers/login_ehr'
 require_relative './pages/network'
 require_relative './pages/provider_drawer'
-require_relative '../root/pages/notifications'
+require_relative '../root/pages/notifications_ehr'
 
 describe '[Network] Share from Browse Drawer', :ehr, :network do
   include LoginEhr
@@ -9,7 +9,7 @@ describe '[Network] Share from Browse Drawer', :ehr, :network do
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:network) { Network.new(@driver) }
-  let(:notifications) { Notifications.new(@driver) }
+  let(:notifications) { NotificationsEhr.new(@driver) }
   let(:provider_drawer) { ProviderDrawer.new(@driver) }
 
 
@@ -37,7 +37,7 @@ describe '[Network] Share from Browse Drawer', :ehr, :network do
       provider_drawer.share_by_email(email)
 
       notification_text = notifications.success_text
-      expect(notifications_text).to include(Notifications::MESSAGE_SENT)
+      expect(notification_text).to include(NotificationsEhr::MESSAGE_SENT)
       expect(network.drawer_closed?).to be_truthy
     end
   end

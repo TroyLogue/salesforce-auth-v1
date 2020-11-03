@@ -45,8 +45,8 @@ class Network < BasePage
   def page_displayed?
     is_displayed?(INDEX_EHR) &&
       is_displayed?(SERVICE_TYPE_FILTER) &&
-      is_displayed?(NETWORK_FILTER) &&
-      is_displayed?(SEARCH_FILTER)
+      is_displayed?(SEARCH_FILTER) &&
+      is_not_displayed?(BAR_LOADER)
   end
 
   def search_by_text(text:)
