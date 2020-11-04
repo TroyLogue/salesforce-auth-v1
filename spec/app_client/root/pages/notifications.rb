@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class Notifications < BasePage
-  NOTIFICATION_BANNER = { css: '#notifications' }
-  ERROR_BANNER = { css: '#notifications .notification.error' }
-  SUCCESS_BANNER = { css: '#notifications .notification.success' }
-  CLOSE_BANNER = { css: '.close' }
+  NOTIFICATION_BANNER = { css: '#notifications' }.freeze
+  ERROR_BANNER = { css: '#notifications .notification.error' }.freeze
+  SUCCESS_BANNER = { css: '#notifications .notification.success' }.freeze
+  CLOSE_BANNER = { css: '.close' }.freeze
 
   BLANK_EMAIL_MESSAGE = "EmailAddress can't be blank"
   CASE_CREATED = 'Case Created'
@@ -25,6 +27,7 @@ class Notifications < BasePage
   REFERRAL_HELP = 'Referral Held Successfully'
   REFERRAL_REJECTED = 'Referral Rejected Successfully'
   REFERRAL_SENT = 'Referral Successfully Sent Out'
+  SETTINGS_UPDATED = 'Successfully Updated Settings'
   SUPPORTING_ASSESSMENT_SAVED = 'Supporting Assessments Successfully Saved'
   INSECURE_PASSWORD = 'Password is not safe to use as it appears in a list of weak passwords. Please change your password to something more secure.'
   USER_UPDATED = 'User Successfully Updated'
@@ -33,12 +36,12 @@ class Notifications < BasePage
 
   def error_text
     find(ERROR_BANNER)
-    return text(NOTIFICATION_BANNER)
+    text(NOTIFICATION_BANNER)
   end
 
   def success_text
     find(SUCCESS_BANNER)
-    return text(NOTIFICATION_BANNER)
+    text(NOTIFICATION_BANNER)
   end
 
   def close_banner

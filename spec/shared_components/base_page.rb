@@ -15,6 +15,12 @@ class BasePage
     find(selector).attribute(attribute)
   end
 
+  # may return true, false, or nil
+  def checkbox_value(element)
+    checkbox = find(element)
+    checkbox.attribute('checked')
+  end
+
   def clear(selector)
     find(selector).clear
   end

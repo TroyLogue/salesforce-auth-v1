@@ -6,7 +6,7 @@ require_relative '../auth/pages/user_edit_password'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 require_relative '../root/pages/right_nav'
-require_relative '../user_settings/pages/user_settings_page'
+require_relative '../user_settings/pages/account_info_page'
 
 describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
   include Login
@@ -21,7 +21,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
   let(:reset_password) { ResetPassword.new(@driver) }
   let(:user_edit_password) { UserEditPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
-  let(:user_settings_page) { UserSettingsPage.new(@driver) }
+  let(:user_settings_account_info_page) { UserSettings::AccountInfoPage.new(@driver) }
 
   context('[as cc user] From login page,') do
     let(:email) { Login::CC_HARVARD }
@@ -71,23 +71,23 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
       log_in_as(reset_user)
       expect(home_page.page_displayed?).to be_truthy # checking for a successful login
       user_menu.go_to_user_settings
-      expect(user_settings_page.page_displayed?).to be_truthy
+      expect(user_settings_account_info_page.page_displayed?).to be_truthy
 
-      user_settings_page.click_reset_pw
+      user_settings_account_info_page.click_reset_pw
       expect(user_edit_password.page_displayed?).to be_truthy
 
       user_edit_password.cancel_password_reset
       # should be back on the user settings page:
-      expect(user_settings_page.page_displayed?).to be_truthy
+      expect(user_settings_account_info_page.page_displayed?).to be_truthy
     end
 
     it 'cannot reset password to an insecure password', :uuqa_803 do
       log_in_as(reset_user)
       expect(home_page.page_displayed?).to be_truthy # checking for a successful login
       user_menu.go_to_user_settings
-      expect(user_settings_page.page_displayed?).to be_truthy
+      expect(user_settings_account_info_page.page_displayed?).to be_truthy
 
-      user_settings_page.click_reset_pw
+      user_settings_account_info_page.click_reset_pw
       expect(user_edit_password.page_displayed?).to be_truthy
 
       user_edit_password.update_password(current_pw: original_pw, new_pw: insecure_pw)
@@ -98,9 +98,9 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
       log_in_as(reset_user)
       expect(home_page.page_displayed?).to be_truthy # checking for a successful login
       user_menu.go_to_user_settings
-      expect(user_settings_page.page_displayed?).to be_truthy
+      expect(user_settings_account_info_page.page_displayed?).to be_truthy
 
-      user_settings_page.click_reset_pw
+      user_settings_account_info_page.click_reset_pw
       expect(user_edit_password.page_displayed?).to be_truthy
 
       user_edit_password.update_password(current_pw: original_pw, new_pw: new_pw)
@@ -115,7 +115,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
       log_in_as(reset_user, new_pw)
       expect(home_page.page_displayed?).to be_truthy # checking for a successful login
       user_menu.go_to_user_settings
-      user_settings_page.click_reset_pw
+      user_settings_account_info_page.click_reset_pw
       expect(user_edit_password.page_displayed?).to be_truthy
 
       user_edit_password.update_password(current_pw: new_pw, new_pw: original_pw)
