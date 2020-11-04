@@ -26,7 +26,6 @@ describe '[Network] Share from Browse Drawer', :ehr, :network do
 
       network.click_first_provider_card
 
-      expect(network.drawer_open?).to be_truthy
       expect(provider_drawer.page_displayed?).to be_truthy
       expect(provider_drawer.provider_name).to include(first_provider_name)
 
