@@ -30,10 +30,7 @@ describe '[Intake]', :app_client, :intake do
       dob_input = Faker::Time.backward(days: 1000).strftime('%m/%d/%Y')
       intakes_search_page.input_fname_lname_dob(fname_input, lname_input, dob_input)
 
-      # verify required fields are not empty
-      expect(intakes_search_page.are_fields_empty?).not_to be_empty
-
-      # creates new client record
+      #save new record
       intakes_search_page.search_records
       expect(intake_page.page_displayed?).to be_truthy
     end

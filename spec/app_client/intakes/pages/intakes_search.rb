@@ -19,12 +19,6 @@ class IntakesSearch < BasePage
     enter(date_of_birth, DOB_INPUT)
   end
 
-  def are_fields_empty?
-    value(FIRSTNAME_INPUT)&&
-    value(LASTNAME_INPUT)&&
-    value(DOB_INPUT)
-  end
-
   def search_records
     click(SEARCH_OUR_RECORDS_BTN)
   end
