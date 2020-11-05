@@ -18,12 +18,14 @@ class Network < BasePage
   RESULT_TEXT_DIV= { css: '.filter-summary__results-text' }
 
   def add_first_provider
-    add_nth_provider(0)
+    add_providers_by_index([0])
   end
 
-  def add_nth_provider(index)
+  def add_providers_by_index(index_arr)
     add_btns = find_elements(PROVIDER_CARD_ADD_BTN)
-    add_btns[index].click
+    index_arr.each do |i|
+      add_btns[i].click
+    end
   end
 
   def click_first_provider_card
@@ -45,6 +47,10 @@ class Network < BasePage
 
   def first_provider_name
     nth_provider_name(0)
+  end
+
+  def second_provider_name
+    nth_provider_name(1)
   end
 
   def nth_provider_name(index)

@@ -9,6 +9,11 @@ module MailtrapHelper
     str.match(/#{auth_url}\/secret\/edit\?client_id=\w{10}&amp;reset_password_token=\S{20}/)[0]
   end
 
+  def find_share_link(str)
+    base_url = "https://bit.ly".gsub('/', '\/')
+    str.match(/#{base_url}\/\w{7}/)[0]
+  end
+
   def get_messages(mailbox_id: ENV['mailtrap_id'])
     response = HTTP.get("https://mailtrap.io/api/v1/inboxes/#{mailbox_id}/messages",
                         :params => { :api_token => ENV['API_TOKEN'] })
@@ -47,8 +52,18 @@ module MailtrapHelper
     find_reset_link(str)
   end
 
+  def get_share_link(message:)
+    html = get_html_of_message(message_id: message['id']).to_s
+    find_share_link(html)
+  end
+
   def is_password_reset_email?(message)
     message['subject'] == PASSWORD_RESET_SUBJECT
+  end
+
+  def is_share_email?(message:, network_name:, provider_name:)
+    @share_subject = "#{network_name} Has Sent You Information About #{provider_name}"
+    message['subject'].include?(@share_subject)
   end
 
   def message_sent_to(message)
