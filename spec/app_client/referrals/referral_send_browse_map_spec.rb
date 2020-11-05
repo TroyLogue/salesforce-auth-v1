@@ -50,13 +50,12 @@ describe '[Referrals]', :app_client, :referrals do
       # Checking that the dropdown has the same org we selected in browse map
       expect(referral_send.page_displayed?).to be_truthy
       expect(referral_send.selected_organization).to eq(recipient)
-      referral_send.send_referral
+      date = referral_send.send_referral
 
       # Newly created referral should display on sent all referral dashboard
       sender = 'Princeton Ivy'
       servicetype = 'Disability Benefits'
       status = 'Needs Action'
-      date = Time.now.strftime('%l:%M %P').strip
 
       expect(sent_referral_dashboard.page_displayed?).to be_truthy
       expect(sent_referral_dashboard.headers_displayed?).to be_truthy

@@ -38,7 +38,7 @@ describe '[Referrals]', :app_client, :referrals do
       # Newly created referral should display in new referral dashboard
       new_referral_dashboard.go_to_new_referrals_dashboard
       expect(new_referral_dashboard.page_displayed?).to be_truthy
-      expect(new_referral_dashboard.headers_displayed?).to be_truthy
+      expect(new_referral_dashboard.org_headers_displayed?).to be_truthy
       expect(new_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}"))
         .to include(sender, status, servicetypes)
 

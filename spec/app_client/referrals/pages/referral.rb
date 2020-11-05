@@ -1,61 +1,78 @@
+# frozen_string_literal: true
+
 require_relative '../../../../lib/file_helper'
 
 class Referral < BasePage
-  ASSESSMENT_LIST = { css: '.detail-info__relationship-files' }
-  ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }
-  MILITARY_ASSESSMENT = { css: '#military-information-link' }
-  REFERRAL_STATUS = { css: '.detail-status-text.uppercase' }
+  ASSESSMENT_LIST = { css: '.detail-info__relationship-files' }.freeze
+  ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
+  MILITARY_ASSESSMENT = { css: '#military-information-link' }.freeze
+  REFERRAL_STATUS = { css: '.detail-status-text.uppercase' }.freeze
+  OUTCOME_NOTES = { css: '#outcome-notes-expandable p' }.freeze
+  INACTIVE_BTN = { css: '.detail-action-wrapper > span' }.freeze
 
-  TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }
-  TAKE_ACTION_HOLD_OPTION =  { css: 'div[data-value="holdForReview"]' }
-  TAKE_ACTION_SEND_OPTION = { css: 'div[data-value="send"]' }
-  TAKE_ACTION_ACCEPT_OPTION = { css: 'div[data-value="accept"]' }
-  TAKE_ACTION_REJECT_OPTION = { css: 'div[data-value="reject"]'}
-  TAKE_ACTION_INTAKE_OPTION = { css: 'div[data-value="startIntake"]'}
+  TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }.freeze
+  TAKE_ACTION_HOLD_OPTION = { css: 'div[data-value="holdForReview"]' }.freeze
+  TAKE_ACTION_SEND_OPTION = { css: 'div[data-value="send"]' }.freeze
+  TAKE_ACTION_ACCEPT_OPTION = { css: 'div[data-value="accept"]' }.freeze
+  TAKE_ACTION_REJECT_OPTION = { css: 'div[data-value="reject"]' }.freeze
+  TAKE_ACTION_INTAKE_OPTION = { css: 'div[data-value="startIntake"]' }.freeze
+  TAKE_ACTION_CLOSE_OPTION = { css: 'div[data-value="closeReferral"]' }.freeze
 
-  ACCEPT_MODAL = { css: '.accept-modal-dialog .dialog.open.large .dialog-paper'}
-  ACCEPT_PROGRAM_OPTIONS = { css: 'div[aria-activedescendant="choices-programSelect-item-choice-1"]' }
-  ACCEPT_FIRST_PROGRAM_OPTION = { css: '#choices-programSelect-item-choice-1' }
-  ACCEPT_PRIMARY_WORKER_OPTIONS =  { css: '.accept-referral-primary-worker-select .choices:not(.is-disabled)' }
-  ACCEPT_FIRST_PRIMARY_WORKER_OPTION = { css: '#choices-workerSelect-item-choice-1' }
-  ACCEPT_SAVE_BTN = { css: '#accept-referral-submit-btn' }
+  ACCEPT_MODAL = { css: '.accept-modal-dialog .dialog.open.large .dialog-paper' }.freeze
+  ACCEPT_PROGRAM_OPTIONS = { css: 'div[aria-activedescendant="choices-programSelect-item-choice-1"]' }.freeze
+  ACCEPT_FIRST_PROGRAM_OPTION = { css: '#choices-programSelect-item-choice-1' }.freeze
+  ACCEPT_PRIMARY_WORKER_OPTIONS = { css: '.accept-referral-primary-worker-select .choices:not(.is-disabled)' }.freeze
+  ACCEPT_FIRST_PRIMARY_WORKER_OPTION = { css: '#choices-workerSelect-item-choice-1' }.freeze
+  ACCEPT_SAVE_BTN = { css: '#accept-referral-submit-btn' }.freeze
 
-  HOLD_REFERRAL_MODAL = { css: '.dialog.open.large .hold-modal-form' }
-  HOLD_REFERRAL_REASON_DROPDOWN = { css: '.referral-reason-field' }
-  HOLD_REFERRAL_REASON_OPTION = { css: '.is-active .choices__item.choices__item--choice.choices__item--selectable' }
-  HOLD_REFERRAL_NOTE = { css: '.hold-modal-form #noteInput' }
-  HOLD_REFERRAL_BTN = { css: '#hold-referral-hold-btn' }
+  HOLD_REFERRAL_MODAL = { css: '.dialog.open.large .hold-modal-form' }.freeze
+  HOLD_REFERRAL_REASON_DROPDOWN = { css: '.referral-reason-field' }.freeze
+  HOLD_REFERRAL_REASON_OPTION = { css: '.is-active .choices__item.choices__item--choice.choices__item--selectable' }.freeze
+  HOLD_REFERRAL_NOTE = { css: '.hold-modal-form #noteInput' }.freeze
+  HOLD_REFERRAL_BTN = { css: '#hold-referral-hold-btn' }.freeze
 
-  SENDER_INFO = { css: '#basic-table-sender-value' }
-  RECIPIENT_INFO = { css: '#basic-table-recipient-value' }
+  CLOSE_REFERRAL_MODAL = { css: '.dialog.open.large .close-referral-form' }.freeze
+  CLOSE_RESOLVED_DROPDOWN = { css: '#resolvedInput + div' }.freeze
+  CLOSE_RESOLVED_OPTION = { css: '#choices-resolvedInput-item-choice-1' }.freeze
+  CLOSE_UNRESOLVED_OPTION = { css: '#choices-resolvedInput-item-choice-2' }.freeze
+  CLOSE_OUTCOME_DROPDOWN = { css: '#outcomeInput + div' }.freeze
+  CLOSE_OUTCOME_OPTION = { css: '#choices-outcomeInput-item-choice-1' }.freeze
+  CLOSE_REFERRAL_NOTE = { css: '.close-referral-form #noteInput' }.freeze
+  CLOSE_REFERRAL_BTN = { css: '#close-referral-close-btn' }.freeze
 
-  REJECT_REFERRAL_MODAL = { css: '.reject-modal-dialog .open' }
-  REJECT_REFERRAL_REASON_DROPDOWN = { css: '.referral-reject-display .referral-reason-field .choices__inner' }
-  REJECT_REFERRAL_REASON_OPTION = { css: '.referral-reason-field .choices.is-open #choices-reject-reason-input-item-choice-1' }
-  REJECT_REFERRAL_REASON_OPTIONS = { css: '.referral-reason-field div[id^="choices-reject-reason-input-item-choice-"]' }
-  REJECT_REFERRAL_NOTE = { css: '#reject-note-input'}
-  REJECT_BTN = { css: '.referral-reject-display__reject-modal-form #reject-referral-reject-btn'}
+  SENDER_INFO = { css: '#basic-table-sender-value' }.freeze
+  RECIPIENT_INFO = { css: '#basic-table-recipient-value' }.freeze
 
-  DOCUMENT_ADD_LINK = { css: '#upload-document-link' }
-  DOCUMENT_ATTACH_MODAL = { css: '.dialog.open.large'}
-  DOCUMENT_ATTACH_BTN = { css: '#upload-submit-btn' }
-  DOCUMENT_FILE_INPUT = { css: 'input[type="file"]' }
-  DOCUMENT_PREVIEW = { css: '.preview-item' }
-  DOCUMENT_LIST = { css: '.list-view-document__title' }
-  DOCUMENT_EMPTY_LIST = { css: '.empty-documents-text' }
+  REJECT_REFERRAL_MODAL = { css: '.reject-modal-dialog .open' }.freeze
+  REJECT_REFERRAL_REASON_DROPDOWN = { css: '.referral-reject-display .referral-reason-field .choices__inner' }.freeze
+  REJECT_REFERRAL_REASON_OPTION = { css: '.referral-reason-field .choices.is-open #choices-reject-reason-input-item-choice-1' }.freeze
+  REJECT_REFERRAL_REASON_OPTIONS = { css: '.referral-reason-field div[id^="choices-reject-reason-input-item-choice-"]' }.freeze
+  REJECT_REFERRAL_NOTE = { css: '#reject-note-input' }.freeze
+  REJECT_BTN = { css: '.referral-reject-display__reject-modal-form #reject-referral-reject-btn' }.freeze
 
-  DOCUMENT_LINK = { xpath: './/a[text()="%s"]'}
-  DOCUMENT_REMOVE = { xpath: './/a[text()="%s"]/following-sibling::div[@class="remove-document"]' }
-  DOCUMENT_REMOVE_MODAL = { css: '.dialog.open.mini'}
-  DOCUMENT_REMOVE_BTN = { css: '.confirmation-dialog__actions--confirm'}
+  DOCUMENT_ADD_LINK = { css: '#upload-document-link' }.freeze
+  DOCUMENT_ATTACH_MODAL = { css: '.dialog.open.large' }.freeze
+  DOCUMENT_ATTACH_BTN = { css: '#upload-submit-btn' }.freeze
+  DOCUMENT_FILE_INPUT = { css: 'input[type="file"]' }.freeze
+  DOCUMENT_PREVIEW = { css: '.preview-item' }.freeze
+  DOCUMENT_LIST = { css: '.list-view-document__title' }.freeze
+  DOCUMENT_EMPTY_LIST = { css: '.empty-documents-text' }.freeze
 
-  TIMELINE_LOADING = { css: '.activity-stream .loading-entries__content' }
-  STATUS_TEXT = { css: '.detail-status-text' }
+  DOCUMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
+  DOCUMENT_REMOVE = { xpath: './/a[text()="%s"]/following-sibling::div[@class="remove-document"]' }.freeze
+  DOCUMENT_REMOVE_MODAL = { css: '.dialog.open.mini' }.freeze
+  DOCUMENT_REMOVE_BTN = { css: '.confirmation-dialog__actions--confirm' }.freeze
+
+  TIMELINE_LOADING = { css: '.activity-stream .loading-entries__content' }.freeze
+  STATUS_TEXT = { css: '.detail-status-text' }.freeze
 
   NEEDS_ACTION_STATUS = 'NEEDS ACTION'
   IN_REVIEW_STATUS = 'IN REVIEW'
   ACCEPTED_STATUS = 'ACCEPTED'
   REJECTED_STATUS = 'REJECTED'
+  CLOSED_STATUS = 'CLOSED'
+
+  CLOSED_REFERRAL_ACTION = 'REFERRAL CLOSED'
 
   REJECTED_OPTION = [
     'Client is not eligible for our services',
@@ -63,7 +80,8 @@ class Referral < BasePage
     'We do not have capacity to serve client',
     'We do not provide the services requested/needed',
     'We were unable to contact the client',
-    'Other']
+    'Other'
+  ].freeze
 
   def go_to_new_referral_with_id(referral_id:)
     get("/dashboard/new/referrals/#{referral_id}")
@@ -85,10 +103,24 @@ class Referral < BasePage
     wait_for_spinner
   end
 
+  def go_to_recalled_referral_with_id(referral_id:)
+    get("/dashboard/referrals/recalled/#{referral_id}")
+    wait_for_spinner
+  end
+
+  def go_to_closed_referral_with_id(referral_id:)
+    get("/dashboard/referrals/closed/#{referral_id}")
+    wait_for_spinner
+  end
+
   def page_displayed?
     wait_for_spinner
     is_displayed?(STATUS_TEXT) &&
-    is_not_displayed?(TIMELINE_LOADING)
+      is_not_displayed?(TIMELINE_LOADING)
+  end
+
+  def action_btn_text
+    text(INACTIVE_BTN)
   end
 
   def status
@@ -104,6 +136,10 @@ class Referral < BasePage
     text(RECIPIENT_INFO)
   end
 
+  def outcome_notes
+    text(OUTCOME_NOTES)
+  end
+
   # ACCEPT
   def accept_action
     click(TAKE_ACTION_DROP_DOWN)
@@ -115,6 +151,7 @@ class Referral < BasePage
     click(ACCEPT_FIRST_PRIMARY_WORKER_OPTION)
     click(ACCEPT_SAVE_BTN)
     wait_for_spinner
+    Time.now.strftime('%l:%M %P').strip
   end
 
   # HOLD FOR REVIEW
@@ -127,6 +164,24 @@ class Referral < BasePage
     enter(note, HOLD_REFERRAL_NOTE)
     click(HOLD_REFERRAL_BTN)
     wait_for_spinner
+    Time.now.strftime('%l:%M %P').strip
+  end
+
+  # CLOSE
+  def close_referral_action(note:)
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_CLOSE_OPTION)
+    is_displayed?(CLOSE_REFERRAL_MODAL)
+    # Selecting resolved option by default
+    click(CLOSE_RESOLVED_DROPDOWN)
+    click(CLOSE_RESOLVED_OPTION)
+    # Selecing first outcome option by default
+    click(CLOSE_OUTCOME_DROPDOWN)
+    click(CLOSE_OUTCOME_OPTION)
+    enter(note, CLOSE_REFERRAL_NOTE)
+    click(CLOSE_REFERRAL_BTN)
+    wait_for_spinner
+    Time.now.strftime('%l:%M %P').strip
   end
 
   # REJECT
@@ -145,6 +200,7 @@ class Referral < BasePage
     enter(note, REJECT_REFERRAL_NOTE)
     click(REJECT_BTN)
     wait_for_spinner
+    Time.now.strftime('%l:%M %P').strip
   end
 
   # SEND

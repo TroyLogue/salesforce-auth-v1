@@ -5,8 +5,21 @@ module ReferralDashboard
     HEADER_COLUMNS = { css: '.ui-table-header-column' }.freeze
 
     def headers_displayed?
-      non_matching = find_elements(HEADER_COLUMNS)[1..].map(&:text) - self.class::HEADERS
-      non_matching.empty? or print "Non-matching options: #{non_matching}"
+      displayed_headers = find_elements(HEADER_COLUMNS)[1..].map(&:text)
+      non_matching = self.class::HEADERS - displayed_headers | displayed_headers - self.class::HEADERS
+      non_matching.empty? or raise("Non-matching headers: #{non_matching}")
+    end
+
+    def cc_headers_displayed?
+      displayed_headers = find_elements(HEADER_COLUMNS)[1..].map(&:text)
+      non_matching = self.class::CC_HEADERS - displayed_headers | displayed_headers - self.class::CC_HEADERS
+      non_matching.empty? or raise("Non-matching headers: #{non_matching}")
+    end
+
+    def org_headers_displayed?
+      displayed_headers = find_elements(HEADER_COLUMNS)[1..].map(&:text)
+      non_matching = self.class::ORG_HEADERS - displayed_headers | displayed_headers - self.class::ORG_HEADERS
+      non_matching.empty? or raise("Non-matching headers: #{non_matching}")
     end
 
     def row_values_for_client(client:)
@@ -24,7 +37,8 @@ module ReferralDashboard
     ALL_CLIENT_NAMES = { css: 'tr[id^="new-referrals-table-row"] .ui-table-row-column:nth-child(3) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="new-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
 
-    HEADERS = ['SENDER', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'STATUS', 'DATE RECEIVED'].freeze
+    CC_HEADERS = ['SENDER', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'STATUS', 'DATE RECEIVED'].freeze
+    ORG_HEADERS = ['SENDER', 'CLIENT NAME', 'SERVICE TYPE', 'STATUS', 'DATE RECEIVED'].freeze
 
     def page_displayed?
       wait_for_spinner
@@ -43,7 +57,8 @@ module ReferralDashboard
     ALL_CLIENT_NAMES = { css: 'tr[id^="referrals-in-review-table-row"] .ui-table-row-column:nth-child(2) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="referrals-in-review-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
 
-    HEADERS = ['CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'DATE RECEIVED', 'INTERACTIONS', 'LAST UPDATED'].freeze
+    CC_HEADERS = ['CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'DATE RECEIVED', 'INTERACTIONS', 'LAST UPDATED'].freeze
+    ORG_HEADERS = ['CLIENT NAME', 'SERVICE TYPE', 'DATE RECEIVED', 'INTERACTIONS', 'LAST UPDATED'].freeze
 
     def page_displayed?
       wait_for_spinner

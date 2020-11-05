@@ -23,6 +23,19 @@ module Setup
       referral
     end
 
+    def self.send_referral_from_harvard_to_yale(contact_id:)
+      referral = CreateReferral.new({ contact_id: contact_id,
+                                      referred_by_network_id: IVY_NETWORK,
+                                      referred_to_network_id: IVY_NETWORK,
+                                      referred_to_groups: [Providers::ORG_YALE],
+                                      service_type_id: BENEFITS_DISABILITY_BENEFITS })
+      referral.create(
+        token: MachineTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD
+      )
+      referral
+    end
+
     def self.accept_referral_from_harvard_in_princeton(referral_id:)
       referral = AcceptReferral.new({ primary_case_worker_id: PrimaryWorkers::ORG_PRINCETON,
                                       program_id: Programs::ORG_PRINCETON })
@@ -64,6 +77,16 @@ module Setup
       referral.recall_referral(
         token: MachineTokens::ORG_PRINCETON,
         group_id: Providers::ORG_PRINCETON,
+        referral_id: referral_id
+      )
+    end
+
+    def self.recall_referral_in_harvard(referral_id:, note:)
+      referral = RecallReferral.new({ recall_note: note,
+                                      reason: 'Client No Longer Requires Service' })
+      referral.recall_referral(
+        token: MachineTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
         referral_id: referral_id
       )
     end

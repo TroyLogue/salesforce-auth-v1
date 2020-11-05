@@ -32,12 +32,11 @@ describe '[Referrals]', :app_client, :referrals do
       referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
       note = Faker::Lorem.sentence(word_count: 5)
       servicetype = 'Disability Benefits'
-      date = Time.now.strftime('%l:%M %P').strip
 
       # Hold Referral and wait for table to load
-      referral.hold_for_review_action(note: note)
+      date = referral.hold_for_review_action(note: note)
       expect(inreview_referral_dashboard.page_displayed?).to be_truthy
-      expect(inreview_referral_dashboard.headers_displayed?).to be_truthy
+      expect(inreview_referral_dashboard.org_headers_displayed?).to be_truthy
       expect(inreview_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}"))
         .to include(servicetype, date)
 

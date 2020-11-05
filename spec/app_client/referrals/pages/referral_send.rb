@@ -26,6 +26,8 @@ class ReferralSend < BasePage
 
   def send_referral
     click(SEND_REFERRAL_BTN)
+    time = Time.now.strftime('%l:%M %P').strip
     wait_for_spinner
+    time
   end
 end
