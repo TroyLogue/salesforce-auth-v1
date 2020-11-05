@@ -41,7 +41,6 @@ describe '[Network]', :ehr, :network do
 
         # open filter drawer
         network.open_filter_drawer
-        expect(network.filter_drawer_open?).to be_truthy
         expect(filter_drawer.page_displayed?).to be_truthy
 
         # filter by distance
@@ -56,7 +55,7 @@ describe '[Network]', :ehr, :network do
 
         # close filter drawer
         filter_drawer.close_drawer
-        expect(network.filter_drawer_closed?).to be_truthy
+        expect(network.drawer_closed?).to be_truthy
       end
     end
   end
