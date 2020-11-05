@@ -9,15 +9,30 @@ class Network < BasePage
   DRAWER_OPEN = { css: '.ui-drawer.ui-drawer--secondary.ui-drawer--opened' }
   PROVIDER_CARDS_CONTAINER = { css: '.ui-provider-select-cards' }
   PROVIDER_CARD = { css: '.ui-provider-card' }
+  PROVIDER_CARD_ADD_BTN = { css: '.ui-add-remove-buttons__add a' }
   SERVICE_TYPE_FILTER = { css: '#service-type-filter' }
   SERVICE_TYPE_OPTION = { css: '.ui-filter-option.level-1' }
   NETWORK_FILTER = { css: '#network-filter' }
   SEARCH_FILTER = { css: '#referral-search-filter' }
+  SHARE_BTN = { css: '#common-card-title-share-button' }
   RESULT_TEXT_DIV= { css: '.filter-summary__results-text' }
+
+  def add_first_provider
+    add_nth_provider(0)
+  end
+
+  def add_nth_provider(index)
+    add_btns = find_elements(PROVIDER_CARD_ADD_BTN)
+    add_btns[index].click
+  end
 
   def click_first_provider_card
     @first_provider_card = { css: ".ui-provider-card:nth-child(#{1})" }
     click(@first_provider_card)
+  end
+
+  def click_share
+    click(SHARE_BTN)
   end
 
   def drawer_open?
