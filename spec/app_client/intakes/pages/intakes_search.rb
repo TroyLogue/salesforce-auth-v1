@@ -19,22 +19,6 @@ class IntakesSearch < BasePage
     enter(date_of_birth, DOB_INPUT)
   end
 
-  def is_info_prefilled?(**params)
-    if params.key?(:fname) && value(FIRSTNAME_INPUT) != params[:fname]
-      print "First Name value saved '#{params[:fname]}' do not equal value displayed '#{value(FIRSTNAME_INPUT)}'"
-      return false
-    end
-    if params.key?(:lname) && value(LASTNAME_INPUT) != params[:lname]
-      print "Last Name value saved '#{params[:fname]}' do not equal value displayed '#{value(LASTNAME_INPUT)}'"
-      return false
-    end
-    if params.key?(:dob) && value(DOB_INPUT) != params[:dob]
-      print "Dob value saved '#{params[:dob]}' do not equal value displayed '#{value(DOB_INPUT)}'"
-      return false
-    end
-    true
-  end
-
   def search_records
     click(SEARCH_OUR_RECORDS_BTN)
   end

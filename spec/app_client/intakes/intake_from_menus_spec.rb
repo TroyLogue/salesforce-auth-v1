@@ -28,12 +28,11 @@ describe '[Intake]', :app_client, :intake do
       fname_input = Faker::Name.male_first_name
       lname_input = Faker::Name.last_name
       dob_input = Faker::Time.backward(days: 1000).strftime('%m/%d/%Y')
-      intakes_search_page.input_fname_lname_dob(fname_input, lname_input, dob_input)
+      intakes_search_page.input_fname_lname_dob(fname_input, lname_input, dob_input)   
       
       #save new record
       intakes_search_page.search_records
       expect(intake_page.page_displayed?).to be_truthy
-      expect(intake_page.is_info_prefilled?(fname:fname_input, lname: lname_input, dob:dob_input)).to be_truthy
     end
   end
 end
