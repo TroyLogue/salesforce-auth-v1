@@ -16,7 +16,7 @@ describe '[Intake]', :app_client, :intake do
     let(:intake_page) {Intake.new(@driver)}
     let(:intakes_search_page) {IntakesSearch.new(@driver)}
 
-  context('[as org user]') do
+  context('[as a user with Intakes User role]') do
     before {
       log_in_as(Login::ORG_YALE)
       create_menu.start_new_intake
