@@ -18,11 +18,11 @@ class NotificationsEhr < BasePage
 
   def error_text
     find(ERROR_NOTIFICATION)
-    return text(NOTIFICATION_TEXT_DIV)
+    text(NOTIFICATION_TEXT_DIV)
   end
 
   def success_text
     find(SUCCESS_NOTIFICATION)
-    return text(NOTIFICATION_TEXT_DIV)
+    text(NOTIFICATION_TEXT_DIV)
   end
 end
