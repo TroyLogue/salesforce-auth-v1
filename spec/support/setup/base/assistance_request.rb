@@ -51,11 +51,28 @@ module Setup
         closing:{
           outcome_id: resolution,
           resolved: 'resolved',
-          note: 'Data cleanup'
+          note: Faker::Lorem.sentence(word_count: 5)
         }
       }
       close_response = Requests::AssistanceRequest.close(token: token, group_id: group_id, contact_id: contact_id, payload: payload)
+      @closed_ar_data = JSON.parse(close_response, object_class: OpenStruct).data
       expect(close_response.status.to_s).to eq('200 OK')
+    end
+
+    def full_name
+      @closed_ar_data.requestor.full_name
+    end
+
+    def date_ar_closed
+      Time.at(@closed_ar_data.closing.created_at).strftime("%m/%-d/%Y")
+    end
+
+    def time_ar_closed
+      Time.at(@closed_ar_data.closing.created_at).strftime("%l:%M %P").strip
+    end
+
+    def note
+      @closed_ar_data.closing.note
     end
   end
 end

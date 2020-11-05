@@ -33,6 +33,7 @@ class Notifications < BasePage
   USER_UPDATED = 'User Successfully Updated'
   ACCESS_DENIED = 'Access to the requested resource has been forbidden.'
   INTAKE_CREATED = 'Intake Successfully Created'
+  ASSISTANCE_REQUEST_CLOSED = "Assistance Request Successfully Closed"
 
   def error_text
     find(ERROR_BANNER)

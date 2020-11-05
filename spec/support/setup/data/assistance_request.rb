@@ -17,6 +17,7 @@ module Setup
     def self.close_columbia_assistance_request(contact_id:)
       close_ar = Setup::CloseAssistanceRequest.new
       close_ar.close(token: MachineTokens::ORG_COLUMBIA, group_id: Providers::ORG_COLUMBIA, contact_id: contact_id, resolution: RESOLVED)
+      close_ar
     end
   end
 end
