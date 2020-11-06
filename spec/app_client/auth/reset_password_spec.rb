@@ -67,7 +67,8 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
     let(:insecure_pw) { Login::INSECURE_PASSWORD }
     let(:new_pw) { 'Uniteus123' }
 
-    it 'cancels password reset while logged in', :uuqa_1493 do
+    # UX is in dev per CORE-257 and CORE-293; update spec when changes are in QA
+    xit 'cancels password reset while logged in', :uuqa_1493 do
       log_in_as(reset_user)
       expect(home_page.page_displayed?).to be_truthy # checking for a successful login
       user_menu.go_to_user_settings
