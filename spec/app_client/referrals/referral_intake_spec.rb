@@ -48,7 +48,7 @@ describe '[Referrals]', :app_client, :referrals do
 
     after {
       # accepting referral for clean up purposes
-      @accept_referral = Setup::Data.accept_referral_from_harvard_in_princeton(
+      @accept_referral = Setup::Data.accept_referral_in_princeton(
         referral_id: @referral.referral_id
       )
     }

@@ -87,4 +87,23 @@ module Setup
       expect(recall_response.status.to_s).to eq('200 OK')
     end
   end
+
+  # Object that represents an existing referral being rejected by receiving user
+  class RejectReferral
+    include RSpec::Mocks::ExampleMethods::ExpectHost
+    include RSpec::Matchers
+    attr_accessor :reject_note, :reason, :reason_short
+
+    def initialize(**params)
+      @reject_note = params[:reject_note] || -> { raise ArgumentError, 'Note needed to reject referral' }
+      @reason = params[:reason] || 'Client is not eligible for our services'
+      @reason_short = params[:reason_short] || 'Not Eligible'
+    end
+
+    def reject_referral(token:, group_id:, referral_id:)
+      request_body = Payloads::Referrals::Reject.new(note: @reject_note, reason: @reason, reason_shortened: @reason_short)
+      reject_response = Requests::Referrals.reject(token: token, group_id: group_id, referral_id: referral_id, payload: request_body)
+      expect(reject_response.status.to_s).to eq('200 OK')
+    end
+  end
 end

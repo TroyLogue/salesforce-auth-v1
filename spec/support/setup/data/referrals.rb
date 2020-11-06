@@ -36,7 +36,16 @@ module Setup
       referral
     end
 
-    def self.accept_referral_from_harvard_in_princeton(referral_id:)
+    def self.reject_referral_in_harvard(referral_id:, note:)
+      referral = RejectReferral.new({ reject_note: note })
+      referral.reject_referral(
+        token: MachineTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        referral_id: referral_id
+      )
+    end
+
+    def self.accept_referral_in_princeton(referral_id:)
       referral = AcceptReferral.new({ primary_case_worker_id: PrimaryWorkers::ORG_PRINCETON,
                                       program_id: Programs::ORG_PRINCETON })
       referral.accept_in_network(
@@ -60,7 +69,7 @@ module Setup
       referral
     end
 
-    def self.close_referral_from_yale_in_harvard(referral_id:)
+    def self.close_referral_in_harvard(referral_id:)
       referral = CloseReferral.new
       referral.close(
         token: MachineTokens::CC_HARVARD,
@@ -75,6 +84,15 @@ module Setup
       referral = RecallReferral.new({ recall_note: note,
                                       reason: 'Client No Longer Requires Service' })
       referral.recall_referral(
+        token: MachineTokens::ORG_PRINCETON,
+        group_id: Providers::ORG_PRINCETON,
+        referral_id: referral_id
+      )
+    end
+
+    def self.reject_referral_in_princeton(referral_id:, note:)
+      referral = RejectReferral.new({ reject_note: note })
+      referral.reject_referral(
         token: MachineTokens::ORG_PRINCETON,
         group_id: Providers::ORG_PRINCETON,
         referral_id: referral_id

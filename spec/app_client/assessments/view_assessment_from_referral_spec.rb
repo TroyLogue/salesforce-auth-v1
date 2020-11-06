@@ -81,7 +81,7 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
 
     after {
       # close referral as cc
-      @close_referral = Setup::Data.close_referral_from_yale_in_harvard(
+      @close_referral = Setup::Data.close_referral_in_harvard(
         referral_id: @referral.referral_id
       )
     }
