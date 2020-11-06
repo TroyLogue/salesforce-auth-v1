@@ -148,15 +148,9 @@ To run two tests in `networks/browse_map_spec` at lines 20 and 31:
 `rspec spec/networks/browse_map_spec.rb:27:40`
 
 # Running Tests via Docker
-
-- TODO [UU3-35283](https://uniteus.atlassian.net/browse/UU3-35283)
-
-- These are not finalized, but there are some useful docker commands in the Rake file to run test cases locally against Chrome and Firefox
-
 `rake docker:build` builds the image with the tag `end-to-end`
 `rake docker:run[chrome]` or `rake docker:run[firefox]` creates and starts the containers
 `rake docker:clean[chrome]` or `rake docker:clean[firefox]` deletes all the containers
-
 # Developing Tests
 
 Tests are comprised of three types of activities:

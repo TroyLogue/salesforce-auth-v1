@@ -46,11 +46,12 @@ end
 namespace :docker do
   desc 'Build End-To-End Test Cases'
   task :build do
-    `docker build --tag=end-to-end .`
+    # If your ssh key has a passphrase, I recommend creating a second one that does not have a passphrase and placing it here
+    `docker build . --tag=end-to-end --build-arg SSH_PRIVATE_KEY="$(cat ~/.ssh/id_rsa)"`
   end
 
   desc 'Run App Client Test'
-  task :run, :browser do |args|
+  task :run, :browser do |t, args|
     `docker network create qa-network`
     `docker run --network=qa-network -d -p 4444:4444 -v /dev/shm:/dev/shm --name #{args[:browser]} selenium/standalone-#{args[:browser]}:latest`
     `sleep 2` # waiting for ^container to be up and running
@@ -58,7 +59,7 @@ namespace :docker do
   end
 
   desc 'Clean'
-  task :clean, :browser do |args|
+  task :clean, :browser do |t, args|
     `docker stop #{args[:browser]}`
     `docker network rm qa-network`
     `docker rm qa-tests`
@@ -79,7 +80,7 @@ namespace :local do
   # example:
   # rake local:ehr_staging
   desc 'Run ehr tests on staging in chrome headless'
-  task :ehr_staging, :browser do |args|
+  task :ehr_staging, :browser do |t, args|
     ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'ehr_staging'
     exit run_in_parallel(tag: 'ehr')
@@ -87,7 +88,7 @@ namespace :local do
 
   # rake local:ehr_staging_tag[uuqa_1548]
   desc 'Run ehr tests on staging by tag'
-  task :ehr_staging_tag, [:tag] do |task, args|
+  task :ehr_staging_tag, [:tag] do |t, args|
     ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'ehr_staging'
     exit run_in_parallel(tag: (args[:tag]).to_s)
@@ -97,7 +98,7 @@ namespace :local do
   # example:
   # rake local:devqa[chrome,uuqa_292]
   desc 'Run tests on Dev QA bucket by browser and tag(s)'
-  task :devqa, :browser, :tag do |args|
+  task :devqa, :browser, :tag do |t, args|
     ENV['browser'] = args[:browser]
     ENV['environment'] = 'devqa'
     exit run_in_parallel(tag: (args[:tag]).to_s)
@@ -128,7 +129,7 @@ namespace :browserstack do
   # example:
   # rake browserstack:app_client_staging_by_browser_and_tag['OS X','Catalina','chrome','80.0',uuqa_292]
   desc 'Run tests by tag on app-client base url'
-  task :app_client_staging_by_browser_and_tag, :os, :os_version, :browser, :browser_version, :tag do |args|
+  task :app_client_staging_by_browser_and_tag, :os, :os_version, :browser, :browser_version, :tag do |t, args|
     ENV['host'] = 'browserstack'
     ENV['environment'] = 'app_client_staging'
     ENV['os'] = args[:os]
@@ -141,7 +142,7 @@ namespace :browserstack do
   # example:
   # rake browserstack:app_client_staging_chrome['80.0']
   desc 'Run all app_client tests on Chrome'
-  task :app_client_staging_chrome, :environment, :os, :browser do |args|
+  task :app_client_staging_chrome, :environment, :os, :browser do |t, args|
     ENV['host'] = 'browserstack'
     ENV['environment'] = 'app_client_staging'
     ENV['os'] = 'Windows'
@@ -155,7 +156,7 @@ namespace :browserstack do
   # rake browserstack:app_client_staging['Windows','7','internet_explorer','11.0']
   # rake browserstack:app_client_staging['OS X','Catalina','safari','13.0']
   desc 'Run tests tagged app_client by OS, browser, and browser version on app-client staging'
-  task :app_client_staging, :os, :os_version, :browser, :browser_version do |args|
+  task :app_client_staging, :os, :os_version, :browser, :browser_version do |t, args|
     ENV['host'] = 'browserstack'
     ENV['environment'] = 'app_client_staging'
     ENV['os'] = args[:os]
@@ -169,7 +170,7 @@ namespace :browserstack do
   # rake browserstack:app_client_staging_ie11['uuqa_292']
   # rake browserstack:app_client_staging_ie11['uuqa_292 --tag uuqa_293']
   desc 'Run app-client staging tests on IE 11 by tag(s)'
-  task :app_client_staging_ie11, :tag do |args|
+  task :app_client_staging_ie11, :tag do |t, args|
     ENV['host'] = 'browserstack'
     ENV['environment'] = 'app_client_staging'
     ENV['os'] = 'Windows'
@@ -182,7 +183,7 @@ namespace :browserstack do
   # example:
   # rake browserstack:ehr_staging_ie10['uuqa_123 --tag uuqa_124']
   desc 'Run EHR staging tests on IE 10 by tag(s)'
-  task :ehr_staging_ie10, :tag do |args|
+  task :ehr_staging_ie10, :tag do |t, args|
     ENV['host'] = 'browserstack'
     ENV['environment'] = 'ehr_staging'
     ENV['os'] = 'Windows'
@@ -195,7 +196,7 @@ namespace :browserstack do
   # example:
   # rake browserstack:ehr_staging_ie10
   desc 'Run all EHR staging tests on IE 10'
-  task :ehr_staging_ie10_all do |args|
+  task :ehr_staging_ie10_all do |t, args|
     ENV['host'] = 'browserstack'
     ENV['environment'] = 'ehr_staging'
     ENV['os'] = 'Windows'
@@ -204,5 +205,4 @@ namespace :browserstack do
     ENV['browser_version'] = '10.0'
     exit run_in_parallel(tag: 'ehr')
   end
-
 end
