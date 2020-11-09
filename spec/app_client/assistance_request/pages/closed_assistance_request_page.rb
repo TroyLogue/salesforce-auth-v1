@@ -5,6 +5,9 @@ class ClosedAssistanceRequestPage < BasePage
   OUTCOME_NOTES = { css: '.expandable-container__content-children' }.freeze
   DATE_CLOSED_LABEL = { css: '#outcome-column-two-table-date-closed-value' }.freeze
 
+  #AR Statuses
+  CLOSED_STATUS_TEXT = 'CLOSED'
+
   def go_to_closed_ar_with_id(ar_id:)
     get("/dashboard/assistance-requests/closed/#{ar_id}")
     wait_for_spinner

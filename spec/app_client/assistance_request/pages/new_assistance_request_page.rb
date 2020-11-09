@@ -15,6 +15,9 @@ class NewAssistanceRequestPage < BasePage
   CLOSING_NOTE = { css: '#note-input' }.freeze
   CLOSE_BUTTON = { css: '#close-ar-close-btn' }.freeze
   AR_CLOSE_MODAL = { css: '.close-ar__inputs' }.freeze
+
+  #AR Statuses
+  NEED_ACTION_STATUS_TEXT = 'NEEDS ACTION'
   
   def go_to_new_ar_with_id(ar_id:)
     get("/dashboard/new/assistance-requests/#{ar_id}")

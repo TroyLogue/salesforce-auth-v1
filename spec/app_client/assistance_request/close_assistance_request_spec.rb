@@ -1,4 +1,3 @@
-require_relative '../../shared_components/base_page.rb'
 require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
@@ -15,7 +14,6 @@ describe '[Assistance request]', :app_client, :assistance_request do
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
   let(:new_assistance_request_page) { NewAssistanceRequestPage.new(@driver) }
   let(:new_assistance_request_dashboard_page) { NewAssistanceRequestDashboardPage.new(@driver) }
   let(:closed_assistance_request_page) { ClosedAssistanceRequestPage.new(@driver) }
@@ -24,22 +22,22 @@ describe '[Assistance request]', :app_client, :assistance_request do
   
   before {
     # Submit assistance request before each test
-    @ar_data = Setup::Data::submit_assistance_request_to_columbia_org
+    @assistance_request = Setup::Data::submit_assistance_request_to_columbia_org
   }
 
-  context '[Close assisstance request]' do
+  context '[As ORG user]' do
     before {
       log_in_as(Login::ORG_COLUMBIA)
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'Closes assistance request', :uuqa_1561 do
+    it 'Close assistance request', :uuqa_1561 do
       new_assistance_request_dashboard_page.go_to_new_ar_dashboard_page
       new_assistance_request_dashboard_page.new_ar_dashboard_page_displayed?
 
       # Visit client's AR page and close AR
-      new_assistance_request_page.go_to_new_ar_with_id(ar_id: @ar_data.id)
-      expect(new_assistance_request_page.status_detail_text).to eq('NEEDS ACTION')
+      new_assistance_request_page.go_to_new_ar_with_id(ar_id: @assistance_request.ar_id)
+      expect(new_assistance_request_page.status_detail_text).to eq(NewAssistanceRequestPage::NEED_ACTION_STATUS_TEXT)
       note = Faker::Lorem.sentence(word_count: 5)
       new_assistance_request_page.close_assistance_request(note, 'resolved')
       new_assistance_request_dashboard_page.new_ar_dashboard_page_displayed?
@@ -47,32 +45,22 @@ describe '[Assistance request]', :app_client, :assistance_request do
       expect(notification_text).to include(Notifications::ASSISTANCE_REQUEST_CLOSED)
 
       # Visit client's closed AR page to validate AR was closed
-      closed_assistance_request_page.go_to_closed_ar_with_id(ar_id: @ar_data.id)
+      closed_assistance_request_page.go_to_closed_ar_with_id(ar_id: @assistance_request.ar_id)
       expect(closed_assistance_request_page.outcome_note_text).to eq(note)
-      expect(closed_assistance_request_page.status_detail_text).to eq('CLOSED')
+      expect(closed_assistance_request_page.status_detail_text).to eq(ClosedAssistanceRequestPage::CLOSED_STATUS_TEXT)
     end
   end
 
-  context '[Closed assistance request]' do
+  context '[As ORG user]' do
     before {
       # Close the assistance request that is created via API before the test run
-      @closed_ar = Setup::Data::close_columbia_assistance_request(contact_id: @ar_data.id)
+      @closed_ar = Setup::Data::close_columbia_assistance_request(ar_id: @assistance_request.ar_id)
 
       log_in_as(Login::ORG_COLUMBIA)
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'Validates assistance request is closed', :uuqa_1671 do
-      closed_assistance_request_dashboard_page.go_to_closed_ar_dashboard_page
-      closed_assistance_request_dashboard_page.closed_ar_dashboard_page_displayed?
-
-      # Visit client's closed AR page to validate AR was closed
-      closed_assistance_request_page.go_to_closed_ar_with_id(ar_id: @ar_data.id)
-      expect(closed_assistance_request_page.outcome_note_text).to eq(@closed_ar.note)
-      expect(closed_assistance_request_page.status_detail_text).to eq('CLOSED')
-    end
-
-    it 'Validates assistance request was closed today', :uuqa_1671 do
+    it 'Validate assistance request is closed today', :uuqa_1671 do
       closed_assistance_request_dashboard_page.go_to_closed_ar_dashboard_page
       closed_assistance_request_dashboard_page.closed_ar_dashboard_page_displayed?
 
@@ -80,10 +68,10 @@ describe '[Assistance request]', :app_client, :assistance_request do
       expect(closed_assistance_request_dashboard_page.date_closed_column_text(@closed_ar.full_name)).to eq(@closed_ar.time_ar_closed)
 
       # Visit client's closed AR page to validate AR was closed
-      closed_assistance_request_page.go_to_closed_ar_with_id(ar_id: @ar_data.id)
-      expect(closed_assistance_request_page.get_date_closed_text).to eq("#{@closed_ar.date_ar_closed} at #{@closed_ar.time_ar_closed}")
+      closed_assistance_request_page.go_to_closed_ar_with_id(ar_id: @assistance_request.ar_id)
       expect(closed_assistance_request_page.outcome_note_text).to eq(@closed_ar.note)
-      expect(closed_assistance_request_page.status_detail_text).to eq('CLOSED')
+      expect(closed_assistance_request_page.get_date_closed_text).to eq("#{@closed_ar.date_ar_closed} at #{@closed_ar.time_ar_closed}")
+      expect(closed_assistance_request_page.status_detail_text).to eq(ClosedAssistanceRequestPage::CLOSED_STATUS_TEXT)
     end
   end
 end
