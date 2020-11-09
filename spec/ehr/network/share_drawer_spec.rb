@@ -1,13 +1,15 @@
 require_relative '../auth/helpers/login_ehr'
 require_relative './pages/network'
 require_relative './pages/share_drawer'
-require_relative '../../shared_components/shares_page'
 require_relative '../root/pages/notifications_ehr'
+require_relative '../../shared_components/base_page'
+require_relative '../../shared_components/shares_page'
 
 describe '[Network] Share Providers', :ehr, :network, :share_drawer do
   include LoginEhr
   include MailtrapHelper
 
+  let(:base_page) { BasePage.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:network) { Network.new(@driver) }
@@ -83,13 +85,14 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
       network.click_share
 
       expect(share_drawer.page_displayed?).to be_truthy
-      expect(share_drawer.provider_list_text).to include(@first_provider_name)
-      expect(share_drawer.provider_list_text).to include(@second_provider_name)
+      expect(share_drawer.provider_list_text).to include(@first_provider_name, @second_provider_name)
       expect(share_drawer.header_text).to eq("Share 2 Organizations")
 
       share_drawer.share_by_print
-      # verify second window opens with share page?
       expect(network.drawer_closed?).to be_truthy
+
+      # verify second window opens with share page
+      expect(base_page.new_tab_opened?).to be_truthy
     end
   end
 end
