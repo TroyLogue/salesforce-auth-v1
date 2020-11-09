@@ -9,15 +9,32 @@ class Network < BasePage
   DRAWER_OPEN = { css: '.ui-drawer.ui-drawer--secondary.ui-drawer--opened' }
   PROVIDER_CARDS_CONTAINER = { css: '.ui-provider-select-cards' }
   PROVIDER_CARD = { css: '.ui-provider-card' }
+  PROVIDER_CARD_ADD_BTN = { css: '.ui-add-remove-buttons__add a' }
   SERVICE_TYPE_FILTER = { css: '#service-type-filter' }
   SERVICE_TYPE_OPTION = { css: '.ui-filter-option.level-1' }
   NETWORK_FILTER = { css: '#network-filter' }
   SEARCH_FILTER = { css: '#referral-search-filter' }
+  SHARE_BTN = { css: '#common-card-title-share-button' }
   RESULT_TEXT_DIV= { css: '.filter-summary__results-text' }
+
+  def add_first_provider
+    add_providers_by_index([0])
+  end
+
+  def add_providers_by_index(index_arr)
+    add_btns = find_elements(PROVIDER_CARD_ADD_BTN)
+    index_arr.each do |i|
+      add_btns[i].click
+    end
+  end
 
   def click_first_provider_card
     @first_provider_card = { css: ".ui-provider-card:nth-child(#{1})" }
     click(@first_provider_card)
+  end
+
+  def click_share
+    click(SHARE_BTN)
   end
 
   def drawer_open?
@@ -30,6 +47,10 @@ class Network < BasePage
 
   def first_provider_name
     nth_provider_name(0)
+  end
+
+  def second_provider_name
+    nth_provider_name(1)
   end
 
   def nth_provider_name(index)
