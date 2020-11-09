@@ -1,6 +1,4 @@
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
 require_relative 'pages/new_assistance_request_page.rb'
 require_relative 'pages/new_assistance_request_dashboard_page.rb'
