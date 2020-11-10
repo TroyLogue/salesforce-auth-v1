@@ -6,6 +6,7 @@ class AssessmentPage < BasePage
   ASSESSMENT_CARD = { css: '.assessments-show .ui-base-card' }
   ASSESSMENT_TITLE = { css: '.ui-base-card-header__title' }
   EDIT_BTN = { css: '#assessment-edit-btn' }
+  FIRST_RESPONSE_VALUE = { css: '.ui-form-renderer-question-display__value' }
   INPUT_FIELD = { css: 'input[type="text"]' }
   SAVE_BTN = { css: '#save-btn' }
 
@@ -19,8 +20,8 @@ class AssessmentPage < BasePage
     click(SAVE_BTN)
   end
 
-  def get_text
-    text(ASSESSMENT_CARD)
+  def first_response_text
+    text(FIRST_RESPONSE_VALUE)
   end
 
   def page_displayed?(assessment_name: '')

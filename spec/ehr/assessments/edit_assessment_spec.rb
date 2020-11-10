@@ -26,7 +26,7 @@ describe '[Assessments]', :ehr, :assessments do
       homepage.open_assessment_by_name(assessment)
       expect(assessment_page.page_displayed?(assessment_name: assessment)).to be_truthy
 
-      initial_values = assessment_page.get_text
+      initial_value = assessment_page.first_response_text
       assessment_page.edit_assessment(new_value)
 
       # verify success notification:
@@ -34,9 +34,9 @@ describe '[Assessments]', :ehr, :assessments do
       expect(notification_text).to include(NotificationsEhr::ASSESSMENT_UPDATED)
 
       # verify value updated:
-      updated_values = assessment_page.get_text
-      expect(updated_values).not_to eq(initial_values)
-      expect(updated_values).to include(new_value)
+      updated_value = assessment_page.first_response_text
+      expect(updated_value).not_to include(initial_value)
+      expect(updated_value).to include(new_value)
     end
   end
 end
