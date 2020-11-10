@@ -38,6 +38,11 @@ class BasePage
     find(selector).click
   end
 
+  def click_element_by_text(selector, text)
+    element = find_element_by_text(selector, text)
+    element.click
+  end
+
   def click_element_from_list_by_text(selector, text)
     list = find_elements(selector)
     found = false
@@ -98,6 +103,12 @@ class BasePage
     wait_for { driver.find_elements(selector) }
   end
 
+  # returns an element
+  def find_element_by_text(selector, text)
+    find_elements(selector).select { |e| e.text == text }.first
+  end
+
+  # returns a boolean
   def find_element_with_text(selector, text)
     find(selector).text.include?(text)
   end
@@ -146,8 +157,8 @@ class BasePage
     driver.action.move_to(find(selector)).perform
   end
 
-  def is_displayed?(selector)
-    find(selector).displayed? ? true : print("E2E ERROR: Selector #{selector} was not present")
+  def is_displayed?(selector, timeout = 30)
+    wait_for(timeout) { driver.find_element(selector).displayed? } ? true : print("E2E ERROR: Selector #{selector} was not present")
   rescue Selenium::WebDriver::Error::NoSuchElementError
     print "E2E ERROR NoSuchElementError at #{selector}"
     false

@@ -9,8 +9,8 @@ module Setup
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
     attr_accessor :ar_id
-    attr_reader :access_token, :service_type_id, :description, :first_name,
-                :last_name, :middle_name_initial, :date_of_birth, :email_address,
+    attr_reader :access_token, :service_type_id, :description, :fname,
+                :lname, :middle_name_initial, :date_of_birth, :email_address,
                 :gender, :race, :ethnicity, :ssn,
                 :gross_monthly_income, :citizenship, :form_id, :signature_image
 
@@ -38,7 +38,7 @@ module Setup
                                                                 })
       ar_response = Requests::AssistanceRequest.create(payload: ar_request_body)
       expect(ar_response.status.to_s).to eq('201 Created')
-      @ar_data = JSON.parse(ar_response, object_class: OpenStruct).data
+      @ar_id = JSON.parse(ar_response, object_class: OpenStruct).data.id
     end
   end
 
@@ -46,16 +46,33 @@ module Setup
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
     
-    def close(token:, group_id:, contact_id:, resolution:)
+    def close(token:, group_id:, ar_id:, resolution:)
       payload = {
         closing:{
           outcome_id: resolution,
           resolved: 'resolved',
-          note: 'Data cleanup'
+          note: Faker::Lorem.sentence(word_count: 5)
         }
       }
-      close_response = Requests::AssistanceRequest.close(token: token, group_id: group_id, contact_id: contact_id, payload: payload)
+      close_response = Requests::AssistanceRequest.close(token: token, group_id: group_id, ar_id: ar_id, payload: payload)
+      @closed_ar_data = JSON.parse(close_response, object_class: OpenStruct).data
       expect(close_response.status.to_s).to eq('200 OK')
+    end
+
+    def full_name
+      @closed_ar_data.requestor.full_name
+    end
+
+    def date_ar_closed
+      Time.at(@closed_ar_data.closing.created_at).strftime("%m/%-d/%Y")
+    end
+
+    def time_ar_closed
+      Time.at(@closed_ar_data.closing.created_at).strftime("%l:%M %P").strip
+    end
+
+    def note
+      @closed_ar_data.closing.note
     end
   end
 end
