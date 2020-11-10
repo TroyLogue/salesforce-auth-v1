@@ -7,7 +7,7 @@ require_relative '../root/pages/notifications_ehr'
 describe '[Assessments]', :ehr, :assessments do
   include LoginEhr
 
-  let(:assessment) { AssessmentPage.new(@driver) }
+  let(:assessment) { Assessment.new(@driver) }
   let(:assessments_table) { AssessmentsTable.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }

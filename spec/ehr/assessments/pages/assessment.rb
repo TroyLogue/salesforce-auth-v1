@@ -2,7 +2,7 @@
 
 require_relative '../../../shared_components/base_page'
 
-class AssessmentPage < BasePage
+class Assessment < BasePage
   ASSESSMENT_CARD = { css: '.assessments-show .ui-base-card' }
   ASSESSMENT_TITLE = { css: '.ui-base-card-header__title' }
   EDIT_BTN = { css: '#assessment-edit-btn' }
