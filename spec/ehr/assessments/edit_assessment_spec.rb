@@ -1,6 +1,7 @@
 require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/home_page'
 require_relative './pages/assessment_page'
+require_relative '../root/pages/notifications_ehr'
 
 describe '[Assessments]', :ehr, :assessments do
   include LoginEhr
@@ -9,6 +10,8 @@ describe '[Assessments]', :ehr, :assessments do
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
+  let(:notifications) { NotificationsEhr.new(@driver) }
+
 
   context('[as a cc user] in the Default view') do
     before {
@@ -18,9 +21,22 @@ describe '[Assessments]', :ehr, :assessments do
 
     it 'can edit an assessment', :uuqa_399 do
       assessment = "Ivy League General Form"
-      homepage.open_assessment_by_name(assessment)
+      new_value = Faker::Alphanumeric.alpha(number: 8)
 
+      homepage.open_assessment_by_name(assessment)
       expect(assessment_page.page_displayed?(assessment_name: assessment)).to be_truthy
+
+      initial_values = assessment_page.get_text
+      assessment_page.edit_assessment(new_value)
+
+      # verify success notification:
+      notification_text = notifications.success_text
+      expect(notification_text).to include(NotificationsEhr::ASSESSMENT_UPDATED)
+
+      # verify value updated:
+      updated_values = assessment_page.get_text
+      expect(updated_values).not_to eq(initial_values)
+      expect(updated_values).to include(new_value)
     end
   end
 end
