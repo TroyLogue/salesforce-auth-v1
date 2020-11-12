@@ -7,10 +7,14 @@ class HomePage < BasePage
   SCREENINGS_SECTION = { css: '.screenings' }
 
 
-  def page_displayed?
+  def default_view_displayed?
     is_displayed?(NAVBAR) &&
       is_displayed?(CASES_SECTION) &&
       is_displayed?(ASSESSMENTS_SECTION) &&
       is_displayed?(SCREENINGS_SECTION)
+  end
+
+  def page_displayed?
+    is_displayed?(NAVBAR)
   end
 end
