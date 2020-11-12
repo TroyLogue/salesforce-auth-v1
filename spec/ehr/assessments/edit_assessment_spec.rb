@@ -18,7 +18,7 @@ describe '[Assessments]', :ehr, :assessments do
   context('[as a cc user] in the Default view') do
     before {
       log_in_default_as(LoginEhr::CC_HARVARD)
-      expect(homepage.page_displayed?).to be_truthy
+      expect(homepage.default_view_displayed?).to be_truthy
     }
 
     it 'can edit an assessment', :uuqa_399 do
