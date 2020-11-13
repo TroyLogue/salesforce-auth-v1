@@ -3,7 +3,7 @@
 require_relative '../../../shared_components/base_page'
 
 class Screening < BasePage
-  CREATE_REFERRAL_BUTTON_FIRST = { css: '.screening-risk-display .ui-base-card .ui-base-card-header__title .ui-button' }
+  CREATE_REFERRAL_BUTTON_FIRST = { css: '.screening-risk-display .ui-base-card .ui-button' }
   IDENTIFIED_SERVICE_CARD = { css: '.screening-risk-display .ui-base-card' }
   IDENTIFIED_SERVICE_CARD_HEADER = { css: '.screening-risk-display .ui-base-card .ui-base-card-header__title' }
   NEEDS_SECTION = { css: '.screening-detail__needs' }
@@ -21,7 +21,7 @@ class Screening < BasePage
 
   def needs_identified?
     service_type = get_first_identified_service_type
-    service_type_message = `This client has been determined to have a #{service_type} need.`
+    service_type_message = "This client has been determined to have a #{service_type} need."
 
     text(IDENTIFIED_SERVICE_CARD).include?(service_type_message)
   end

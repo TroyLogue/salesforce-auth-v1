@@ -22,7 +22,6 @@ describe '[Screenings]', :ehr, :screenings do
     before do
       # screenings only available w patient context (default view)
       log_in_default_as(LoginEhr::SCREENINGS_USER)
-      expect(homepage.default_view_displayed?).to be_truthy
       expect(screenings_table.page_displayed?).to be_truthy
     end
 
@@ -36,6 +35,7 @@ describe '[Screenings]', :ehr, :screenings do
 
       service_type = screening.get_first_identified_service_type
       screening.create_referral_from_identified_need
+      expect(new_referral.page_displayed?).to be_truthy
       expect(new_referral.selected_service_type).to include(service_type)
     end
 

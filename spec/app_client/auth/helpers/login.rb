@@ -13,10 +13,6 @@ module Login
     # primary cc used in tests
     CC_HARVARD = 'harvard@auto.com'.freeze,
     # EHR user with screenings role
-    EMR_SCREENINGS_USER = 'screenings@emr.com'.freeze,
-    # EHR user with no screenings permissions
-    EMR_NON_SCREENINGS_USER = 'noscreenings@emr.com'.freeze,
-    # user configured with Tableau license for Insights feature
     INSIGHTS_USER = 'insights@auto.com'.freeze,
     # used in createIntakeOrgIntakeUser.js
     INTAKE_USER = 'intake@auto.com'.freeze,
