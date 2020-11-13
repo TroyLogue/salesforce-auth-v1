@@ -69,6 +69,19 @@ module Setup
       referral
     end
 
+    def self.send_referral_from_yale_to_princeton(contact_id:)
+      referral = CreateReferral.new({ contact_id: contact_id,
+                                      referred_by_network_id: IVY_NETWORK,
+                                      referred_to_network_id: IVY_NETWORK,
+                                      referred_to_groups: [Providers::ORG_PRINCETON],
+                                      service_type_id: BENEFITS_DISABILITY_BENEFITS })
+      referral.create(
+        token: MachineTokens::ORG_YALE,
+        group_id: Providers::ORG_YALE
+      )
+      referral
+    end
+
     def self.close_referral_in_harvard(referral_id:)
       referral = CloseReferral.new
       referral.close(

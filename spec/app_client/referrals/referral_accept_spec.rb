@@ -13,7 +13,6 @@ describe '[Referrals]', :app_client, :referrals do
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
-  let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:referral) { Referral.new(@driver) }
   let(:new_referral_dashboard) { ReferralDashboard::New.new(@driver) }
   let(:new_case) { Case.new(@driver) }

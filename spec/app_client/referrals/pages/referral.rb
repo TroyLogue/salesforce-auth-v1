@@ -9,6 +9,7 @@ class Referral < BasePage
   REFERRAL_STATUS = { css: '.detail-status-text.uppercase' }.freeze
   OUTCOME_NOTES = { css: '#outcome-notes-expandable p' }.freeze
   INACTIVE_BTN = { css: '.detail-action-wrapper > span' }.freeze
+  CLOSED_BY = { css: '#outcome-column-one-table-closed-by-value' }.freeze
 
   TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }.freeze
   TAKE_ACTION_HOLD_OPTION = { css: 'div[data-value="holdForReview"]' }.freeze
@@ -17,6 +18,7 @@ class Referral < BasePage
   TAKE_ACTION_REJECT_OPTION = { css: 'div[data-value="reject"]' }.freeze
   TAKE_ACTION_INTAKE_OPTION = { css: 'div[data-value="startIntake"]' }.freeze
   TAKE_ACTION_CLOSE_OPTION = { css: 'div[data-value="closeReferral"]' }.freeze
+  TAKE_ACTION_CLOSE_REFERRAL_BTN = { css: '#take-action-close-referral-btn' }.freeze
 
   ACCEPT_MODAL = { css: '.accept-modal-dialog .dialog.open.large .dialog-paper' }.freeze
   ACCEPT_PROGRAM_OPTIONS = { css: 'div[aria-activedescendant="choices-programSelect-item-choice-1"]' }.freeze
@@ -113,6 +115,16 @@ class Referral < BasePage
     wait_for_spinner
   end
 
+  def go_to_p2p_referral_with_id(referral_id:)
+    get("/dashboard/referrals/provider-to-provider/#{referral_id}")
+    wait_for_spinner
+  end
+
+  def go_to_sent_pending_consent_referral_with_id(referral_id:)
+    get("/dashboard/referrals/sent/pending-consent/#{referral_id}")
+    wait_for_spinner
+  end
+
   def page_displayed?
     wait_for_spinner
     is_displayed?(STATUS_TEXT) &&
@@ -125,6 +137,10 @@ class Referral < BasePage
 
   def status
     text(REFERRAL_STATUS)
+  end
+
+  def closed_by
+    text(CLOSED_BY)
   end
 
   def current_referral_id
@@ -171,6 +187,22 @@ class Referral < BasePage
   def close_referral_action(note:)
     click(TAKE_ACTION_DROP_DOWN)
     click(TAKE_ACTION_CLOSE_OPTION)
+    is_displayed?(CLOSE_REFERRAL_MODAL)
+    # Selecting resolved option by default
+    click(CLOSE_RESOLVED_DROPDOWN)
+    click(CLOSE_RESOLVED_OPTION)
+    # Selecing first outcome option by default
+    click(CLOSE_OUTCOME_DROPDOWN)
+    click(CLOSE_OUTCOME_OPTION)
+    enter(note, CLOSE_REFERRAL_NOTE)
+    click(CLOSE_REFERRAL_BTN)
+    wait_for_spinner
+    Time.now.strftime('%l:%M %P').strip
+  end
+
+  # P2P referrals only have the option to close a referral
+  def close_referral_through_btn(note:)
+    click(TAKE_ACTION_CLOSE_REFERRAL_BTN)
     is_displayed?(CLOSE_REFERRAL_MODAL)
     # Selecting resolved option by default
     click(CLOSE_RESOLVED_DROPDOWN)
