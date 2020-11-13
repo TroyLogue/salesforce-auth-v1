@@ -14,7 +14,7 @@ describe '[Referrals]', :app_client, :referrals do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:referral) { Referral.new(@driver) }
-  let(:sent_referral_dashboard) { ReferralDashboard::Sent.new(@driver) }
+  let(:sent_referral_dashboard) { ReferralDashboard::Sent::All.new(@driver) }
   let(:referral_send) { ReferralSend.new(@driver) }
   let(:network_map) { ReferralNetworkMap.new(@driver) }
 

@@ -9,7 +9,10 @@ class NotificationsEhr < BasePage
   SUCCESS_NOTIFICATION = { css: '.notifications .notification.success.fade-enter-done' }.freeze
   CLOSE_BTN = { css: 'notification__close-btn' }.freeze
 
+  # Messages:
   MESSAGE_SENT = 'Message successfully sent'
+  ASSESSMENT_UPDATED = "ASSESSMENT SUCCESSFULLY EDITED"
+
 
   def close_notification
     is_displayed?(SUCCESS_NOTIFICATION)

@@ -127,22 +127,35 @@ module ReferralDashboard
     end
   end
 
-  class Sent < BasePage
-    include SharedComponents
-
+  module Sent
     SENT_REFERRALS = { css: '#sent-referrals-table' }.freeze
     ALL_CLIENT_NAMES = { css: 'tr[id^="sent-referrals-table-row"] .ui-table-row-column:nth-child(3) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="sent-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
-
-    HEADERS = ['RECIPIENT', 'CLIENT NAME', 'SENT BY', 'SERVICE TYPE', 'STATUS', 'LAST UPDATED'].freeze
 
     def page_displayed?
       wait_for_spinner
       is_displayed?(SENT_REFERRALS)
     end
 
-    def go_to_sent_all_referrals_dashboard
-      get('/dashboard/referrals/sent/all')
+    class All < BasePage
+      include SharedComponents
+      include Sent
+      HEADERS = ['RECIPIENT', 'CLIENT NAME', 'SENT BY', 'SERVICE TYPE', 'STATUS', 'LAST UPDATED'].freeze
+
+      def go_to_sent_all_referrals_dashboard
+        get('/dashboard/referrals/sent/all')
+      end
+    end
+
+    class PendingConsent < BasePage
+      include SharedComponents
+      include Sent
+      # Need the last empty header for the three dot option
+      HEADERS = ['RECIPIENT', 'CLIENT NAME', 'SENT BY', 'SERVICE TYPE', 'CONSENT REQUESTS', 'DATE SENT', ''].freeze
+
+      def go_to_sent_pending_consent_referrals_dashboard
+        get('/dashboard/referrals/sent/pending-consent')
+      end
     end
   end
 end

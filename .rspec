@@ -1,2 +1,4 @@
 --color
 --require spec_helper
+--format RspecJunitFormatter
+--out tmp/rspec<%= ENV["TEST_ENV_NUMBER"] %>.xml

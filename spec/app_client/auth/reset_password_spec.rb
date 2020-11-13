@@ -44,8 +44,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
       expect(login_email.password_reset_message_displayed?).to be_truthy
 
       # verify in mailtrap:
-      message = get_first_message
-      expect(is_password_reset_email?(message)).to be_truthy
+      message = get_first_password_reset_email
       expect(message_sent_to(message)).to include(email)
 
       # verify that the link from the email leads to reset pw page
