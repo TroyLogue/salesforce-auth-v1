@@ -124,7 +124,7 @@ def test() {
     def taskName = "${env.JOB_NAME}".split('/').last()
 
     result = sh(script: "bundle exec rake jenkins:${taskName}", returnStatus: true)
-    junit 'result.xml'
+    junit 'tmp/*.xml'
 
     if (result == 0) {
         currentBuild.result = 'SUCCESS'

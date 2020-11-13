@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def run_in_parallel(tag:, processes: 1)
-  system("parallel_rspec -n #{processes} --test-options '-r rspec --order random --tag #{tag} --format RspecJunitFormatter --out result.xml' spec")
+  system("parallel_rspec -n #{processes} --test-options '-r rspec --order random --tag #{tag}' spec")
 end
 
 namespace :jenkins do
@@ -18,7 +18,7 @@ namespace :jenkins do
   task :app_client_parallel do
     ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(tag: 'referrals', processes: 2)
+    exit run_in_parallel(tag: 'app_client', processes: 2)
   end
 
   desc 'specs tagged ehr on chrome headless'
