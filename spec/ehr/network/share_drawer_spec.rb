@@ -67,9 +67,8 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
       # check mailtrap:
       # adding a short wait so mailtrap can update
       sleep(10)
-      message = get_first_message
       network_name = "QA-Carol Coordination Center with All Service Types"
-      expect(is_share_email?(message: message, network_name: network_name, provider_name: @second_provider_name)).to be_truthy
+      message = get_first_share_email(network: network_name, provider: @second_provider_name)
 
       #follow link to share page:
       share_link = get_share_link(message: message)
