@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # require_relative '../pages/login_email' # UU3-48209 uncomment login page-objects when task is addressed
 # require_relative '../pages/login_password'
 
@@ -9,50 +11,52 @@ module Login
   # evaluate feasibility of reducing array of users and generating machine tokens
   TEST_USERS = [
     # cc user for testing business intelligence tracking
-    BI_CC_USER = 'cc@bi.test'.freeze,
+    BI_CC_USER = 'cc@bi.test',
     # primary cc used in tests
-    CC_HARVARD = 'harvard@auto.com'.freeze,
+    CC_HARVARD = 'harvard@auto.com',
     # EHR user with screenings role
-    EMR_SCREENINGS_USER = 'screenings@emr.com'.freeze,
+    EMR_SCREENINGS_USER = 'screenings@emr.com',
     # EHR user with no screenings permissions
-    EMR_NON_SCREENINGS_USER = 'noscreenings@emr.com'.freeze,
+    EMR_NON_SCREENINGS_USER = 'noscreenings@emr.com',
     # user configured with Tableau license for Insights feature
-    INSIGHTS_USER = 'insights@auto.com'.freeze,
+    INSIGHTS_USER = 'insights@auto.com',
     # used in createIntakeOrgIntakeUser.js
-    INTAKE_USER = 'intake@auto.com'.freeze,
+    INTAKE_USER = 'intake@auto.com',
     # same as nolicense; should be consolidated
-    INVALID_USER = 'martin@auto.com'.freeze,
+    INVALID_USER = 'martin@auto.com',
     # used in parts/login/nonLicensedUser.js
-    NOLICENSE_MARTIN = 'martin@auto.com'.freeze,
+    NOLICENSE_MARTIN = 'martin@auto.com',
     # used in 3 tests and 2 helper scripts
-    ORG_ATLANTA = 'atlanta@auto.com'.freeze,
+    ORG_ATLANTA = 'atlanta@auto.com',
     # used in ~15 ui-tests
-    ORG_COLUMBIA = 'columbia@auto.com'.freeze,
+    ORG_COLUMBIA = 'columbia@auto.com',
     # used in ~20 ui-tests
-    ORG_NEWYORK = 'newyork@auto.com'.freeze,
+    ORG_NEWYORK = 'newyork@auto.com',
     # used in 2 tests and 1 helper script
-    ORG_PRINCETON = 'princeton@auto.com'.freeze,
+    ORG_PRINCETON = 'princeton@auto.com',
     # primary org used in tests
-    ORG_YALE = 'yale@auto.com'.freeze,
+    ORG_YALE = 'yale@auto.com',
     # used in 3 tests
-    REFERRAL_USER = 'referral@auto.com'.freeze,
+    REFERRAL_USER = 'referral@auto.com',
     # used in reset pw spec - in Atlanta org
-    RESET_PW_USER = 'reset_pw_org@auto.com'.freeze,
+    RESET_PW_USER = 'reset_pw_org@auto.com',
     # used in dashboardNavigationSN.js
     # might become obsolete or applied to referrals tests
-    SUPER_USER = 'super@best.com'.freeze,
+    SUPER_USER = 'super@best.com',
     # settings user, QA network
-    SETTINGS_USER = 'qa.perms@auto.com'.freeze,
+    SETTINGS_USER = 'qa.perms@auto.com',
     # next gate temp user, this user is licensed in a NG tagged organization
     # and has New-Search Feature Flag enabled
-    NEXTGATE_USER = 'test-perms9@auto.com'.freeze,
+    NEXTGATE_USER = 'test-perms9@auto.com',
     # columbia org with New-Search Feature Flag enabled
-    NEW_SEARCH_USER = 'client-search@auto.com'.freeze
-  ]
+    NEW_SEARCH_USER = 'client-search@auto.com',
+    # used to test provider-selector features
+    USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test'
+  ].freeze
 
-  DEFAULT_PASSWORD = 'Uniteus1!'.freeze
-  WRONG_PASSWORD = 'Uniteus'.freeze # can be passed to log_in_as method instance
-  INSECURE_PASSWORD = 'password123'.freeze
+  DEFAULT_PASSWORD = 'Uniteus1!'
+  WRONG_PASSWORD = 'Uniteus' # can be passed to log_in_as method instance
+  INSECURE_PASSWORD = 'password123'
 
   def log_in_as(email_address, password = DEFAULT_PASSWORD)
     login_email.get ''
