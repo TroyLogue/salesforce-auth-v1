@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../auth/helpers/login_ehr'
-require_relative '../root/pages/home_page'
 require_relative '../referrals/pages/new_referral'
 require_relative './pages/new_screening'
 require_relative './pages/screening'
@@ -10,11 +9,10 @@ require_relative './pages/screenings_table'
 describe '[Screenings]', :ehr, :screenings do
   include LoginEhr
 
-  let(:homepage) { HomePage.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
-  let(:new_screening) { NewScreening.new(@driver) }
   let(:new_referral) { NewReferral.new(@driver) }
+  let(:new_screening) { NewScreening.new(@driver) }
   let(:screening) { Screening.new(@driver) }
   let(:screenings_table) { ScreeningsTable.new(@driver) }
 
