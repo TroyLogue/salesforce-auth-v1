@@ -64,6 +64,10 @@ class BasePage
     find_within(context, selector).click
   end
 
+  def current_url
+    driver.current_url
+  end
+
   def delete_all_char(selector)
     element = find(selector)
     # for input value fields and text fields

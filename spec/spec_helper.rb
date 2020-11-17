@@ -10,7 +10,6 @@ require_relative './app_client/auth/pages/login_password' # With UU3-48209 we sh
 require_relative './ehr/auth/pages/login_email_ehr' # UU3-48209 Currently all tests login through the UI and so these files are needed throughout the repo.
 require_relative './ehr/auth/pages/login_password_ehr' # With UU3-48209 we should not require login_email and login_password in the spec_helper, and only require them in specs testing login.
 
-
 # Specifies required dependencies per groups defined in Gemfile
 # When spec files require spec_helper, they have access to all the package gems
 # and do not need to require them individually
@@ -26,9 +25,11 @@ Dotenv.load(".env.#{domain}")
 ENV['web_url'] = ENV[application + '_url']
 ENV['auth_url'] = ENV[application + '_auth_url']
 
-# Gives specs access to the data module that contains the methods
+# Gives specs access to the setup modules that contain the methods
 # to create clients, referrals and other data dependencies
-Dir.glob('./spec/support/setup/data/*.rb').each { |file| require file }
+Dir.glob('./spec/support/setup/base/*.rb').sort.each { |file| require file }
+Dir.glob('./spec/support/setup/data/*.rb').sort.each { |file| require file }
+Dir.glob('./spec/support/setup/identifiers/*.rb').sort.each { |file| require file }
 
 # before and after hooks for every spec
 RSpec.configure do |config|

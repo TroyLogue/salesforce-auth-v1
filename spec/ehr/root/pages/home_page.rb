@@ -17,4 +17,10 @@ class HomePage < BasePage
   def page_displayed?
     is_displayed?(NAVBAR)
   end
+
+  # When using EHR in a browser, the base URL is followed by an ID which is dynamically generated
+  # toward managing different sessions in EHR desktop apps (Epic, Cerner).
+  def ehr_session_support_id
+    current_url.split("#{ENV['web_url']}/").last.split('/').first
+  end
 end
