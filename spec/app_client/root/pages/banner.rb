@@ -8,6 +8,6 @@ class Banner < BasePage
 
   # UU3-49164 workaround for banner blocking drawer elements
   def dismiss_alert_if_displayed
-    click(DISMISS_SYSTEM_ALERT_BUTTON) if is_displayed?(SYSTEM_ALERT)
+    click(DISMISS_SYSTEM_ALERT_BUTTON) && is_not_displayed?(SYSTEM_ALERT) if is_displayed?(SYSTEM_ALERT)
   end
 end
