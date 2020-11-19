@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def run_in_parallel(tag:, processes: 1)
-  system("parallel_rspec -n #{processes} --test-options '-r rspec --order random --tag #{tag}' spec")
+  system("parallel_rspec -n #{processes} --test-options '-r rspec --order random --tag #{tag} --format RspecJunitFormatter --out tmp/rspec$TEST_ENV_NUMBER.xml' spec")
 end
 
 namespace :jenkins do
