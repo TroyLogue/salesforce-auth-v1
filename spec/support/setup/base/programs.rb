@@ -1,5 +1,6 @@
 module Setup
-  class Programs
+  # UU3-49339 temp workaround for namespace conflict with setup/identifiers/programs
+  class ProgramIds
     class << self
       def in_network_program_id(token:, group_id:)
         programs_response = Requests::Programs.get_all(token: token, group_id: group_id)
