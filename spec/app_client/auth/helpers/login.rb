@@ -14,10 +14,6 @@ module Login
     BI_CC_USER = 'cc@bi.test',
     # primary cc used in tests
     CC_HARVARD = 'harvard@auto.com',
-    # EHR user with screenings role
-    EMR_SCREENINGS_USER = 'screenings@emr.com',
-    # EHR user with no screenings permissions
-    EMR_NON_SCREENINGS_USER = 'noscreenings@emr.com',
     # user configured with Tableau license for Insights feature
     INSIGHTS_USER = 'insights@auto.com',
     # used in createIntakeOrgIntakeUser.js
