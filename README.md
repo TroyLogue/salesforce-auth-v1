@@ -64,6 +64,10 @@ Note: The version of Chromedriver must match the version of Chrome running in th
 
 `brew cask upgrade chromedriver`
 
+If you are blocked from running chromedriver with the alert "macOS cannot verify the developer of chromedriver...", you need to update your permissions. Open a Terminal window, navigate to the path in which chromedriver is installed, and run the following: 
+
+`xattr -d com.apple.quarantine chromedriver`
+
 ### ([Geckodriver](https://github.com/mozilla/geckodriver)) (for Firefox)
 
 Download from the [project releases](https://github.com/mozilla/geckodriver/releases) page and extract the server to somewhere on your `PATH`.
