@@ -24,7 +24,7 @@ module UserSettings
     end
 
     def click_reset_pw
-      click(RESET_PW_LINK)
+      click(CHANGE_PW_LINK)
     end
 
     def click_two_factor_auth
