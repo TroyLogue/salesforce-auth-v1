@@ -42,7 +42,7 @@ RSpec.configure do |config|
       caps = Selenium::WebDriver::Remote::Capabilities.new
 
       caps[:name] = example.metadata[:full_description]
-      caps['browserstack.selenium_version'] = '3.5.2'
+      caps['browserstack.selenium_version'] = '3.141.59'
       caps['browserstack.local'] = 'false'
       caps['acceptSslCerts'] = 'true'
       # needed for IE 11 https://www.browserstack.com/automate/using-sendkeys-on-remote-IE11

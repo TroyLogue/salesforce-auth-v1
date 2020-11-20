@@ -125,6 +125,10 @@ class BasePage
     driver.get ENV['web_url'] + path
   end
 
+  def get_auth(path)
+    driver.get ENV['auth_url'] + path
+  end
+
   def get_title
     wait_for { driver.title }
   end
