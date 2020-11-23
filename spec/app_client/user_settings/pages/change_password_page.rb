@@ -3,7 +3,7 @@
 require_relative '../../../shared_components/base_page'
 
 module UserSettings
-  class EditPasswordPage < BasePage
+  class ChangePasswordPage < BasePage
     AUTH_FORM_CONTAINER = { css: '#auth-form-container' }.freeze
     CURRENT_EMAIL = { css: '.display-email' }.freeze
     CURRENT_PASSWORD_INPUT = { css: '#user_current_password' }.freeze
@@ -25,15 +25,15 @@ module UserSettings
         is_displayed?(CANCEL_BUTTON)
     end
 
-    def update_password(current_pw:, new_pw:)
+    def cancel_password_reset
+      click(CANCEL_BUTTON)
+    end
+
+    def change_password(current_pw:, new_pw:)
       enter(current_pw, CURRENT_PASSWORD_INPUT)
       enter(new_pw, NEW_PASSWORD_INPUT)
       enter(new_pw, CONFIRM_NEW_PASSWORD)
       click(UPDATE_BUTTON)
-    end
-
-    def cancel_password_reset
-      click(CANCEL_BUTTON)
     end
 
     def insecure_pw_message_displayed?

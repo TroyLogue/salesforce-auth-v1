@@ -5,24 +5,18 @@ require_relative '../auth/pages/reset_password'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 require_relative '../root/pages/right_nav'
-require_relative '../user_settings/pages/account_info_page'
-require_relative '../user_settings/pages/edit_password_page'
-require_relative '../user_settings/pages/security_settings_page'
 
 describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
   include Login
   include MailtrapHelper
 
-  let(:account_info_page) { UserSettings::AccountInfoPage.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
-  let(:edit_password_page) { UserSettings::EditPasswordPage.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
   let(:forgot_password) { ForgotPassword.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:reset_password) { ResetPassword.new(@driver) }
-  let(:security_settings_page) { UserSettings::SecuritySettingsPage.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
 
   context('[as cc user] From login page,') do
@@ -59,84 +53,6 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
       forgot_password.cancel_password_reset
 
       expect(login_email.page_displayed?).to be_truthy
-    end
-  end
-
-  context('[as org user] From user settings page,') do
-    let(:reset_user) { Login::RESET_PW_USER }
-    let(:original_pw) { Login::DEFAULT_PASSWORD }
-    let(:insecure_pw) { Login::INSECURE_PASSWORD }
-    let(:new_pw) { 'Uniteus123' }
-
-    it 'cancels password reset while logged in', :uuqa_1493 do
-      log_in_as(reset_user)
-      expect(home_page.page_displayed?).to be_truthy # checking for a successful login
-      user_menu.go_to_user_settings
-      expect(account_info_page.page_displayed?).to be_truthy
-
-      account_info_page.click_edit_security_settings
-      expect(security_settings_page.page_displayed?).to be_truthy
-
-      security_settings_page.click_reset_pw
-      expect(edit_password_page.page_displayed?).to be_truthy
-
-      edit_password_page.cancel_password_reset
-      # should be back on the security settings page:
-      expect(security_settings_page.page_displayed?).to be_truthy
-    end
-
-    it 'cannot reset password to an insecure password', :uuqa_803 do
-      log_in_as(reset_user)
-      expect(home_page.page_displayed?).to be_truthy # checking for a successful login
-      user_menu.go_to_user_settings
-      expect(account_info_page.page_displayed?).to be_truthy
-
-      account_info_page.click_edit_security_settings
-      expect(security_settings_page.page_displayed?).to be_truthy
-
-      security_settings_page.click_reset_pw
-      expect(edit_password_page.page_displayed?).to be_truthy
-
-      edit_password_page.update_password(current_pw: original_pw, new_pw: insecure_pw)
-      expect(edit_password_page.insecure_pw_message_displayed?).to be_truthy
-    end
-
-    it 'can reset password to a secure password', :uuqa_247 do
-      log_in_as(reset_user)
-      expect(home_page.page_displayed?).to be_truthy # checking for a successful login
-      user_menu.go_to_user_settings
-      expect(account_info_page.page_displayed?).to be_truthy
-
-      account_info_page.click_edit_security_settings
-      expect(security_settings_page.page_displayed?).to be_truthy
-
-      security_settings_page.click_reset_pw
-      expect(edit_password_page.page_displayed?).to be_truthy
-
-      edit_password_page.update_password(current_pw: original_pw, new_pw: new_pw)
-
-      # verify success:
-      expect(login_email.page_displayed?).to be_truthy
-      expect(login_email.password_updated_message_displayed?).to be_truthy
-    end
-
-    # TODO: - convert to API call for cleanup and remove :order => :defined tag
-    it 'resets password back to default password', :uuqa_247 do
-      log_in_as(reset_user, new_pw)
-      expect(home_page.page_displayed?).to be_truthy # checking for a successful login
-      user_menu.go_to_user_settings
-
-      account_info_page.click_edit_security_settings
-      expect(security_settings_page.page_displayed?).to be_truthy
-
-      security_settings_page.click_reset_pw
-      expect(edit_password_page.page_displayed?).to be_truthy
-
-      edit_password_page.update_password(current_pw: new_pw, new_pw: original_pw)
-
-      # verify success:
-      expect(login_email.page_displayed?).to be_truthy
-      expect(login_email.password_updated_message_displayed?).to be_truthy
     end
   end
 end

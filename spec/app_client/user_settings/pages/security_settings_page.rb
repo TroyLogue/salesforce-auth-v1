@@ -23,7 +23,7 @@ module UserSettings
       click(USER_SETTINGS_LINK)
     end
 
-    def click_reset_pw
+    def click_change_pw
       click(CHANGE_PW_LINK)
     end
 
