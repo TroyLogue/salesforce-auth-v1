@@ -36,6 +36,11 @@ module Setup
       add_consent
     end
 
+    def create_with_consent_token
+      create
+      get_consent_token
+    end
+
     def create_with_military
       @military_affiliation_key = 'caregiver'
       military = Payloads::Military::Create.new(affiliation: military_affiliation_key)
@@ -63,6 +68,11 @@ module Setup
                                                                   contact_id: @contact_id,
                                                                   signature_image: get_signature_image)
       expect(consent_response.status.to_s).to eq('200 OK')
+    end
+
+    def get_consent_token
+      token = Requests::Consent.get_consent_token(token: @token, group_id: @group_id,
+                                                  contact_id: @contact_id)
     end
 
     def request_consent_email(email:)
