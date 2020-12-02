@@ -1,9 +1,10 @@
 require_relative '../../../shared_components/base_page'
 
 class NewAssistanceRequestPage < BasePage
-  #Close AR page
+  #AR page
   TAKE_ACTION = { css: '.choices__item' }.freeze
   START_INTAKE_CHOICE = { css: '#choices-assistance-request-action-select-item-choice-2' }.freeze
+  SERVE_AR_CHOICE = { css: '#choices-assistance-request-action-select-item-choice-3' }.freeze
   REQUEST_CLOSE = { css: '#choices-assistance-request-action-select-item-choice-5' }.freeze
   IS_RESOLVED = { css: '#resolved-input' }.freeze
   STATUS_DETAIL = { css: '.detail-status-text' }.freeze
@@ -27,6 +28,11 @@ class NewAssistanceRequestPage < BasePage
   def select_start_intake_action
     click(TAKE_ACTION)
     click(START_INTAKE_CHOICE)
+  end
+
+  def select_serve_ar_action
+    click(TAKE_ACTION)
+    click(SERVE_AR_CHOICE)
   end
 
   def select_close_assistance_request
