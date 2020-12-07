@@ -1,16 +1,15 @@
 require_relative '../../../shared_components/base_page'
 
 class CreateCase < BasePage
-  CREATE_CASE_FORM = { css: '.add-case-details' }
-  PROGRAM_DROPDOWN = { css: '#program + .choices__list' }
-  COLUMBIA_PROGRAM = { css: '#choices-program-item-choice-2' }
-  SERVICE_TYPE_DROPDOWN = { css: '#service-type + .choices__list' }
-  BENEFITS_ELIGIBILITY_SCREENING = { css: '#choices-service-type-item-choice-2' }
-  PRIMARY_WORKER_DROPDOWN = { css: '#primary-worker + .choices__list' }
-  PRIMARY_WORKER_COLUMBIA_IVY = { css: '#choices-primary-worker-item-choice-2' }
-  CASE_INFORMATION_NEXT_BUTTON = { css: '#add-case-details-next-btn' }
-  SUBMIT_CASE_BUTTON = { css: '#submit-case-btn' }
-
+  CREATE_CASE_FORM = { css: '.add-case-details' }.freeze
+  PROGRAM_DROPDOWN = { css: '#program + .choices__list' }.freeze
+  COLUMBIA_PROGRAM = { css: '#choices-program-item-choice-2' }.freeze
+  SERVICE_TYPE_DROPDOWN = { css: '#service-type + .choices__list' }.freeze
+  BENEFITS_ELIGIBILITY_SCREENING = { css: '#choices-service-type-item-choice-2' }.freeze
+  PRIMARY_WORKER_DROPDOWN = { css: '#primary-worker + .choices__list' }.freeze
+  PRIMARY_WORKER_COLUMBIA_IVY = { css: '#choices-primary-worker-item-choice-2' }.freeze
+  CASE_INFORMATION_NEXT_BUTTON = { css: '#add-case-details-next-btn' }.freeze
+  SUBMIT_CASE_BUTTON = { css: '#submit-case-btn' }.freeze
 
   def create_case_form_displayed?
     is_displayed?(CREATE_CASE_FORM)

@@ -1,11 +1,11 @@
 require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
-require_relative 'pages/new_assistance_request_page.rb'
-require_relative 'pages/new_assistance_request_dashboard_page.rb'
-require_relative 'pages/processed_assistance_request_dashboard_page.rb'
-require_relative 'pages/processed_assistance_request_page.rb'
-require_relative '../cases/pages/create_case.rb'
-require_relative '../cases/pages/open_cases_dashboard.rb'
+require_relative 'pages/new_assistance_request_page'
+require_relative 'pages/new_assistance_request_dashboard_page'
+require_relative 'pages/processed_assistance_request_dashboard_page'
+require_relative 'pages/processed_assistance_request_page'
+require_relative '../cases/pages/create_case'
+require_relative '../cases/pages/open_cases_dashboard'
 require_relative '../root/pages/notifications'
 
 describe '[Serve Assistance Request]', :app_client, :assistance_request do
@@ -24,7 +24,7 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
 
   before {
     # Submit assistance request
-    @assistance_request = Setup::Data::submit_assistance_request_to_columbia_org
+    @assistance_request = Setup::Data.submit_assistance_request_to_columbia_org
 
     log_in_as(Login::ORG_COLUMBIA)
     expect(homepage.page_displayed?).to be_truthy
@@ -33,6 +33,7 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
   it 'Serve and process AR by creating a case', :uuqa_1639 do
     new_assistance_request_dashboard_page.go_to_new_ar_dashboard_page
     new_assistance_request_dashboard_page.new_ar_dashboard_page_displayed?
+    new_assistance_request_dashboard_page.clients_new_ar_created?(@assistance_request.full_name)
     new_assistance_request_page.go_to_new_ar_with_id(ar_id: @assistance_request.ar_id)
     new_assistance_request_page.select_serve_ar_action
     create_case.create_case_form_displayed?
@@ -44,6 +45,7 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     # combining processed AR with Serve AR since serving AR == processed AR
     processed_assistance_request_dashboard_page.go_to_processed_ar_dashboard_page
     processed_assistance_request_dashboard_page.processed_ar_dashboard_page_displayed?
+    processed_assistance_request_dashboard_page.clients_ar_processed?(@assistance_request.full_name)
     processed_assistance_request_page.go_to_processed_ar_with_id(ar_id: @assistance_request.ar_id)
     expect(processed_assistance_request_page.outcome_note_text).to eq(@assistance_request.description)
     todays_date = Date.today.strftime("%m/%-d/%Y")
@@ -53,6 +55,6 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
 
   after {
     # Closing the API AR submitter as part of cleanup
-    Setup::Data::close_columbia_assistance_request(ar_id: @assistance_request.ar_id)
+    Setup::Data.close_columbia_assistance_request(ar_id: @assistance_request.ar_id)
   }
 end

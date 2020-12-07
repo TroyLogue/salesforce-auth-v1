@@ -1,7 +1,7 @@
 require_relative '../../../shared_components/base_page'
 
 class NewAssistanceRequestPage < BasePage
-  #AR page
+  # AR page
   TAKE_ACTION = { css: '.choices__item' }.freeze
   START_INTAKE_CHOICE = { css: '#choices-assistance-request-action-select-item-choice-2' }.freeze
   SERVE_AR_CHOICE = { css: '#choices-assistance-request-action-select-item-choice-3' }.freeze
@@ -9,7 +9,7 @@ class NewAssistanceRequestPage < BasePage
   IS_RESOLVED = { css: '#resolved-input' }.freeze
   STATUS_DETAIL = { css: '.detail-status-text' }.freeze
   
-  #Close AR Modal
+  # Close AR Modal
   RESOLUTION_INPUT = { css: '.choices__input--cloned' }.freeze
   OUTCOME = { css: '#outcome-input' }.freeze
   OUTCOME_CHOICE = { css: '#choices-outcome-input-item-choice-1' }.freeze
@@ -17,7 +17,7 @@ class NewAssistanceRequestPage < BasePage
   CLOSE_BUTTON = { css: '#close-ar-close-btn' }.freeze
   AR_CLOSE_MODAL = { css: '.close-ar__inputs' }.freeze
 
-  #AR Statuses
+  # AR Statuses
   NEED_ACTION_STATUS_TEXT = 'NEEDS ACTION'
   
   def go_to_new_ar_with_id(ar_id:)

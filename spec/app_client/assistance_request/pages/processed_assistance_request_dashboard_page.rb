@@ -11,4 +11,8 @@ class ProcessedAssistanceRequestDashboardPage < BasePage
   def processed_ar_dashboard_page_displayed?
     is_displayed?(PROCESSED_AR_DASHBOARD_TABLE)
   end
+
+  def clients_ar_processed?(client_name)
+    find_elements(PROCESSED_AR_DASHBOARD_TABLE).any? { |name| name.text.include?(client_name) }
+  end
 end
