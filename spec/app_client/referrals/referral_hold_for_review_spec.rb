@@ -22,7 +22,7 @@ describe '[Referrals]', :app_client, :referrals do
     @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
   }
 
-  context('[as org user]') do
+  context('[as a Referral user]') do
     before{
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
@@ -51,7 +51,7 @@ describe '[Referrals]', :app_client, :referrals do
     }
   end
 
-  context('[as cc user]') do
+  context('[as a Referral user]') do
     before {
       # Reject Referral
       reject_note = Faker::Lorem.sentence(word_count: 5)

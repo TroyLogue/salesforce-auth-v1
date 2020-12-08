@@ -18,7 +18,7 @@ describe '[Referrals]', :app_client, :referrals do
   let(:referral_send) { ReferralSend.new(@driver) }
   let(:network_map) { ReferralNetworkMap.new(@driver) }
 
-  context('[as org user]') do
+  context('[as a Referral user]') do
     before {
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent

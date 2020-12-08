@@ -11,7 +11,7 @@ describe '[Referrals]', :app_client, :referrals do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:new_referral) { Referral.new(@driver) }
 
-  context('[as org user]') do
+  context('[as a Referral user]') do
     before {
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent
