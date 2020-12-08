@@ -20,21 +20,17 @@ describe '[Referrals]', :app_client, :referrals do
       @contact = Setup::Data.create_harvard_client_with_consent
 
       # Create referral
-      @referral = Setup::Data.send_referral_from_harvard_to_princeton(
-        contact_id: @contact.contact_id
-      )
+      @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
 
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
 
       # Select client in Princeton
-      @contact = Setup::Data.select_client_in_princeton(
-        contact: @contact
-      )
+      @contact = Setup::Data.select_client_in_princeton(contact: @contact)
     }
 
     it 'user can reject a referral from an existing client', :uuqa_1048 do
-      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      referral.go_to_new_referral_with_id(referral_id: @referral.id)
       note = Faker::Lorem.sentence(word_count: 5)
 
       # Options for rejection are available
@@ -45,7 +41,7 @@ describe '[Referrals]', :app_client, :referrals do
       expect(new_referral_dashboard.page_displayed?).to be_truthy
 
       # Referrals status is updated after rejecting
-      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      referral.go_to_new_referral_with_id(referral_id: @referral.id)
       expect(referral.status).to eq(referral.class::REJECTED_STATUS)
     end
   end

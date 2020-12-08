@@ -17,16 +17,14 @@ describe '[Referrals]', :app_client, :referrals do
       @contact = Setup::Data.create_harvard_client_with_consent
 
       # Create Referral
-      @referral = Setup::Data.send_referral_from_harvard_to_princeton(
-        contact_id: @contact.contact_id
-      )
+      @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
 
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
     }
 
     it 'user can add and remove document on a new referral', :uuqa_134, :uuqa_136 do
-      new_referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      new_referral.go_to_new_referral_with_id(referral_id: @referral.id)
       @document = Faker::Alphanumeric.alpha(number: 8) + '.txt'
 
       new_referral.attach_document_to_referral(file_name: @document)
@@ -37,10 +35,8 @@ describe '[Referrals]', :app_client, :referrals do
     end
 
     after {
-      # accepting referral
-      @accept_referral = Setup::Data.accept_referral_in_princeton(
-        referral_id: @referral.referral_id
-      )
+      # recalling referral
+      Setup::Data.recall_referral_in_harvard(note: 'Data cleanup')
     }
   end
 end
