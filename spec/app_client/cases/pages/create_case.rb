@@ -9,6 +9,8 @@ class CreateCase < BasePage
   PRIMARY_WORKER_DROPDOWN = { css: '#primary-worker + .choices__list' }.freeze
   PRIMARY_WORKER_COLUMBIA_IVY = { css: '#choices-primary-worker-item-choice-2' }.freeze
   CASE_INFORMATION_NEXT_BUTTON = { css: '#add-case-details-next-btn' }.freeze
+  SUPPORTING_INFORMATION_NEXT_BUTTON = { css: '#next-btn' }.freeze
+  SUPPORTING_INFORMATION_PAGE = { css: '.ui-form-field__label' }.freeze
   SUBMIT_CASE_BUTTON = { css: '#submit-case-btn' }.freeze
 
   def create_case_form_displayed?
@@ -35,6 +37,8 @@ class CreateCase < BasePage
     select_benefits_eligibility_screening_service_type
     select_columbia_ivy_as_primary_worker
     click(CASE_INFORMATION_NEXT_BUTTON)
+    is_displayed?(SUPPORTING_INFORMATION_PAGE)
+    click(SUPPORTING_INFORMATION_NEXT_BUTTON)
     click(SUBMIT_CASE_BUTTON)
   end
 end
