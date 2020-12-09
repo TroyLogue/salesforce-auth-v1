@@ -6,7 +6,7 @@ module Setup
 
       Setup::Cases.create(
         token: token,
-        network_id: IVY_NETWORK,
+        network_id: Networks::IVY,
         group_id: group_id,
         contact_id: contact_id,
         program_id: Setup::ProgramIds.in_network_program_id(token: token, group_id: group_id),
