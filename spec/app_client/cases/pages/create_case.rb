@@ -3,11 +3,8 @@ require_relative '../../../shared_components/base_page'
 class CreateCase < BasePage
   CREATE_CASE_FORM = { css: '.add-case-details' }.freeze
   PROGRAM_DROPDOWN = { css: '#program + .choices__list' }.freeze
-  COLUMBIA_PROGRAM = { css: '#choices-program-item-choice-2' }.freeze
   SERVICE_TYPE_DROPDOWN = { css: '#service-type + .choices__list' }.freeze
-  BENEFITS_ELIGIBILITY_SCREENING = { css: '#choices-service-type-item-choice-2' }.freeze
   PRIMARY_WORKER_DROPDOWN = { css: '#primary-worker + .choices__list' }.freeze
-  PRIMARY_WORKER_COLUMBIA_IVY = { css: '#choices-primary-worker-item-choice-2' }.freeze
   CASE_INFORMATION_NEXT_BUTTON = { css: '#add-case-details-next-btn' }.freeze
   SUPPORTING_INFORMATION_NEXT_BUTTON = { css: '#next-btn' }.freeze
   SUPPORTING_INFORMATION_PAGE = { css: '.ui-form-field__label' }.freeze
@@ -17,28 +14,30 @@ class CreateCase < BasePage
     is_displayed?(CREATE_CASE_FORM)
   end
 
-  def select_columbia_program
+  def select_program(program_id)
+    program = { css: "div[data-value='#{program_id}']" }
     click(PROGRAM_DROPDOWN)
-    click(COLUMBIA_PROGRAM)
+    click(program)
   end
 
-  def select_benefits_eligibility_screening_service_type
+  def select_service_type(service_type_id)
+    service_type = { css: "div[data-value='#{service_type_id}']" }
     click(SERVICE_TYPE_DROPDOWN)
-    click(BENEFITS_ELIGIBILITY_SCREENING)
+    click(service_type)
   end
 
-  def select_columbia_ivy_as_primary_worker
+  def select_primary_worker(primary_worker_id)
+    primary_worker = { css: "div[data-value='#{primary_worker_id}']" }
     click(PRIMARY_WORKER_DROPDOWN)
-    click(PRIMARY_WORKER_COLUMBIA_IVY)
+    click(primary_worker)
   end
 
-  def create_new_case_for_columbia_program
-    select_columbia_program
-    select_benefits_eligibility_screening_service_type
-    select_columbia_ivy_as_primary_worker
+  def create_new_case(program_id:, service_type_id:, primary_worker_id:)
+    select_program(program_id)
+    select_service_type(service_type_id)
+    select_primary_worker(primary_worker_id)
     click(CASE_INFORMATION_NEXT_BUTTON)
-    is_displayed?(SUPPORTING_INFORMATION_PAGE)
-    click(SUPPORTING_INFORMATION_NEXT_BUTTON)
+    click(SUPPORTING_INFORMATION_NEXT_BUTTON) if is_displayed?(SUPPORTING_INFORMATION_PAGE)
     click(SUBMIT_CASE_BUTTON)
   end
 end

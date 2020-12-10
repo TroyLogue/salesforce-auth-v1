@@ -37,7 +37,11 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     new_assistance_request_page.go_to_new_ar_with_id(ar_id: @assistance_request.ar_id)
     new_assistance_request_page.select_serve_ar_action
     create_case.create_case_form_displayed?
-    create_case.create_new_case_for_columbia_program
+    create_case.create_new_case(
+      program_id: Programs::ORG_COLUMBIA,
+      service_type_id: Services::BENEFITS_BENEFITS_ELIGIBILITY_SCREENING,
+      primary_worker_id: PrimaryWorkers::ORG_COLUMBIA
+    )
     open_cases_dashboard.open_cases_table_displayed?
     notification_text = notifications.success_text
     expect(notification_text).to include(Notifications::CASE_CREATED)
