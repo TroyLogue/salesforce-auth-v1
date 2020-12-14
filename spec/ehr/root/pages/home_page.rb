@@ -10,6 +10,7 @@ class HomePage < BasePage
 
   def default_view_displayed?
     is_displayed?(NAVBAR) &&
+      is_displayed?(CREATE_REFERRAL_BUTTON) &&
       is_displayed?(CASES_SECTION) &&
       is_displayed?(ASSESSMENTS_SECTION) &&
       is_displayed?(SCREENINGS_SECTION)

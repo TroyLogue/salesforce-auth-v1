@@ -5,14 +5,16 @@ require_relative '../root/pages/home_page'
 require_relative './pages/new_referral'
 require_relative './pages/referrals_table'
 require_relative './pages/referral_assessment'
+require_relative '../network/pages/provider_drawer'
 
-describe '[Referrals]', :ehr, :referrals do
+describe '[Referrals]', :ehr, :ehr_referrals do
   include LoginEhr
 
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:new_referral) { NewReferral.new(@driver) }
+  let(:provider_drawer) { ProviderDrawer.new(@driver) }
   let(:referral_assessment) { ReferralAssessment.new(@driver) }
   let(:referrals_table) { ReferralsTable.new(@driver) }
 
@@ -38,11 +40,7 @@ describe '[Referrals]', :ehr, :referrals do
       assessment_responses = [Faker::Lorem.word, Faker::Lorem.word]
 
       new_referral.select_service_type_by_text(@service_type)
-
-      # TODO - remove hardcoding!
-      new_referral.add_providers_via_table
-#      new_referral.select_providers_from_table(providers)
-
+      new_referral.select_providers_from_table(providers)
       new_referral.select_auto_recall
       new_referral.enter_description(description)
       new_referral.click_continue
@@ -50,27 +48,32 @@ describe '[Referrals]', :ehr, :referrals do
       referral_assessment.fill_out_and_create_referral(assessment_responses)
 
       # after sending referral, verify that the referrals table appears
-      # verify the referral you just sent in the table?
       expect(homepage.default_view_displayed?).to be_truthy
+
+      # TODO - verify values in created referral
     end
 
     it 'can create a referral using provider drawer', :uuqa_1615 do
-=begin
       # select Princeton via provider drawer Add Button
       description = Faker::Lorem.sentence(word_count: 5)
-      providers = ["Princeton"]
-      assessment_first = Faker::Lorem.word
-      assessment_second = Faker::Lorem.word
-      new_referral.create_referral_using_provider_drawer(
-        service_type: service_type,
-        providers: providers,
-        description: description,
-        assessment_first: assessment_first,
-        assessment_second: assessment_second
-      )
+      provider = "Princeton"
+      assessment_responses = [Faker::Lorem.word, Faker::Lorem.word]
+
+      new_referral.select_service_type_by_text(@service_type)
+      new_referral.open_provider_drawer(provider)
+      expect(provider_drawer.referral_page_displayed?).to be_truthy
+      provider_drawer.add_provider
+      provider_drawer.close_drawer
+
+      new_referral.enter_description(description)
+      new_referral.click_continue
+      expect(referral_assessment.page_displayed?(assessment_name: @assessment)).to be_truthy
+      referral_assessment.fill_out_and_create_referral(assessment_responses)
 
       # verify referrals table
-=end
+      expect(homepage.default_view_displayed?).to be_truthy
+
+      # TODO - verify values in created referral
     end
   end
 end

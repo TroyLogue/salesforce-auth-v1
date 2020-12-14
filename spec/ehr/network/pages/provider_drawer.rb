@@ -22,6 +22,10 @@ class ProviderDrawer < BasePage
   SHARE_SEND_BTN = { css: '#share-send-button' }
   TITLE = { css: '.group-title__text--name' }
 
+  def add_provider
+    click(ADD_BTN)
+  end
+
   def click_share
     click(SHARE_BTN)
   end
@@ -45,6 +49,18 @@ class ProviderDrawer < BasePage
 
   def provider_name
     text(TITLE)
+  end
+
+  def referral_page_displayed?
+     is_displayed?(OPENED_DRAWER) &&
+      is_displayed?(CLOSE_DRAWER_BTN) &&
+      is_displayed?(TITLE) &&
+      is_displayed?(ADD_BTN) &&
+      is_displayed?(MAP) &&
+      is_displayed?(DESCRIPTION) &&
+      is_displayed?(CONTACT_INFO) &&
+      is_displayed?(SERVICES_PROVIDED) &&
+      is_displayed?(PROGRAMS)
   end
 
   def share_by_email(email)
