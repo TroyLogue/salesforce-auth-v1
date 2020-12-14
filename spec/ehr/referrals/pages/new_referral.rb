@@ -11,22 +11,17 @@ class NewReferral < BasePage
   FILTER_BTN = { css: '#common-card-title-filter-button' }
   NEW_REFERRAL_CONTAINER = { css: '.new-referral' }
   PROVIDER_CARD = { css: '.ui-provider-card' }
+  PROVIDER_CARD_BY_TEXT = { xpath: "//h4[@class='ui-provider-card__name' and text()='%s']/ancestor::div[@class='ui-provider-card']" }
   PROVIDER_CARD_NAME = { css: '.ui-provider-card__name' }
-  #not sure if this is working right
-  PROVIDER_CARD_BY_NAME = { xpath: './/*[@class="ui-provider-card]/div/div/h4[text()="%s"]' }
-
   PROVIDER_CARD_ADD_BTN = { css: '.ui-add-remove-buttons__add' }
   SERVICE_TYPE_FILTER = { css: '.service-type-select__select-field .choices' }
   SERVICE_TYPE_OPTION = { css: '.choices__item--selectable' }
 
-  # need to clean up / fix these methods!
-=begin
   def add_provider_via_table(provider)
-    click(PROVIDER_CARD_BY_NAME)
-    provider_card = find_element_by_text(PROVIDER_CARD, provider)
-    provider_card.find_element(PROVIDER_CARD_ADD_BTN).click
+#    find_elements(PROVIDER_CARD).select { |e| e.text.include? provider }
+    provider_card = PROVIDER_CARD_BY_TEXT.transform_values { |v| v % provider }
+    click_within(provider_card, PROVIDER_CARD_ADD_BTN)
   end
-=end
 
   def click_continue
     click(CONTINUE_BTN)
