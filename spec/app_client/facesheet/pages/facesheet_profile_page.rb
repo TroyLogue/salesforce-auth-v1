@@ -109,6 +109,7 @@ class FacesheetProfilePage < BasePage
   include Phone
 
   module Address
+    ADDRESS_CONTENT = { css: '.address__content' }.freeze
     CURRENT_ADDRESS = { css: '.address' }.freeze
     EDIT_ADDRESS = { css: '#edit-address-btn' }.freeze
     ADDRESS_MODAL = { css: '#edit-address-modal.dialog.open.large' }.freeze
@@ -131,6 +132,7 @@ class FacesheetProfilePage < BasePage
     ADDRESS_TYPE_UNKNOWN = 'Unknown'
 
     def current_address
+      is_displayed?(ADDRESS_CONTENT)
       text(CURRENT_ADDRESS)
     end
 
