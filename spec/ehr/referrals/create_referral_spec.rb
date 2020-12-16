@@ -47,10 +47,8 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       expect(referral_assessment.page_displayed?(assessment_name: @assessment)).to be_truthy
       referral_assessment.fill_out_and_create_referral(assessment_responses)
 
-      # after sending referral, verify that the referrals table appears
+      # after sending referral, verify redirect to home page
       expect(homepage.default_view_displayed?).to be_truthy
-
-      # TODO - verify values in created referral
     end
 
     it 'can create a referral using provider drawer', :uuqa_1615 do
@@ -70,10 +68,8 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       expect(referral_assessment.page_displayed?(assessment_name: @assessment)).to be_truthy
       referral_assessment.fill_out_and_create_referral(assessment_responses)
 
-      # verify referrals table
+      # after sending referral, verify redirect to home page
       expect(homepage.default_view_displayed?).to be_truthy
-
-      # TODO - verify values in created referral
     end
   end
 end
