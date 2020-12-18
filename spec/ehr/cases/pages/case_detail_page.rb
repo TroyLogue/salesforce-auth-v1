@@ -6,11 +6,10 @@ class CaseDetailPage < BasePage
   HEADER = { css: '.case-details__header' }.freeze
 
   CASE_INFO = { css: '.case-info-expandable--general-info' }.freeze
+  CASE_INFO_CHOICES_ITEM = { css: '.case-info-expandable--general-info .choices__list > .choices__item' }.freeze
   CASE_INFO_PRIMARY_WORKER = { css: '#case-primary-worker span' }.freeze
   PRIMARY_WORKER_EDIT_BUTTON = { id: 'case-primary-worker-edit-btn' }.freeze
   PRIMARY_WORKER_DROPDOWN = { css: '#case-primary-worker-field + .choices__list' }.freeze
-  CHOICES_INPUT = { css: '.choices__input' }.freeze
-  CHOICES_ITEM = { css: '.choices__list > .choices__item' }.freeze
   NO_CHOICES_ITEMS = { css: '.has-no-choices' }.freeze
   PRIMARY_WORKER_SAVE_BUTTON = { id: 'case-primary-worker-save-btn' }.freeze
 
@@ -50,7 +49,7 @@ class CaseDetailPage < BasePage
   def update_primary_worker_to_random_option
     open_primary_worker_dropdown
 
-    random_option = find_elements(CHOICES_ITEM).sample
+    random_option = find_elements(CASE_INFO_CHOICES_ITEM).sample
     worker_name = random_option.text.strip
     random_option.click
     click(PRIMARY_WORKER_SAVE_BUTTON)
