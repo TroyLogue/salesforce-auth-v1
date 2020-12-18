@@ -3,7 +3,7 @@ require_relative '../../../shared_components/base_page'
 class LoginEmailEhr < BasePage
   AUTH_FORM = { css: '#auth-form-container' }
   EMAIL_INPUT = { css: '#user_email' }
-  ERROR_MESSAGE = { xpath: '//*[@id="new_user"]/div[1]' }
+  ERROR_MESSAGE = { xpath: '//*[@id="new_app_5_user"]/div[5]/p' }
   INCORRECT_MESSAGE = "Sorry, this email or password is incorrect."
   INVALID_EMAIL_TEXT = "Please enter a valid email address."
   INVALID_FEEDBACK = { css: '.invalid-feedback' }
