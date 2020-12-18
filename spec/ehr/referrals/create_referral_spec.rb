@@ -3,7 +3,6 @@
 require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/home_page'
 require_relative './pages/new_referral'
-require_relative './pages/referrals_table'
 require_relative './pages/referral_assessment'
 require_relative '../network/pages/provider_drawer'
 
@@ -16,7 +15,6 @@ describe '[Referrals]', :ehr, :ehr_referrals do
   let(:new_referral) { NewReferral.new(@driver) }
   let(:provider_drawer) { ProviderDrawer.new(@driver) }
   let(:referral_assessment) { ReferralAssessment.new(@driver) }
-  let(:referrals_table) { ReferralsTable.new(@driver) }
 
   context('[default view]') do
     before do
