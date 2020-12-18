@@ -8,6 +8,9 @@ class ReferralSend < BasePage
   SELECTED_ORG_DROPDOWN = { css: '.referral-group-select div[aria-selected="true"]' }.freeze
   SEND_REFERRAL_BTN = { css: '#send-referral-send-btn' }.freeze
 
+  EXPAND_ORG_CHOICES = { css: 'div[aria-activedescendant^="choices-select-field-group"]' }.freeze
+  FIRST_ORG_CHOICE = { css: '#choices-select-field-group-0-item-choice-2' }.freeze
+
   def page_displayed?
     is_displayed?(SEND_REFERRAL_FORM) &&
       is_displayed?(SUGGESTED_ORG_SECTION)
@@ -15,6 +18,11 @@ class ReferralSend < BasePage
 
   def open_network_browse_map
     click(BROWSE_MAP_LINK)
+  end
+
+  def select_org_in_first_dropdown
+    click(EXPAND_ORG_CHOICES)
+    click(FIRST_ORG_CHOICE)
   end
 
   def selected_organization

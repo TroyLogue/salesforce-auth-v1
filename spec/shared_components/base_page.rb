@@ -56,6 +56,20 @@ class BasePage
     raise StandardError, "E2E ERROR: Option '#{text}' was not found in list of Selector #{selector}" unless found
   end
 
+  # Modification to above method for not strictly matching text
+  def click_element_from_list_including_text(selector, text)
+    list = find_elements(selector)
+    found = false
+    list.each do |element|
+      next unless element.text.include?(text)
+
+      element.click
+      found = true
+      break
+    end
+    raise StandardError, "E2E ERROR: Option '#{text}' was not found in list of Selector #{selector}" unless found
+  end
+
   def click_via_js(selector)
     driver.execute_script('arguments[0].click();', find(selector))
   end

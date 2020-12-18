@@ -127,6 +127,23 @@ module Setup
 
         parsed_response
       end
+
+      def hold(token:, group_id:, **params)
+        request_body = Payloads::Referrals::Hold.new(
+          note: params[:note],
+          reason: params[:reason]
+        )
+
+        response = Requests::Referrals.hold(
+          token: token,
+          group_id: group_id,
+          referral_id: @id,
+          payload: request_body
+        )
+        raise("Response returned: #{response.status}") unless response.status == 200
+
+        parsed_response = JSON.parse(response, object_class: OpenStruct).data
+      end
     end
   end
 end

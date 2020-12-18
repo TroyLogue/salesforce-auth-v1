@@ -14,6 +14,7 @@ describe '[Referrals]', :app_client, :referrals do
   let(:recalled_referral_dashboard) { ReferralDashboard::Recalled.new(@driver) }
   let(:sent_pending_consent_referral_dashboard) { ReferralDashboard::Sent::PendingConsent.new(@driver) }
   let(:p2p_referral_dashboard) { ReferralDashboard::ProviderToProvider.new(@driver) }
+  let(:closed_referral_dashboard) { ReferralDashboard::Closed.new(@driver) }
 
   context('[a cc user]') do
     it 'close a provider to provider referral', :uuqa_1625 do
@@ -147,6 +148,42 @@ describe '[Referrals]', :app_client, :referrals do
       close_note = Faker::Lorem.sentence(word_count: 5)
       referral.close_referral_action(note: close_note)
       closed_by = 'Yale Ivy'
+
+      # Navigate to closed referral
+      referral.go_to_closed_referral_with_id(referral_id: @referral.id)
+
+      # Referral is correctly updated
+      expect(referral.status).to eql(referral.class::CLOSED_STATUS)
+      expect(referral.outcome_notes).to eql(close_note)
+      expect(referral.action_btn_text).to eql(referral.class::CLOSED_REFERRAL_ACTION)
+      expect(referral.closed_by).to eql(closed_by)
+    end
+
+    it 'close a referral in review', :uuqa_1650 do
+      # Create Contact
+      @contact = Setup::Data.create_yale_client_with_consent
+
+      # Create Referral
+      @referral = Setup::Data.send_referral_from_yale_to_harvard(contact_id: @contact.contact_id)
+
+      # Hold Referral
+      hold_note = Faker::Lorem.sentence(word_count: 5)
+      Setup::Data.hold_referral_in_harvard(note: hold_note)
+
+      log_in_as(Login::CC_HARVARD)
+      expect(homepage.page_displayed?).to be_truthy
+
+      # Close Referral
+      referral.go_to_in_review_referral_with_id(referral_id: @referral.id)
+      close_note = Faker::Lorem.sentence(word_count: 5)
+      referral.close_referral_action(note: close_note)
+      closed_by = 'harvard Ivy'
+
+      # Closed referral displays in closed referrals dasboard table
+      expect(closed_referral_dashboard.page_displayed?).to be_truthy
+      expect(closed_referral_dashboard.headers_displayed?).to be_truthy
+      expect(closed_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}"))
+        .to include(@referral.received_org, @referral.service_type)
 
       # Navigate to closed referral
       referral.go_to_closed_referral_with_id(referral_id: @referral.id)

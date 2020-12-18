@@ -37,6 +37,15 @@ module Setup
       )
     end
 
+    def self.hold_referral_in_harvard(note:)
+      Referral.hold(
+        token: MachineTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        note: note,
+        reason: 'Other'
+      )
+    end
+
     def self.accept_referral_in_princeton
       Referral.accept(
         token: MachineTokens::ORG_PRINCETON,
@@ -106,6 +115,15 @@ module Setup
         note: note,
         outcome_id: Resolutions::RESOLVED,
         resolved: true
+      )
+    end
+
+    def self.hold_referral_in_princeton(note:)
+      Referral.hold(
+        token: MachineTokens::ORG_PRINCETON,
+        group_id: Providers::ORG_PRINCETON,
+        note: note,
+        reason: 'Other'
       )
     end
 

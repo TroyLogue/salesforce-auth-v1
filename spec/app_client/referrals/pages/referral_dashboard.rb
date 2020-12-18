@@ -24,7 +24,7 @@ module ReferralDashboard
 
     def row_values_for_client(client:)
       # Find row that matches client name, if not found throw an error
-      index = find_elements(self.class::ALL_CLIENT_NAMES).map(&:text).index(client) + 1 || raise("#{client} not found in table")
+      index = (find_elements(self.class::ALL_CLIENT_NAMES).map(&:text).index(client) || raise("#{client} not found in table")) + 1
       # Return an array of all values in the row for the client
       find_elements(self.class::CLIENT_ROW.transform_values { |v| v % index }).map(&:text)
     end
@@ -124,6 +124,25 @@ module ReferralDashboard
 
     def go_to_p2p_referrals_dashboard
       get('/dashboard/referrals/provider-to-provider')
+    end
+  end
+
+  class Closed < BasePage
+    include SharedComponents
+
+    CLOSED_REFERRALS = { css: '#closed-referrals-table' }.freeze
+    ALL_CLIENT_NAMES = { css: 'tr[id^="closed-referrals-table-row"] .ui-table-row-column:nth-child(4) > span' }.freeze
+    CLIENT_ROW = { css: 'tr[id^="closed-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
+
+    HEADERS = ['SENDER', 'RECIPIENT', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'OUTCOME', 'DATE CLOSED'].freeze
+
+    def page_displayed?
+      wait_for_spinner
+      is_displayed?(CLOSED_REFERRALS)
+    end
+
+    def go_to_closed_referrals_dashboard
+      get('/dashboard/referrals/closed')
     end
   end
 
