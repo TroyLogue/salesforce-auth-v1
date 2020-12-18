@@ -50,10 +50,12 @@ class FacesheetOverviewPage < BasePage
   end
 
   def first_interaction_note_in_timeline
-    # Wait for new entry to be displayed by waiting for banner to dissapear and an interaction entry in the timeline
-    # If unstable, may need to add a page-refresh to ensure the timeline displays the latest entries
+    # Wait for new entry to be created by waiting for banner to dissapear 
     is_not_displayed?(SUCCESS_BANNER)
-    is_displayed?(TIMELINE_INTERACTION_ENTRY)
+
+    # UU3-50416 workaround for bug: timeline does not consistently display new entries without page refresh
+    refresh
+
     # Return a note struct we can compare to
     { type: text(TIMELINE_INTERACTION_TYPE), duration: text(TIMELINE_INTERACTION_DURATION).gsub('Duration: ', ''), content: text(TIMELINE_INTERACTION_NOTE) }
   end
