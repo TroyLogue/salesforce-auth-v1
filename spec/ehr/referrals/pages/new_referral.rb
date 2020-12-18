@@ -39,7 +39,6 @@ class NewReferral < BasePage
     is_displayed?(NEW_REFERRAL_CONTAINER)
       is_displayed?(FILTER_BTN)
       is_displayed?(SERVICE_TYPE_FILTER)
-    true
   end
 
   def select_auto_recall
