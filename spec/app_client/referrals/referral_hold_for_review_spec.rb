@@ -23,17 +23,15 @@ describe '[Referrals]', :app_client, :referrals do
   }
 
   context('[as a Referral user]') do
-    before{
+    it 'user can hold a new referral for review', :uuqa_909 do
       log_in_as(Login::ORG_PRINCETON)
       expect(homepage.page_displayed?).to be_truthy
-    }
 
-    it 'user can hold a new referral for review', :uuqa_909 do
       referral.go_to_new_referral_with_id(referral_id: @referral.id)
 
       # Hold Referral and wait for table to load
-      note = Faker::Lorem.sentence(word_count: 5)
-      referral.hold_for_review_action(note: note)
+      in_review_note = Faker::Lorem.sentence(word_count: 5)
+      referral.hold_for_review_action(note: in_review_note)
 
       expect(inreview_referral_dashboard.page_displayed?).to be_truthy
       expect(inreview_referral_dashboard.org_headers_displayed?).to be_truthy
@@ -43,25 +41,21 @@ describe '[Referrals]', :app_client, :referrals do
       # Navigate to In Review Referral and verify status
       referral.go_to_in_review_referral_with_id(referral_id: @referral.id)
       expect(referral.status).to eq(referral.class::IN_REVIEW_STATUS)
-    end
 
-    after {
       # Clean up and recalling referral
       Setup::Data.recall_referral_in_harvard(note: 'Data cleanup')
-    }
-  end
+      Setup::Data.close_referral_in_harvard(note: 'Data cleanup')
+    end
 
-  context('[as a Referral user]') do
-    before {
+    it 'user can hold a rejected referral for review', :uuqa_1616 do
       # Reject Referral
       reject_note = Faker::Lorem.sentence(word_count: 5)
       Setup::Data.reject_referral_in_princeton(note: reject_note)
 
+      # Log in as user who originally sent referral
       log_in_as(Login::CC_HARVARD)
       expect(homepage.page_displayed?).to be_truthy
-    }
 
-    it 'user can hold a rejected referral for review', :uuqa_1616 do
       # Newly rejected referral should appear on dashboard
       rejected_referral_dashboard.go_to_rejected_referrals_dashboard
 
@@ -72,17 +66,38 @@ describe '[Referrals]', :app_client, :referrals do
 
       # Moving referral to in review
       referral.go_to_rejected_referral_with_id(referral_id: @referral.id)
-      note = Faker::Lorem.sentence(word_count: 5)
-      referral.hold_for_review_action(note: note)
+      in_review_note = Faker::Lorem.sentence(word_count: 5)
+      referral.hold_for_review_action(note: in_review_note)
 
       # Navigate to In Review Referral and verify status
       referral.go_to_in_review_referral_with_id(referral_id: @referral.id)
       expect(referral.status).to eq(referral.class::IN_REVIEW_STATUS)
+
+      # Clean up and recalling referral
+      Setup::Data.recall_referral_in_harvard(note: 'Data cleanup')
+      Setup::Data.close_referral_in_harvard(note: 'Data cleanup')
     end
 
-    after {
+    it 'user can hold a recalled referral for review', :uuqa_1661 do
+      # recalling referral
+      recall_note = Faker::Lorem.sentence(word_count: 5)
+      Setup::Data.recall_referral_in_harvard(note: recall_note)
+
+      # Log in as user who originally sent referral
+      log_in_as(Login::CC_HARVARD)
+      expect(homepage.page_displayed?).to be_truthy
+
+      # Moving referral to in review
+      referral.go_to_recalled_referral_with_id(referral_id: @referral.id)
+      in_review_note = Faker::Lorem.sentence(word_count: 5)
+      referral.hold_for_review_action(note: in_review_note)
+
+      # Navigate to In Review Referral and verify status
+      referral.go_to_in_review_referral_with_id(referral_id: @referral.id)
+      expect(referral.status).to eq(referral.class::IN_REVIEW_STATUS)
+
       # Clean up and closing referral
       Setup::Data.close_referral_in_harvard(note: 'Data cleanup')
-    }
+    end
   end
 end

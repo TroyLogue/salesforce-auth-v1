@@ -56,12 +56,68 @@ describe '[Referrals]', :app_client, :referrals do
       referral.go_to_new_referral_with_id(referral_id: @referral.id)
       expect(referral.recipient_info).to eq(recipient)
       @referral.id = referral.current_referral_id
-    end
 
-    after {
       # closing referral for cleanup purposes
       Setup::Data.recall_referral_in_princeton(note: 'Data cleanup')
       Setup::Data.close_referral_in_princeton(note: 'Data cleanup')
-    }
+    end
+
+    it 'user can send a rejected referral', :uuqa_1662 do
+      # Reject Referral
+      reject_note = Faker::Lorem.sentence(word_count: 5)
+      Setup::Data.reject_referral_in_princeton(note: reject_note)
+
+      # login in as cc user who sent referral
+      log_in_as(Login::CC_HARVARD)
+      expect(homepage.page_displayed?).to be_truthy
+
+      # Opening send referral page
+      referral.go_to_rejected_referral_with_id(referral_id: @referral.id)
+      referral.send_referral_action
+
+      # Selecting an org
+      expect(referral_send.page_displayed?).to be_truthy
+      referral_send.select_org_in_first_dropdown
+      recipient = referral_send.selected_organization
+      referral_send.send_referral
+
+      # On send a new referral id is created, but navigating with the old referral id redirects us to the new referral id
+      referral.go_to_new_referral_with_id(referral_id: @referral.id)
+      expect(referral.recipient_info).to eq(recipient)
+      @referral.id = referral.current_referral_id
+
+      # closing referral for cleanup purposes
+      Setup::Data.recall_referral_in_harvard(note: 'Data cleanup')
+      Setup::Data.close_referral_in_harvard(note: 'Data cleanup')
+    end
+
+    it 'user can send a recalled referral', :uuqa_1663 do
+      # recalling referral
+      recall_note = Faker::Lorem.sentence(word_count: 5)
+      Setup::Data.recall_referral_in_harvard(note: recall_note)
+
+      # login in as org user where referral was sent
+      log_in_as(Login::CC_HARVARD)
+      expect(homepage.page_displayed?).to be_truthy
+
+      # Opening send referral page
+      referral.go_to_recalled_referral_with_id(referral_id: @referral.id)
+      referral.send_referral_action
+
+      # Selecting an org
+      expect(referral_send.page_displayed?).to be_truthy
+      referral_send.select_org_in_first_dropdown
+      recipient = referral_send.selected_organization
+      referral_send.send_referral
+
+      # On send a new referral id is created, but navigating with the old referral id redirects us to the new referral id
+      referral.go_to_new_referral_with_id(referral_id: @referral.id)
+      expect(referral.recipient_info).to eq(recipient)
+      @referral.id = referral.current_referral_id
+
+      # closing referral for cleanup purposes
+      Setup::Data.recall_referral_in_harvard(note: 'Data cleanup')
+      Setup::Data.close_referral_in_harvard(note: 'Data cleanup')
+    end
   end
 end
