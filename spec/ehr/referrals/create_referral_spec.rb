@@ -46,7 +46,6 @@ describe '[Referrals]', :ehr, :ehr_referrals do
     end
 
     it 'can create a referral using provider drawer', :uuqa_1615 do
-      # select Princeton via provider drawer Add Button
       description = Faker::Lorem.sentence(word_count: 5)
 
       new_referral.select_service_type_by_text(@service_type)
