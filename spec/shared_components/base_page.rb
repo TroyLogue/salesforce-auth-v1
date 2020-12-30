@@ -56,6 +56,11 @@ class BasePage
     raise StandardError, "E2E ERROR: Option '#{text}' was not found in list of Selector #{selector}" unless found
   end
 
+  def click_random(selector)
+    random_option = find_elements(selector).sample
+    random_option.click
+  end
+
   def click_via_js(selector)
     driver.execute_script('arguments[0].click();', find(selector))
   end

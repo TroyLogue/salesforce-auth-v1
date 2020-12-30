@@ -17,17 +17,25 @@ class NewReferral < BasePage
   SERVICE_TYPE_OPTION = { css: '.choices__item--selectable' }
   SUBMIT_BTN = { css: '#create-referral-submit-btn' }
 
-  def add_provider_via_table(provider)
+  def add_provider_via_table_by_name(provider)
     provider_card = PROVIDER_CARD_BY_TEXT.transform_values { |v| v % provider }
     click_within(provider_card, PROVIDER_CARD_ADD_BTN)
+  end
+
+  def add_random_provider_from_table
+    click_random(PROVIDER_CARD_ADD_BTN)
   end
 
   def enter_description(description)
     enter(description, DESCRIPTION_FIELD)
   end
 
-  def open_provider_drawer(provider)
+  def open_provider_drawer_by_name(provider)
     click_element_by_text(PROVIDER_CARD_NAME, provider)
+  end
+
+  def open_random_provider_drawer
+    click_random(PROVIDER_CARD)
   end
 
   def page_displayed?
@@ -40,9 +48,9 @@ class NewReferral < BasePage
     click(AUTO_RECALL_CHECKBOX)
   end
 
-  def select_providers_from_table(providers)
+  def select_providers_from_table_by_name(providers)
     providers.each do |provider|
-      add_provider_via_table(provider)
+      add_provider_via_table_by_name(provider)
     end
   end
 

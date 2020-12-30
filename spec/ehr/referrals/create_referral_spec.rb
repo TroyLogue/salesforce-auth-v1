@@ -28,14 +28,13 @@ describe '[Referrals]', :ehr, :ehr_referrals do
     end
 
     it 'can create a referral using provider add/remove buttons', :uuqa_1614 do
-      # select Princeton and Columbia from table and enable auto-recall option
-      # avoid sending new referrals to Yale and Harvard from EMR
-      # to avoid conflicts with app-client tests
+      # select two random providers from table and enable auto-recall option
       description = Faker::Lorem.sentence(word_count: 5)
-      providers = ["Princeton", "Columbia"]
 
       new_referral.select_service_type_by_text(@service_type)
-      new_referral.select_providers_from_table(providers)
+      2.times do
+        new_referral.add_random_provider_from_table
+      end
       new_referral.select_auto_recall
       new_referral.enter_description(description)
       new_referral.submit
@@ -49,10 +48,9 @@ describe '[Referrals]', :ehr, :ehr_referrals do
     it 'can create a referral using provider drawer', :uuqa_1615 do
       # select Princeton via provider drawer Add Button
       description = Faker::Lorem.sentence(word_count: 5)
-      provider = "Princeton"
 
       new_referral.select_service_type_by_text(@service_type)
-      new_referral.open_provider_drawer(provider)
+      new_referral.open_random_provider_drawer
       expect(provider_drawer.referral_page_displayed?).to be_truthy
       provider_drawer.add_provider
       provider_drawer.close_drawer
