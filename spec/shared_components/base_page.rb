@@ -72,6 +72,7 @@ class BasePage
 
   def click_random(selector)
     random_option = find_elements(selector).sample
+    raise StandardError, "E2E ERROR: No elements of Selector '#{selector}' were found" unless random_option
     random_option.click
   end
 
