@@ -37,7 +37,7 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       @referral = Setup::Data.send_referral_from_yale_to_harvard(
         contact_id: @contact.contact_id
       )
-      referral.go_to_sent_referral_with_id(referral_id: @referral.referral_id)
+      referral.go_to_sent_referral_with_id(referral_id: @referral.id)
       expect(referral.page_displayed?).to be_truthy
 
       @assessment = IVY_INTAKE_ASSESSMENT
@@ -57,7 +57,7 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
     }
 
     it 'can view Military Information and an assessment', :uuqa_326, :uuqa_332 do
-      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      referral.go_to_new_referral_with_id(referral_id: @referral.id)
       expect(referral.page_displayed?).to be_truthy
       expect(referral.assessment_list).to include(@assessment)
       expect(referral.assessment_list).to include(@military_assessment)
@@ -81,9 +81,7 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
 
     after {
       # close referral as cc
-      @close_referral = Setup::Data.close_referral_in_harvard(
-        referral_id: @referral.referral_id
-      )
+      Setup::Data.close_referral_in_harvard(note: 'Data cleanup')
     }
   end
 end

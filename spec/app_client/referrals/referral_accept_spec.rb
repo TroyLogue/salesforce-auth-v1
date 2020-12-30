@@ -24,24 +24,22 @@ describe '[Referrals]', :app_client, :referrals do
 
       # Create Referral
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
-
-      log_in_as(Login::ORG_PRINCETON)
-      expect(homepage.page_displayed?).to be_truthy
     }
 
     it 'user can accept a new referral and case is opened', :uuqa_1012 do
-      sender = 'Harvard'
+      log_in_as(Login::ORG_PRINCETON)
+      expect(homepage.page_displayed?).to be_truthy
+
       status = 'Needs Action'
-      servicetypes = 'Disability Benefits'
 
       # Newly created referral should display in new referral dashboard
       new_referral_dashboard.go_to_new_referrals_dashboard
       expect(new_referral_dashboard.page_displayed?).to be_truthy
       expect(new_referral_dashboard.org_headers_displayed?).to be_truthy
       expect(new_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}"))
-        .to include(sender, status, servicetypes)
+        .to include(@referral.sent_org, status, @referral.service_type)
 
-      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      referral.go_to_new_referral_with_id(referral_id: @referral.id)
 
       # Accept referral into a program
       referral.accept_action
@@ -51,7 +49,29 @@ describe '[Referrals]', :app_client, :referrals do
       expect(new_case.status).to eq(new_case.class::OPEN_STATUS)
 
       # Referral has updated status
-      referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      referral.go_to_new_referral_with_id(referral_id: @referral.id)
+      expect(referral.status).to eq(referral.class::ACCEPTED_STATUS)
+    end
+
+    it 'user can accept a referral in review and case is opened', :uuqa_1649 do
+      # Hold referral for review
+      hold_note = Faker::Lorem.sentence(word_count: 5)
+      Setup::Data.hold_referral_in_princeton(note: hold_note)
+
+      log_in_as(Login::ORG_PRINCETON)
+      expect(homepage.page_displayed?).to be_truthy
+
+      referral.go_to_in_review_referral_with_id(referral_id: @referral.id)
+
+      # Accept referral into a program
+      referral.accept_action
+
+      # Case is opened with correct status
+      expect(new_case.page_displayed?).to be_truthy
+      expect(new_case.status).to eq(new_case.class::OPEN_STATUS)
+
+      # Referral has updated status
+      referral.go_to_new_referral_with_id(referral_id: @referral.id)
       expect(referral.status).to eq(referral.class::ACCEPTED_STATUS)
     end
   end

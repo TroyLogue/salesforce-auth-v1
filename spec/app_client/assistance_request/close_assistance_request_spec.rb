@@ -1,9 +1,9 @@
 require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
-require_relative 'pages/new_assistance_request_dashboard_page.rb'
-require_relative 'pages/closed_assistance_request_dashboard_page.rb'
-require_relative 'pages/closed_assistance_request_page.rb'
-require_relative 'pages/new_assistance_request_page.rb'
+require_relative 'pages/new_assistance_request_dashboard_page'
+require_relative 'pages/closed_assistance_request_dashboard_page'
+require_relative 'pages/closed_assistance_request_page'
+require_relative 'pages/new_assistance_request_page'
 require_relative '../root/pages/notifications'
 
 describe '[Assistance request]', :app_client, :assistance_request do
@@ -20,7 +20,7 @@ describe '[Assistance request]', :app_client, :assistance_request do
   
   before {
     # Submit assistance request before each test
-    @assistance_request = Setup::Data::submit_assistance_request_to_columbia_org
+    @assistance_request = Setup::Data.submit_assistance_request_to_columbia_org
   }
 
   context '[As ORG user]' do
@@ -32,6 +32,7 @@ describe '[Assistance request]', :app_client, :assistance_request do
     it 'Close assistance request', :uuqa_1561 do
       new_assistance_request_dashboard_page.go_to_new_ar_dashboard_page
       new_assistance_request_dashboard_page.new_ar_dashboard_page_displayed?
+      new_assistance_request_dashboard_page.clients_new_ar_created?(@assistance_request.full_name)
 
       # Visit client's AR page and close AR
       new_assistance_request_page.go_to_new_ar_with_id(ar_id: @assistance_request.ar_id)
@@ -61,6 +62,7 @@ describe '[Assistance request]', :app_client, :assistance_request do
     it 'Validate assistance request is closed today', :uuqa_1671 do
       closed_assistance_request_dashboard_page.go_to_closed_ar_dashboard_page
       closed_assistance_request_dashboard_page.closed_ar_dashboard_page_displayed?
+      closed_assistance_request_dashboard_page.clients_ar_closed?(@assistance_request.full_name)
 
       # Validates time on date closed column on the dashboard == time AR was closed via api
       expect(closed_assistance_request_dashboard_page.date_closed_column_text(@closed_ar.full_name)).to eq(@closed_ar.time_ar_closed)

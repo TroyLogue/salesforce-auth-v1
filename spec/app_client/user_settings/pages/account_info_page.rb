@@ -18,8 +18,7 @@ module UserSettings
     CONTACT_INFO_ROW = { css: '.row.settings-contact-information' }.freeze
 
     # security settings
-    RESET_PW_LINK = { css: '.reset-pw-link' }.freeze
-    TWO_FACTOR_AUTH_BTN = { css: '#enable-2fa-btn' }.freeze
+    EDIT_SECURITY_SETTINGS_BUTTON = { css: 'button[data-qa=edit-security-settings-btn]' }.freeze
 
     def load_page
       get('/user/settings')
@@ -29,12 +28,11 @@ module UserSettings
       is_displayed?(SETTINGS_DIV) &&
         is_displayed?(PERSONAL_INFO_ROW) &&
         is_displayed?(CONTACT_INFO_ROW) &&
-        is_displayed?(TWO_FACTOR_AUTH_BTN) &&
-        is_displayed?(RESET_PW_LINK)
+        is_displayed?(EDIT_SECURITY_SETTINGS_BUTTON)
     end
 
-    def click_reset_pw
-      click(RESET_PW_LINK)
+    def click_edit_security_settings
+      click(EDIT_SECURITY_SETTINGS_BUTTON)
     end
 
     def edit_work_title(text)

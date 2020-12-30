@@ -40,6 +40,10 @@ module Setup
       expect(ar_response.status.to_s).to eq('201 Created')
       @ar_id = JSON.parse(ar_response, object_class: OpenStruct).data.id
     end
+
+    def full_name
+      "#{@fname} #{@lname}"
+    end
   end
 
   class CloseAssistanceRequest
