@@ -6,7 +6,6 @@ class NewReferral < BasePage
   # TODO auto-recall checkbox: replace xpath with id when UU3-50317 is complete
   AUTO_RECALL_CHECKBOX = { xpath: '//*[@id="root"]/div/div[2]/div[2]/div/div/div[1]/div[2]/div/div/form/div[4]/div/div/div[1]' }
   BAR_LOADER = { css: '.bar-loader' }
-  CONTINUE_BTN = { css: '#create-referral-submit-btn' }
   DESCRIPTION_FIELD = { css: '#referral-notes' }
   FILTER_BTN = { css: '#common-card-title-filter-button' }
   NEW_REFERRAL_CONTAINER = { css: '.new-referral' }
@@ -16,15 +15,11 @@ class NewReferral < BasePage
   PROVIDER_CARD_ADD_BTN = { css: '.ui-add-remove-buttons__add' }
   SERVICE_TYPE_FILTER = { css: '.service-type-select__select-field .choices' }
   SERVICE_TYPE_OPTION = { css: '.choices__item--selectable' }
+  SUBMIT_BTN = { css: '#create-referral-submit-btn' }
 
   def add_provider_via_table(provider)
-#    find_elements(PROVIDER_CARD).select { |e| e.text.include? provider }
     provider_card = PROVIDER_CARD_BY_TEXT.transform_values { |v| v % provider }
     click_within(provider_card, PROVIDER_CARD_ADD_BTN)
-  end
-
-  def click_continue
-    click(CONTINUE_BTN)
   end
 
   def enter_description(description)
@@ -59,6 +54,10 @@ class NewReferral < BasePage
 
   def selected_service_type
     text(SERVICE_TYPE_FILTER)
+  end
+
+  def submit
+    click(SUBMIT_BTN)
   end
 
   def wait_for_matches

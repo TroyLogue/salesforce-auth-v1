@@ -14,6 +14,10 @@ class ReferralAssessment < BasePage
     text(ASSESSMENT_TITLE).include?(name)
   end
 
+  def create_referral
+    click(CREATE_REFERRAL_BTN)
+  end
+
   def input_fields
     find_elements(INPUT_FIELD)
   end
@@ -23,7 +27,7 @@ class ReferralAssessment < BasePage
       input_fields[i].clear
       input_fields[i].send_keys response
     end
-    click(CREATE_REFERRAL_BTN)
+    create_referral
   end
 
   def page_displayed?(assessment_name: '')
