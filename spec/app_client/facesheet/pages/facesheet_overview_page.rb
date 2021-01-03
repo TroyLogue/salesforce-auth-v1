@@ -50,11 +50,11 @@ class FacesheetOverviewPage < BasePage
   end
 
   def first_interaction_note_in_timeline
-    # Wait for new entry to be created by waiting for banner to dissapear 
+    # Wait for new entry to be created by waiting for banner to dissapear
     is_not_displayed?(SUCCESS_BANNER)
 
-    # UU3-50416 workaround for bug: timeline does not consistently display new entries without page refresh
-    refresh
+    # verify the timeline is updated with the new note
+    get_timeline_event(event_type: TIMELINE_INTERACTION_TYPE)
 
     # Return a note struct we can compare to
     { type: text(TIMELINE_INTERACTION_TYPE), duration: text(TIMELINE_INTERACTION_DURATION).gsub('Duration: ', ''), content: text(TIMELINE_INTERACTION_NOTE) }
@@ -62,5 +62,21 @@ class FacesheetOverviewPage < BasePage
 
   def first_entry_in_timeline
     text(TIMELINE_GENERAL_ENTRY)
+  end
+
+  private
+
+  # uniteus-timeline is asyncronous; we will need to use retries to avoid flaky tests
+  # until Core Consolidation is complete
+  # def get_timeline_event(event_type:, retries: 3)
+  def get_timeline_event(event_type:, retries: 2)
+    begin
+      return unless retries > 0
+
+      refresh
+      find(event_type)
+    rescue RuntimeError
+      get_timeline_event(event_type: event_type, retries: retries - 1)
+    end
   end
 end
