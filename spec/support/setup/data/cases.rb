@@ -9,7 +9,7 @@ module Setup
         network_id: Networks::IVY,
         group_id: group_id,
         contact_id: contact_id,
-        program_id: Setup::ProgramIds.in_network_program_id(token: token, group_id: group_id),
+        program_id: Setup::Programs.in_network_program_id(token: token, group_id: group_id),
         primary_worker_id: PrimaryWorkers::CC_HARVARD,
         service_type_code: ServiceTypeCodes::EMPLOYMENT
       )

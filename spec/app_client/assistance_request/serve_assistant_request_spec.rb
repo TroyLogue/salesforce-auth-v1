@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative 'pages/new_assistance_request_page'
@@ -22,13 +24,13 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
   let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
-  before {
+  before do
     # Submit assistance request
     @assistance_request = Setup::Data.submit_assistance_request_to_columbia_org
 
     log_in_as(Login::ORG_COLUMBIA)
     expect(homepage.page_displayed?).to be_truthy
-  }
+  end
 
   it 'Serve and process AR by creating a case', :uuqa_1639 do
     new_assistance_request_dashboard_page.go_to_new_ar_dashboard_page
@@ -38,7 +40,10 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     new_assistance_request_page.select_serve_ar_action
     create_case.create_case_form_displayed?
     create_case.create_new_case(
-      program_id: Programs::ORG_COLUMBIA,
+      program_id: Setup::Programs.in_network_program_id(
+        token: MachineTokens::ORG_COLUMBIA,
+        group_id: Providers::ORG_COLUMBIA
+      ),
       service_type_id: Services::BENEFITS_BENEFITS_ELIGIBILITY_SCREENING,
       primary_worker_id: PrimaryWorkers::ORG_COLUMBIA
     )
@@ -57,8 +62,8 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     expect(processed_assistance_request_page.status_detail_text).to eq(ProcessedAssistanceRequestPage::PROCESSED_STATUS_TEXT)
   end
 
-  after {
+  after do
     # Closing the API AR submitter as part of cleanup
     Setup::Data.close_columbia_assistance_request(ar_id: @assistance_request.ar_id)
-  }
+  end
 end

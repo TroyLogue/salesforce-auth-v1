@@ -47,11 +47,12 @@ module Setup
     end
 
     def self.accept_referral_in_princeton
+      token = MachineTokens::ORG_PRINCETON
       Referral.accept(
-        token: MachineTokens::ORG_PRINCETON,
+        token: token,
         group_id: Providers::ORG_PRINCETON,
         primary_case_worker_id: PrimaryWorkers::ORG_PRINCETON,
-        program_id: Programs::ORG_PRINCETON
+        program_id: Setup::Programs.in_network_program_id(token: token, group_id: Providers::ORG_PRINCETON)
       )
     end
 
