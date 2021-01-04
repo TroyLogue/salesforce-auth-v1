@@ -21,11 +21,6 @@ class NewReferral < BasePage
   SERVICE_TYPE_OPTION = { css: '.choices__item--selectable' }
   SUBMIT_BTN = { css: '#create-referral-submit-btn' }
 
-  def add_provider_via_table_by_name(provider)
-    provider_card = PROVIDER_CARD_BY_TEXT.transform_values { |v| v % provider }
-    click_within(provider_card, PROVIDER_CARD_ADD_BTN)
-  end
-
   def add_random_provider_from_table
     click_random(PROVIDER_CARD_ADD_BTN)
   rescue StandardError => e
@@ -49,15 +44,6 @@ class NewReferral < BasePage
     enter(description, DESCRIPTION_FIELD)
   end
 
-  def open_primary_worker_dropdown
-    click(PRIMARY_WORKER_DROPDOWN)
-    is_not_displayed?(NO_CHOICES_ITEMS)
-  end
-
-  def open_provider_drawer_by_name(provider)
-    click_element_by_text(PROVIDER_CARD_NAME, provider)
-  end
-
   def open_random_provider_drawer
     click_random(PROVIDER_CARD)
   end
@@ -72,6 +58,32 @@ class NewReferral < BasePage
     click(AUTO_RECALL_CHECKBOX)
   end
 
+  def select_service_type_by_text(service_type)
+    click(SERVICE_TYPE_FILTER)
+    click_element_from_list_by_text(SERVICE_TYPE_OPTION, service_type)
+    wait_for_matches
+  end
+
+  def submit
+    click(SUBMIT_BTN)
+  end
+
+  private
+
+  def add_provider_via_table_by_name(provider)
+    provider_card = PROVIDER_CARD_BY_TEXT.transform_values { |v| v % provider }
+    click_within(provider_card, PROVIDER_CARD_ADD_BTN)
+  end
+
+  def open_primary_worker_dropdown
+    click(PRIMARY_WORKER_DROPDOWN)
+    is_not_displayed?(NO_CHOICES_ITEMS)
+  end
+
+  def open_provider_drawer_by_name(provider)
+    click_element_by_text(PROVIDER_CARD_NAME, provider)
+  end
+
   def select_out_of_network
     click(OUT_OF_NETWORK_TAB)
     wait_for_matches
@@ -81,12 +93,6 @@ class NewReferral < BasePage
     providers.each do |provider|
       add_provider_via_table_by_name(provider)
     end
-  end
-
-  def select_service_type_by_text(service_type)
-    click(SERVICE_TYPE_FILTER)
-    click_element_from_list_by_text(SERVICE_TYPE_OPTION, service_type)
-    wait_for_matches
   end
 
   def selected_service_type
@@ -101,10 +107,6 @@ class NewReferral < BasePage
     random_option.click
 
     worker_name
-  end
-
-  def submit
-    click(SUBMIT_BTN)
   end
 
   def wait_for_matches
