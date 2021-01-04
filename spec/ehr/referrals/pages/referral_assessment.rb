@@ -18,10 +18,6 @@ class ReferralAssessment < BasePage
     click(CREATE_REFERRAL_BTN)
   end
 
-  def input_fields
-    find_elements(INPUT_FIELD)
-  end
-
   def fill_out_and_create_referral(responses)
     responses.each_with_index do |response, i|
       input_fields[i].clear
@@ -38,4 +34,11 @@ class ReferralAssessment < BasePage
       is_displayed?(CREATE_REFERRAL_BTN) &&
       assessment_name_displayed?(assessment_name)
   end
+
+  private
+
+  def input_fields
+    find_elements(INPUT_FIELD)
+  end
+
 end

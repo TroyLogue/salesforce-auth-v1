@@ -24,6 +24,12 @@ class NewReferral < BasePage
 
   def add_random_provider_from_table
     click_random(PROVIDER_CARD_ADD_BTN)
+  rescue StandardError => e
+    info_message = "No provider card add buttons were found. "\
+                   "This can happen when there are no remaining unselected "\
+                   "providers for the selected service type, "\
+                   "or when the first selected provider is a Coordination Center."
+    raise StandardError, "#{e.message}: #{info_message}"
   end
 
   def enter_description(description)
