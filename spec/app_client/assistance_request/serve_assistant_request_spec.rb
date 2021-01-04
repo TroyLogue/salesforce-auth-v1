@@ -10,7 +10,7 @@ require_relative '../root/pages/notifications'
 
 describe '[Serve Assistance Request]', :app_client, :assistance_request do
   include Login
-  
+
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
@@ -45,14 +45,14 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     open_cases_dashboard.open_cases_table_displayed?
     notification_text = notifications.success_text
     expect(notification_text).to include(Notifications::CASE_CREATED)
-    
+
     # combining processed AR with Serve AR since serving AR == processed AR
     processed_assistance_request_dashboard_page.go_to_processed_ar_dashboard_page
     processed_assistance_request_dashboard_page.processed_ar_dashboard_page_displayed?
     processed_assistance_request_dashboard_page.clients_ar_processed?(@assistance_request.full_name)
     processed_assistance_request_page.go_to_processed_ar_with_id(ar_id: @assistance_request.ar_id)
     expect(processed_assistance_request_page.outcome_note_text).to eq(@assistance_request.description)
-    todays_date = Date.today.strftime("%m/%-d/%Y")
+    todays_date = Date.today.strftime("%-m/%-d/%Y")
     expect(processed_assistance_request_page.get_date_closed_text).to include(todays_date, ':')
     expect(processed_assistance_request_page.status_detail_text).to eq(ProcessedAssistanceRequestPage::PROCESSED_STATUS_TEXT)
   end
