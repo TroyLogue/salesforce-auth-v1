@@ -51,6 +51,11 @@ class FacesheetHeader < BasePage
     wait_for_spinner
   end
 
+  def go_to_cases
+    click(CASES_TAB)
+    wait_for_spinner
+  end
+
   def go_to_facesheet_with_contact_id(id:, tab: '')
     get("/facesheet/#{id}/#{tab}")
   end

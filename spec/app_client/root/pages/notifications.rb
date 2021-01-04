@@ -8,6 +8,8 @@ class Notifications < BasePage
   SUCCESS_BANNER = { css: '#notifications .notification.success' }.freeze
   CLOSE_BANNER = { css: '.close' }.freeze
 
+  ACCESS_DENIED = 'Access to the requested resource has been forbidden.'
+  ASSISTANCE_REQUEST_CLOSED = 'Assistance Request Successfully Closed'
   BLANK_EMAIL_MESSAGE = "EmailAddress can't be blank"
   CASE_CREATED = 'Case Created'
   CLIENT_UPDATED = 'Client Successfully Updated'
@@ -15,6 +17,7 @@ class Notifications < BasePage
   CONSENT_UPLOADED = 'Consent Uploaded'
   EMAIL_ADDRESS_UPDATED = 'Email Address Successfully Updated'
   GROUP_UPDATED = 'Group Successfully Updated'
+  INTAKE_CREATED = 'Intake Successfully Created'
   MESSAGE_SENT = 'Message successfully sent'
   NOTE_ADDED = 'Note Successfully Added'
   ORG_UPDATED = 'Organization Updated'
@@ -31,9 +34,6 @@ class Notifications < BasePage
   SUPPORTING_ASSESSMENT_SAVED = 'Supporting Assessments Successfully Saved'
   INSECURE_PASSWORD = 'Password is not safe to use as it appears in a list of weak passwords. Please change your password to something more secure.'
   USER_UPDATED = 'User Successfully Updated'
-  ACCESS_DENIED = 'Access to the requested resource has been forbidden.'
-  INTAKE_CREATED = 'Intake Successfully Created'
-  ASSISTANCE_REQUEST_CLOSED = "Assistance Request Successfully Closed"
 
   def error_text
     find(ERROR_BANNER)
