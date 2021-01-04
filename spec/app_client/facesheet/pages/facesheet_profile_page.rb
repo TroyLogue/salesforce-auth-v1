@@ -405,7 +405,6 @@ class FacesheetProfilePage < BasePage
     EXPAND_ETHNICITY_CHOICES = { css: '#identity-ethnicity-select + div' }.freeze
     LIST_ETHNICITY_CHOICES = { css: 'div[id^="choices-identity-ethnicity"]' }.freeze
     BTN_SAVE_IDENTIFY = { css: '#edit-identity-save-btn' }.freeze
-
     GENDER_F = 'Female'
     GENDER_M = 'Male'
     GENDER_U = 'Undisclosed'
@@ -472,7 +471,7 @@ class FacesheetProfilePage < BasePage
 
     MARITAL_STATUS_D = 'Divorced'
     MARITAL_STATUS_M_CU = 'Married/Civil Union'
-    MARITAL_STATUS_S = 'Seperated'
+    MARITAL_STATUS_S = 'Separated'
     MARITAL_STATUS_U = 'Undisclosed'
 
     def current_household_count
@@ -524,34 +523,55 @@ class FacesheetProfilePage < BasePage
   include HouseHold
 
   module Insurance
-    INSURANCE_SECTION = { css: '.profile-panel.insurance-information' }.freeze
-    CURRENT_INSURANCE = { css: '.insurance-information__id' }.freeze
-    CURRENT_INSURANCE_STATE = { css: '.insurance-information__state' }.freeze
-    ADD_INSURANCE_ICON = { css: '#add-insurance-button' }.freeze
+    INSURANCE_SECTION = { css: '.profile-panel.insurance-information'}.freeze
+    INSURANCE_LIST = { css: '.payments-insurance-information.payments-container'}.freeze
+    CURRENT_PLAN = { css: '.payments-insurance-information__plan-info'}.freeze
+    CURRENT_MEMBER_ID = {xpath: ".//div[div[@class='row']//text()[contains(., 'Member Id')]]//p"}.freeze
+    CURRENT_GROUP_ID = {xpath: ".//div[div[@class='row']//text()[contains(., 'Group Id')]]//p" }.freeze
+    CURRENT_COVERAGE_START = {xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage Start')]]//p" }.freeze
+    CURRENT_COVERAGE_END = {xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage End')]]//p" }.freeze
+    # edit modal
     INSURANCE_MODAL = { css: '#add-insurance-modal.dialog.open.normal' }.freeze
-    INPUT_MEDICAID_ID = { css: '#insurance-id-0' }.freeze
-    INPUT_BENEFICIARY_ID = { css: '#insurance-id-1' }.freeze
-    EXPAND_MED_STATE_CHOICES = { css: '#insurance-state-0 + div' }.freeze
-    LIST_MED_STATE_CHOICES = { css: 'div[id^="choices-insurance-state"]' }.freeze
-    BTN_SAVE_INSURANCE = { css: '#edit-insurance-save-btn' }.freeze
+    EXPAND_PLAN_TYPE = {css: '.payments-insurance-fields__plan-type'}.freeze
+    LIST_PLAN_TYPE_CHOICES = {css: 'div[id^="choices-insurance-plan-type"]'}.freeze
+    EXPAND_INSURANCE_PLAN = {css: '.payments-insurance-fields__plan'}.freeze
+    LIST_INSURANCE_PLAN_CHOICES = {css: 'div[id^="choices-insurance-plan"]'}.freeze
+    INPUT_MEMBER_ID = {css: '#insurance-member-id'}.freeze
+    INPUT_GROUP_ID = {css: '#insurance-group-id'}.freeze
+    INPUT_COVERAGE_START = {css: '#insurance-coverage-start'}.freeze
+    INPUT_COVERAGE_END = {css: '#insurance-coverage-end'}.freeze
+    # buttons
+    ADD_INSURANCE_ICON = { css: 'div[aria-label="add"]' }.freeze
+    # TODO UU3-50414 edit button add an aria-label
+    EDIT_INSURANCE_ICON = {css: '#edit-modal'}.freeze
+    DELETE_INSURANCE_ICON = { css: 'div[aria-label="delete"]' }.freeze
+    BTN_SAVE_INSURANCE = { css: '#edit-insurance-save-btn-' }.freeze
+
+    COMMERCIAL_PLAN = 'Commercial'
+    MEDICAID_PLAN = 'Medicaid'
+    MEDICARE_PLAN = 'Medicare'
+    UNKNOWN_PLAN = 'Unknown'
 
     def is_insurance_displayed?
       is_present?(INSURANCE_SECTION)
     end
 
-    def current_insurance
-      # Returns Medicare, Medicaid and State in string ex: "1EG4TE5MK73 9997686 New Jersey"
-      find_elements(CURRENT_INSURANCE).map(&:text).join(' ') + ' ' + text(CURRENT_INSURANCE_STATE).sub!('STATE', '')
+    def list_insurances
+      find_elements(INSURANCE_LIST).map(&:text).join(' ')
     end
 
-    def add_insurance_section(medicaid_id:, beneficiary_id: '1EG4TE5MK72', state: 'New York')
+    def add_insurance(plan_type: MEDICARE_PLAN, insurance_plan: MEDICARE_PLAN, member_id: '1EG4TE5MK72', group_id:'', coverage_start:'', coverage_end:'')
       click(ADD_INSURANCE_ICON)
       is_displayed?(INSURANCE_MODAL)
       # Fill out insurance information
-      enter(medicaid_id, INPUT_MEDICAID_ID)
-      enter(beneficiary_id, INPUT_BENEFICIARY_ID)
-      click(EXPAND_MED_STATE_CHOICES)
-      click_element_from_list_by_text(LIST_MED_STATE_CHOICES, state)
+      click(EXPAND_PLAN_TYPE)
+      click_element_from_list_by_text(LIST_PLAN_TYPE_CHOICES, plan_type)
+      click(EXPAND_INSURANCE_PLAN)
+      click_element_from_list_by_text(LIST_INSURANCE_PLAN_CHOICES, insurance_plan)
+      enter(member_id, INPUT_MEMBER_ID)
+      enter(group_id, INPUT_GROUP_ID)
+      enter(coverage_start, INPUT_COVERAGE_START)
+      enter(coverage_end, INPUT_COVERAGE_END)
       # Since there is no spinner, waiting for the modal to disappear
       click(BTN_SAVE_INSURANCE)
       is_not_displayed?(INSURANCE_MODAL)
@@ -565,7 +585,7 @@ class FacesheetProfilePage < BasePage
     LINK_ADD_MILITARY_INFO = { css: '.military-information-add-info' }.freeze
     EDIT_MILITARY_INFO = { css: '#edit-military-btn' }.freeze
     MILITARY_MODAL = { css: '#military-info-modal.dialog.open.normal' }.freeze
-    EXAPAND_MILITARY_CHOICES = { css: '#affiliation + div' }.freeze
+    EXPAND_MILITARY_CHOICES = { css: '#affiliation + div' }.freeze
     LIST_MILITARY_CHOICES = { css: 'div[id^="choices-affiliation"]' }.freeze
     BTN_SAVE_MILITARY = { css: '#edit-military-save-btn' }.freeze
 
@@ -587,8 +607,8 @@ class FacesheetProfilePage < BasePage
     def edit_military_affiliation(affiliation: AFFILIATION_CAREGIVER)
       click(LINK_ADD_MILITARY_INFO)
       is_displayed?(MILITARY_MODAL)
-      # Select affliliation
-      click(EXAPAND_MILITARY_CHOICES)
+      # Select affiliation
+      click(EXPAND_MILITARY_CHOICES)
       click_element_from_list_by_text(LIST_MILITARY_CHOICES, affiliation)
       # Since there is no spinner, waiting for the modal to disappear
       click(BTN_SAVE_MILITARY)
