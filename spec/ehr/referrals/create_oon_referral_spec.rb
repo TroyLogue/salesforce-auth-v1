@@ -27,7 +27,7 @@ describe '[Referrals Out of Network]', :ehr, :ehr_referrals do
       expect(new_referral.page_displayed?).to be_truthy
     end
 
-    it 'can create an OON referral using provider add/remove button', :uuqa_xxxx do
+    it 'can create an OON referral using provider add/remove button', :uuqa_397 do
       description = Faker::Lorem.sentence(word_count: 5)
 
       new_referral.create_oon_referral_from_table(service_type: @service_type, description: description)
@@ -35,6 +35,8 @@ describe '[Referrals Out of Network]', :ehr, :ehr_referrals do
 
       # after sending referral, verify redirect to home page
       expect(homepage.default_view_displayed?).to be_truthy
+
+      # TODO - add an assertion that the primary worker is set as expected
     end
   end
 end
