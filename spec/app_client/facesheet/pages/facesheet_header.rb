@@ -11,6 +11,7 @@ class FacesheetHeader < BasePage
   UPLOADS_TAB = { css: '#facesheet-uploads-tab' }.freeze
   REFERALS_TAB = { css: '#facesheet-referrals-tab' }.freeze
 
+  REFER_CLIENT = { css: '#subheader-refer-btn' }.freeze
   CONSENT_STATUS = { css: '#status-select-options > option' }.freeze
   EXPAND_CONSENT_OPTIONS = { css: '#status-select-options + div' }.freeze
   LIST_CONSENT_OPTIONS = { css: 'div[id^="choices-status"]' }.freeze
@@ -68,5 +69,9 @@ class FacesheetHeader < BasePage
   def select_consent_option(option:)
     click(EXPAND_CONSENT_OPTIONS)
     click_element_from_list_by_text(LIST_CONSENT_OPTIONS, option)
+  end
+
+  def refer_client
+    click(REFER_CLIENT)
   end
 end

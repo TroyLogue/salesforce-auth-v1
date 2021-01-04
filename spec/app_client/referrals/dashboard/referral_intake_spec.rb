@@ -1,8 +1,8 @@
-require_relative '../auth/helpers/login'
-require_relative '../root/pages/right_nav'
-require_relative '../root/pages/home_page'
-require_relative '../referrals/pages/referral'
-require_relative '../intakes/pages/intake'
+require_relative '../../auth/helpers/login'
+require_relative '../../root/pages/right_nav'
+require_relative '../../root/pages/home_page'
+require_relative '../../referrals/pages/referral'
+require_relative '../../intakes/pages/intake'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login

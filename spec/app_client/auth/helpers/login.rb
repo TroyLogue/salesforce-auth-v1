@@ -47,7 +47,11 @@ module Login
     # columbia org with New-Search Feature Flag enabled
     NEW_SEARCH_USER = 'client-search@auto.com',
     # used to test provider-selector features
-    USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test'
+    USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test',
+    # user with valid address
+    ORG_UPENN = 'upenn@auto.com',
+    # user with no address in org with no address
+    ORG_CHICAGO = 'chicago@auto.com'
   ].freeze
 
   DEFAULT_PASSWORD = 'Uniteus1!'
