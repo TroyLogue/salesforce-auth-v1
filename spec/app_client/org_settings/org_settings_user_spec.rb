@@ -30,6 +30,7 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       org_settings_user_table.go_to_new_user_form
       expect(org_settings_user_form.get_user_title).to eql('New User')
       expect(org_settings_user_form.new_user_fields_display?).to be_truthy
+      expect(org_settings_user_form.employee_state_active?).to be_truthy
     end
 
     it 'can view and edit existing user form', :uuqa_355 do
