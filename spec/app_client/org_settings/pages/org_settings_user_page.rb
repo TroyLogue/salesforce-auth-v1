@@ -46,8 +46,8 @@ module OrgSettings
     INPUT_EMAIL = { css: 'input[type="email"]' }.freeze
     INPUT_PHONE = { css: '#phone-number-0-number' }.freeze
     INPUT_WORK_TITLE = { css: '#work-title' }.freeze
-    INPUT_NETWORKS = { css: 'div[aria-activedescendant^="choices-networks-item-choice"]' }.freeze
-    INPUT_ORG_LICENSE = { css: 'div[aria-activedescendant^="choices-org-license-item-choice"]' }.freeze
+    EMPLOYEE_STATE_CHOICES = { css: 'div[aria-activedescendant*="choices-state-item-choice"]' }.freeze
+    EMPLOYEE_STATE_ACTIVE = { css: 'div[aria-activedescendant*="choices-state-item-choice"] .choices__item.choices__item--selectable[data-value="active"]' }.freeze
     INPUT_PROGRAM_CHOICES = { css: 'div[aria-activedescendant*="programs-item-choice"]' }.freeze
     INPUT_PROGRAM_ROLES = { css: 'div[aria-activedescendant*="roles-item-choice"]' }.freeze
     INPUT_ORG_ROLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
@@ -72,9 +72,13 @@ module OrgSettings
     end
 
     def new_user_fields_display?
-      is_displayed?(INPUT_FIRSTNAME) && is_displayed?(INPUT_LASTNAME) && is_displayed?(INPUT_EMAIL) && is_displayed?(INPUT_PHONE) &&
-        is_displayed?(INPUT_WORK_TITLE) && is_displayed?(INPUT_NETWORKS) && is_displayed?(INPUT_ORG_LICENSE) &&
+      is_displayed?(INPUT_FIRSTNAME) && is_displayed?(INPUT_LASTNAME) && is_displayed?(INPUT_EMAIL) &&
+        is_displayed?(INPUT_PHONE) && is_displayed?(INPUT_WORK_TITLE) && is_displayed?(EMPLOYEE_STATE_CHOICES) &&
         is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
+    end
+
+    def employee_state_active?
+      is_displayed?(EMPLOYEE_STATE_ACTIVE)
     end
 
     def existing_user_fields_editable?
