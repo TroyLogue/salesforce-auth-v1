@@ -9,12 +9,14 @@ class NetworkBrowseDrawer < BasePage
   SHARE_BUTTON = { css: '#network-groups-drawer-share-btn' }
 
   # provider details
-  PROIVDER_DETAILS_MAP = { css: '.group-details-content__map' }
-  PROIVDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable' }
-  PROIVDER_DETAILS_CONTACT = { css: '.group-details-content__contact' }
-  PROIVDER_DETAILS_HOURS = { css: '.group-details-content__hours' }
-  PROIVDER_DETAILS_SERVICES = { css: '.group-details-content__services' }
-  PROIVDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs' }
+  PROVIDER_DETAILS_MAP = { css: '.group-details-content__map' }
+  PROVIDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable' }
+  PROVIDER_DETAILS_CONTACT = { css: '.group-details-content__contact' }
+  PROVIDER_DETAILS_HOURS = { css: '.group-details-content__hours' }
+  PROVIDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs' }
+
+  # program details
+  PROGRAM_DETAILS_SERVICES = { css: '.program-details .ui-service-types' }
 
   # share form
   SHARE_FORM = { css: '.expandable-container__content.open .share-form' }
@@ -43,11 +45,11 @@ class NetworkBrowseDrawer < BasePage
     is_displayed?(CLOSE_BUTTON) &&
     is_displayed?(SHARE_BUTTON) &&
 
-    is_displayed?(PROIVDER_DETAILS_MAP) &&
-    is_displayed?(PROIVDER_DETAILS_DESCRIPTION) &&
-    is_displayed?(PROIVDER_DETAILS_CONTACT) &&
-    is_displayed?(PROIVDER_DETAILS_SERVICES) &&
-    is_displayed?(PROIVDER_DETAILS_PROGRAMS)
+    is_displayed?(PROVIDER_DETAILS_MAP) &&
+    is_displayed?(PROVIDER_DETAILS_DESCRIPTION) &&
+    is_displayed?(PROVIDER_DETAILS_CONTACT) &&
+    is_displayed?(PROVIDER_DETAILS_PROGRAMS) &&
+    is_displayed?(PROGRAM_DETAILS_SERVICES)
   end
 
   def drawer_not_displayed?

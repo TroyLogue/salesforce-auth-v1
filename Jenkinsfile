@@ -1,7 +1,7 @@
 podTemplate(containers: [
     containerTemplate(
         name: 'ruby',
-        image: 'ruby:latest',
+        image: 'ruby:2.7',
         command: '',
         resourceRequestMemory: '512Mi',
         resourceLimitMemory: '1Gi',
