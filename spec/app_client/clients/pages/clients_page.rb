@@ -1,6 +1,7 @@
 require_relative '../../../shared_components/base_page'
 
 class ClientsPage < BasePage
+  AUTHORIZED_CLIENTS = { css: '.ui-table-body > tr:not(.unauthorized)' }
   FILTER_BAR = { css: '.filter-bar' }
   FILTER_SELECTION = { css: 'button[name="%s"]' }
   CLIENT_TABLE = { css: '.dashboard-inner-content' }
@@ -24,11 +25,16 @@ class ClientsPage < BasePage
   end
 
   def go_to_facesheet_first_authorized_client
-    click(CLIENT_FIRST_AUTHORIZED)
+    authorized_clients[0].click
   end
 
   def go_to_facesheet_second_authorized_client
-    click(CLIENT_SECOND_AUTHORIZED)
+    authorized_clients[1].click
     wait_for_spinner
+  end
+
+  private
+  def authorized_clients
+    find_elements(AUTHORIZED_CLIENTS)
   end
 end
