@@ -36,8 +36,11 @@ class NewReferral < BasePage
     select_out_of_network
     add_random_provider_from_table
     enter_description(description)
-    set_primary_worker_to_random_option
+    primary_worker = set_primary_worker_to_random_option
     submit
+
+    # return primary worker
+    primary_worker
   end
 
   def enter_description(description)
