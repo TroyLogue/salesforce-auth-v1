@@ -4,9 +4,11 @@ require_relative '../../../shared_components/base_page'
 
 class NewScreening < BasePage
   NEW_SCREENING_DIV = { css: '.new-screening' }
-  SCREENING_CHOICE = { css: '.choices__item' }
+  SCREENING_CHOICE = { css: '.screening-form-select .choices__item' }
+  NETWORK_CHOICE = { css: '.screening-network-select .choices__item'}
   SCREENING_FORM = { css: '.ui-form-renderer' }
   SELECT_SCREENING_DROPDOWN = { css: '.screening-form-select .choices' }
+  SELECT_NETWORK_DROPDOWN = { css: '.screening-network-select .choices' }
   SUBMIT_SCREENING_BTN = { css: '#submit-screening-btn' }
 
   # specific to this screening:
@@ -16,12 +18,14 @@ class NewScreening < BasePage
 
   def complete_screening_with_referral_needs
     select_screening(SCREENING_NAME)
+    select_first_network
     click_element_by_text(RADIO_BTN, "Yes")
     submit_screening
   end
 
   def complete_screening_with_no_referral_needs
     select_screening(SCREENING_NAME)
+    select_first_network
     click_element_by_text(RADIO_BTN, "No")
     submit_screening
   end
@@ -35,6 +39,11 @@ class NewScreening < BasePage
     click(SELECT_SCREENING_DROPDOWN)
     click_element_by_text(SCREENING_CHOICE, screening_name)
     is_displayed?(SCREENING_FORM)
+  end
+
+  def select_first_network
+    click(SELECT_NETWORK_DROPDOWN)
+    click(NETWORK_CHOICE)
   end
 
   def submit_screening
