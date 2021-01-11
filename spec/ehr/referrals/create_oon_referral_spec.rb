@@ -35,8 +35,6 @@ describe '[Referrals Out of Network]', :ehr, :ehr_referrals do
 
       # after sending referral, verify redirect to home page
       expect(homepage.default_view_displayed?).to be_truthy
-
-      # TODO - add an assertion that the primary worker is set as expected
     end
   end
 end
