@@ -26,8 +26,9 @@ class CasesTable < BasePage
     # if no results are returned then TABLE_MESSAGE will be displayed but LOADING_CASES_MESSAGE_TEXT will not
     elsif find_element_by_text(TABLE_MESSAGE, LOADING_CASES_MESSAGE_TEXT).nil?
       true
-    # if neither of the above conditions are met then referrals are not loaded
+    # if neither of the above conditions are met then cases are not loaded
     else
+      puts "Cases have not finished loading"
       false
     end
   end
