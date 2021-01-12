@@ -132,6 +132,7 @@ module CreateReferral
     SERVICE_TYPE = { css: '.referral-service-minimized__header-text' }.freeze
     DESCRIPTION = { css: '.detail-info__description-text' }.freeze
     RECIPIENTS = { css: '.service-type-section:nth-of-type(2) .detail-info__groups-list > li' }.freeze
+    FULL_NAME = { css: '.detail-definition-list__value' }.freeze
 
     SUBMIT_BTN = { css: '#submit-referral-btn' }.freeze
 
@@ -150,6 +151,10 @@ module CreateReferral
 
     def recipients
       find_elements(RECIPIENTS).collect { |ele| ele.text.sub('undefined', '').strip }.join('')
+    end
+
+    def full_name
+      text(FULL_NAME)
     end
 
     def click_submit_button
