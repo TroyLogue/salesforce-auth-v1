@@ -526,24 +526,24 @@ class FacesheetProfilePage < BasePage
     INSURANCE_SECTION = { css: '.profile-panel.insurance-information'}.freeze
     INSURANCE_LIST = { css: '.payments-insurance-information.payments-container'}.freeze
     CURRENT_PLAN = { css: '.payments-insurance-information__plan-info'}.freeze
-    CURRENT_MEMBER_ID = {xpath: ".//div[div[@class='row']//text()[contains(., 'Member Id')]]//p"}.freeze
-    CURRENT_GROUP_ID = {xpath: ".//div[div[@class='row']//text()[contains(., 'Group Id')]]//p" }.freeze
-    CURRENT_COVERAGE_START = {xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage Start')]]//p" }.freeze
-    CURRENT_COVERAGE_END = {xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage End')]]//p" }.freeze
+    CURRENT_MEMBER_ID = { xpath: ".//div[div[@class='row']//text()[contains(., 'Member Id')]]//p" }.freeze
+    CURRENT_GROUP_ID = { xpath: ".//div[div[@class='row']//text()[contains(., 'Group Id')]]//p" }.freeze
+    CURRENT_COVERAGE_START = { xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage Start')]]//p" }.freeze
+    CURRENT_COVERAGE_END = { xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage End')]]//p" }.freeze
     # edit modal
     INSURANCE_MODAL = { css: '#add-insurance-modal.dialog.open.normal' }.freeze
-    EXPAND_PLAN_TYPE = {css: '.payments-insurance-fields__plan-type'}.freeze
-    LIST_PLAN_TYPE_CHOICES = {css: 'div[id^="choices-insurance-plan-type"]'}.freeze
-    EXPAND_INSURANCE_PLAN = {css: '.payments-insurance-fields__plan'}.freeze
-    LIST_INSURANCE_PLAN_CHOICES = {css: 'div[id^="choices-insurance-plan"]'}.freeze
-    INPUT_MEMBER_ID = {css: '#insurance-member-id'}.freeze
-    INPUT_GROUP_ID = {css: '#insurance-group-id'}.freeze
-    INPUT_COVERAGE_START = {css: '#insurance-coverage-start'}.freeze
-    INPUT_COVERAGE_END = {css: '#insurance-coverage-end'}.freeze
+    EXPAND_PLAN_TYPE = { css: '#insurance-plan-type + .choices__list' }.freeze
+    LIST_PLAN_TYPE_CHOICES = { css: 'div[id^="choices-insurance-plan-type"]' }.freeze
+    EXPAND_INSURANCE_PLAN = { css: '#insurance-plan + .choices__list' }.freeze
+    LIST_INSURANCE_PLAN_CHOICES = { css: 'div[id^="choices-insurance-plan-item"]' }.freeze
+    INPUT_MEMBER_ID = { css: '#insurance-member-id' }.freeze
+    INPUT_GROUP_ID = { css: '#insurance-group-id' }.freeze
+    INPUT_COVERAGE_START = {css: '#insurance-coverage-start' }.freeze
+    INPUT_COVERAGE_END = { css: '#insurance-coverage-end' }.freeze
     # buttons
     ADD_INSURANCE_ICON = { css: 'div[aria-label="add"]' }.freeze
     # TODO UU3-50414 edit button add an aria-label
-    EDIT_INSURANCE_ICON = {css: '#edit-modal'}.freeze
+    EDIT_INSURANCE_ICON = { css: '#edit-modal' }.freeze
     DELETE_INSURANCE_ICON = { css: 'div[aria-label="delete"]' }.freeze
     BTN_SAVE_INSURANCE = { css: '#edit-insurance-save-btn-' }.freeze
 
@@ -567,6 +567,7 @@ class FacesheetProfilePage < BasePage
       click(EXPAND_PLAN_TYPE)
       click_element_from_list_by_text(LIST_PLAN_TYPE_CHOICES, plan_type)
       click(EXPAND_INSURANCE_PLAN)
+      is_displayed?(LIST_INSURANCE_PLAN_CHOICES)
       click_element_from_list_by_text(LIST_INSURANCE_PLAN_CHOICES, insurance_plan)
       enter(member_id, INPUT_MEMBER_ID)
       enter(group_id, INPUT_GROUP_ID)
