@@ -18,14 +18,14 @@ class NewScreening < BasePage
 
   def complete_screening_with_referral_needs
     select_screening(SCREENING_NAME)
-    select_first_network
+    select_first_network if network_choice?
     click_element_by_text(RADIO_BTN, "Yes")
     submit_screening
   end
 
   def complete_screening_with_no_referral_needs
     select_screening(SCREENING_NAME)
-    select_first_network
+    select_first_network if network_choice?
     click_element_by_text(RADIO_BTN, "No")
     submit_screening
   end
@@ -48,5 +48,10 @@ class NewScreening < BasePage
 
   def submit_screening
     click(SUBMIT_SCREENING_BTN)
+  end
+
+  private
+  def network_choice?
+    is_displayed?(NETWORK_CHOICE, 1)
   end
 end
