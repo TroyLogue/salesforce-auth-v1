@@ -3,6 +3,7 @@
 require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/collection_filters_drawer'
 require_relative '../root/pages/home_page'
+require_relative '../root/pages/notifications_ehr'
 require_relative './pages/referrals_table'
 
 describe '[Referrals]', :ehr, :referrals do

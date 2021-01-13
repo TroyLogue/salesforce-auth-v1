@@ -42,6 +42,10 @@ class CaseDetailPage < BasePage
     text(CARE_TEAM_PRIMARY_WORKER)
   end
 
+  def description_text
+    text(DESCRIPTION)
+  end
+
   def primary_worker_edit_button_displayed?
     is_displayed?(PRIMARY_WORKER_EDIT_BUTTON)
   end
