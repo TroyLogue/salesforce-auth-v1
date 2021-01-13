@@ -23,10 +23,17 @@ module ReferralDashboard
     end
 
     def row_values_for_client(client:)
-      # Find row that matches client name, if not found throw an error
-      index = (find_elements(self.class::ALL_CLIENT_NAMES).map(&:text).index(client) || raise("#{client} not found in table")) + 1
-      # Return an array of all values in the row for the client
-      find_elements(self.class::CLIENT_ROW.transform_values { |v| v % index }).map(&:text)
+      # List of client names
+      clients = find_elements(self.class::ALL_CLIENT_NAMES).map(&:text)
+      # Return indexes that match client name
+      indexes = clients.filter_map.with_index { |name, index| index if name == client } || raise("#{client} not found in table")
+      # Return an array of strings
+      client_values = []
+      indexes.each do |index|
+        client_values << find_elements(self.class::CLIENT_ROW.transform_values { |v| v % (index + 1) }).map(&:text).join(', ')
+      end
+      # Returning an array of strings if multiple results, otherwise a single string
+      client_values.count > 1 ? client_values : client_values[0]
     end
   end
 

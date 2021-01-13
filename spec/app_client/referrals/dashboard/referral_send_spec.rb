@@ -40,8 +40,7 @@ describe '[Referrals]', :app_client, :referrals do
 
       # Selecting an org
       expect(referral_send.page_displayed?).to be_truthy
-      referral_send.select_org_in_first_dropdown
-      recipient = referral_send.selected_organization
+      recipient = referral_send.select_first_org
       referral_send.send_referral
 
       # Newly created referral should display on sent all referral dashboard with new recipient and user
@@ -77,8 +76,7 @@ describe '[Referrals]', :app_client, :referrals do
 
       # Selecting an org
       expect(referral_send.page_displayed?).to be_truthy
-      referral_send.select_org_in_first_dropdown
-      recipient = referral_send.selected_organization
+      recipient = referral_send.select_first_org
       referral_send.send_referral
 
       # On send a new referral id is created, but navigating with the old referral id redirects us to the new referral id
@@ -106,8 +104,7 @@ describe '[Referrals]', :app_client, :referrals do
 
       # Selecting an org
       expect(referral_send.page_displayed?).to be_truthy
-      referral_send.select_org_in_first_dropdown
-      recipient = referral_send.selected_organization
+      recipient = referral_send.select_first_org
       referral_send.send_referral
 
       # On send a new referral id is created, but navigating with the old referral id redirects us to the new referral id
@@ -118,6 +115,39 @@ describe '[Referrals]', :app_client, :referrals do
       # closing referral for cleanup purposes
       Setup::Data.recall_referral_in_harvard(note: 'Data cleanup')
       Setup::Data.close_referral_in_harvard(note: 'Data cleanup')
+    end
+
+    it 'user can send a recalled referral to multiple recipients', :uuqa_1709 do
+      # recalling referral
+      recall_note = Faker::Lorem.sentence(word_count: 5)
+      Setup::Data.recall_referral_in_harvard(note: recall_note)
+
+      # login in as org user where referral was sent
+      log_in_as(Login::CC_HARVARD)
+      expect(homepage.page_displayed?).to be_truthy
+
+      # Opening send referral page
+      referral.go_to_recalled_referral_with_id(referral_id: @referral.id)
+      referral.send_referral_action
+
+      # Selecting multiple orgs
+      num_of_recipients = 2
+      expect(referral_send.page_displayed?).to be_truthy
+      recipients = referral_send.add_multiple_recipients(count: num_of_recipients)
+      referral_send.send_referral
+
+      expect(sent_referral_dashboard.page_displayed?).to be_truthy
+      expect(sent_referral_dashboard.headers_displayed?).to be_truthy
+
+      # We expect rows returned to equal number of recipients
+      client_referrals = sent_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}")
+      expect(client_referrals.count).to eq num_of_recipients
+
+      # Listing recipients that did not receive a referral
+      unsent_recipients = recipients.reject { |r| client_referrals.join(' ').include?(r) }
+
+      # If every recipient recieved a referral then we expect the unsent recipient list to be empty
+      expect(unsent_recipients).to be_empty, "Referral was not sent to #{unsent_recipients}"
     end
   end
 end
