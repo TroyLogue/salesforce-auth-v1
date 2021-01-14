@@ -96,4 +96,42 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       expect(@new_first_referral_text).to eq(@second_referral_text)
     end
   end
+
+  context('[as a Referrals Admin user] On an incoming referral pending consent') do
+    before {
+      log_in_as(Login::CC_HARVARD)
+      expect(home_page.page_displayed?).to be_truthy
+
+      # create contact
+      @contact = Setup::Data.create_yale_client
+
+      # create referral
+      @referral = Setup::Data.send_referral_from_yale_to_harvard(contact_id: @contact.contact_id)
+
+      home_page.go_to_pending_consent
+      expect(pending_consent_page.page_displayed?).to be_truthy
+    }
+
+    it 'request consent text and email fields are prefilled', :uuqa_1717 do
+      # Adding email to contact that will be pre-filled
+      address = Faker::Internet.email
+      @contact.add_email_address(email_address: address)
+
+      # Adding phone number to contact that will be pre-filled
+      phone_number = ConsentModal::VALID_PHONE_NUMBER
+      @contact.add_phone_number(number: phone_number)
+
+      # Need to refresh page so that another call is made to update values
+      base_page.refresh
+
+      pending_consent_page.open_first_consent_modal
+      expect(pending_consent_page.consent_modal_displayed?).to be_truthy
+
+      consent_modal.select_consent_by_text
+      expect(consent_modal.phone_value).to eq(base_page.number_to_phone_format(phone_number))
+
+      consent_modal.select_consent_by_email
+      expect(consent_modal.email_value).to eq(address)
+    end
+  end
 end

@@ -167,7 +167,6 @@ class Referral < BasePage
     click(ACCEPT_FIRST_PRIMARY_WORKER_OPTION)
     click(ACCEPT_SAVE_BTN)
     wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
   end
 
   # HOLD FOR REVIEW
@@ -180,13 +179,10 @@ class Referral < BasePage
     enter(note, HOLD_REFERRAL_NOTE)
     click(HOLD_REFERRAL_BTN)
     wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
   end
 
   # CLOSE
-  def close_referral_action(note:)
-    click(TAKE_ACTION_DROP_DOWN)
-    click(TAKE_ACTION_CLOSE_OPTION)
+  def submit_close_referral_modal(note:)
     is_displayed?(CLOSE_REFERRAL_MODAL)
     # Selecting resolved option by default
     click(CLOSE_RESOLVED_DROPDOWN)
@@ -197,23 +193,18 @@ class Referral < BasePage
     enter(note, CLOSE_REFERRAL_NOTE)
     click(CLOSE_REFERRAL_BTN)
     wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
+  end
+
+  def close_referral_action(note:)
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_CLOSE_OPTION)
+    submit_close_referral_modal(note: note)
   end
 
   # P2P referrals only have the option to close a referral
   def close_referral_through_btn(note:)
     click(TAKE_ACTION_CLOSE_REFERRAL_BTN)
-    is_displayed?(CLOSE_REFERRAL_MODAL)
-    # Selecting resolved option by default
-    click(CLOSE_RESOLVED_DROPDOWN)
-    click(CLOSE_RESOLVED_OPTION)
-    # Selecing first outcome option by default
-    click(CLOSE_OUTCOME_DROPDOWN)
-    click(CLOSE_OUTCOME_OPTION)
-    enter(note, CLOSE_REFERRAL_NOTE)
-    click(CLOSE_REFERRAL_BTN)
-    wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
+    submit_close_referral_modal(note: note)
   end
 
   # REJECT
@@ -232,7 +223,6 @@ class Referral < BasePage
     enter(note, REJECT_REFERRAL_NOTE)
     click(REJECT_BTN)
     wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
   end
 
   # SEND

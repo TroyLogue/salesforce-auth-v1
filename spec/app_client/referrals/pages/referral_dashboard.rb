@@ -3,6 +3,9 @@
 module ReferralDashboard
   module SharedComponents
     HEADER_COLUMNS = { css: '.ui-table-header-column' }.freeze
+    LOCKED_MESSAGE = { css: '.unauthorized-message' }.freeze
+
+    UNAUTHORIZED_MESSAGE = "Client is not being served by your organization. [20001]\nClient has not granted consent. [20000]"
 
     def headers_displayed?
       displayed_headers = find_elements(HEADER_COLUMNS)[1..].map(&:text)
@@ -34,6 +37,17 @@ module ReferralDashboard
       end
       # Returning an array of strings if multiple results, otherwise a single string
       client_values.count > 1 ? client_values : client_values[0]
+    end
+
+    def click_on_row_by_client_name(client:)
+      list_clients = find_elements(self.class::ALL_CLIENT_NAMES).map(&:text)
+      index = list_clients.index(client) || raise("#{client} not found in table")
+      client_locator = self.class::CLIENT_ROW.transform_values { |v| v % (index + 1) }
+      click(client_locator)
+    end
+
+    def pop_up_message
+      text(LOCKED_MESSAGE)
     end
   end
 
