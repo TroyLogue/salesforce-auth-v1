@@ -86,7 +86,7 @@ module CreateReferral
       is_displayed?(org_choices)
     end
 
-    def add_multiple_recipents(count:)
+    def add_multiple_recipients(count:)
       recipient_info = ''
       count.times do
         provider = select_first_org

@@ -33,7 +33,7 @@ describe '[Referrals]', :app_client, :referrals do
 
       # Fill out referral info for multiple recipients(2)
       service_type = add_referral_page.select_first_service_type
-      recipients = add_referral_page.add_multiple_recipents(count: 2)
+      recipients = add_referral_page.add_multiple_recipients(count: 2)
       description = Faker::Lorem.sentence(word_count: 5)
 
       add_referral_page.fill_out_referral_description(description: description)

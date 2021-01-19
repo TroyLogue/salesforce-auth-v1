@@ -14,7 +14,10 @@ class CreateCase < BasePage
   OON_PROGRAM = 'Referred Out of Network'
   PRIMARY_WORKER_DROPDOWN = { css: '#primary-worker + .choices__list' }.freeze
   PRIMARY_WORKER_FIRST_OPTION = { css: '#choices-primary-worker-item-choice-2' }.freeze
+  PRIMARY_WORKER_NO_MATCHES = { css: '.has-no-results' }.freeze
+  PRIMARY_WORKER_SEARCH_INPUT = { css: '.choices__list.choices__list--dropdown.is-active > input' }.freeze
   PROGRAM_DROPDOWN = { css: '#program + .choices__list' }.freeze
+  PROGRAM_FIRST_OPTION = { css: '#choices-program-item-choice-2' }.freeze
   REMOVE_TEXT = 'Remove item'
   SERVICE_TYPE_DROPDOWN = { css: '#service-type + .choices__list' }.freeze
   SERVICE_TYPE_FIRST_OPTION = { css: '#choices-service-type-item-choice-2' }.freeze
@@ -46,6 +49,26 @@ class CreateCase < BasePage
     click(SUBMIT_CASE_BUTTON)
   end
 
+  # the search for primary worker calls a different endpoint than get/select 
+  # some specs may include the variation rather than having all create-case specs selecting the first primary-worker option
+  # (e.g., in contrast to create_oon_case_selecting_first_options)
+  def create_case_selecting_first_options_and_searching_for_primary_worker(description:, primary_worker_search_keys:)
+    select_first_program
+    select_first_service_type
+    search_and_select_primary_worker(keys: primary_worker_search_keys)
+    enter_description(description)
+
+    submitted_case_selections = {
+      service_type: selected_service_type,
+      primary_worker: selected_primary_worker
+    }
+
+    click(CASE_INFORMATION_NEXT_BUTTON)
+    click(SUPPORTING_INFORMATION_NEXT_BUTTON) if is_displayed?(SUPPORTING_INFORMATION_PAGE)
+
+    submitted_case_selections
+  end
+  
   def create_oon_case_selecting_first_options(description:)
     select_first_service_type
     select_first_oon_org
@@ -96,6 +119,16 @@ class CreateCase < BasePage
 
   private
 
+  def search_and_select_primary_worker(keys:)
+    click(PRIMARY_WORKER_DROPDOWN)
+
+    click(PRIMARY_WORKER_SEARCH_INPUT)
+    enter(keys, PRIMARY_WORKER_SEARCH_INPUT)
+    is_not_displayed?(PRIMARY_WORKER_NO_MATCHES)
+
+    click(PRIMARY_WORKER_FIRST_OPTION)
+  end
+
   def select_first_oon_org
     click(EXPAND_OON_ORG)
     click(OON_ORG_FIRST_OPTION)
@@ -104,6 +137,11 @@ class CreateCase < BasePage
   def select_first_primary_worker
     click(PRIMARY_WORKER_DROPDOWN)
     click(PRIMARY_WORKER_FIRST_OPTION)
+  end
+
+  def select_first_program
+    click(PROGRAM_DROPDOWN)
+    click(PROGRAM_FIRST_OPTION)
   end
 
   def select_first_service_type

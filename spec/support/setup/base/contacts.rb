@@ -107,6 +107,19 @@ module Setup
       expect(address_response.status.to_s).to eq('201 Created')
     end
 
+    def add_email_address(email_address:, primary: true)
+      @email_address = Payloads::Emails::Create.new(
+        acceptable_communication_types: ['message', 'notification'],
+        is_primary: primary,
+        email_address: email_address
+      ).to_h
+
+      email_response = Requests::Contacts.add_email(token: @token, group_id: @group_id,
+                                                    contact_id: @contact_id, payload: @email_address)
+
+      expect(email_response.status.to_s).to eq('201 Created')
+    end
+
     def searchable_name
       "#{@fname} #{@lname}"
     end

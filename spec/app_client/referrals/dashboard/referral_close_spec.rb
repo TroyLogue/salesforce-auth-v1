@@ -3,6 +3,7 @@ require_relative '../../root/pages/right_nav'
 require_relative '../../root/pages/home_page'
 require_relative '../../referrals/pages/referral'
 require_relative '../../referrals/pages/referral_dashboard'
+require_relative '../../consent/pages/pending_consent_page'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
@@ -10,6 +11,7 @@ describe '[Referrals]', :app_client, :referrals do
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
+  let(:pending_consent_page) { PendingConsentPage.new(@driver) }
   let(:referral) { Referral.new(@driver) }
   let(:recalled_referral_dashboard) { ReferralDashboard::Recalled.new(@driver) }
   let(:sent_pending_consent_referral_dashboard) { ReferralDashboard::Sent::PendingConsent.new(@driver) }
@@ -55,7 +57,7 @@ describe '[Referrals]', :app_client, :referrals do
     end
   end
 
-  context('[as a Referral user]') do
+  context('[as a Referral Admin user]') do
     it 'close a recalled referral', :uuqa_1578 do
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent
@@ -193,6 +195,34 @@ describe '[Referrals]', :app_client, :referrals do
       expect(referral.outcome_notes).to eql(close_note)
       expect(referral.action_btn_text).to eql(referral.class::CLOSED_REFERRAL_ACTION)
       expect(referral.closed_by).to eql(closed_by)
+    end
+
+    it 'close an incoming referral pending consent', :uuqa_1716 do
+      # create contact
+      @contact = Setup::Data.create_yale_client
+
+      # create referral
+      @referral = Setup::Data.send_referral_from_yale_to_harvard(contact_id: @contact.contact_id)
+
+      log_in_as(Login::CC_HARVARD)
+      expect(homepage.page_displayed?).to be_truthy
+
+      homepage.go_to_pending_consent
+
+      expect(pending_consent_page.page_displayed?).to be_truthy
+      pending_consent_page.open_first_close_referral_modal
+
+      close_note = Faker::Lorem.sentence(word_count: 5)
+      referral.submit_close_referral_modal(note: close_note)
+
+      # Closed referral displays in closed referrals dasboard table
+      expect(closed_referral_dashboard.page_displayed?).to be_truthy
+      expect(closed_referral_dashboard.headers_displayed?).to be_truthy
+      expect(closed_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}"))
+        .to include(@referral.received_org, @referral.service_type)
+
+      closed_referral_dashboard.click_on_row_by_client_name(client: "#{@contact.fname} #{@contact.lname}")
+      expect(closed_referral_dashboard.pop_up_message).to eql(ReferralDashboard::Closed::UNAUTHORIZED_MESSAGE)
     end
   end
 end
