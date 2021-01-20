@@ -14,5 +14,15 @@ module Setup
         service_type_code: ServiceTypeCodes::EMPLOYMENT
       )
     end
+
+    def self.close_service_case_for_harvard(contact_id:, case_id:, resolved: true)
+      Setup::Cases.close(
+        token: MachineTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        contact_id: contact_id,
+        case_id: case_id,
+        resolved: resolved
+      )
+    end
   end
 end
