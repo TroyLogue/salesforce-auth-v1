@@ -12,6 +12,7 @@ module LoginEhr
     NETWORK_DIRECTORY_USER = 'cc@bi.test'.freeze,
     NOLICENSE_MARTIN = 'martin@auto.com'.freeze,
     SCREENINGS_USER = 'screenings@uniteus.test'.freeze,
+    SCREENINGS_USER_MULTI_NETWORK = 'screenings@emr.com'.freeze
   ]
 
   DEFAULT_PASSWORD = 'Uniteus1!'.freeze
