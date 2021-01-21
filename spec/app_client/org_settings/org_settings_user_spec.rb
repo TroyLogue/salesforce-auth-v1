@@ -41,5 +41,24 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       notification_text = notifications.success_text
       expect(notification_text).to eql Notifications::USER_UPDATED
     end
+
+    it 'can update user personal info', :uuqa_1708 do
+      org_settings_user_table.go_to_first_user
+
+      first_name = Faker::Name.first_name
+      last_name = Faker::Name.last_name
+      work_title = Faker::Job.title
+
+      org_settings_user_form.edit_personal_info(first_name: first_name, last_name: last_name, work_title: work_title)
+
+      expect(org_settings_user_form.personal_info_modal_not_displayed?).to be_truthy
+
+      notification_text = notifications.success_text
+      expect(notification_text).to include(Notifications::USER_UPDATED)
+
+      expect(org_settings_user_form.name_and_title).to include(first_name)
+      expect(org_settings_user_form.name_and_title).to include(last_name)
+      expect(org_settings_user_form.name_and_title).to include(work_title)
+    end
   end
 end
