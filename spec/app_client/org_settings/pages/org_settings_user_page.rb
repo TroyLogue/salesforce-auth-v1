@@ -7,7 +7,7 @@ module OrgSettings
     USER_TABLE = { css: '.ui-table > table > tbody > tr > td > a' }.freeze
     USER_TABLE_LOAD = { xpath: './/tbody/tr/td[text()="Loading"]' }.freeze
     USER_LIST = { css: '.ui-table-body > tr > td:nth-child(1) > a' }.freeze
-    USER_ROW_FIRST = { css: '.employee-table-row:nth-of-type(1)' }.freeze
+    USER_ROW_FIRST = { css: '.employee-table-row:nth-of-type(1) .ui-table-row-column' }.freeze
     ADD_USER_BTN = { css: '#add-user-btn' }.freeze
     USERS_TABLE = { css: '.ui-table-body' }.freeze
     USERS_SEARCH_BOX = { css: '#search-text' }.freeze
@@ -30,7 +30,6 @@ module OrgSettings
       click(USER_ROW_FIRST)
       wait_for_spinner
     end
-
 
     def go_to_new_user_form
       click(ADD_USER_BTN)
