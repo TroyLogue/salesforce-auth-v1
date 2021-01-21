@@ -12,3 +12,7 @@ lib/browserstack_credentials.rb
 # OS X system files
 .DS_Store
 .byebug_history
+
+# workstation files
+.idea
+.ruby-gemset
