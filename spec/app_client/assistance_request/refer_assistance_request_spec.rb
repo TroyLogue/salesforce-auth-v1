@@ -20,7 +20,7 @@ describe '[Refer Assistance Request]', :app_client, :assistance_request do
   let(:create_referral) { CreateReferral::AddReferral.new(@driver) }
   let(:additional_info_page) { CreateReferral::AdditionalInfo.new(@driver) }
   let(:final_review_page) { CreateReferral::FinalReview.new(@driver) }
-  let(:referral_sent) { ReferralDashboard::Sent::All.new(@driver) }
+  let(:referral_sent_dashboard) { ReferralDashboard::Sent::All.new(@driver) }
 
   before do
     # Submit assistance request
@@ -37,23 +37,19 @@ describe '[Refer Assistance Request]', :app_client, :assistance_request do
     new_assistance_request_page.go_to_new_ar_with_id(ar_id: @assistance_request.ar_id)
     new_assistance_request_page.select_refer_ar_action
     create_referral.page_displayed?
-    create_referral.select_first_service_type
     create_referral.select_first_org
     create_referral.click_next_button
     additional_info_page.click_next_button if additional_info_page.page_displayed?
     final_review_page.page_displayed?
     expect(final_review_page.full_name).to eq(@assistance_request.full_name)
     expect(final_review_page.description).to eq(@assistance_request.description)
+    expect(final_review_page.service_type).to eq(@assistance_request.service_type_name)
+  
     final_review_page.click_submit_button
-    referral_sent.page_displayed?
+    referral_sent_dashboard.page_displayed?
     notification_text = notifications.success_text
     expect(notification_text).to include(Notifications::REFERRAL_CREATED)
-    expect(referral_sent.row_values_for_client(client: @assistance_request.full_name).split(',')[1].strip)
+    expect(referral_sent_dashboard.row_values_for_client(client: @assistance_request.full_name).split(',')[1].strip)
       .to eq(@assistance_request.full_name)
-  end
-
-  after do
-    # Closing the API AR submitter as part of cleanup
-    Setup::Data.close_columbia_assistance_request(ar_id: @assistance_request.ar_id)
   end
 end
