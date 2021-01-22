@@ -52,6 +52,6 @@ class NewScreening < BasePage
 
   private
   def network_choice?
-    find(NETWORK_CHOICE).displayed?
+    check_displayed?(SELECT_NETWORK_DROPDOWN)
   end
 end
