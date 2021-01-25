@@ -30,7 +30,7 @@ describe '[Referrals]', :ehr, :referrals do
       expect(referrals_table.loading_referrals_complete?).to be_truthy
 
       expect(notifications_ehr.error_notification_not_displayed?).to be_truthy
-      expect(referrals_table.no_referrals_message_displayed? | referrals_table.referrals_displayed?).to be_truthy
+      expect(referrals_table.no_referrals_message_displayed? || referrals_table.referrals_displayed?).to be_truthy
     end
 
     it 'finds senders via search', :uuqa_1619 do
