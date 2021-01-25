@@ -1,18 +1,12 @@
-require_relative '../../../spec_helper'
-require_relative '../pages/login_email'
-require_relative '../pages/login_password'
+# frozen_string_literal: true
+
+# require_relative '../pages/login_email' # UU3-48209 uncomment login page-objects when task is addressed
+# require_relative '../pages/login_password'
 
 module Login
-  RSpec.configure do |config|
-    config.before(:each) do
-      @login_email = LoginEmail.new(@driver)
-      @login_password = LoginPassword.new(@driver)
-    end
-  end
+  attr_accessor :login_email, :login_password
 
-  attr_reader :email_address, :password
-
-  # TODO UU3-26998 UU3-26999 UU3-27000 UU3-27001
+  # TODO: UU3-26998 UU3-26999 UU3-27000 UU3-27001
   # manage users per staging, training, and prod envs
   # evaluate feasibility of reducing array of users and generating machine tokens
   TEST_USERS = [
@@ -20,10 +14,6 @@ module Login
     BI_CC_USER = 'cc@bi.test',
     # primary cc used in tests
     CC_HARVARD = 'harvard@auto.com',
-    # EHR user with screenings role
-    EMR_SCREENINGS_USER = 'screenings@emr.com',
-    # EHR user with no screenings permissions
-    EMR_NON_SCREENINGS_USER = 'noscreenings@emr.com',
     # user configured with Tableau license for Insights feature
     INSIGHTS_USER = 'insights@auto.com',
     # used in createIntakeOrgIntakeUser.js
@@ -50,15 +40,26 @@ module Login
     # might become obsolete or applied to referrals tests
     SUPER_USER = 'super@best.com',
     # settings user, QA network
-    SETTINGS_USER = 'qa.perms@auto.com'
-  ]
+    SETTINGS_USER = 'qa.perms@auto.com',
+    # next gate temp user, this user is licensed in a NG tagged organization
+    # and has New-Search Feature Flag enabled
+    NEXTGATE_USER = 'test-perms9@auto.com',
+    # columbia org with New-Search Feature Flag enabled
+    NEW_SEARCH_USER = 'client-search@auto.com',
+    # used to test provider-selector features
+    USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test',
+    # user with valid address
+    ORG_UPENN = 'upenn@auto.com',
+    # user with no address in org with no address
+    ORG_CHICAGO = 'chicago@auto.com'
+  ].freeze
 
   DEFAULT_PASSWORD = 'Uniteus1!'
   WRONG_PASSWORD = 'Uniteus' # can be passed to log_in_as method instance
   INSECURE_PASSWORD = 'password123'
 
   def log_in_as(email_address, password = DEFAULT_PASSWORD)
-    base_page.get ''
+    login_email.get ''
     expect(login_email.page_displayed?).to be_truthy
 
     login_email.submit(email_address)

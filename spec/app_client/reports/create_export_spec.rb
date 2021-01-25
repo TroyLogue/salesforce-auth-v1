@@ -1,7 +1,4 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/left_nav'
 require_relative './pages/exports'
 
@@ -12,7 +9,6 @@ describe '[Reports - Create Export]', :reports, :app_client do
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:exports) { Exports.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
 
   context('[as cc user]') do
     before {

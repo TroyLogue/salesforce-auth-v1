@@ -15,11 +15,15 @@ gem 'rake'
 #test_data
 gem 'faker'
 gem 'http'
+gem 'dotenv'
 
 #browserstack
 # enables HTTP persistent connection in selenium bindings
 # https://github.com/browserstack/fast-selenium-scripts/tree/master/fast-selenium-gem
 gem 'fast-selenium'
+
+# reporting used for Jenkins jobs
+gem 'rspec_junit_formatter'
 
 #debugging
 gem 'byebug' # https://github.com/deivid-rodriguez/byebug

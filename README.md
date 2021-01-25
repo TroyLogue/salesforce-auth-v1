@@ -41,6 +41,14 @@ Clone this repository and install its dependencies:
 
 `cd end-to-end-tests/ && bundle install`
 
+## Update Project
+
+The `end-to-end-tests` repository leverages our API to setup data for tests via an [internal gem in the api-integration-tests repository](https://github.com/unite-us/api-integration-tests/blob/master/lib/uniteus-api-client.rb). In order to always access the latest-and-greatest contents of the `api-integration-tests` `lib` directory (i.e., contents of the `uniteus-api-client` gem), the update workflow when working in this project should be:
+
+`git fetch origin && git pull && bundle update uniteus-api-client`
+
+It may be useful to add an alias for that command.
+
 ## Install Web Drivers
 
 This repository has to date been optimized to run on OS X. If you are setting up this project on an alternate OS please contribute to these instructions.
@@ -55,6 +63,14 @@ Note: There is a [webdrivers gem](https://github.com/titusfortner/webdrivers) wh
 Note: The version of Chromedriver must match the version of Chrome running in the test. You can upgrade Chromedriver to the latest version as follows:
 
 `brew cask upgrade chromedriver`
+
+If you are blocked from running chromedriver with the alert "macOS cannot verify the developer of chromedriver...", you need to update your permissions. Open a Terminal window, navigate to the path in which chromedriver is installed, and run the following: 
+
+`xattr -d com.apple.quarantine chromedriver`
+
+#### Disable login on new Chrome windows
+
+Unite Us IT has implemented a policy by which users are prompted to login when a new Chrome window is launched. In support ticket [UUI-507](https://uniteus.atlassian.net/browse/UUI-507) team members who needed to run automated tests in Chrome were added to an exceptions list to disable this prompted. New contributors to the project should submit a request like [UUI-1613](https://uniteus.atlassian.net/browse/UUI-1613) in order to be added to that list.
 
 ### ([Geckodriver](https://github.com/mozilla/geckodriver)) (for Firefox)
 
@@ -80,6 +96,10 @@ We will leverage BrowserStack for cross-browser testing.
 We run tests on Windows browsers using [BrowserStack](http://www.browserstack.com). To gain access, copy lib/`browserstack_credentials.rb.example` to lib/`browserstack_credentials.rb` and set your BrowserStack username and access key. If you need to be added as a user on our team, see an admin of our BrowserStack account (@carolmirakove).
 
 The full test result output including screenshots and video is available in BrowserStack's [Automate view](https://www.browserstack.com/automate). BrowserStack results configs are set in the `spec_helper` file.
+
+## Local enviroment variables
+
+A template `.env.example` file is provided but in order to run against staging create a `.env.staging` file and replace the appropriate tokens with those shared in 1Password.
 
 # Running Tests Locally
 
@@ -136,15 +156,9 @@ To run two tests in `networks/browse_map_spec` at lines 20 and 31:
 `rspec spec/networks/browse_map_spec.rb:27:40`
 
 # Running Tests via Docker
-
-- TODO [UU3-35283](https://uniteus.atlassian.net/browse/UU3-35283)
-
-- These are not finalized, but there are some useful docker commands in the Rake file to run test cases locally against Chrome and Firefox
-
 `rake docker:build` builds the image with the tag `end-to-end`
 `rake docker:run[chrome]` or `rake docker:run[firefox]` creates and starts the containers
 `rake docker:clean[chrome]` or `rake docker:clean[firefox]` deletes all the containers
-
 # Developing Tests
 
 Tests are comprised of three types of activities:
@@ -163,11 +177,10 @@ Page Objects, developed and popularized by Google, have proven to be a best prac
 
 - Page-object classes should contain (1) constants defining selectors on the relevant page, and (2) functions to be called by specs
 - If a route contains three tabs (e.g., /network is a parent to browse map, orgs, and users), create one page object for each tab
-- Similarly modals warrant distinct page-object classes
 - Method activities are limited to locating and interacting with elements
 - Page object methods do not as a general rule contain assertions; assertions should be executed in a spec or spec helper
 - Spec helpers are comprised of multiple page object methods for DRY purposes (e.g., a helper called log_in_as could contain the steps to load the home page, click log in, and submit a user's credentials)
-  - Helper methods should be moved to back-end calls if possible (e.g., send an API request to set up the conditions required by the test, or use machine tokens to bypass the UI login flow)
+  - Helper methods should be moved to back-end calls if possible (e.g., send an API request to set up the conditions required by the test, or use tokens to bypass the UI login flow)
 
 ### Tagging guidelines
 
@@ -188,7 +201,7 @@ A significant tagging effort can decrease maintenance tests in reflecting the va
 
 #### Tags as expression
 
-Thoughtful Test design is at least as meaningful as clean coding. Deciding whether a test case is a smoke vs. regression test and whether it needs to be run on all browsers vs. just one browser are high-value expressions that we should take care to optimize.
+Thoughtful test design is at least as meaningful as clean coding. Deciding whether a test case is a smoke vs. regression test and whether it needs to be run on all browsers vs. just one browser are high-value expressions that we should take care to optimize.
 
 #### Tags as function
 
@@ -203,12 +216,7 @@ Running tests by tags rather than directory is optimal for its flexibility, but 
 
 ## Coding Style
 
-- TODO [UU3-25213](https://uniteus.atlassian.net/browse/UU3-35213)
-
-Although we have not decided on a formatter, we do want to maintain some consistancy as this project grows and more people contribute. For now:
-- indent_size = 2
-- trim_trailing_whitespace = true
-- insert_final_newline = true
+We are using [RuboCop](https://docs.rubocop.org/rubocop/index.html) for code formatting. Please find details in the [QA Confluence space](https://uniteus.atlassian.net/wiki/spaces/QA/pages/1656258561/RuboCop+Ruby+formatting).
 
 ## Naming Conventions
 
@@ -217,13 +225,13 @@ Although we have not decided on a formatter, we do want to maintain some consist
 Files and descriptions in `spec/` are named by feature, context, and test case, e.g.,
 
 ```
-describe '[Network]', :network do # description and tag match Feature in UUQA JIRA project
+describe '[Network]', :app_client, :network do # description and tag match Feature in UUQA JIRA project
   ...
-  context('[as cc user]') do # define the user executing the test
+  context('[as Network Directory User]') do # define the user executing the test
     ...
     context('[on Browse Drawer Share Form]') do # define the component under test
       ...
-      it 'shares provider details via email', :uuqa_652, :app_client, :smoke, :cross_browser, :parallel do # describe the scenario
+      it 'shares provider details via email', :uuqa_652 do # describe the scenario
         ...
 ```
 
@@ -274,10 +282,10 @@ Error handling is defined in the base page object, `pages/page.rb`.
 
 - Jenkins
 
-  - [ ]  TODO [UU3-35212](https://uniteus.atlassian.net/browse/UU3-35212)
-    - [ ] configure server to run tests headlessly
-    - [ ] configure server to send tests to BrowserStack
-    - [ ] install plugin for test results
+  - Server
+    - [x] configure server to run tests headlessly
+    - [ ] TODO configure server to send tests to BrowserStack
+    - [x] install plugin for test results
 
 - BrowserStack
   - [x] configure Video on Failure

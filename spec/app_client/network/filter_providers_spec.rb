@@ -1,7 +1,4 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/left_nav'
 require_relative './pages/network_browse_map'
 
@@ -12,13 +9,13 @@ describe '[Network - Browse Map]', :network, :app_client do
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:network_browse_map) { NetworkBrowseMap.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
 
   context('[as cc user]') do
     before {
       log_in_as(Login::CC_HARVARD)
       left_nav.go_to_my_network
       expect(network_browse_map.page_displayed?).to be_truthy
+      expect(network_browse_map.provider_card_first_displayed?).to be_truthy
     }
 
     it 'filters providers by network scope', :uuqa_292 do

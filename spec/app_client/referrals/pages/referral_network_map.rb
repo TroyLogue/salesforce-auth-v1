@@ -21,6 +21,10 @@ class ReferralNetworkMap < BasePage
     is_displayed?(BROWSE_MAP)
   end
 
+  def address_summary
+    text(FILTER_SUMMARY_LINK)
+  end
+
   def open_first_organization_drawer
     click(FIRST_ORG_CARD)
     is_displayed?(DETAILS_DRAWER)

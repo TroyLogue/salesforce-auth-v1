@@ -1,20 +1,16 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 
-describe '[Auth - Login/Logout]', :app_client, :auth, :login do
+describe '[Auth - Login - Logout]', :app_client, :auth, :login do
   include Login
 
-  let(:base_page) { BasePage.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
 
-  it 'Logs in with a valid email, then logs out', :uuqa_5 do
+  it 'Logs in with a valid email, then logs out', :uuqa_5, :uuqa_1608 do
     log_in_as(Login::CC_HARVARD)
     expect(home_page.page_displayed?).to be_truthy
     user_menu.log_out

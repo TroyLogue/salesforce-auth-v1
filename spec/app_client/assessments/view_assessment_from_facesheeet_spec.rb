@@ -1,22 +1,16 @@
-require 'date'
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../facesheet/pages/facesheet_forms_page'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative './pages/facesheet_assessment_page'
-require_relative '../../shared_components/base_page'
 
 describe '[Assessments - Facesheet]', :assessments, :app_client do
   include Login
 
+  let(:homepage) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
-  let(:homepage) { HomePage.new(@driver) }
   let(:facesheet_forms) { FacesheetForms.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:assessment) { FacesheetAssessment.new(@driver) }
@@ -40,8 +34,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(homepage.page_displayed?).to be_truthy
 
       #creating contact
-      token = base_page.get_uniteus_api_token
-      @contact = Setup::Data.create_princeton_client(token: token)
+      @contact = Setup::Data.create_princeton_client
     }
 
     it 'can view and edit an assessment from facesheet view', :uuqa_101 do
@@ -50,7 +43,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
         id: @contact.contact_id,
         tab: 'forms'
       )
-      expect(facesheet_header.get_facesheet_name).to eql(@contact.searchable_name)
+      expect(facesheet_header.facesheet_name).to eql(@contact.searchable_name)
       expect(facesheet_forms.page_displayed?).to be_truthy
 
       #find unstarted assessment
@@ -72,10 +65,10 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(assessment.page_displayed?).to be_truthy
 
       # verify information on assessment
-      ASSESSMENT_FORM_VALUES = [SINGLE_LINE_TEXT, MULTI_LINE_TEXT, EMAIL_ADDRESS, RANDOM_NUMBER, DISPLAY_DATE]
+      assessment_form_values = [SINGLE_LINE_TEXT, MULTI_LINE_TEXT, EMAIL_ADDRESS, RANDOM_NUMBER, DISPLAY_DATE]
 
       assessment_text = assessment.assessment_text
-      ASSESSMENT_FORM_VALUES.each do |value|
+      assessment_form_values.each do |value|
         expect(assessment_text).to include(value.to_s)
       end
     end

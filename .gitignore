@@ -1,8 +1,13 @@
 # test-run artifacts
 results/
+tmp/
 
 # account credentials
 lib/browserstack_credentials.rb
+.env.devqa
+.env.staging
+.env.training
+.env.prod
 
 # OS X system files
 .DS_Store

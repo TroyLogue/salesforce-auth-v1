@@ -1,7 +1,4 @@
-require_relative '../../spec_helper'
 require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/left_nav'
 require_relative '../clients/pages/clients_page'
 require_relative './pages/facesheet_header'
@@ -10,10 +7,9 @@ require_relative './pages/facesheet_uploads_page'
 describe '[Facesheet]', :app_client, :facesheet do
   include Login
 
+  let(:left_nav) { LeftNav.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
-  let(:base_page) { BasePage.new(@driver) }
-  let(:left_nav) { LeftNav.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_uploads_page) { FacesheetUploadsPage.new(@driver) }
