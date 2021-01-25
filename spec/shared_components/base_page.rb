@@ -15,6 +15,16 @@ class BasePage
     find(selector).attribute(attribute)
   end
 
+  # similar to is_present? but checks for displayed
+  # useful when an element may appear sometimes and sometimes may be hidden
+  def check_displayed?(selector)
+    find(selector).displayed?
+  rescue Selenium::WebDriver::Error::NoSuchElementError
+    false
+  rescue Selenium::WebDriver::Error::StaleElementReferenceError
+    false
+  end
+
   # may return true, false, or nil
   def checkbox_value(element)
     checkbox = find(element)

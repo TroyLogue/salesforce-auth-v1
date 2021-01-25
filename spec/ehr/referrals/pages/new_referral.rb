@@ -67,6 +67,10 @@ class NewReferral < BasePage
     wait_for_matches
   end
 
+  def selected_service_type
+    text(SERVICE_TYPE_FILTER)
+  end
+
   def submit
     click(SUBMIT_BTN)
   end
@@ -96,10 +100,6 @@ class NewReferral < BasePage
     providers.each do |provider|
       add_provider_via_table_by_name(provider)
     end
-  end
-
-  def selected_service_type
-    text(SERVICE_TYPE_FILTER)
   end
 
   def set_primary_worker_to_random_option
