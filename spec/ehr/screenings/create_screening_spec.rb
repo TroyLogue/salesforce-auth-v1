@@ -16,7 +16,7 @@ describe '[Screenings]', :ehr, :screenings do
   let(:screening) { Screening.new(@driver) }
   let(:screenings_table) { ScreeningsTable.new(@driver) }
 
-  context('[default view] as a screenings user') do
+  context('[default view] as a screenings user in one network') do
     before do
       # screenings only available w patient context (default view)
       log_in_default_as(LoginEhr::SCREENINGS_USER)
@@ -44,6 +44,28 @@ describe '[Screenings]', :ehr, :screenings do
       new_screening.complete_screening_with_no_referral_needs
       expect(screening.page_displayed?).to be_truthy
       expect(screening.no_needs_identified?).to be_truthy
+    end
+  end
+
+  context('[default view] as a screenings user in multiple networks') do
+    before do
+      # screenings only available w patient context (default view)
+      log_in_default_as(LoginEhr::SCREENINGS_USER_MULTI_NETWORK)
+      expect(screenings_table.page_displayed?).to be_truthy
+    end
+
+    it 'creates a screening with referral needs', :uuqa_1728 do
+      screenings_table.create_screening
+      expect(new_screening.page_displayed?).to be_truthy
+
+      new_screening.complete_screening_with_referral_needs
+      expect(screening.page_displayed?).to be_truthy
+      expect(screening.needs_identified?).to be_truthy
+
+      service_type = screening.get_first_identified_service_type
+      screening.create_referral_from_identified_need
+      expect(new_referral.page_displayed?).to be_truthy
+      expect(new_referral.selected_service_type).to include(service_type)
     end
   end
 end
