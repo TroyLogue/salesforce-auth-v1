@@ -32,10 +32,7 @@ class Intake < BasePage
   REMOVE_BUTTON = { css: 'a[title = "Remove intake need"]' }.freeze
 
   # insurance information
-  MEDICARE_BENIFIARY_ID_INPUT = { id: '#insurance-id-0' }.freeze
-  MEDICAID_ID_INPUT = { id: '#insurance-id-1' }.freeze
-  STATE = { css: '#insurance-state-1 + .choices__list' }.freeze
-  DEFAULT_STATE_NEW_YORK = { id: 'choices-insurance-state-1-item-choice-38' }.freeze
+  INSURANCES = { css: '.payments-insurance-information'}
 
   # Other Information fields
   MARITAL_STATUS = { css: '#marital-status + .choices__list' }.freeze

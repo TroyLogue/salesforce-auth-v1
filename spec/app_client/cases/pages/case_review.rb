@@ -4,6 +4,7 @@ require_relative '../../../shared_components/base_page'
 
 class CaseReview < BasePage
   EDIT_BUTTON = { css: '.detail-review__footer #edit-case-btn' }.freeze
+  DESCRIPTION_IN_NETWORK = { css: '.detail-review__row:nth-of-type(3) .detail-review__text--short' }.freeze
   NOTES = {  css: '.detail-review__row:nth-of-type(4) .detail-review__text--short' }.freeze
   PRIMARY_WORKER = { css: '.detail-review__row:nth-of-type(2) .col-xs-6:nth-of-type(2) .detail-review__text--short' }.freeze
   REFERRED_TO = {  css: '.detail-review__row:nth-of-type(3) .detail-review__text--short' }.freeze
@@ -22,6 +23,10 @@ class CaseReview < BasePage
   def click_submit_button
     click(SUBMIT_BUTTON)
     wait_for_spinner
+  end
+
+  def description_in_network
+    text(DESCRIPTION_IN_NETWORK)
   end
 
   def notes

@@ -21,6 +21,7 @@ describe '[Network - Browse Map - Browse Drawer]', :network, :app_client do
       log_in_as(Login::CC_HARVARD)
       left_nav.go_to_my_network
       expect(network_browse_map.page_displayed?).to be_truthy
+      expect(network_browse_map.provider_card_first_displayed?).to be_truthy
     end
 
     it 'shares provider details via email', :uuqa_652 do

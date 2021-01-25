@@ -110,11 +110,13 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
         expect(facesheet_profile.current_income).to eql(@income)
 
         # Update Insurance
-        @medicaid_id = Faker::Alphanumeric.alphanumeric(number: 10).upcase
-        @beneficiary_id = Medicare.generate_id
-        @state = Faker::Address.state
-        facesheet_profile.add_insurance_section(medicaid_id: @medicaid_id, beneficiary_id: @beneficiary_id, state: @state)
-        expect(facesheet_profile.current_insurance).to include(@medicaid_id, @beneficiary_id, @state)
+        @plan_type = facesheet_profile.class::MEDICARE_PLAN
+        @plan = facesheet_profile.class::MEDICARE_PLAN
+        @member_id = Medicare.generate_id
+        facesheet_profile.add_insurance(plan_type: @plan_type,
+                                                insurance_plan: @plan,
+                                                member_id: @member_id)
+        expect(facesheet_profile.list_insurances).to include(@plan_type, @plan, @member_id)
 
         # Update Military status
         @affiliation = facesheet_profile.class::AFFILIATION_CAREGIVER

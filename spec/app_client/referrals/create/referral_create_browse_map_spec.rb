@@ -29,7 +29,7 @@ describe '[Referrals]', :app_client, :referrals do
         facesheet_header.refer_client
         expect(add_referral_page.page_displayed?).to be_truthy
 
-        add_referral_page.select_service_type_by_id(id: Services::BENEFITS_DISABILITY_BENEFITS)
+        add_referral_page.select_first_service_type
         add_referral_page.open_network_browse_map
 
         expect(network_map.page_displayed?).to be_truthy
