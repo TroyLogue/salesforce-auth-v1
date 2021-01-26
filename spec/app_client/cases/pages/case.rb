@@ -15,6 +15,10 @@ class Case < BasePage
     is_displayed?(CASE_VIEW)
   end
 
+  def go_to_open_case_with_id(case_id:, contact_id:)
+    get("/dashboard/cases/open/#{case_id}/contact/#{contact_id}")
+  end
+
   def go_to_closed_case_with_id(case_id:, contact_id:)
     get("/dashboard/cases/closed/#{case_id}/contact/#{contact_id}")
   end
