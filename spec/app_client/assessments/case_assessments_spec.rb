@@ -1,5 +1,3 @@
-require_relative '../../spec_helper'
-require_relative '../../shared_components/base_page'
 require_relative '../auth/helpers/login'
 require_relative '../auth/pages/login_email'
 require_relative '../auth/pages/login_password'
