@@ -5,6 +5,7 @@ class OpenCasesDashboard < BasePage
   PRIMARY_WORKER_DROPDOWN = { css: '#primary-worker-filter' }.freeze
   PRIMARY_WORKER_SEARCH = { css: '#primary-worker-filter .ui-filter-search > input' }.freeze
   PRIMARY_WORKER_FIRST_OPTION = { css: '#primary-worker-filter .filter-options__container div:nth-of-type(2)' }.freeze
+  PRIMARY_WORKER_SELECTED_OPTION = { css: "#{PRIMARY_WORKER_FIRST_OPTION[:css]} label" }.freeze
   PRIMARY_WORKER_LIST = { css: '#open-cases-table > .ui-table > .ui-table-body > tbody > tr > td:nth-of-type(5)' }.freeze
   NO_CASES_TEXT_CONTAINER = { css: '#open-cases-table .dashboard-inner-content > div > div > h3' }.freeze
   NO_CASES_TEXT = 'There are no open cases.'
@@ -21,7 +22,7 @@ class OpenCasesDashboard < BasePage
     click(PRIMARY_WORKER_DROPDOWN)
     clear_then_enter(text, PRIMARY_WORKER_SEARCH)
     is_displayed?(PRIMARY_WORKER_FIRST_OPTION)
-    selected_option_text = text({ css: "#{PRIMARY_WORKER_FIRST_OPTION[:css]} label" })
+    selected_option_text = text(PRIMARY_WORKER_SELECTED_OPTION)
     click(PRIMARY_WORKER_FIRST_OPTION)
     click(PRIMARY_WORKER_DROPDOWN)
     selected_option_text

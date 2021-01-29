@@ -20,12 +20,11 @@ describe '[cases]', :app_client, :cases do
       expect(homepage.page_displayed?).to be_truthy
     end
 
-    it 'works', :uuqa_1713 do
+    it 'filters by primary worker', :uuqa_1713 do
       open_cases_dashboard.go_to_open_cases_dashboard
       expect(open_cases_dashboard.open_cases_table_displayed?).to be_truthy
 
       primary_worker = open_cases_dashboard.search_and_select_first_primary_worker('e')
-      # primary_worker = open_cases_dashboard.select_first_primary_worker
 
       expect(notifications.notification_not_displayed?).to be_truthy
       expect(open_cases_dashboard.no_cases_message_displayed? || open_cases_dashboard.cases_match_primary_worker?(primary_worker)).to be_truthy
