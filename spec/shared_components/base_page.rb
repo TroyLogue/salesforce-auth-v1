@@ -23,6 +23,8 @@ class BasePage
     false
   rescue Selenium::WebDriver::Error::StaleElementReferenceError
     false
+  rescue Selenium::WebDriver::Error::TimeOutError
+    false
   end
 
   # may return true, false, or nil
@@ -215,10 +217,15 @@ class BasePage
   rescue Selenium::WebDriver::Error::StaleElementReferenceError
     true
   rescue Selenium::WebDriver::Error::TimeOutError
-    true
+    # this will time out both when the element exists and does not exist - so we need to check again after the waiting period
+    displayed = check_displayed?(selector)
+    print "E2E ERROR: Selector #{selector} was present" if check_displayed?(selector)
+    !displayed
   else
-    print "E2E ERROR: Selector #{selector} was present"
-    false
+    # this execute anytime no exception is thrown - so we need to check if the element is displayed or not
+    displayed = check_displayed?(selector)
+    print "E2E ERROR: Selector #{selector} was present" if check_displayed?(selector)
+    !displayed
   end
 
   # Similar to is_displayed? but without the time wrapper, and therefore returns

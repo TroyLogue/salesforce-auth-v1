@@ -6,7 +6,8 @@ module OrgSettings
   class UserTable < BasePage
     USER_TABLE = { css: '.ui-table > table > tbody > tr > td > a' }.freeze
     USER_TABLE_LOAD = { xpath: './/tbody/tr/td[text()="Loading"]' }.freeze
-    USER_LIST = { css: '.ui-table-body > tr > td:nth-child(1) > a' }.freeze
+    USER_NAME_LIST = { css: '.ui-table-body > tr > td:nth-child(1) > a' }.freeze
+    USER_EMAIL_LIST = { css: '.ui-table-body > tr > td:nth-child(2)' }.freeze
     USER_ROW_FIRST = { css: '.employee-table-row:nth-of-type(1) .ui-table-row-column' }.freeze
     ADD_USER_BTN = { css: '#add-user-btn' }.freeze
     USERS_TABLE = { css: '.ui-table-body' }.freeze
@@ -22,8 +23,13 @@ module OrgSettings
     end
 
     def get_list_of_user_names
-      names = find_elements(USER_LIST)
-      names_array = names.collect(&:text)
+      names = find_elements(USER_NAME_LIST)
+      names.collect(&:text)
+    end
+
+    def get_list_of_user_emails
+      emails = find_elements(USER_EMAIL_LIST)
+      emails.collect(&:text)
     end
  
     def go_to_first_user
@@ -33,6 +39,23 @@ module OrgSettings
 
     def go_to_new_user_form
       click(ADD_USER_BTN)
+    end
+
+    def search_for(text)
+      enter(text, USERS_SEARCH_BOX)
+    end
+
+    def no_users_displayed?
+      is_not_displayed?(USER_ROW_FIRST)
+    end
+
+    def users_displayed?
+      is_displayed?(USER_ROW_FIRST)
+    end
+
+    def matching_users_displayed?(text)
+      names_and_emails = get_list_of_user_names.zip(get_list_of_user_emails)
+      users_displayed? && names_and_emails.all? { |name_and_email| name_and_email.any? { |val| val.include?(text) } }
     end
   end
 
