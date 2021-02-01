@@ -38,6 +38,7 @@ module OrgSettings
 
   class UserCard < BasePage
     USER_HEADER = { css: '.ui-base-card-header__title' }.freeze
+    NAME_AND_TITLE_ROW = { css: '.common-display-profile.editable-panel' }.freeze
 
     # NEW USER
     INPUT_FIRSTNAME = { css: '#first-name' }.freeze
@@ -54,7 +55,9 @@ module OrgSettings
     # EXISTING USER
     EDITABLE_PERSONAL_INFO = { css: '#edit-personal-information-modal-btn' }.freeze
     BTN_CANCEL_PERSONAL = { css: '#personal-information-cancel-btn' }.freeze
+    EDIT_PERSONAL_INFO_MODAL = { css: '#edit-personal-information-modal' }.freeze
     EDIT_PERSONAL_INFO_CLOSE_BUTTON = { css: '#edit-personal-information-modal .title-closeable .ui-icon' }.freeze
+    EDIT_PERSONAL_INFO_SAVE_BUTTON = { css: '#edit-personal-information-modal #personal-information-submit-btn' }.freeze
     EDITABLE_EMAIL = { css: '#edit-email-address-modal-btn' }.freeze
     BTN_SAVE_EMAIL = { css: '#edit-email-save-btn' }.freeze
     EDIT_EMAIL_CLOSE_BUTTON = { css: '#edit-email-address-modal .title-closeable .ui-icon' }.freeze
@@ -114,6 +117,23 @@ module OrgSettings
       is_displayed?(INPUT_EMAIL)
       click(BTN_SAVE_EMAIL)
       is_not_displayed?(INPUT_EMAIL)
+    end
+
+    def edit_personal_info(first_name: nil, last_name: nil, work_title: nil)
+      click(EDITABLE_PERSONAL_INFO)
+      is_displayed?(EDIT_PERSONAL_INFO_CLOSE_BUTTON) # wait for modal to glide down
+      clear_then_enter(first_name, INPUT_FIRSTNAME) unless first_name.nil?
+      clear_then_enter(last_name, INPUT_LASTNAME) unless last_name.nil?
+      clear_then_enter(work_title, INPUT_WORK_TITLE) unless work_title.nil?
+      click(EDIT_PERSONAL_INFO_SAVE_BUTTON)
+    end
+
+    def personal_info_modal_not_displayed?
+      is_not_displayed?(EDIT_PERSONAL_INFO_MODAL, 0.5)
+    end
+
+    def name_and_title
+      text(NAME_AND_TITLE_ROW)
     end
   end
 end
