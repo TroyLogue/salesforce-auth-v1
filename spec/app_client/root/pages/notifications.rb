@@ -50,4 +50,8 @@ class Notifications < BasePage
     is_displayed?(SUCCESS_BANNER)
     click_within(SUCCESS_BANNER, CLOSE_BANNER)
   end
+
+  def notification_not_displayed?
+    is_not_displayed?(ERROR_BANNER)
+  end
 end
