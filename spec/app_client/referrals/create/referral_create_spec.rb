@@ -6,7 +6,10 @@ require_relative '../../root/pages/home_page'
 require_relative '../../root/pages/left_nav'
 require_relative '../../clients/pages/clients_page'
 require_relative '../../facesheet/pages/facesheet_header'
+require_relative '../../facesheet/pages/facesheet_cases_page'
 require_relative './../pages/create_referral'
+require_relative '../../cases/pages/open_cases_dashboard'
+require_relative '../../cases/pages/case'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
