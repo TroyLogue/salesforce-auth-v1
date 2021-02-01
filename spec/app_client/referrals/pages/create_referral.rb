@@ -8,6 +8,12 @@ module CreateReferral
     FIRST_SERVICE_CHOICE = { css: '#choices-service-type-item-choice-2' }.freeze
     SELECTED_SERVICE_TYPE = { css: '#service-type + div > div:not(button)' }.freeze
     BROWSE_MAP_LINK = { css: '#browse-map-button' }.freeze
+    CREATE_OUT_OF_NETWORK_CASE_BUTTON = { css: '#open-out-of-network-case-btn' }.freeze
+    CREATE_CASE_BUTTON = { css: '#create-case-btn' }.freeze
+
+    PRIMARY_WORKER_DROPDOWN = { css: '#primary-worker + .choices__list' }.freeze
+    PRIMARY_WORKER_FIRST_OPTION = { css: '#choices-primary-worker-item-choice-3' }.freeze
+    SAVE_BUTTON = { css: '#save-case-assessments-btn' }.freeze
 
     ADD_ANOTHER_RECIPIENT = { css: 'button[aria-label="+ ADD ANOTHER RECIPIENT"]' }.freeze
     AUTO_RECALL_CHECKBOX = { css: '#send-referral-auto-recallable-checkbox-0 + label' }.freeze
@@ -78,6 +84,49 @@ module CreateReferral
       text(selected_program).sub(REMOVE_TEXT, '').strip
     end
 
+    def create_oon_case_selecting_first_options(description:)
+      selected_service_type = select_first_service_type
+      click_create_oon_case
+      selected_oon_org = select_first_oon_org
+      selected_primary_worker = select_first_primary_worker
+      fill_out_referral_description(description: description)
+      click_create_case
+
+      {
+        service_type: selected_service_type,
+        org: selected_oon_org,
+        primary_worker: selected_primary_worker
+      }
+    end
+
+    def select_first_oon_org
+      org_choices = { css: "#select-field-oon-group-#{@recipient_index} + .choices__list" }
+      first_org_choice = { css: "div[id^='choices-select-field-oon-group-#{@recipient_index}-item-choice']:not([aria-disabled*='true']):not([data-value=''])" }
+      selected_org = { css: "#select-field-oon-group-#{@recipient_index} + div > div:not(button)" }
+
+      click(org_choices)
+      click(first_org_choice)
+
+      if is_displayed?(ERROR_MESSAGE, 2) && text(ERROR_MESSAGE) == ERROR_MULTIPLE_RECIPIENT_CC
+        info_message = 'Users are unable to add a Coordination Center when there are multiple recipients. '\
+                       'One of the providers selected is a Coordination Center.'
+        raise StandardError, info_message
+      end
+
+      # Removing distance and "Remove Item" to return just the provider name
+      provider = text(selected_org)
+      provider_distance = provider.rindex(/\(/) # finds the last open paren in the string
+      provider[0..(provider_distance - 1)].strip # returns provider_text up to the distance
+    end
+
+    def select_first_primary_worker
+      selected_worker = { css: '#primary-worker + div > div:not(button)' }
+
+      click(PRIMARY_WORKER_DROPDOWN)
+      click(PRIMARY_WORKER_FIRST_OPTION)
+      text(selected_worker).sub(REMOVE_TEXT, '').strip
+    end
+
     def add_another_recipient
       click(ADD_ANOTHER_RECIPIENT)
       @recipient_index += 1
@@ -107,6 +156,23 @@ module CreateReferral
 
     def click_next_button
       click(NEXT_BTN)
+    end
+
+    def click_create_oon_case
+      click(CREATE_OUT_OF_NETWORK_CASE_BUTTON)
+      wait_for_spinner
+    end
+
+    def click_create_case
+      click(CREATE_CASE_BUTTON)
+    end
+
+    def click_save_button
+      click(SAVE_BUTTON)
+    end
+
+    def save_button_displayed?
+      is_displayed?(SAVE_BUTTON)
     end
   end
 
