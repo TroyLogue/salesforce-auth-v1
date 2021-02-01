@@ -30,4 +30,21 @@ describe '[cases]', :app_client, :cases do
       expect(open_cases_dashboard.no_cases_message_displayed? || open_cases_dashboard.cases_match_primary_worker?(primary_worker)).to be_truthy
     end
   end
+
+  context('[as cc user]') do
+    before(:each) do
+      log_in_as(Login::CC_HARVARD)
+      expect(homepage.page_displayed?).to be_truthy
+    end
+
+    it 'filters by care coordinator', :uuqa_1714 do
+      open_cases_dashboard.go_to_open_cases_dashboard
+      expect(open_cases_dashboard.open_cases_table_displayed?).to be_truthy
+
+      care_coordinator = open_cases_dashboard.search_and_select_first_care_coordinator('e')
+
+      expect(notifications.notification_not_displayed?).to be_truthy
+      expect(open_cases_dashboard.no_cases_message_displayed? || open_cases_dashboard.cases_match_care_coordinator?(care_coordinator)).to be_truthy
+    end
+  end
 end
