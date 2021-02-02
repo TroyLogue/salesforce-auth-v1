@@ -15,12 +15,10 @@ describe '[Assessments - Cases]', :assessments, :app_client do
   let(:homepage) { HomePage.new(@driver) }
 
   IVY_INTAKE_ASSESSMENT = "Ivy League Intake Form"
-  MILITARY_INFORMATION = "Military Information"
 
   context('On a new case') do
     before {
       @assessment = IVY_INTAKE_ASSESSMENT
-      @military_assessment = MILITARY_INFORMATION
 
       @question_one_text = Faker::Lorem.sentence(word_count: 5)
       @question_two_text = Faker::Lorem.sentence(word_count: 5)
@@ -42,10 +40,10 @@ describe '[Assessments - Cases]', :assessments, :app_client do
 
       # check assessments on case detail page
       expect(case_detail_page.assessment_list).to include(@assessment)
-      expect(case_detail_page.assessment_list).to include(@military_assessment)
+      expect(case_detail_page.military_assessment_displayed?).to be_truthy
 
       #check military information first
-      case_detail_page.open_assessment(assessment_name: @military_assessment)
+      case_detail_page.open_military_assessment
       expect(assessment.military_information_page_displayed?).to be_truthy
       assessment.click_back_button
 
