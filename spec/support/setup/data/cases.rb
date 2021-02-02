@@ -50,5 +50,13 @@ module Setup
       )
     end
 
+    def self.get_case_form_name_for_yale(contact_id:, case_id:)
+      Setup::Forms.get_first_form_name_for_case(
+        token: MachineTokens::ORG_YALE,
+        group_id: Providers::ORG_YALE,
+        contact_id: contact_id,
+        case_id: case_id
+      )
+    end
   end
 end

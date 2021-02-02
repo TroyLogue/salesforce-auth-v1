@@ -14,12 +14,8 @@ describe '[Assessments - Cases]', :assessments, :app_client do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
 
-  IVY_INTAKE_ASSESSMENT = "Ivy League Intake Form"
-
   context('On a new case') do
     before {
-      @assessment = IVY_INTAKE_ASSESSMENT
-
       @question_one_text = Faker::Lorem.sentence(word_count: 5)
       @question_two_text = Faker::Lorem.sentence(word_count: 5)
       @assessment_form_values = [@question_one_text, @question_two_text]
@@ -28,6 +24,10 @@ describe '[Assessments - Cases]', :assessments, :app_client do
 
       @case = Setup::Data.create_service_case_for_yale(
         contact_id: @contact.contact_id
+      )
+      @assessment = Setup::Data.get_case_form_name_for_yale(
+        contact_id: @contact.contact_id,
+        case_id: @case.id
       )
 
       log_in_as(Login::ORG_YALE)
