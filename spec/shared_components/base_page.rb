@@ -210,7 +210,7 @@ class BasePage
 
   def is_not_displayed?(selector, timeout = 10)
     # when an element is not displayed, it can be either not loaded in the DOM at all, or load in the DOM but not visible
-    wait_for(timeout) { !driver.find_element(selector).nil? || !driver.find_element(selector).displayed?}
+    wait_for(timeout) { !driver.find_element(selector).displayed?}
   rescue Selenium::WebDriver::Error::NoSuchElementError
     true
   rescue Selenium::WebDriver::Error::StaleElementReferenceError
