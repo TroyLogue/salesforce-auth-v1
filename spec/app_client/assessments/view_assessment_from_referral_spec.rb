@@ -15,7 +15,6 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
   let(:referral) { Referral.new(@driver) }
 
   # assessment data
-  IVY_INTAKE_ASSESSMENT = "Ivy League Intake Form"
   QUESTION_ONE_TEXT = Faker::Lorem.sentence(word_count: 5)
   QUESTION_TWO_TEXT = Faker::Lorem.sentence(word_count: 5)
 
@@ -37,7 +36,9 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       referral.go_to_sent_referral_with_id(referral_id: @referral.id)
       expect(referral.page_displayed?).to be_truthy
 
-      @assessment = IVY_INTAKE_ASSESSMENT
+      @assessment = Setup::Data.get_referral_form_name_for_yale(
+        referral_id: @referral.id
+      )
 
       # Fill out assessment from referral context
       referral.open_assessment(assessment_name: @assessment)
