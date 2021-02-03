@@ -7,6 +7,7 @@ module OrgSettings
     USER_TABLE = { css: '.ui-table > table > tbody > tr > td > a' }.freeze
     USER_TABLE_LOAD = { xpath: './/tbody/tr/td[text()="Loading"]' }.freeze
     USER_LIST = { css: '.ui-table-body > tr > td:nth-child(1) > a' }.freeze
+    USER_ROW_FIRST = { css: '.group-user-settings__table-row:nth-of-type(1) .ui-table-row-column' }.freeze
     USER_NAME = { xpath: './/*[@class="ui-table-body"]/tr/td/a[text()="%s"]' }.freeze
     ADD_USER_BTN = { css: '#add-user-btn' }.freeze
     USERS_TABLE = { css: '.ui-table-body' }.freeze
@@ -28,6 +29,11 @@ module OrgSettings
 
     def go_to_user(name:)
       click(USER_NAME.transform_values { |v| v % name })
+      wait_for_spinner
+    end
+
+    def go_to_first_user
+      click(USER_ROW_FIRST)
       wait_for_spinner
     end
 
@@ -56,6 +62,7 @@ module OrgSettings
     BTN_CANCEL_PERSONAL = { css: '#personal-information-cancel-btn' }.freeze
     EDITABLE_EMAIL = { css: '#edit-email-address-modal-btn' }.freeze
     BTN_SAVE_EMAIL = { css: '#edit-email-save-btn' }.freeze
+    EDIT_EMAIL_CLOSE_BUTTON = { css: '#edit-email-address-modal .title-closeable .ui-icon' }.freeze
     BTN_CANCEL_EMAIL = { css: '#edit-email-cancel-btn' }.freeze
     EDITABLE_PROGRAM = { css: '#edit-program-information-modal-btn' }.freeze
     BTN_CANCEL_PROGRAM = { css: '#program-data-cancel-btn' }.freeze
@@ -100,13 +107,12 @@ module OrgSettings
       editable
     end
 
-    def save_email_field?
+    def save_email_field
       click(EDITABLE_EMAIL)
-      sleep_for(1) # glide in animation
+      is_displayed?(EDIT_EMAIL_CLOSE_BUTTON) # wait for modal to glide down
       is_displayed?(INPUT_EMAIL)
       click(BTN_SAVE_EMAIL)
       is_not_displayed?(INPUT_EMAIL)
-      is_displayed?(Notifications::SUCCESS_BANNER)
     end
   end
 end
