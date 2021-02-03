@@ -14,8 +14,8 @@ describe '[User Settings - Update Notification Preferences]', :user_settings, :a
   let(:notifications) { Notifications.new(@driver) }
   let(:user_settings_notification_prefs_page) { UserSettings::NotificationPrefsPage.new(@driver) }
 
-  # this test case was added when Ivy League users got errors when trying to load notification preferences
-  context('[As a user with bad network notification preference data]') do
+  # this test case was added when Ivy League users got errors while trying to load notification preferences
+  context('[As a user with network notification preferences]') do
     before do
       log_in_as(Login::CC_HARVARD)
       expect(home_page.page_displayed?).to be_truthy
