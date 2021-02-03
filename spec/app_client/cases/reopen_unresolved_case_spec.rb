@@ -2,6 +2,7 @@
 
 require_relative '../auth/helpers/login'
 require_relative '../cases/pages/case'
+require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[Cases]', :app_client, :cases do
