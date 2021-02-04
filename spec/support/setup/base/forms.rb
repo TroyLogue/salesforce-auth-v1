@@ -20,7 +20,7 @@ module Setup
         parsed_forms_response = JSON.parse(forms_response, object_class: OpenStruct).data
       end
 
-      def get_first_form_name_for_referral(token:, group_id:, :referral_id)
+      def get_first_form_name_for_referral(token:, group_id:, referral_id:)
         get_all_forms_for_referral(
           token: token,
           group_id: group_id,
