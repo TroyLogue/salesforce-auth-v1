@@ -2,14 +2,47 @@ require_relative '../../../shared_components/base_page'
 
 class ScreeningsPage < BasePage
   SCREENINGS_TABLE = { id: 'all-screenings-table' }.freeze
-  FIRST_CLIENT_ROW = { id: 'all-screenings-table-row-0' }.freeze
-  AUTHORIZED_CLIENTS = { css: '.ui-table-body > tr:not(.unauthorized)' }
+  AUTHORIZED_CLIENTS = { css: '.ui-table-body > tr:not(.unauthorized) > td:nth-child(2) > span' }
+  NAME_HEADER = { css: '.status-select__full-name.display' }.freeze
   CARE_COORDINATOR_FILTER = { id: 'care-coordinator-filter' }.freeze
   STATUS_FILTER = { id: 'status-filter' }.freeze
   GO_TO_FACESHEET_LINK = { class: 'client-name__link' }.freeze
 
+  CARE_COORDINATOR_FILTER_TEXT_DEFAULT = 'Care Coordinator'
+  STATUS_FILTER_TEXT_DEFAULT = 'Status'
+
   def page_displayed?
     is_displayed?(SCREENINGS_TABLE)
     wait_for_spinner
+  end
+
+  def care_coordinator_filter_text
+    text(CARE_COORDINATOR_FILTER)
+  end
+
+  def status_filter_text
+    text(STATUS_FILTER)
+  end
+
+  def select_and_click_random_client
+    selected_client = find_elements(AUTHORIZED_CLIENTS).sample
+    @selected_client_name = selected_client.text
+    raise StandardError, "E2E ERROR: No elements of Selector AUTHORIZED_CLIENTS were found" unless selected_client
+    selected_client.click
+  end
+
+  # client name format is "last, first" in screening table while the screening name header is "first last". this method is to do the conversion
+  def client_name
+    full_name= @selected_client_name.split(", ")
+    full_name[0], full_name[1] = full_name[1], full_name[0]
+    full_name.join(" ")
+  end
+
+  def screening_name
+    text(NAME_HEADER)
+  end
+
+  def go_to_facesheet
+    click(GO_TO_FACESHEET_LINK)
   end
 end
