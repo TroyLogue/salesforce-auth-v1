@@ -291,8 +291,16 @@ class Referral < BasePage
     text(ASSESSMENT_LIST)
   end
 
+  def military_assessment_displayed?
+    is_displayed?(MILITARY_ASSESSMENT)
+  end
+
   def open_assessment(assessment_name:)
     click(ASSESSMENT_LINK.transform_values { |v| v % assessment_name })
+  end
+
+  def open_military_assessment
+    click(MILITARY_ASSESSMENT)
   end
 
   # EDITS

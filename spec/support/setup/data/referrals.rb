@@ -148,5 +148,15 @@ module Setup
         reason: reason
       )
     end
+
+    # ASSESSMENTS
+    def self.get_referral_form_name_for_yale(referral_id:)
+      Setup::Forms.get_first_form_name_for_referral(
+        token: MachineTokens::ORG_YALE,
+        group_id: Providers::ORG_YALE,
+        referral_id: referral_id
+      )
+    end
+
   end
 end
