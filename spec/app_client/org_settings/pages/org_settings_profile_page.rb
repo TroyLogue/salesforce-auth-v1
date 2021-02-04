@@ -46,7 +46,6 @@ module OrgSettings
 
     def save_description(description)
       save_field(edit_button: EDIT_DESCRIPTION, save_button: SAVE_DESCRIPTION, input_field: INPUT_DESCRIPTION, text_value: description)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
     end
 
     def get_description
@@ -55,7 +54,6 @@ module OrgSettings
 
     def save_phone(phone)
       save_field(edit_button: EDIT_PHONE, save_button: SAVE_PHONE, input_field: INPUT_PHONE, text_value: phone)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
     end
 
     def get_phone
@@ -64,7 +62,6 @@ module OrgSettings
 
     def save_email(email)
       save_field(edit_button: EDIT_EMAIL, save_button: SAVE_EMAIL, input_field: INPUT_EMAIL, text_value: email)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
     end
 
     def get_email
@@ -73,7 +70,6 @@ module OrgSettings
 
     def save_address(address)
       save_field(edit_button: EDIT_ADDRESS, save_button: SAVE_ADDRESS, input_field: INPUT_ADDRESS, text_value: address)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
     end
 
     def get_address
@@ -82,7 +78,6 @@ module OrgSettings
 
     def save_website(website)
       save_field(edit_button: EDIT_WEBSITE, save_button: SAVE_WEBSITE, input_field: INPUT_WEBSITE, text_value: website)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
     end
 
     def get_website
@@ -97,7 +92,6 @@ module OrgSettings
       click_element_from_list_by_text(LIST_HOURS, time)
       click(SAVE_HOURS)
       is_field_saved?
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
     end
 
     def get_time

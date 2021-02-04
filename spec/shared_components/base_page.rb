@@ -17,11 +17,14 @@ class BasePage
 
   # similar to is_present? but checks for displayed
   # useful when an element may appear sometimes and sometimes may be hidden
+  # is designed to be used when a page is loaded; note the short wait 
   def check_displayed?(selector)
-    find(selector).displayed?
+    wait_for(0.5) { driver.find_element(selector).displayed? }
   rescue Selenium::WebDriver::Error::NoSuchElementError
     false
   rescue Selenium::WebDriver::Error::StaleElementReferenceError
+    false
+  rescue Selenium::WebDriver::Error::TimeOutError
     false
   end
 
@@ -209,16 +212,21 @@ class BasePage
   end
 
   def is_not_displayed?(selector, timeout = 10)
-    wait_for(timeout) { !driver.find_element(selector).displayed?}
+    wait_for(timeout) { !driver.find_element(selector).displayed? }
   rescue Selenium::WebDriver::Error::NoSuchElementError
     true
   rescue Selenium::WebDriver::Error::StaleElementReferenceError
     true
   rescue Selenium::WebDriver::Error::TimeOutError
-    true
+    # this will time out both when the element exists and does not exist - so we need to check again after the waiting period
+    displayed = check_displayed?(selector)
+    print "E2E ERROR: Selector #{selector} was present" if displayed
+    !displayed
   else
-    print "E2E ERROR: Selector #{selector} was present"
-    false
+    # this execute anytime no exception is thrown - so we need to check if the element is displayed or not
+    displayed = check_displayed?(selector)
+    print "E2E ERROR: Selector #{selector} was present" if displayed
+    !displayed
   end
 
   # Similar to is_displayed? but without the time wrapper, and therefore returns
