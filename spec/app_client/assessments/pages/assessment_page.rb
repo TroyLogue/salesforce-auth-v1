@@ -10,7 +10,7 @@ class Assessment < BasePage
   CANCEL_BUTTON = { css: '#cancel-btn' }
 
   #Military Information view:
-  MILITARY_INFORMATION_CONTAINER = { css: '.referral-military-information' }
+  MILITARY_INFORMATION_CONTAINER = { css: 'section[data-role="military-information"]' }
   EDIT_MILITARY_BTN = { css: '#edit-military-btn' }
 
   #Ivy League Intake Form fields:

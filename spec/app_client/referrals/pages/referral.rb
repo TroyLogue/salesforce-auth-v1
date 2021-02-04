@@ -10,10 +10,19 @@ class Referral < BasePage
   OUTCOME_NOTES = { css: '#outcome-notes-expandable p' }.freeze
   INACTIVE_BTN = { css: '.detail-action-wrapper > span' }.freeze
   CLOSED_BY = { css: '#outcome-column-one-table-closed-by-value' }.freeze
+  SERVICE_TYPE = { css: '.referral-service-type' }.freeze
+  DESCRIPTION = { css: '#detail-description-expandable .expandable-container__content .add-line-breaks' }.freeze
+
+  EDIT_REFERRAL_BTN = { css: '#edit-referral-network-btn' }.freeze
+  EDIT_REFERRAL_MODAL = { css: '#edit-referral-network-modal.dialog.open.large .dialog-paper' }.freeze
+  EDIT_REFERRAL_ORG_CHOICES = { css: '#select-field-group-0 + div' }.freeze
+  EDIT_REFERRAL_FIRST_ORG = { css: '#choices-select-field-group-0-item-choice-2' }.freeze
+  EDIT_REFERRAL_SAVE_BTN = { css: '#edit-draft-referral-submit-btn' }.freeze
+  EDIT_REFERRAL_SELECTED_ORG = { css: '#select-field-group-0 + div > div:not(button)' }.freeze
 
   TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }.freeze
   TAKE_ACTION_HOLD_OPTION = { css: 'div[data-value="holdForReview"]' }.freeze
-  TAKE_ACTION_SEND_OPTION = { css: 'div[data-value="send"]' }.freeze
+  TAKE_ACTION_SEND_OPTION = { css: 'div[data-value^="send"]' }.freeze
   TAKE_ACTION_ACCEPT_OPTION = { css: 'div[data-value="accept"]' }.freeze
   TAKE_ACTION_REJECT_OPTION = { css: 'div[data-value="reject"]' }.freeze
   TAKE_ACTION_INTAKE_OPTION = { css: 'div[data-value="startIntake"]' }.freeze
@@ -43,7 +52,7 @@ class Referral < BasePage
   CLOSE_REFERRAL_BTN = { css: '#close-referral-close-btn' }.freeze
 
   SENDER_INFO = { css: '#basic-table-sender-value' }.freeze
-  RECIPIENT_INFO = { css: '#basic-table-recipient-value' }.freeze
+  RECIPIENT_INFO = { css: "td[id^='basic-table-recipient']" }.freeze
 
   REJECT_REFERRAL_MODAL = { css: '.reject-modal-dialog .open' }.freeze
   REJECT_REFERRAL_REASON_DROPDOWN = { css: '.referral-reject-display .referral-reason-field .choices__inner' }.freeze
@@ -125,6 +134,11 @@ class Referral < BasePage
     wait_for_spinner
   end
 
+  def go_to_draft_referral_with_id(referral_id:)
+    get("/dashboard/referrals/drafts/#{referral_id}")
+    wait_for_spinner
+  end
+
   def page_displayed?
     wait_for_spinner
     is_displayed?(STATUS_TEXT) &&
@@ -154,6 +168,14 @@ class Referral < BasePage
 
   def outcome_notes
     text(OUTCOME_NOTES)
+  end
+
+  def service_type
+    text(SERVICE_TYPE).capitalize
+  end
+
+  def description
+    text(DESCRIPTION)
   end
 
   # ACCEPT
@@ -271,5 +293,27 @@ class Referral < BasePage
 
   def open_assessment(assessment_name:)
     click(ASSESSMENT_LINK.transform_values { |v| v % assessment_name })
+  end
+
+  # EDITS
+  def open_edit_referral_modal
+    click(EDIT_REFERRAL_BTN)
+    wait_for_spinner
+    is_displayed?(EDIT_REFERRAL_MODAL)
+  end
+
+  def add_recipient_in_edit_referral_modal
+    click(EDIT_REFERRAL_ORG_CHOICES)
+    click(EDIT_REFERRAL_FIRST_ORG)
+
+    # Removing distance and "Remove Item" to return just the provider name
+    selected_org = text(EDIT_REFERRAL_SELECTED_ORG)
+    distance = selected_org.rindex(/\(/) # finds the last open paren in the string
+    selected_org[0..(distance - 1)].strip # returns provider_text up to the distance
+  end
+
+  def save_edit_referral_modal
+    click(EDIT_REFERRAL_SAVE_BTN)
+    wait_for_spinner
   end
 end

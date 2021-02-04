@@ -20,6 +20,7 @@ module CreateReferral
     ERROR_MESSAGE = { css: '.field-error-message > p' }.freeze
 
     DESCRIPTION_TEXT = { css: '#referral-notes' }.freeze
+    SAVE_DRAFT_BTN = { css: '#save-draft-btn' }.freeze
     NEXT_BTN = { css: '#next-btn' }.freeze
 
     REMOVE_TEXT = 'Remove item'.freeze
@@ -169,6 +170,10 @@ module CreateReferral
 
     def click_save_button
       click(SAVE_BUTTON)
+    end
+
+    def click_save_draft_button
+      click(SAVE_DRAFT_BTN)
     end
 
     def save_button_displayed?

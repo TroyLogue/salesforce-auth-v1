@@ -14,6 +14,20 @@ describe '[User Settings - Update Notification Preferences]', :user_settings, :a
   let(:notifications) { Notifications.new(@driver) }
   let(:user_settings_notification_prefs_page) { UserSettings::NotificationPrefsPage.new(@driver) }
 
+  # this test case was added when Ivy League users got errors while trying to load notification preferences
+  context('[As a user with network notification preferences]') do
+    before do
+      log_in_as(Login::CC_HARVARD)
+      expect(home_page.page_displayed?).to be_truthy
+    end
+
+    it 'loads network notification preferences correctly without error messages', :uu3_51250, :core_382 do
+      user_settings_notification_prefs_page.load_page
+      expect(notifications.is_displayed?(Notifications::ERROR_BANNER)).to be false
+      expect(user_settings_notification_prefs_page.page_displayed?).to be_truthy
+    end
+  end
+
   context('[As a user]') do
     before do
       log_in_as(Login::SETTINGS_USER)
@@ -22,6 +36,7 @@ describe '[User Settings - Update Notification Preferences]', :user_settings, :a
 
     it 'updates provider assistance request preference', :uuqa_1613 do
       user_settings_notification_prefs_page.load_page
+      expect(notifications.is_displayed?(Notifications::ERROR_BANNER)).to be false
       expect(user_settings_notification_prefs_page.page_displayed?).to be_truthy
 
       checkbox_value = user_settings_notification_prefs_page.assistance_request_received_checkbox_value

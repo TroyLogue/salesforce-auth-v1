@@ -41,7 +41,7 @@ describe '[Referrals]', :app_client, :referrals do
       referral_send.open_network_browse_map
 
       expect(network_map.page_displayed?).to be_truthy
-      network_map.clear_all_filters
+      network_map.clear_all_filters_and_close_drawer
       recipient = network_map.add_first_organization_from_list
       network_map.add_organizations_to_referral
 

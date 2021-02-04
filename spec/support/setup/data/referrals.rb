@@ -80,6 +80,18 @@ module Setup
       )
     end
 
+    def self.draft_referral_in_harvard(contact_id:)
+      Referral.draft(
+        token: MachineTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        contact_id: contact_id,
+        referred_by_network_id: Networks::IVY,
+        referred_to_network_id: Networks::IVY,
+        referred_to_groups: [],
+        service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
+      )
+    end
+
     def self.close_referral_in_harvard(note:)
       Referral.close(
         token: MachineTokens::CC_HARVARD,

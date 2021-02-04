@@ -1,7 +1,7 @@
 require_relative '../../../shared_components/base_page'
 
 class PendingConsentPage < BasePage
-  CONSENT_MODAL = { css: '#consent-dialog' }
+  CONSENT_MODAL = { css: '#consent-dialog.dialog.open' }
   FILTERS_BAR = { css: '.filter-bar' }
   PENDING_CONSENT_REFERRAL_FIRST = { css: '.ui-table-body tr:nth-of-type(1)' }
   PENDING_CONSENT_REFERRAL_SECOND = { css: '.ui-table-body tr:nth-of-type(2)' }

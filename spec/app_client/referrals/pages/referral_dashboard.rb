@@ -148,6 +148,23 @@ module ReferralDashboard
     end
   end
 
+  class Drafts < BasePage
+    include SharedComponents
+
+    DRAFT_REFERRALS = { css: '#draft-referrals-table' }.freeze
+    ALL_CLIENT_NAMES = { css: 'tr[id^="draft-referrals-table-row"] .ui-table-row-column:nth-child(2) > span' }.freeze
+    CLIENT_ROW = { css: 'tr[id^="draft-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
+
+    def page_displayed?
+      wait_for_spinner
+      is_displayed?(DRAFT_REFERRALS)
+    end
+
+    def go_to_draft_referrals_dashboard
+      get('/dashboard/referrals/drafts')
+    end
+  end
+
   class Closed < BasePage
     include SharedComponents
 
