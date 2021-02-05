@@ -84,7 +84,7 @@ module OrgSettings
     # EXISTING USER
     EDITABLE_PERSONAL_INFO = { css: '#edit-personal-information-modal-btn' }.freeze
     BTN_CANCEL_PERSONAL = { css: '#personal-information-cancel-btn' }.freeze
-    EDIT_PERSONAL_INFO_MODAL = { css: '#edit-personal-information-modal' }.freeze
+    EDIT_PERSONAL_INFO_MODAL = { css: '#edit-personal-information-modal.dialog.open' }.freeze
     EDIT_PERSONAL_INFO_CLOSE_BUTTON = { css: '#edit-personal-information-modal .title-closeable .ui-icon' }.freeze
     EDIT_PERSONAL_INFO_SAVE_BUTTON = { css: '#edit-personal-information-modal #personal-information-submit-btn' }.freeze
     EDITABLE_EMAIL = { css: '#edit-email-address-modal-btn' }.freeze
