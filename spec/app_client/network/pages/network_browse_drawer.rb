@@ -67,4 +67,12 @@ class NetworkBrowseDrawer < BasePage
     click(SEND_BUTTON)
     wait_for_spinner
   end
+
+  def share_provider_details_via_phone(phone)
+    click(SHARE_VIA_PHONE_OPTION)
+    click(PHONE_INPUT)
+    enter(phone, PHONE_INPUT)
+    click(SEND_BUTTON)
+    wait_for_spinner
+  end
 end
