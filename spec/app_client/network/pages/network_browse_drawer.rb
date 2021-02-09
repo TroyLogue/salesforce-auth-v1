@@ -3,7 +3,7 @@ require_relative '../../../shared_components/base_page'
 class NetworkBrowseDrawer < BasePage
 
   # navigation
-  OPENED_DRAWER = { css: '.ui-drawer--opened.browse__drawer .network-group-details.group-details' }
+  OPENED_DRAWER = { css: '.ui-drawer--opened .network-group-details.group-details' }
   CLOSE_BUTTON = { css: '.ui-drawer__close-btn--opened .ui-icon' }
 
   SHARE_BUTTON = { css: '#network-groups-drawer-share-btn' }

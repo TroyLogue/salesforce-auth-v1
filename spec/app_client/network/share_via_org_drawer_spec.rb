@@ -35,12 +35,21 @@ describe '[Network - Organizations - Browse Drawer]', :network, :app_client do
       network_browse_drawer.click_share_button
       expect(network_browse_drawer.share_form_displayed?).to be_truthy
 
-      # phone number needs to have a valid area code
-      phone = Faker::PhoneNumber.area_code + Faker::Number.number(digits: 7)
+      phone = Faker::PhoneNumber.cell_phone
       network_browse_drawer.share_provider_details_via_phone(phone)
 
-      notification_text = notifications.success_text
+      # because of Twilio validation on the phone number,
+      # message may either send successfully or fail validation
+      # either is a valid result for this e2e test
+      notification_text = "";
+      if notifications.success_banner_displayed?
+        notification_text = notifications.success_text
+      elsif notifications.error_banner_displayed?
+        notification_text = notifications.error_text
+      end
+
       expect(notification_text).to include(Notifications::MESSAGE_SENT)
+        .or include(Notifications::PHONE_NUMBER_INVALID)
 
       network_browse_drawer.close_drawer
       expect(network_browse_drawer.drawer_not_displayed?).to be_truthy
