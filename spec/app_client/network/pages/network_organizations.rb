@@ -11,7 +11,7 @@ class NetworkOrganizations < BasePage
 
   # providers list
   PROVIDERS_TABLE = { css: '.network-groups__table' }
-  TABLE_OPT_FIRST = { css: '#network-group-row-0' }
+  TABLE_OPT_FIRST = { css: '#network-group-row-0 .ui-table-row-column' }
   PROVIDER_ROW = { css: '.network-groups__table .ui-table-body .network-groups__group-row' }
   ORG_TAB_GROUP_OPT_FIRST = { css: '#network-group-row-0' }
   OUT_OF_NETWORK_ORG = { css: '.ui-table-row-column span[data-tooltip="Out of Network Organization"]' }
