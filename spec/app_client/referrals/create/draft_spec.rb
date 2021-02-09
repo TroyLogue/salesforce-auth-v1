@@ -33,10 +33,9 @@ describe '[Referrals]', :app_client, :referrals do
       expect(add_referral_page.page_displayed?).to be_truthy
 
       # Fill out referral info
-      service_type = add_referral_page.select_first_service_type
-      recipient = add_referral_page.add_multiple_recipients(count: 1)
-      description = Faker::Lorem.sentence(word_count: 5)
-      add_referral_page.fill_out_referral_description(description: description)
+      submitted_referral_options = add_referral_page.create_referral_selecting_first_options(
+        description: Faker::Lorem.sentence(word_count: 5)
+      )
       add_referral_page.click_save_draft_button
 
       # User lands on draft dashboard page
@@ -45,9 +44,7 @@ describe '[Referrals]', :app_client, :referrals do
       # New created referral displays on dashboard
       draft_referral_dashboard.click_on_row_by_client_name(client: "#{@contact.fname} #{@contact.lname}")
       expect(draft_referral.page_displayed?).to be_truthy
-      expect(draft_referral.service_type).to eq(service_type)
-      expect(draft_referral.recipient_info).to eq(recipient)
-      expect(draft_referral.description).to eq(description)
+      expect(draft_referral.referral_summary_info).to eq(submitted_referral_options)
     end
   end
 end

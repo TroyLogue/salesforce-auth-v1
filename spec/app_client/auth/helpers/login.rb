@@ -24,7 +24,7 @@ module Login
     NOLICENSE_MARTIN = 'martin@auto.com',
     # used in 3 tests and 2 helper scripts
     ORG_ATLANTA = 'atlanta@auto.com',
-    # used in ~15 ui-tests
+    # used in ~15 ui-tests, org with referral permissions to other network
     ORG_COLUMBIA = 'columbia@auto.com',
     # used in ~20 ui-tests
     ORG_NEWYORK = 'newyork@auto.com',
@@ -51,7 +51,9 @@ module Login
     # user with valid address
     ORG_UPENN = 'upenn@auto.com',
     # user with no address in org with no address
-    ORG_CHICAGO = 'chicago@auto.com'
+    ORG_CHICAGO = 'chicago@auto.com',
+    # user in cc with 200+ users
+    ORG_200_USERS = 'test-perms4@auto.com'
   ].freeze
 
   DEFAULT_PASSWORD = 'Uniteus1!'
