@@ -29,16 +29,19 @@ class NetworkBrowseDrawer < BasePage
 
   # share form
   SHARE_FORM = { css: '.expandable-container__content.open .share-form' }
-
   SHARE_VIA_PHONE_OPTION = { css: '#sms-label' }
   PHONE_INPUT = { css: '#share-phone-field' }
   SHARE_VIA_EMAIL_OPTION = { css: '#email-label' }
   EMAIL_INPUT = { css: '#share-email-field' }
-  SEND_BUTTON = { css: '#share-send-button' }
-
   SHARE_VIA_PRINT_OPTION = { css: '#print-label' }
   PRINT_BUTTON = { css: '#share-print-button' }
   CANCEL_BUTTON = { css: '#share-cancel-button' }
+  SEND_BUTTON = { css: '#share-send-button' }
+
+  # test inputs:
+  # cf. https://www.twilio.com/blog/2018/04/twilio-test-credentials-magic-numbers.html
+  INVALID_PHONE_NUMBER = '(999) 999-9999';
+  VALID_PHONE_NUMBER = '15005550006';
 
   def click_share_button
     click(SHARE_BUTTON)
