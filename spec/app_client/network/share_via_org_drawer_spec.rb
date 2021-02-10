@@ -18,7 +18,7 @@ describe '[Network - Organizations - Browse Drawer]', :network, :app_client do
   let(:network_organizations) { NetworkOrganizations.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
-  context('[as cc user]') do
+  context('[as a Network Directory User]') do
     before do
       log_in_as(Login::CC_HARVARD)
       left_nav.go_to_my_network
@@ -26,7 +26,7 @@ describe '[Network - Organizations - Browse Drawer]', :network, :app_client do
       expect(network_organizations.page_displayed?).to be_truthy
     end
 
-    it 'shares provider details via text' do
+    it 'shares provider details via text from the organizations tab' do
       # UU3-49164 workaround for banner blocking drawer elements
       banner.dismiss_alert_if_displayed
       network_organizations.click_first_provider_row
