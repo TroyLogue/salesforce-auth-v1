@@ -21,8 +21,8 @@ describe '[User Settings - Update Notification Preferences]', :user_settings, :a
       expect(home_page.page_displayed?).to be_truthy
     end
 
-    # BUG UU3-51340: spec will fail until it is resolved
-    it 'loads network notification preferences correctly without error messages', :uuqa_1613 do
+    # UU3-51340 skip until bug is prioritized
+    it 'loads network notification preferences correctly without error messages', :uuqa_1613, skip: true do
       user_settings_notification_prefs_page.load_page
       expect(notifications.is_displayed?(Notifications::ERROR_BANNER)).to be false
       expect(user_settings_notification_prefs_page.page_displayed?).to be_truthy

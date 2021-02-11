@@ -195,7 +195,7 @@ As the project matures we might consider additional dimensions for running regre
 - `:browsers_chrome` for tests that need to be run on only one browsers
 - `:parallel` for tests that can be run in parallel
 - `:single_threaded` for tests that cannot be run in parallel
-- `:pending => "UU3-##### reason test is skipped"` where the reason includes a JIRA ticket ID, e.g., known bug (there are several ways to skip examples, but this is the most expressive approach, cf. [the rspec-core docs](https://www.rubydoc.info/github/rspec/rspec-core/RSpec/Core/Pending))
+
 
 A significant tagging effort can decrease maintenance tests in reflecting the value and purpose of a test.
 
