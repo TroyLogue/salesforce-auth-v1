@@ -132,8 +132,8 @@ class FacesheetProfilePage < BasePage
     ADDRESS_TYPE_UNKNOWN = 'Unknown'
 
     def current_address
-      is_displayed?(ADDRESS_CONTENT)
-      text(CURRENT_ADDRESS)
+      is_displayed?(ADDRESS_CONTENT) &&
+        text(CURRENT_ADDRESS)
     end
 
     def delete_address
