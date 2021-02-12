@@ -397,7 +397,7 @@ class FacesheetProfilePage < BasePage
   module Identify
     CURRENT_IDENTITY = { css: '.personal-data .common-display-profile:nth-child(6) .col-sm-4 > p:nth-child(2)' }.freeze
     EDIT_IDENTIFY = { css: '#edit-identity-btn' }.freeze
-    IDENTITY_MODAL = { css: '#edit-identity-modal' }.freeze
+    IDENTITY_MODAL = { css: '#edit-identity-modal .dialog-paper' }.freeze
     EXPAND_GENDER_CHOICES = { css: '#identity-gender-select + div' }.freeze
     LIST_GENDER_CHOICES = { css: 'div[id^="choices-identity-gender"]' }.freeze
     EXPAND_RACE_CHOICES = { css: '#identity-race-select + div' }.freeze
