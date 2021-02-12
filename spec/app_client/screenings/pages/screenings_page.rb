@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class ScreeningsPage < BasePage
-  SCREENINGS_TABLE = { id: 'all-screenings-table' }.freeze
+  SCREENINGS_TABLE = { id: 'all-screenings-table' }
   AUTHORIZED_CLIENTS = { css: '.ui-table-body > tr:not(.unauthorized) > td:nth-child(2) > span' }
-  NAME_HEADER = { css: '.status-select__full-name.display' }.freeze
-  CARE_COORDINATOR_FILTER = { id: 'care-coordinator-filter' }.freeze
-  STATUS_FILTER = { id: 'status-filter' }.freeze
-  GO_TO_FACESHEET_LINK = { class: 'client-name__link' }.freeze
+  NAME_HEADER = { css: '.status-select__full-name.display' }
+  CARE_COORDINATOR_FILTER = { id: 'care-coordinator-filter' }
+  STATUS_FILTER = { id: 'status-filter' }
+  GO_TO_FACESHEET_LINK = { class: 'client-name__link' }
 
   CARE_COORDINATOR_FILTER_TEXT_DEFAULT = 'Care Coordinator'
   STATUS_FILTER_TEXT_DEFAULT = 'Status'
@@ -32,7 +34,7 @@ class ScreeningsPage < BasePage
   end
 
   # client name format is "last, first" in screening table while the screening name header is "first last". this method is to do the conversion
-  def client_name
+  def selected_client_name
     full_name= @selected_client_name.split(", ")
     full_name[0], full_name[1] = full_name[1], full_name[0]
     full_name.join(" ")

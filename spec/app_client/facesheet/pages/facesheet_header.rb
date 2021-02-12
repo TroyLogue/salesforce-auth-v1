@@ -25,7 +25,7 @@ class FacesheetHeader < BasePage
   VIEW = 'View'
 
   def page_displayed?
-    is_displayed?(FILTER_BAR)
+    is_displayed?(NAME_HEADER)
     wait_for_spinner
   end
 
