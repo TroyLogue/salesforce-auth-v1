@@ -3,6 +3,7 @@
 require_relative '../../../shared_components/base_page'
 
 class FacesheetHeader < BasePage
+  SUBHEADER = { css: '.facesheet-index__subheader-container' }
   NAME_HEADER = { css: '.status-select__full-name.display' }.freeze
   OVERVIEW_TAB = { css: '#facesheet-overview-tab' }.freeze
   PROFILE_TAB = { css: '#facesheet-profile-tab' }.freeze
@@ -25,7 +26,7 @@ class FacesheetHeader < BasePage
   VIEW = 'View'
 
   def page_displayed?
-    is_displayed?(NAME_HEADER)
+    is_displayed?(SUBHEADER)
     wait_for_spinner
   end
 
