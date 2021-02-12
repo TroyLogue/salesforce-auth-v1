@@ -41,7 +41,7 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     create_case.create_case_form_displayed?
     create_case.create_new_case(
       program_id: Setup::Programs.in_network_program_id(
-        token: MachineTokens::ORG_COLUMBIA,
+        token: JWTTokens::ORG_COLUMBIA,
         group_id: Providers::ORG_COLUMBIA
       ),
       service_type_id: Services::BENEFITS_BENEFITS_ELIGIBILITY_SCREENING,
