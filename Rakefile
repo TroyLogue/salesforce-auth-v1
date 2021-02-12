@@ -41,6 +41,13 @@ namespace :jenkins do
     ENV['environment'] = 'widgets_staging'
     exit run_in_parallel(tag: 'widgets')
   end
+
+  desc 'debug'
+  task :debug do
+    ENV['browser'] = 'chrome_headless'
+    ENV['environment'] = 'app_client_staging'
+    exit run_in_parallel(tag: 'uuqa_1727')
+  end
 end
 
 namespace :docker do
