@@ -2,7 +2,7 @@
 
 require_relative '../../../shared_components/base_page'
 
-class ScreeningsPage < BasePage
+class ScreeningsDashboard < BasePage
   SCREENINGS_TABLE = { id: 'all-screenings-table' }
   AUTHORIZED_CLIENTS = { css: '.ui-table-body > tr:not(.unauthorized) > td:nth-child(2) > span' }
   NAME_HEADER = { css: '.status-select__full-name.display' }
@@ -40,7 +40,8 @@ class ScreeningsPage < BasePage
     full_name.join(" ")
   end
 
-  def screening_name
+  #TODO move the following methods into a screening detail module when there are more specs
+  def client_name_header
     text(NAME_HEADER)
   end
 
