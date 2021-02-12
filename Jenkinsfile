@@ -96,13 +96,13 @@ def build() {
         sh '''
         cp .env.example .env.staging
         echo "Grabbing Machine Tokens"
-    
+        set +x
         while read token ; do \
             key=$(echo $token | cut -d '=' -f1 | tr -d ' '); \
             value=$(echo $token | cut -d '=' -f2 | tr -d ' '); \
             sed -i -e "s/{$key}/$value/" .env.staging; \
         done < $machine_tokens_file
-    
+        set -x
         '''
     }
      withCredentials([file(credentialsId: 'browserstack_credentials', variable: 'browserstack_credentials_file')]) {
