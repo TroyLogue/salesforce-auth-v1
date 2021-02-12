@@ -27,8 +27,8 @@ module ScreeningDashboard
 
     def select_and_click_random_client
       selected_client = find_elements(AUTHORIZED_CLIENTS).sample
-      @selected_client_name = selected_client.text
       raise StandardError, "E2E ERROR: No elements of Selector AUTHORIZED_CLIENTS were found" unless selected_client
+      @selected_client_name = selected_client.text
       selected_client.click
     end
 

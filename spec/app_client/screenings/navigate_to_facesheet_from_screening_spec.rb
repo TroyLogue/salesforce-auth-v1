@@ -3,6 +3,7 @@
 require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/left_nav'
+require_relative '../root/pages/dashboard_nav'
 require_relative './pages/screening_dashboard'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../facesheet/pages/facesheet_overview_page'
@@ -14,8 +15,9 @@ describe '[Screenings - Navigation]', :screenings, :app_client do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:left_nav) { LeftNav.new(@driver) }
+  let(:dashboard_nav) { DashboardNav.new(@driver) }
   let(:all_screenings_dashboard) { ScreeningDashboard::AllScreenings.new(@driver) }
-  let(:screening_detail_dashboard) { ScreeningDashboard::ScreeningDetail.new(@driver)}
+  let(:screening_detail_dashboard) { ScreeningDashboard::ScreeningDetail.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_overview_page) { FacesheetOverviewPage.new(@driver) }
 
@@ -24,7 +26,7 @@ describe '[Screenings - Navigation]', :screenings, :app_client do
       log_in_as(Login::CC_HARVARD)
       expect(homepage.page_displayed?).to be_truthy
       left_nav.go_to_dashboard
-      left_nav.go_to_screenings
+      dashboard_nav.go_to_screenings
       expect(all_screenings_dashboard.page_displayed?).to be_truthy
       expect(all_screenings_dashboard.care_coordinator_filter_text).to eq ScreeningDashboard::AllScreenings::CARE_COORDINATOR_FILTER_TEXT_DEFAULT
       expect(all_screenings_dashboard.status_filter_text).to eq ScreeningDashboard::AllScreenings::STATUS_FILTER_TEXT_DEFAULT
@@ -46,9 +48,9 @@ describe '[Screenings - Navigation]', :screenings, :app_client do
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'Left Nav should not have Screenings section', :uuqa_1754  do
+    it 'Dashboard Nav should not have Screenings section', :uuqa_1754  do
       left_nav.go_to_dashboard
-      expect(left_nav.screenings_displayed?).to be false
+      expect(dashboard_nav.screenings_displayed?).to be false
     end
   end
 end

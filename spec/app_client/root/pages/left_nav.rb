@@ -30,12 +30,4 @@ class LeftNav < BasePage
     click(CLIENTS_LINK)
     wait_for_spinner
   end
-
-  def go_to_screenings
-    click(SCREENINGS_ALL)
-  end
-
-  def screenings_displayed?
-    is_displayed?(SCREENINGS_ALL)
-  end
 end
