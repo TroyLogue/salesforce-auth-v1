@@ -7,8 +7,6 @@ class LeftNav < BasePage
   EXPORTS_LINK = { css: '.network-menu-exports-btn' }
   CLIENTS_LINK = { css: '#nav-clients' }
 
-  SCREENINGS_ALL = { id: 'dashboard-screenings-all' }
-
   def go_to_dashboard
     click(DASHBOARD_LINK)
   end
