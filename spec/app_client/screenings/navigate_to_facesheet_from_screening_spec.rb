@@ -35,9 +35,10 @@ describe '[Screenings - Navigation]', :screenings, :app_client do
     it 'Navigate to Facesheet Overview from Screenings', :uuqa_1753 do
       all_screenings_dashboard.select_and_click_random_client
       expect(screening_detail_dashboard.page_displayed?).to be_truthy
-      expect(all_screenings_dashboard.selected_client_name).to eq screening_detail_dashboard.client_name_header
+      client_name = screening_detail_dashboard.client_name_header
+      expect(all_screenings_dashboard.selected_client_name).to eq client_name
       screening_detail_dashboard.go_to_facesheet
-      expect(facesheet_header.facesheet_name).to eq screening_detail_dashboard.client_name_header
+      expect(facesheet_header.facesheet_name).to eq client_name
       expect(facesheet_overview_page.page_displayed?).to be_truthy
     end
   end
