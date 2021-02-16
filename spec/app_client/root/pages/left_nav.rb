@@ -26,5 +26,6 @@ class LeftNav < BasePage
 
   def go_to_clients
     click(CLIENTS_LINK)
+    wait_for_spinner
   end
 end
