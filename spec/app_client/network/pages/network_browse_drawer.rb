@@ -9,11 +9,20 @@ class NetworkBrowseDrawer < BasePage
   SHARE_BUTTON = { css: '#network-groups-drawer-share-btn' }
 
   # provider details
+  # required fields:
   PROVIDER_DETAILS_MAP = { css: '.group-details-content__map' }
   PROVIDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable' }
-  PROVIDER_DETAILS_CONTACT = { css: '.group-details-content__contact' }
-  PROVIDER_DETAILS_HOURS = { css: '.group-details-content__hours' }
+  PROVIDER_DETAILS_LOCATION_HEADER = { css: '.provider-content-v2__location-header' }
+  PROVIDER_DETAILS_ADDRESS = { css: '.ui-provider-card__address' }
+  PROVIDER_DETAILS_HOURS = { css: '.ui-provider-card__hours' }
   PROVIDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs' }
+
+  # optional fields:
+  PROVIDER_DETAILS_PHONE = { css: '.ui-provider-card__phone' }
+  PROVIDER_DETAILS_EMAIL = { css: '.ui-provider-card__email' }
+  PROVIDER_DETAILS_WEBSITE = { css: '.ui-provider-card__website' }
+
+  TOGGLE_MORE_INFO = { css: '#more-or-less-toggle-btn' }
 
   # program details
   PROGRAM_DETAILS_SERVICES = { css: '.program-details .ui-service-types' }
@@ -47,7 +56,9 @@ class NetworkBrowseDrawer < BasePage
 
     is_displayed?(PROVIDER_DETAILS_MAP) &&
     is_displayed?(PROVIDER_DETAILS_DESCRIPTION) &&
-    is_displayed?(PROVIDER_DETAILS_CONTACT) &&
+    is_displayed?(PROVIDER_DETAILS_LOCATION_HEADER) &&
+    is_displayed?(PROVIDER_DETAILS_ADDRESS) &&
+    is_displayed?(PROVIDER_DETAILS_HOURS) &&
     is_displayed?(PROVIDER_DETAILS_PROGRAMS) &&
     is_displayed?(PROGRAM_DETAILS_SERVICES)
   end
