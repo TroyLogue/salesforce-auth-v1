@@ -4,6 +4,11 @@ module ReferralDashboard
   module SharedComponents
     HEADER_COLUMNS = { css: '.ui-table-header-column' }.freeze
     LOCKED_MESSAGE = { css: '.unauthorized-message' }.freeze
+    CARE_COORDINATOR_FILTER = { css: '#care-coordinator-filter.ui-filter' }.freeze
+    CARE_COORDINATOR_INPUT = { css: '#care-coordinator-filter.ui-filter-search__input' }.freeze
+    CARE_COORDINATOR_LOAD = { css: '.filter-options__container--loading' }.freeze
+    CARE_COORDINATOR_FIRST = { css: '.ui-filter-option' }.freeze
+    EMPTY_TABLE = { css: '.empty-table' }.freeze
 
     UNAUTHORIZED_MESSAGE = "Client is not being served by your organization. [20001]\nClient has not granted consent. [20000]"
 
@@ -29,7 +34,9 @@ module ReferralDashboard
       # List of client names
       clients = find_elements(self.class::ALL_CLIENT_NAMES).map(&:text)
       # Return indexes that match client name
-      indexes = clients.filter_map.with_index { |name, index| index if name == client } || raise("#{client} not found in table")
+      indexes = clients.filter_map.with_index { |name, index| index if name == client }
+      raise("#{client} not found in table") unless indexes.any?
+
       # Return an array of strings
       client_values = []
       indexes.each do |index|
@@ -48,6 +55,18 @@ module ReferralDashboard
 
     def pop_up_message
       text(LOCKED_MESSAGE)
+    end
+
+    def is_empty_table_displayed?
+      is_displayed?(EMPTY_TABLE)
+    end
+
+    def filter_by_care_coordinator(coordinator:)
+      click(CARE_COORDINATOR_FILTER)
+      clear_then_enter(coordinator, CARE_COORDINATOR_INPUT)
+      is_not_displayed?(CARE_COORDINATOR_LOAD)
+      click(CARE_COORDINATOR_FIRST)
+      wait_for_spinner
     end
   end
 

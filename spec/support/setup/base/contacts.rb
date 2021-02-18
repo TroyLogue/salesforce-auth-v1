@@ -8,7 +8,7 @@ module Setup
   class Contact
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
-    attr_reader :fname, :lname, :dob_formatted, :military_affiliation_key
+    attr_reader :fname, :lname, :dob, :dob_formatted, :military_affiliation_key
     attr_accessor :contact_id, :token, :group_id
 
     def initialize(token:, group_id:)

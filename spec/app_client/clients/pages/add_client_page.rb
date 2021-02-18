@@ -2,6 +2,7 @@ require_relative '../../../shared_components/base_page'
 
 class AddClient < BasePage
   ADD_CONTACT_FORM = { css: '.add-contact-information-form' }
+  ADD_CONTACT_FROM_REFERRAL = { css: '.add-contact-from-referral' }
   FIRSTNAME_INPUT = { css: '#first-name' }
   LASTNAME_INPUT = { css: '#last-name' }
   DOB_INPUT = { css: '#date-of-birth' }
@@ -27,6 +28,10 @@ class AddClient < BasePage
 
   def page_displayed?
     is_displayed?(ADD_CONTACT_FORM)
+  end
+
+  def referral_page_displayed?
+    is_displayed?(ADD_CONTACT_FROM_REFERRAL)
   end
 
   def is_info_prefilled?(**params)

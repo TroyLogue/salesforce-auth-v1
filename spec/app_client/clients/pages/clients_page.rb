@@ -1,7 +1,7 @@
 require_relative '../../../shared_components/base_page'
 
 class ClientsPage < BasePage
-  AUTHORIZED_CLIENTS = { css: '.ui-table-body > tr:not(.unauthorized)' }
+  AUTHORIZED_CLIENTS = { css: '.ui-table-body > tr:not(.unauthorized) .ui-table-row-column' }
   FILTER_BAR = { css: '.filter-bar' }
   FILTER_SELECTION = { css: 'button[name="%s"]' }
   CLIENT_TABLE = { css: '.dashboard-inner-content' }

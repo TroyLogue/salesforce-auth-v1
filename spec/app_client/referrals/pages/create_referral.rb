@@ -4,6 +4,11 @@ module CreateReferral
     REFERRAL_FORM = { css: '.referral-service-form-expanded' }.freeze
     INFO_TEXT = { css: '.info-panel__text' }.freeze
 
+    REFER_OTHER_NETWORK_CHECKBOX = { css: '.refer-to-another-network-checkbox-0 label' }.freeze
+    EXPAND_RECIPIENT_NETWORK_CHOICES = { css: '#recipient-network + div' }.freeze
+    FIRST_RECIPIENT_NETWORK = { css: '#choices-recipient-network-item-choice-1' }.freeze
+    SELECTED_RECIPIENT_NETWORK = { css: '#recipient-network + div > div:not(button)' }.freeze
+
     EXPAND_SERVICE_CHOICES = { css: '.service-type-dropdown' }.freeze
     FIRST_SERVICE_CHOICE = { css: '#choices-service-type-item-choice-2' }.freeze
     SELECTED_SERVICE_TYPE = { css: '#service-type + div > div:not(button)' }.freeze
@@ -40,6 +45,19 @@ module CreateReferral
 
     def warning_info_text
       text(INFO_TEXT)
+    end
+
+    def refer_to_another_network
+      is_displayed?(REFER_OTHER_NETWORK_CHECKBOX)
+      click(REFER_OTHER_NETWORK_CHECKBOX)
+
+      is_displayed?(EXPAND_RECIPIENT_NETWORK_CHOICES)
+      click(EXPAND_RECIPIENT_NETWORK_CHOICES)
+
+      click(FIRST_RECIPIENT_NETWORK)
+      is_displayed?(EXPAND_SERVICE_CHOICES)
+
+      text(SELECTED_RECIPIENT_NETWORK).sub(REMOVE_TEXT, '').strip.capitalize
     end
 
     def select_first_service_type
@@ -147,6 +165,15 @@ module CreateReferral
       recipient_info
     end
 
+    def create_referral_selecting_first_options(description:, count: 1)
+      fill_out_referral_description(description: description)
+      referral_selections = {
+        service_type: select_first_service_type,
+        recipients: add_multiple_recipients(count: count),
+        description: description
+      }
+    end
+
     def click_auto_recall_checkbox
       click(AUTO_RECALL_CHECKBOX)
     end
@@ -203,6 +230,7 @@ module CreateReferral
     SERVICE_TYPE = { css: '.referral-service-minimized__header-text' }.freeze
     DESCRIPTION = { css: '.detail-info__description-text' }.freeze
     RECIPIENTS = { css: '.service-type-section:nth-of-type(2) .detail-info__groups-list > li' }.freeze
+    NETWORK = { css: '.service-type-section:nth-of-type(2) .detail-definition-list p' }.freeze
     FULL_NAME = { css: '.detail-definition-list__value' }.freeze
 
     SUBMIT_BTN = { css: '#submit-referral-btn' }.freeze
@@ -222,6 +250,18 @@ module CreateReferral
 
     def recipients
       find_elements(RECIPIENTS).collect { |ele| ele.text.sub('undefined', '').strip }.join('')
+    end
+
+    def network
+      text(NETWORK).capitalize
+    end
+
+    def referral_summary_info
+      {
+        service_type: service_type,
+        recipients: recipients,
+        description: description
+      }
     end
 
     def full_name

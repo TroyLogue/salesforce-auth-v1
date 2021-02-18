@@ -47,7 +47,7 @@ module UserSettings
     end
 
     def personal_info_modal_not_displayed?
-      is_not_displayed?(EDIT_PERSONAL_INFO_MODAL, 0.5)
+      is_not_displayed?(EDIT_PERSONAL_INFO_MODAL, 1.0)
     end
 
     private

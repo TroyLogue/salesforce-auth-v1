@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../../auth/helpers/login'
-require_relative '../../root/pages/right_nav'
 require_relative '../../root/pages/home_page'
 require_relative '../../root/pages/left_nav'
 require_relative '../../clients/pages/clients_page'
@@ -10,6 +9,7 @@ require_relative '../../facesheet/pages/facesheet_cases_page'
 require_relative './../pages/create_referral'
 require_relative '../../cases/pages/open_cases_dashboard'
 require_relative '../../cases/pages/case'
+require_relative './../pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login

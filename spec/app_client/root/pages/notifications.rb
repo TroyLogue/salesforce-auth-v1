@@ -36,9 +36,17 @@ class Notifications < BasePage
   INSECURE_PASSWORD = 'Password is not safe to use as it appears in a list of weak passwords. Please change your password to something more secure.'
   USER_UPDATED = 'User Successfully Updated'
 
+  def error_banner_displayed?
+    check_displayed?(ERROR_BANNER)
+  end
+
   def error_text
     find(ERROR_BANNER)
     text(NOTIFICATION_BANNER)
+  end
+
+  def success_banner_displayed?
+    check_displayed?(SUCCESS_BANNER)
   end
 
   def success_text

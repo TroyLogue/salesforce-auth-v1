@@ -132,8 +132,8 @@ class FacesheetProfilePage < BasePage
     ADDRESS_TYPE_UNKNOWN = 'Unknown'
 
     def current_address
-      is_displayed?(ADDRESS_CONTENT)
-      text(CURRENT_ADDRESS)
+      is_displayed?(ADDRESS_CONTENT) &&
+        text(CURRENT_ADDRESS)
     end
 
     def delete_address
@@ -397,7 +397,7 @@ class FacesheetProfilePage < BasePage
   module Identify
     CURRENT_IDENTITY = { css: '.personal-data .common-display-profile:nth-child(6) .col-sm-4 > p:nth-child(2)' }.freeze
     EDIT_IDENTIFY = { css: '#edit-identity-btn' }.freeze
-    IDENTITY_MODAL = { css: '#edit-identity-modal' }.freeze
+    IDENTITY_MODAL = { css: '#edit-identity-modal .dialog-paper' }.freeze
     EXPAND_GENDER_CHOICES = { css: '#identity-gender-select + div' }.freeze
     LIST_GENDER_CHOICES = { css: 'div[id^="choices-identity-gender"]' }.freeze
     EXPAND_RACE_CHOICES = { css: '#identity-race-select + div' }.freeze
@@ -532,6 +532,7 @@ class FacesheetProfilePage < BasePage
     CURRENT_COVERAGE_END = { xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage End')]]//p" }.freeze
     # edit modal
     INSURANCE_MODAL = { css: '#add-insurance-modal.dialog.open.normal' }.freeze
+    INSURANCE_PLAN_DROPDOWN_OPEN = { css: '.payments-insurance-fields__plan .choices.is-open' }.freeze
     EXPAND_PLAN_TYPE = { css: '#insurance-plan-type + .choices__list' }.freeze
     LIST_PLAN_TYPE_CHOICES = { css: 'div[id^="choices-insurance-plan-type"]' }.freeze
     EXPAND_INSURANCE_PLAN = { css: '#insurance-plan + .choices__list' }.freeze
@@ -567,7 +568,7 @@ class FacesheetProfilePage < BasePage
       click(EXPAND_PLAN_TYPE)
       click_element_from_list_by_text(LIST_PLAN_TYPE_CHOICES, plan_type)
       click(EXPAND_INSURANCE_PLAN)
-      is_displayed?(LIST_INSURANCE_PLAN_CHOICES)
+      is_displayed?(INSURANCE_PLAN_DROPDOWN_OPEN)
       click_element_from_list_by_text(LIST_INSURANCE_PLAN_CHOICES, insurance_plan)
       enter(member_id, INPUT_MEMBER_ID)
       enter(group_id, INPUT_GROUP_ID)

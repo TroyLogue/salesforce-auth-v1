@@ -61,6 +61,16 @@ class Referral < BasePage
   REJECT_REFERRAL_NOTE = { css: '#reject-note-input' }.freeze
   REJECT_BTN = { css: '.referral-reject-display__reject-modal-form #reject-referral-reject-btn' }.freeze
 
+  ASSIGN_CARE_COORDINATOR_LINK = { css: '#assign-care-coordinator-link' }.freeze
+  ASSIGN_CARE_COORDINATOR_MODAL = { css: '#care-coordinator-modal.dialog.open.normal .dialog-paper' }.freeze
+  ASSIGN_CARE_COORDINATOR_DROPDOWN = { css: '.care-coordinator-select .choices' }.freeze
+  ASSIGN_CARE_COORDINATOR_FIRST = { css: 'div[id^="choices-care-coordinator"]' }.freeze
+  ASSIGN_CARE_COORDINATOR_SELECTED = { css: '#care-coordinator-selector + div > div:not(button)' }.freeze
+  ASSIGN_CARE_COORDINATOR_BUTTON = { css: '#edit-care-coordinator-assign-btn' }.freeze
+  CURRENT_CARE_COORDINATOR = { css: '.edit-care-coordinator > span' }.freeze
+
+  VIEW_INTAKE_LINK = { css: '.intake-label__link' }.freeze
+
   DOCUMENT_ADD_LINK = { css: '#upload-document-link' }.freeze
   DOCUMENT_ATTACH_MODAL = { css: '.dialog.open.large' }.freeze
   DOCUMENT_ATTACH_BTN = { css: '#upload-submit-btn' }.freeze
@@ -84,6 +94,7 @@ class Referral < BasePage
   CLOSED_STATUS = 'CLOSED'
 
   CLOSED_REFERRAL_ACTION = 'REFERRAL CLOSED'
+  REMOVE_TEXT = 'Remove item'
 
   REJECTED_OPTION = [
     'Client is not eligible for our services',
@@ -176,6 +187,14 @@ class Referral < BasePage
 
   def description
     text(DESCRIPTION)
+  end
+
+  def referral_summary_info
+    {
+      service_type: service_type,
+      recipients: recipient_info,
+      description: description
+    }
   end
 
   # ACCEPT
@@ -291,8 +310,16 @@ class Referral < BasePage
     text(ASSESSMENT_LIST)
   end
 
+  def military_assessment_displayed?
+    is_displayed?(MILITARY_ASSESSMENT)
+  end
+
   def open_assessment(assessment_name:)
     click(ASSESSMENT_LINK.transform_values { |v| v % assessment_name })
+  end
+
+  def open_military_assessment
+    click(MILITARY_ASSESSMENT)
   end
 
   # EDITS
@@ -315,5 +342,33 @@ class Referral < BasePage
   def save_edit_referral_modal
     click(EDIT_REFERRAL_SAVE_BTN)
     wait_for_spinner
+  end
+
+  # Care Coordinator
+  def assign_first_care_coordinator
+    click(ASSIGN_CARE_COORDINATOR_LINK)
+    is_displayed?(ASSIGN_CARE_COORDINATOR_MODAL)
+    click(ASSIGN_CARE_COORDINATOR_DROPDOWN)
+    click(ASSIGN_CARE_COORDINATOR_FIRST)
+    # Return name of care coordinator to use later, removing unwanted text
+    coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
+    click(ASSIGN_CARE_COORDINATOR_BUTTON)
+    wait_for_spinner
+    coordinator
+  end
+
+  # Intakes
+  def is_intake_link_displayed?
+    is_displayed?(VIEW_INTAKE_LINK)
+  end
+
+  def click_view_intake_link
+    click(VIEW_INTAKE_LINK)
+    wait_for_spinner
+  end
+
+  def current_care_coordinator
+    is_displayed?(CURRENT_CARE_COORDINATOR)
+    text(CURRENT_CARE_COORDINATOR)
   end
 end

@@ -32,11 +32,10 @@ describe '[Referrals]', :app_client, :referrals do
       expect(add_referral_page.page_displayed?).to be_truthy
 
       # Fill out referral info for multiple recipients(2)
-      service_type = add_referral_page.select_first_service_type
-      recipients = add_referral_page.add_multiple_recipients(count: 2)
-      description = Faker::Lorem.sentence(word_count: 5)
-
-      add_referral_page.fill_out_referral_description(description: description)
+      submitted_referral_options = add_referral_page.create_referral_selecting_first_options(
+        description: Faker::Lorem.sentence(word_count: 5),
+        count: 2
+      )
       add_referral_page.click_auto_recall_checkbox
       add_referral_page.click_next_button
 
@@ -44,9 +43,7 @@ describe '[Referrals]', :app_client, :referrals do
       additional_info_page.click_next_button if additional_info_page.page_displayed?
 
       expect(final_review_page.page_displayed?).to be_truthy
-      expect(final_review_page.service_type).to eq(service_type)
-      expect(final_review_page.description).to eq(description)
-      expect(final_review_page.recipients).to eq(recipients)
+      expect(final_review_page.referral_summary_info).to eq(submitted_referral_options)
 
       final_review_page.click_submit_button
       expect(sent_referral_dashboard.page_displayed?).to be_truthy
