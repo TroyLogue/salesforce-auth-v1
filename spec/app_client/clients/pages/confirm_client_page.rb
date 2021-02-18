@@ -15,6 +15,11 @@ class ConfirmClient < BasePage
     is_displayed?(CONTACT_LIST)
   end
 
+  def check_page_displayed?
+    check_displayed?(CONFIRMATION_CONTAINER) &&
+      check_displayed?(CONTACT_LIST)
+  end
+
   def clients_returned
     find_elements(CONTACT_LIST).length
   end
