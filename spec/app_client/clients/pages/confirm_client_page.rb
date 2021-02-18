@@ -2,7 +2,6 @@ require_relative '../../../shared_components/base_page'
 
 class ConfirmClient < BasePage
   CONFIRMATION_CONTAINER = { css: '.contact-confirmation' }.freeze
-  CONFIRMATION_CONTAINER_REFERRAL = { css: '.new-referrals-confirmation' }.freeze
   CONTACT_LIST = { css: '.contact-card' }.freeze
   CONTACT_BUTTON = { css: '.ui-button.contact-card__confirmation' }.freeze
   CONTACT_NAMES = { css: '.ui-base-card-header__title' }.freeze
@@ -13,11 +12,6 @@ class ConfirmClient < BasePage
 
   def page_displayed?
     is_displayed?(CONFIRMATION_CONTAINER) &&
-    is_displayed?(CONTACT_LIST)
-  end
-
-  def referral_page_displayed?
-    is_displayed?(CONFIRMATION_CONTAINER_REFERRAL) &&
     is_displayed?(CONTACT_LIST)
   end
 

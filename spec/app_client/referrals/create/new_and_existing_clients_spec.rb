@@ -40,8 +40,16 @@ describe '[Referrals]', :app_client, :referrals do
       expect(search_client_page.page_displayed?).to be_truthy
       search_client_page.search_client(fname: @contact.fname, lname: @contact.lname, dob: @contact.dob_formatted)
 
-      expect(confirm_client_page.referral_page_displayed?).to be_truthy
+      expect(confirm_client_page.page_displayed?).to be_truthy
       confirm_client_page.select_nth_client(index: 0)
+
+      expect(add_client_page.page_displayed?).to be_truthy
+      expect(add_client_page.is_info_prefilled?(
+        fname: @contact.fname,
+        lname: @contact.lname,
+        dob: @contact.dob_formatted
+      )).to be_truthy
+      add_client_page.save_client
 
       expect(add_referral_page.page_displayed?).to be_truthy
     end
@@ -59,7 +67,7 @@ describe '[Referrals]', :app_client, :referrals do
       # But in the event of Faker returning the same data twice, we can create a new client
       confirm_client_page.click_create_new_client if confirm_client_page.page_displayed?
 
-      expect(add_client_page.referral_page_displayed?).to be_truthy
+      expect(add_client_page.page_displayed?).to be_truthy
       expect(add_client_page.is_info_prefilled?(fname: fname, lname: lname, dob: dob)).to be_truthy
       add_client_page.save_client
 
