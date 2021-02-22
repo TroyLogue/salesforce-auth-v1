@@ -17,6 +17,7 @@ class NewReferral < BasePage
   PROVIDER_CARD_BY_TEXT = { xpath: "//h4[@class='ui-provider-card__name' and text()='%s']/ancestor::div[@class='ui-provider-card']" }
   PROVIDER_CARD_NAME = { css: '.ui-provider-card__name' }
   PROVIDER_CARD_ADD_BTN = { css: '.ui-add-remove-buttons__add' }
+  PROVIDER_CARD_REMOVE_BTN = { css: '.ui-add-remove-buttons__remove' }
   SERVICE_TYPE_FILTER = { css: '.service-type-select__select-field .choices' }
   SERVICE_TYPE_OPTION = { css: '.choices__item--selectable' }
   SUBMIT_BTN = { css: '#create-referral-submit-btn' }
@@ -34,7 +35,7 @@ class NewReferral < BasePage
   def create_oon_referral_from_table(service_type:, description:)
     select_service_type_by_text(service_type)
     select_out_of_network
-    add_random_provider_from_table
+    add_random_provider_from_table unless provider_preselected?
     enter_description(description)
     primary_worker = set_primary_worker_to_random_option
     submit
@@ -55,6 +56,12 @@ class NewReferral < BasePage
     is_displayed?(NEW_REFERRAL_CONTAINER)
       is_displayed?(FILTER_BTN)
       is_displayed?(SERVICE_TYPE_FILTER)
+  end
+
+  def provider_preselected?
+    # if there is only one provider result, they will be pre selected
+    # also confirm that the add button is already checked
+    count(PROVIDER_CARD) == 1 && count(PROVIDER_CARD_ADD_BTN) == 0
   end
 
   def select_auto_recall
