@@ -31,14 +31,11 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       # select two random providers from table and enable auto-recall option
       description = Faker::Lorem.sentence(word_count: 5)
 
-      new_referral.select_service_type_by_text(@service_type)
-      2.times do
-        new_referral.add_random_provider_from_table
-      end
-      new_referral.select_auto_recall
-      new_referral.enter_description(description)
-      new_referral.submit
-
+      new_referral.create_referral_from_table(
+        service_type: @service_type,
+        description: description,
+        provider_count: 2
+      )
       referral_assessment.create_referral if referral_assessment.page_displayed?
 
       # after sending referral, verify redirect to home page
