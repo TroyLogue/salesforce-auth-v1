@@ -13,20 +13,20 @@ class NewScreeningPage < BasePage
       is_displayed?(SCREENING_STEPPER)
   end
 
-  # Specific to PREPARE SCREENING
-  PREPARE_SCREENING_Q1 = { xpath: '//div[@class="ui-form-renderer-section"][1]/descendant::div[@class="choices"]'}
-  PREPARE_SCREENING_Q1_NO = { xpath: '//div[@class="ui-form-renderer-section"][1]/descendant::div[@class="choices__list"]/div[1]' }
-  PREPARE_SCREENING_Q1_YES = { xpath: '//div[@class="ui-form-renderer-section"][1]/descendant::div[@class="choices__list"]/div[2]' }
-  PREPARE_SCREENING_Q1_LABEL = { xpath:  '//div[@class="ui-form-renderer-section"][1]/descendant::div[@class="ui-form-renderer-question-display__label"]' }
+  # Specific to PRAPARE SCREENING
+  PRAPARE_SCREENING_Q1 = { xpath: '//div[@class="ui-form-renderer-section"][1]/descendant::div[@class="choices"]'}
+  PRAPARE_SCREENING_Q1_NO = { xpath: '//div[@class="ui-form-renderer-section"][1]/descendant::div[@class="choices__list"]/div[1]' }
+  PRAPARE_SCREENING_Q1_YES = { xpath: '//div[@class="ui-form-renderer-section"][1]/descendant::div[@class="choices__list"]/div[2]' }
+  PRAPARE_SCREENING_Q1_LABEL = { xpath:  '//div[@class="ui-form-renderer-section"][1]/descendant::div[@class="ui-form-renderer-question-display__label"]' }
 
-  def refuse_to_fill_out_screening
-    click(PREPARE_SCREENING_Q1)
-    click(PREPARE_SCREENING_Q1_NO)
+  def refuse_prapare_screening
+    click(PRAPARE_SCREENING_Q1)
+    click(PRAPARE_SCREENING_Q1_NO)
   end
 
   def no_resources_needed_message_displayed?
-    is_displayed?(PREPARE_SCREENING_Q1_LABEL)
-    raise "E2E Error: Expect #{NO_NEED_FOR_RESOURCES_MESSAGE}. Got #{text(PREPARE_SCREENING_Q1_LABEL)}" unless NO_NEED_FOR_RESOURCES_MESSAGE == text(PREPARE_SCREENING_Q1_LABEL)
+    is_displayed?(PRAPARE_SCREENING_Q1_LABEL)
+    raise "E2E Error: Expect #{NO_NEED_FOR_RESOURCES_MESSAGE}. Got #{text(PRAPARE_SCREENING_Q1_LABEL)}" unless NO_NEED_FOR_RESOURCES_MESSAGE == text(PRAPARE_SCREENING_Q1_LABEL)
     true
   end
 end

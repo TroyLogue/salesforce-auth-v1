@@ -8,7 +8,7 @@ require_relative '../facesheet/pages/facesheet_overview_page'
 require_relative '../facesheet/pages/facesheet_forms_page'
 require_relative './pages/new_screening_page'
 
-describe '[Screenings - Refuse Screening]', :screenings, :app_client do
+describe '[Screenings - Refuse PRAPARE Screening]', :screenings, :app_client do
   include Login
 
   let(:login_email) { LoginEmail.new(@driver) }
@@ -32,9 +32,9 @@ describe '[Screenings - Refuse Screening]', :screenings, :app_client do
       facesheet_header.go_to_forms
     }
 
-    it "'No need for resources' warning is displayed in the screening form when client refuses to continue", :uuqa_1755 do
+    it "'No need for resources' warning is displayed in the PRAPARE screening form when client refuses to continue", :uuqa_1755 do
       facesheet_forms.create_new_screening
-      new_screening_page.refuse_to_fill_out_screening
+      new_screening_page.refuse_prapare_screening
       expect(new_screening_page.no_resources_needed_message_displayed?).to be true
     end
   end
