@@ -35,7 +35,7 @@ describe '[Screenings - Refuse PRAPARE Screening]', :screenings, :app_client do
     it "'No need for resources' warning is displayed in the PRAPARE screening form when client refuses to continue", :uuqa_1755 do
       facesheet_forms.create_new_screening
       new_screening_page.refuse_prapare_screening
-      expect(new_screening_page.no_resources_needed_message_displayed?).to be true
+      expect(new_screening_page.prapare_no_resources_needed_message_displayed?).to be true
     end
   end
 end

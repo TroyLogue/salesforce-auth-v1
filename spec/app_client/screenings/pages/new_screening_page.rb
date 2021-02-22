@@ -24,7 +24,7 @@ class NewScreeningPage < BasePage
     click(PRAPARE_SCREENING_Q1_NO)
   end
 
-  def no_resources_needed_message_displayed?
+  def prapare_no_resources_needed_message_displayed?
     is_displayed?(PRAPARE_SCREENING_Q1_LABEL)
     raise "E2E Error: Expect #{NO_NEED_FOR_RESOURCES_MESSAGE}. Got #{text(PRAPARE_SCREENING_Q1_LABEL)}" unless NO_NEED_FOR_RESOURCES_MESSAGE == text(PRAPARE_SCREENING_Q1_LABEL)
     true
