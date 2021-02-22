@@ -4,6 +4,7 @@ require_relative './pages/share_drawer'
 require_relative '../root/pages/notifications_ehr'
 require_relative '../../shared_components/base_page'
 require_relative '../../shared_components/shares_page'
+require_relative '../../../lib/mailtrap_helper'
 
 describe '[Network] Share Providers', :ehr, :network, :share_drawer do
   include LoginEhr
