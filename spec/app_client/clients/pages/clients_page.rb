@@ -33,6 +33,11 @@ class ClientsPage < BasePage
     wait_for_spinner
   end
 
+  def go_to_facesheet_random_authorized_client
+    authorized_clients.sample.click
+    wait_for_spinner
+  end
+
   private
   def authorized_clients
     find_elements(AUTHORIZED_CLIENTS)

@@ -8,6 +8,7 @@ class FacesheetForms < BasePage
   ASSESSMENTS_TABLE = { css: '.assessments-table' }.freeze
   ASSESSMENT_NAME = { xpath: '//td[text()="%s"]' }.freeze
   CREATE_NEW_INTAKE_BTN = { css: '#create-new-intake-btn' }.freeze
+  CREATE_NEW_SCREENING_BTN = { css: '#create-new-screening-btn' }
   FACESHEET_ASSESSMENTS = { css: '.facesheet-assessments' }.freeze
   VIEW_BUTTON = { css: '.text-center a' }.freeze
 
@@ -24,6 +25,10 @@ class FacesheetForms < BasePage
 
   def create_new_intake
     click(CREATE_NEW_INTAKE_BTN)
+  end
+
+  def create_new_screening
+    click(CREATE_NEW_SCREENING_BTN)
   end
 
   def assessments_displayed?
