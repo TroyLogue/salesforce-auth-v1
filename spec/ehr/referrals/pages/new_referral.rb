@@ -58,12 +58,6 @@ class NewReferral < BasePage
       is_displayed?(SERVICE_TYPE_FILTER)
   end
 
-  def provider_preselected?
-    # if there is only one provider result, they will be pre selected
-    # also confirm that the add button is already checked
-    count(PROVIDER_CARD) == 1 && count(PROVIDER_CARD_ADD_BTN) == 0
-  end
-
   def select_auto_recall
     click(AUTO_RECALL_CHECKBOX)
   end
@@ -96,6 +90,12 @@ class NewReferral < BasePage
 
   def open_provider_drawer_by_name(provider)
     click_element_by_text(PROVIDER_CARD_NAME, provider)
+  end
+
+  def provider_preselected?
+    # if there is only one provider result, they will be pre selected
+    # also confirm that the add button is already checked
+    count(PROVIDER_CARD) == 1 && count(PROVIDER_CARD_ADD_BTN) == 0
   end
 
   def select_out_of_network
