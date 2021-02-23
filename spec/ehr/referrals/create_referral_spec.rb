@@ -28,7 +28,7 @@ describe '[Referrals]', :ehr, :ehr_referrals do
     end
 
     it 'adding two providers via table', :uuqa_1614 do
-      # select two random providers from table and enable auto-recall option
+      # select two random providers from table
       description = Faker::Lorem.sentence(word_count: 5)
 
       new_referral.create_referral_from_table(
