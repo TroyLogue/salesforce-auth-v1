@@ -66,8 +66,13 @@ module OrgSettings
   end
 
   class UserCard < BasePage
+    USER_STATUS_INACTIVE_TEXT = 'Inactive'
+    USER_STATUS_ACTIVE_TEXT = 'Active'
+
     USER_HEADER = { css: '.ui-base-card-header__title' }.freeze
     NAME_AND_TITLE_ROW = { css: '.common-display-profile.editable-panel' }.freeze
+    FIRST_NAME_CELL = { css: '.common-display-profile.editable-panel .row .col-sm-9 .row div:nth-of-type(1) p:not(.subhead)' }.freeze
+    LAST_NAME_CELL = { css: '.common-display-profile.editable-panel .row .col-sm-9 .row div:nth-of-type(2) p:not(.subhead)' }.freeze
 
     # NEW USER
     INPUT_FIRSTNAME = { css: '#first-name' }.freeze
@@ -96,6 +101,11 @@ module OrgSettings
     EDIT_PROGRAM_CLOSE_BUTTON = { css: '#edit-program-information-modal .title-closeable .ui-icon' }.freeze
     EDITABLE_NETWORK = { css: '#edit-network-licenses-modal-btn' }.freeze
     EDITABLE_ORG = { css: '#dit-group-licenses-modal-btn' }.freeze
+    EDITABLE_STATE = { css: '#edit-employee-state-modal-btn' }.freeze
+    EDITABLE_STATE_MODAL = { css: '#edit-employee-state-modal.dialog.open' }.freeze
+    STATE_DROPDOWN = { css: '.edit-employee-state-form__state-select .choices' }.freeze
+    STATE_DROPDOWN_CHOICES = { css: '.edit-employee-state-form__state-select .choices .choices__item--selectable' }.freeze
+    EDIT_STATE_SAVE_BUTTON = { css: '#edit-employee-state-save-btn' }.freeze
 
 
     def get_user_title
@@ -163,6 +173,18 @@ module OrgSettings
 
     def name_and_title
       text(NAME_AND_TITLE_ROW)
+    end
+
+    def get_name
+      "#{text(FIRST_NAME_CELL)} #{text(LAST_NAME_CELL)}"
+    end
+
+    def update_user_status(status:)
+      click(EDITABLE_STATE)
+      is_displayed?(EDITABLE_STATE_MODAL)
+      click(STATE_DROPDOWN)
+      click_element_from_list_by_text(STATE_DROPDOWN_CHOICES, status)
+      click(EDIT_STATE_SAVE_BUTTON)
     end
   end
 end
