@@ -31,7 +31,7 @@ describe '[Referrals Out of Network]', :ehr, :ehr_referrals do
       expect(new_referral.page_displayed?).to be_truthy
     end
 
-    it 'can create an OON referral using provider add/remove button', :uuqa_397 do
+    it 'can create an OON referral, selecting provider from table', :uuqa_397 do
       description = Faker::Lorem.sentence(word_count: 5)
 
       primary_worker = new_referral.create_referral_from_table(
