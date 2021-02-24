@@ -60,7 +60,7 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       expect(org_settings_user_form.name_and_title).to include(last_name)
       expect(org_settings_user_form.name_and_title).to include(work_title)
     end
-    
+
     it 'can view prepopulated program access fields', :uuqa_1668 do
       org_settings_user_table.go_to_first_user
       program_access_values = org_settings_user_form.displayed_program_access_values
@@ -69,6 +69,16 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       expect(org_settings_user_form.program_choice_values).to eq program_access_values[:program_choice_values]
       expect(org_settings_user_form.program_role_value).to eq program_access_values[:program_role_value]
       expect(org_settings_user_form.org_role_values).to eq program_access_values[:org_role_values]
+    end
+
+    it 'can save employee status', :uuqa_1767 do
+      org_settings_user_table.go_to_first_user
+
+      org_settings_user_form.save_user_status
+      expect(org_settings_user_form.user_status_modal_not_displayed?).to be_truthy
+
+      notification_text = notifications.success_text
+      expect(notification_text).to include(Notifications::USER_UPDATED)
     end
   end
 end

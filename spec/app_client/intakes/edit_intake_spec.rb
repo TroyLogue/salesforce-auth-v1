@@ -39,7 +39,7 @@ describe '[Intake]', :app_client, :intake do
       expect(org_settings_user_table.page_displayed?).to be_truthy
 
       org_settings_user_table.go_to_first_user
-      org_settings_user_form.update_user_status(status: OrgSettings::UserCard::USER_STATUS_INACTIVE_TEXT)
+      org_settings_user_form.save_user_status(status: OrgSettings::UserCard::USER_STATUS_INACTIVE_TEXT)
       name = org_settings_user_form.get_name
 
       intake_page.go_to_edit_intake_for_contact(intake_id: @intake.id, contact_id: @contact.contact_id)

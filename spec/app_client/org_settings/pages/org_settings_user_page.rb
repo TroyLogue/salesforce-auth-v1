@@ -214,12 +214,16 @@ module OrgSettings
       "#{text(FIRST_NAME_CELL)} #{text(LAST_NAME_CELL)}"
     end
 
-    def update_user_status(status:)
+    def save_user_status(status: nil)
       click(EDITABLE_STATE)
       is_displayed?(EDITABLE_STATE_MODAL)
-      click(STATE_DROPDOWN)
-      click_element_from_list_by_text(STATE_DROPDOWN_CHOICES, status)
+      click(STATE_DROPDOWN) unless status.nil?
+      click_element_from_list_by_text(STATE_DROPDOWN_CHOICES, status) unless status.nil?
       click(EDIT_STATE_SAVE_BUTTON)
+    end
+
+    def user_status_modal_not_displayed?
+      is_not_displayed?(EDITABLE_STATE_MODAL, 2.0)
     end
   end
 end
