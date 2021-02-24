@@ -85,6 +85,9 @@ module OrgSettings
     INPUT_PROGRAM_CHOICES = { css: 'div[aria-activedescendant*="programs-item-choice"]' }.freeze
     INPUT_PROGRAM_ROLES = { css: 'div[aria-activedescendant*="roles-item-choice"]' }.freeze
     INPUT_ORG_ROLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
+    INPUT_PROGRAM_CHOICES_SELECTABLES = { css: 'div[aria-activedescendant*="programs-item-choice"] div.choices__list--multiple div.choices__item--selectable' }.freeze
+    INPUT_ORG_ROLES_SELECTABLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"] div.choices__list--multiple div.choices__item--selectable' }.freeze
+    PROGRAM_ACCESS_CHOICES = { css: '.user-contact-information + div > div[data-role="personal-information"] div.flex-auto'}.freeze
 
     # EXISTING USER
     EDITABLE_PERSONAL_INFO = { css: '#edit-personal-information-modal-btn' }.freeze
@@ -149,6 +152,38 @@ module OrgSettings
       click(BTN_CANCEL_PROGRAM)
       editable
     end
+
+    def go_to_edit_program_access
+      click(EDITABLE_PROGRAM)
+      is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
+    end
+
+    def displayed_program_access_values
+      # returns program access values displayed onder user page
+      arr = find_elements(PROGRAM_ACCESS_CHOICES).map{ |e| e.text.split(', ') }
+      {
+        program_choice_values: arr[0],
+        program_role_value: arr[1].first,
+        org_role_values:arr[2]
+      }
+    end
+
+    def get_selectable_input_text(element)
+      find_elements(element).map {|s| s.text.gsub('Remove item', '').strip}
+    end
+
+    def program_choice_values
+      get_selectable_input_text(INPUT_PROGRAM_CHOICES_SELECTABLES)
+    end
+
+    def program_role_value
+      text(INPUT_PROGRAM_ROLES).gsub('Remove item', '').strip 
+    end
+
+    def org_role_values
+      get_selectable_input_text(INPUT_ORG_ROLES_SELECTABLES)
+    end
+
 
     def save_email_field
       click(EDITABLE_EMAIL)

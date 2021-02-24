@@ -60,5 +60,15 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       expect(org_settings_user_form.name_and_title).to include(last_name)
       expect(org_settings_user_form.name_and_title).to include(work_title)
     end
+    
+    it 'can view prepopulated program access fields', :uuqa_1668 do
+      org_settings_user_table.go_to_first_user
+      program_access_values = org_settings_user_form.displayed_program_access_values
+
+      org_settings_user_form.go_to_edit_program_access
+      expect(org_settings_user_form.program_choice_values).to eq program_access_values[:program_choice_values]
+      expect(org_settings_user_form.program_role_value).to eq program_access_values[:program_role_value]
+      expect(org_settings_user_form.org_role_values).to eq program_access_values[:org_role_values]
+    end
   end
 end
