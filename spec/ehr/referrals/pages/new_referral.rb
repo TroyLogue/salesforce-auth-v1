@@ -15,31 +15,34 @@ class NewReferral < BasePage
   PRIMARY_WORKER_OPTION = { css: '.referral-primary-worker .choices__item' }
   PROVIDER_CARD = { css: '.ui-provider-card' }
   PROVIDER_CARD_BY_TEXT = { xpath: "//h4[@class='ui-provider-card__name' and text()='%s']/ancestor::div[@class='ui-provider-card']" }
+  PROVIDER_CARD_DISABLED = { css: '.ui-provider-card__info-disabled' }
+  PROVIDER_CARD_ENABLED = { css: '.ui-provider-card__info:not(.ui-provider-card__info-disabled)' }
   PROVIDER_CARD_NAME = { css: '.ui-provider-card__name' }
   PROVIDER_CARD_ADD_BTN = { css: '.ui-add-remove-buttons__add' }
+  PROVIDER_CARD_REMOVE_BTN = { css: '.ui-add-remove-buttons__remove' }
   SERVICE_TYPE_FILTER = { css: '.service-type-select__select-field .choices' }
   SERVICE_TYPE_OPTION = { css: '.choices__item--selectable' }
   SUBMIT_BTN = { css: '#create-referral-submit-btn' }
 
   def add_random_provider_from_table
-    click_random(PROVIDER_CARD_ADD_BTN)
+    click_random(PROVIDER_CARD_ADD_BTN) unless cc_selected?
   rescue StandardError => e
-    info_message = "No provider card add buttons were found. "\
-                   "This can happen when there are no remaining unselected "\
-                   "providers for the selected service type, "\
-                   "or when the first selected provider is a Coordination Center."
+    info_message = "No more provider results for the selected service type."
     raise StandardError, "#{e.message}: #{info_message}"
   end
 
-  def create_oon_referral_from_table(service_type:, description:)
+  # send 'oon: true' to create an Out of Network referral
+  def create_referral_from_table(service_type:, description:, provider_count: 1, oon: false)
     select_service_type_by_text(service_type)
-    select_out_of_network
-    add_random_provider_from_table
+    select_out_of_network if oon
+    provider_count.times do
+      add_random_provider_from_table unless provider_preselected?
+    end
     enter_description(description)
-    primary_worker = set_primary_worker_to_random_option
+    primary_worker = oon ? set_primary_worker_to_random_option : ''
     submit
 
-    # return primary worker
+    # return primary worker (for oon referrals)
     primary_worker
   end
 
@@ -82,6 +85,13 @@ class NewReferral < BasePage
     click_within(provider_card, PROVIDER_CARD_ADD_BTN)
   end
 
+  def cc_selected?
+    # if a CC was selected, all other provider cards will be disabled
+    count(PROVIDER_CARD_ENABLED) == 1 &&
+      count(PROVIDER_CARD_DISABLED) > 0 &&
+      count(PROVIDER_CARD_REMOVE_BTN) == 1
+  end
+
   def open_primary_worker_dropdown
     click(PRIMARY_WORKER_DROPDOWN)
     is_not_displayed?(NO_CHOICES_ITEMS)
@@ -89,6 +99,12 @@ class NewReferral < BasePage
 
   def open_provider_drawer_by_name(provider)
     click_element_by_text(PROVIDER_CARD_NAME, provider)
+  end
+
+  def provider_preselected?
+    # if there is only one provider result, they will be pre selected
+    # also confirm that the add button is already checked
+    count(PROVIDER_CARD) == 1 && count(PROVIDER_CARD_ADD_BTN) == 0
   end
 
   def select_out_of_network
