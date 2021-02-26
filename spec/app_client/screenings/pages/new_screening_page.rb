@@ -37,25 +37,25 @@ class NewScreeningPage < BasePage
     true
   end
 
-  # specific to FOOD AND HOUSING SCREENING:
-  SCREENING_NAME = "Food and Housing Screening"
+  FOOD_AND_HOUSING_SCREENING = "Food and Housing Screening"
   # answering yes will bring up referral needs
   RADIO_BTN = { css: '.ui-radio-field__item span' }
 
   def complete_screening_with_referral_needs
-    select_screening(SCREENING_NAME)
+    select_screening(FOOD_AND_HOUSING_SCREENING)
     select_first_network if network_dropdown_displayed?
     click_element_by_text(RADIO_BTN, "Yes")
     submit_screening
   end
 
   def complete_screening_with_no_referral_needs
-    select_screening(SCREENING_NAME)
+    select_screening(FOOD_AND_HOUSING_SCREENING)
     select_first_network if network_dropdown_displayed?
     click_element_by_text(RADIO_BTN, "No")
     submit_screening
   end
 
+  private
   def select_screening(screening_name)
     click(SELECT_SCREENING_DROPDOWN)
     click_element_by_text(SCREENING_CHOICE, screening_name)
@@ -71,7 +71,6 @@ class NewScreeningPage < BasePage
     click(SUBMIT_SCREENING_BTN)
   end
 
-  private
   def network_dropdown_displayed?
     check_displayed?(SELECT_NETWORK_DROPDOWN)
   end
