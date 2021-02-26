@@ -10,4 +10,8 @@ class NetworkNavigation < BasePage
   def go_to_org_tab
     click(ORG_TAB)
   end
+
+  def go_to_users_tab
+    click(USERS_TAB)
+  end
 end
