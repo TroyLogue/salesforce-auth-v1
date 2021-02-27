@@ -4,6 +4,7 @@ require_relative '../../../shared_components/base_page'
 
 class NewReferral < BasePage
   # TODO auto-recall checkbox: replace xpath with id when UU3-50317 is complete
+  ADD_ANOTHER_REFERRAL_BUTTON = { css: '#add-referral-btn'}
   AUTO_RECALL_CHECKBOX = { xpath: '//*[@id="root"]/div/div[2]/div[2]/div/div/div[1]/div[2]/div/div/form/div[4]/div/div/div[1]' }
   BAR_LOADER = { css: '.bar-loader' }
   DESCRIPTION_FIELD = { css: '#referral-notes' }
@@ -19,6 +20,7 @@ class NewReferral < BasePage
   PROVIDER_CARD_ADD_BTN = { css: '.ui-add-remove-buttons__add' }
   SERVICE_TYPE_FILTER = { css: '.service-type-select__select-field .choices' }
   SERVICE_TYPE_OPTION = { css: '.choices__item--selectable' }
+  SERVICE_TYPE_FIRST_OPTION = { css: '#choices-service-type-item-choice-2' }
   SUBMIT_BTN = { css: '#create-referral-submit-btn' }
 
   def add_random_provider_from_table
@@ -62,13 +64,31 @@ class NewReferral < BasePage
   end
 
   def select_service_type_by_text(service_type)
+    is_displayed?(SERVICE_TYPE_FILTER)
     click(SERVICE_TYPE_FILTER)
     click_element_from_list_by_text(SERVICE_TYPE_OPTION, service_type)
     wait_for_matches
   end
 
+  def select_first_service_type
+    is_displayed?(SERVICE_TYPE_FILTER)
+    click(SERVICE_TYPE_FILTER)
+    click(SERVICE_TYPE_FIRST_OPTION)
+    wait_for_matches
+  end
+
   def selected_service_type
     text(SERVICE_TYPE_FILTER)
+  end
+
+  def add_another_referral
+    click(ADD_ANOTHER_REFERRAL_BUTTON)
+  end
+
+  def fill_out_referral(description:)
+    select_first_service_type
+    add_random_provider_from_table
+    enter_description(description)
   end
 
   def submit
