@@ -1,7 +1,6 @@
 require_relative '../auth/helpers/login'
 require_relative '../root/pages/left_nav'
 require_relative '../root/pages/notifications'
-require_relative './pages/network_browse_drawer'
 require_relative './pages/network_navigation'
 require_relative './pages/network_users'
 
@@ -11,7 +10,6 @@ describe '[Network - Users]', :network, :app_client do
   let(:left_nav) { LeftNav.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
-  let(:network_browse_drawer) { NetworkBrowseDrawer.new(@driver) }
   let(:network_navigation) { NetworkNavigation.new(@driver) }
   let(:network_users) { NetworkUsers.new(@driver) }
 
