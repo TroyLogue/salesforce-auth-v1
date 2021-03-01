@@ -5,13 +5,12 @@ require_relative '../../../shared_components/base_page'
 class ProviderDrawer < BasePage
   ADD_BTN = { css: '#group-title__add-btn' }
   CLOSE_DRAWER_BTN = { css: '.ui-drawer__close-btn.ui-drawer__close-btn--opened' }
-  CONTACT_INFO = { css: '.group-details__contact-info-contact' }
-  DESCRIPTION = { css: '.group-details__description' }
+  CONTACT_INFO = { css: '.group-details__contact-info' }
+  DESCRIPTION = { css: '.group-details-content__description' }
   EMAIL_INPUT = { css: '#share-email-field' }
   OPENED_DRAWER = { css: '.ui-drawer--opened' }
   PROGRAMS = { css: '.group-details__programs' }
   MAP = { css: '.map' }
-  SERVICES_PROVIDED = { css: '.group-details__service-types' }
   SHARE_BY_SMS = { css: "#sms-label" }
   SHARE_BY_EMAIL = { css: "#email-label" }
   SHARE_BY_PRINT = { css: "#print-label" }
@@ -43,7 +42,6 @@ class ProviderDrawer < BasePage
       is_displayed?(MAP) &&
       is_displayed?(DESCRIPTION) &&
       is_displayed?(CONTACT_INFO) &&
-      is_displayed?(SERVICES_PROVIDED) &&
       is_displayed?(PROGRAMS)
   end
 
@@ -59,7 +57,6 @@ class ProviderDrawer < BasePage
       is_displayed?(MAP) &&
       is_displayed?(DESCRIPTION) &&
       is_displayed?(CONTACT_INFO) &&
-      is_displayed?(SERVICES_PROVIDED) &&
       is_displayed?(PROGRAMS)
   end
 

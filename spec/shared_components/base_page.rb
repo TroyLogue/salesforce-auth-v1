@@ -17,7 +17,7 @@ class BasePage
 
   # similar to is_present? but checks for displayed
   # useful when an element may appear sometimes and sometimes may be hidden
-  # is designed to be used when a page is loaded; note the short wait 
+  # is designed to be used when a page is loaded; note the short wait
   def check_displayed?(selector)
     wait_for(0.5) { driver.find_element(selector).displayed? }
   rescue Selenium::WebDriver::Error::NoSuchElementError
@@ -95,6 +95,10 @@ class BasePage
 
   def click_within(context, selector)
     find_within(context, selector).click
+  end
+
+  def count(selector)
+    find_elements(selector).length
   end
 
   def current_url

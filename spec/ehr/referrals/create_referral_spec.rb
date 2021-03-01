@@ -16,7 +16,7 @@ describe '[Referrals]', :ehr, :ehr_referrals do
   let(:provider_drawer) { ProviderDrawer.new(@driver) }
   let(:referral_assessment) { ReferralAssessment.new(@driver) }
 
-  context('[default view]') do
+  context('[default view] User can create a referral') do
     before do
       @service_type = "Disability Benefits"
 
@@ -27,25 +27,22 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       expect(new_referral.page_displayed?).to be_truthy
     end
 
-    it 'can create a referral using provider add/remove buttons', :uuqa_1614 do
-      # select two random providers from table and enable auto-recall option
+    it 'adding two providers via table', :uuqa_1614 do
+      # select two random providers from table
       description = Faker::Lorem.sentence(word_count: 5)
 
-      new_referral.select_service_type_by_text(@service_type)
-      2.times do
-        new_referral.add_random_provider_from_table
-      end
-      new_referral.select_auto_recall
-      new_referral.enter_description(description)
-      new_referral.submit
-
+      new_referral.create_referral_from_table(
+        service_type: @service_type,
+        description: description,
+        provider_count: 2
+      )
       referral_assessment.create_referral if referral_assessment.page_displayed?
 
       # after sending referral, verify redirect to home page
       expect(homepage.default_view_displayed?).to be_truthy
     end
 
-    it 'can create a referral using provider drawer', :uuqa_1615 do
+    it 'adding a provider using provider drawer', :uuqa_1615 do
       description = Faker::Lorem.sentence(word_count: 5)
 
       new_referral.select_service_type_by_text(@service_type)

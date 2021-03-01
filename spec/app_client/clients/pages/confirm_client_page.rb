@@ -16,6 +16,11 @@ class ConfirmClient < BasePage
     is_displayed?(CONTACT_LIST)
   end
 
+  def check_page_displayed?
+    check_displayed?(CONFIRMATION_CONTAINER) &&
+      check_displayed?(CONTACT_LIST)
+  end
+  
   def referral_page_displayed?
     is_displayed?(CONFIRMATION_CONTAINER_REFERRAL) &&
     is_displayed?(CONTACT_LIST)
