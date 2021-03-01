@@ -28,7 +28,7 @@ describe '[Network - Users]', :network, :app_client do
       network_users.search_for(text)
 
       expect(notifications.error_notification_not_displayed?).to be_truthy
-      expect(network_users.no_users_displayed? || network_users.matching_users_displayed?(text))
+      expect(network_users.no_users_displayed? || network_users.matching_users_displayed?(text)).to be_truthy
     end
   end
 end
