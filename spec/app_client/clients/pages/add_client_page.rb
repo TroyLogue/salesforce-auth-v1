@@ -30,10 +30,6 @@ class AddClient < BasePage
     is_displayed?(ADD_CONTACT_FORM)
   end
 
-  def referral_page_displayed?
-    is_displayed?(ADD_CONTACT_FROM_REFERRAL)
-  end
-
   def is_info_prefilled?(**params)
     if params.key?(:fname) && value(FIRSTNAME_INPUT) != params[:fname]
       print "First Name value saved '#{params[:fname]}' do not equal value displayed '#{params[:fname]}'"
