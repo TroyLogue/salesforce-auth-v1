@@ -72,6 +72,13 @@ class Intake < BasePage
   ETHNICITY_TEXT = { css: '#other-information div:nth-child(6) div' }.freeze
   CITIZENSHIP_TEXT = { css: '#other-information div:nth-child(7) div' }.freeze
 
+  CARE_COORDINATOR_NAMES_LIST = { css: '#care-coordinator .care-coordinator-selector tbody tr td:nth-of-type(1)' }.freeze
+
+  def go_to_edit_intake_for_contact(intake_id:, contact_id:)
+    get("/intakes/#{intake_id}/edit?contactId=#{contact_id}")
+    wait_for_spinner
+  end
+
   def page_displayed?
     is_displayed?(INTAKE_NAVIGATION) &&
       is_displayed?(INTAKE_FORM)
@@ -176,6 +183,11 @@ class Intake < BasePage
       text_include?(race, RACE_TEXT) &&
       text_include?(ethnicity, ETHNICITY_TEXT) &&
       text_include?(citizenship, CITIZENSHIP_TEXT)
+  end
+
+  def care_coordinator_list_not_include(name)
+    names = find_elements(CARE_COORDINATOR_NAMES_LIST).map(&:text)
+    names.none? { |n| n.eql?(name) }
   end
 end
 

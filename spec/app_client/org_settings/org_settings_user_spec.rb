@@ -30,6 +30,7 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       org_settings_user_table.go_to_new_user_form
       expect(org_settings_user_form.get_user_title).to eql('New User')
       expect(org_settings_user_form.new_user_fields_display?).to be_truthy
+      expect(org_settings_user_form.employee_state_active?).to be_truthy
     end
 
     it 'can view and edit existing user form', :uuqa_355 do
@@ -39,6 +40,45 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
 
       notification_text = notifications.success_text
       expect(notification_text).to eql Notifications::USER_UPDATED
+    end
+
+    it 'can update user personal info', :uuqa_1708 do
+      org_settings_user_table.go_to_first_user
+
+      first_name = Faker::Name.first_name
+      last_name = Faker::Name.last_name
+      work_title = Faker::Job.title
+
+      org_settings_user_form.edit_personal_info(first_name: first_name, last_name: last_name, work_title: work_title)
+
+      expect(org_settings_user_form.personal_info_modal_not_displayed?).to be_truthy
+
+      notification_text = notifications.success_text
+      expect(notification_text).to include(Notifications::USER_UPDATED)
+
+      expect(org_settings_user_form.name_and_title).to include(first_name)
+      expect(org_settings_user_form.name_and_title).to include(last_name)
+      expect(org_settings_user_form.name_and_title).to include(work_title)
+    end
+
+    it 'can view prepopulated program access fields', :uuqa_1668 do
+      org_settings_user_table.go_to_first_user
+      program_access_values = org_settings_user_form.displayed_program_access_values
+
+      org_settings_user_form.go_to_edit_program_access
+      expect(org_settings_user_form.program_choice_values).to eq program_access_values[:program_choice_values]
+      expect(org_settings_user_form.program_role_value).to eq program_access_values[:program_role_value]
+      expect(org_settings_user_form.org_role_values).to eq program_access_values[:org_role_values]
+    end
+
+    it 'can save employee status', :uuqa_1767 do
+      org_settings_user_table.go_to_first_user
+
+      org_settings_user_form.save_user_status
+      expect(org_settings_user_form.user_status_modal_not_displayed?).to be_truthy
+
+      notification_text = notifications.success_text
+      expect(notification_text).to include(Notifications::USER_UPDATED)
     end
   end
 end

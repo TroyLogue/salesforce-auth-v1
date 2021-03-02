@@ -2,6 +2,7 @@ require_relative '../../../shared_components/base_page'
 
 class AddClient < BasePage
   ADD_CONTACT_FORM = { css: '.add-contact-information-form' }
+  ADD_CONTACT_FROM_REFERRAL = { css: '.add-contact-from-referral' }
   FIRSTNAME_INPUT = { css: '#first-name' }
   LASTNAME_INPUT = { css: '#last-name' }
   DOB_INPUT = { css: '#date-of-birth' }

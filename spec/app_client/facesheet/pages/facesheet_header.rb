@@ -3,7 +3,7 @@
 require_relative '../../../shared_components/base_page'
 
 class FacesheetHeader < BasePage
-  SUBHEADER = { css: '.facesheet-index__subheader-container' }
+  SUBHEADER = { css: '.facesheet-index__subheader-container' }.freeze
   NAME_HEADER = { css: '.status-select__full-name.display' }.freeze
   OVERVIEW_TAB = { css: '#facesheet-overview-tab' }.freeze
   PROFILE_TAB = { css: '#facesheet-profile-tab' }.freeze
