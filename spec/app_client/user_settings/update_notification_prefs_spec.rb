@@ -44,7 +44,7 @@ describe '[User Settings - Update Notification Preferences]', :user_settings, :a
       user_settings_notification_prefs_page.click_assistance_request_received_toggle
 
       notification_text = notifications.success_text
-      expect(notification_text).to include(Notifications::SETTINGS_UPDATED)
+      expect(notification_text).to include(Notifications::USER_UPDATED)
 
       if checkbox_value == 'true'
         expect(user_settings_notification_prefs_page.assistance_request_received_checkbox_value).to eq nil

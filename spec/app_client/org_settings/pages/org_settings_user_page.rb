@@ -87,7 +87,7 @@ module OrgSettings
     INPUT_ORG_ROLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
     INPUT_PROGRAM_CHOICES_SELECTABLES = { css: 'div[aria-activedescendant*="programs-item-choice"] div.choices__list--multiple div.choices__item--selectable' }.freeze
     INPUT_ORG_ROLES_SELECTABLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"] div.choices__list--multiple div.choices__item--selectable' }.freeze
-    PROGRAM_ACCESS_CHOICES = { css: '.user-contact-information + div > div[data-role="personal-information"] div.flex-auto'}.freeze
+    PROGRAM_ACCESS_CHOICES = { css: 'div[data-role="personal-information"] .profile-value' }.freeze
 
     # EXISTING USER
     EDITABLE_PERSONAL_INFO = { css: '#edit-personal-information-modal-btn' }.freeze
@@ -160,7 +160,7 @@ module OrgSettings
 
     def displayed_program_access_values
       # returns program access values displayed onder user page
-      arr = find_elements(PROGRAM_ACCESS_CHOICES).map{ |e| e.text.split(', ') }
+      arr = find_elements(PROGRAM_ACCESS_CHOICES).map{ |e| e.attribute('innerText').split(', ') }
       {
         program_choice_values: arr[0],
         program_role_value: arr[1].first,
