@@ -215,6 +215,11 @@ class BasePage
     false
   end
 
+  # to be used when waiting for an element to disappear
+  # but still present in the DOM; 
+  # because this method uses an implicit wait, it is subject to flakiness;
+  # if an element disappears and is not present in the DOM,
+  # use is_not_present?
   def is_not_displayed?(selector, timeout = 10)
     wait_for(timeout) { !driver.find_element(selector).displayed? }
   rescue Selenium::WebDriver::Error::NoSuchElementError
@@ -245,6 +250,14 @@ class BasePage
     false
   else
     true
+  end
+
+  # to be used when waiting for an element to disappear
+  # and removed from the DOM; 
+  # if an element disappears but is still present in the DOM,
+  # use is_not_displayed?
+  def is_not_present?(selector, timeout = 10)
+    wait_for(timeout) { driver.find_elements(selector).empty? }
   end
 
   def is_selected?(selector)

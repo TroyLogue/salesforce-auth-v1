@@ -51,7 +51,7 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
 
       org_settings_user_form.edit_personal_info(first_name: first_name, last_name: last_name, work_title: work_title)
 
-      expect(org_settings_user_form.personal_info_modal_not_displayed?).to be_truthy
+      expect(org_settings_user_form.personal_info_modal_not_present?).to be_truthy
 
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::USER_UPDATED)
@@ -75,7 +75,7 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       org_settings_user_table.go_to_first_user
 
       org_settings_user_form.save_user_status
-      expect(org_settings_user_form.user_status_modal_not_displayed?).to be_truthy
+      expect(org_settings_user_form.user_status_modal_not_present?).to be_truthy
 
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::USER_UPDATED)
