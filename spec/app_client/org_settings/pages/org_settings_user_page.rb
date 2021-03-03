@@ -202,8 +202,8 @@ module OrgSettings
       click(EDIT_PERSONAL_INFO_SAVE_BUTTON)
     end
 
-    def personal_info_modal_not_displayed?
-      is_not_displayed?(EDIT_PERSONAL_INFO_MODAL, 0.5)
+    def personal_info_modal_not_present?
+      is_not_present?(EDIT_PERSONAL_INFO_MODAL)
     end
 
     def name_and_title
@@ -222,8 +222,8 @@ module OrgSettings
       click(EDIT_STATE_SAVE_BUTTON)
     end
 
-    def user_status_modal_not_displayed?
-      is_not_displayed?(EDITABLE_STATE_MODAL, 2.0)
+    def user_status_modal_not_present?
+      is_not_present?(EDITABLE_STATE_MODAL)
     end
   end
 end
