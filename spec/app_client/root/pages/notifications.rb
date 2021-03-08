@@ -19,7 +19,8 @@ class Notifications < BasePage
   EMAIL_ADDRESS_UPDATED = 'Email Address Successfully Updated'
   GROUP_UPDATED = 'Group Successfully Updated'
   INTAKE_CREATED = 'Intake Successfully Created'
-  MESSAGE_SENT = 'Message successfully sent'
+  MESSAGE_SENT_SUCESS = 'Message successfully sent'
+  MESSAGE_SENT = 'Message Sent'
   NOTE_ADDED = 'Note Successfully Added'
   ORG_UPDATED = 'Organization Updated'
   PHONE_NUMBER_INVALID = "Twilio verification for 'to' number"

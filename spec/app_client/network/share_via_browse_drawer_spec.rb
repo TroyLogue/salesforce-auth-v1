@@ -37,7 +37,7 @@ describe '[Network - Browse Map - Browse Drawer]', :network, :app_client do
       network_browse_drawer.share_provider_details_via_email(address)
 
       notification_text = notifications.success_text
-      expect(notification_text).to include(Notifications::MESSAGE_SENT)
+      expect(notification_text).to include(Notifications::MESSAGE_SENT_SUCESS)
 
       network_browse_drawer.close_drawer
       expect(network_browse_drawer.drawer_not_displayed?).to be_truthy

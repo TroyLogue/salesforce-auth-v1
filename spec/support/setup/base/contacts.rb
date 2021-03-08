@@ -107,9 +107,9 @@ module Setup
       expect(address_response.status.to_s).to eq('201 Created')
     end
 
-    def add_email_address(email_address:, primary: true)
+    def add_email_address(email_address:, primary: false, notifications: false)
       @email_address = Payloads::Emails::Create.new(
-        acceptable_communication_types: ['message', 'notification'],
+        acceptable_communication_types: notifications ? ['message', 'notification'] : [],
         is_primary: primary,
         email_address: email_address
       ).to_h

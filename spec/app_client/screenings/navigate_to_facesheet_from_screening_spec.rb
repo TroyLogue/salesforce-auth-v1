@@ -19,7 +19,7 @@ describe '[Screenings - Navigation]', :screenings, :app_client do
   let(:all_screenings_dashboard) { ScreeningDashboard::AllScreenings.new(@driver) }
   let(:screening_detail_dashboard) { ScreeningDashboard::ScreeningDetail.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
-  let(:facesheet_overview_page) { FacesheetOverviewPage.new(@driver) }
+  let(:facesheet_overview) { FacesheetOverview.new(@driver) }
 
   context('[As a user with Screening Role]') do
     before {
@@ -39,7 +39,7 @@ describe '[Screenings - Navigation]', :screenings, :app_client do
       expect(all_screenings_dashboard.selected_client_name).to eq client_name
       screening_detail_dashboard.go_to_facesheet
       expect(facesheet_header.facesheet_name).to eq client_name
-      expect(facesheet_overview_page.page_displayed?).to be_truthy
+      expect(facesheet_overview.page_displayed?).to be_truthy
     end
   end
 

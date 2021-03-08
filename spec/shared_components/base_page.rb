@@ -296,6 +296,11 @@ class BasePage
     driver.execute_script('arguments[0].scrollIntoView(true);', element)
   end
 
+  def scroll_to_bottom_of_page
+    main_container = find({ css: 'main' })
+    driver.execute_script('arguments[0].scrollTo(0, arguments[0].scrollHeight);', main_container)
+  end
+
   # Some text boxes glide into the page, making local development difficult
   # For now its an explicit wait, but we can change this to create a better solution
   def sleep_for(seconds = 1)
