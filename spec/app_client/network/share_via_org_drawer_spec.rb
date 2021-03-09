@@ -26,7 +26,7 @@ describe '[Network - Organizations - Browse Drawer]', :network, :app_client do
       expect(network_organizations.page_displayed?).to be_truthy
     end
 
-    it 'shares provider details via text from the organizations tab' do
+    it 'shares provider details via text from the organizations tab', :uuqa_1725 do
       # UU3-49164 workaround for banner blocking drawer elements
       banner.dismiss_alert_if_displayed
       network_organizations.click_first_provider_row
@@ -39,7 +39,7 @@ describe '[Network - Organizations - Browse Drawer]', :network, :app_client do
       network_browse_drawer.share_provider_details_via_phone(phone)
 
       notification_text = notifications.success_text
-      expect(notification_text).to include(Notifications::MESSAGE_SENT)
+      expect(notification_text).to include(Notifications::MESSAGE_SENT_SUCCESS)
 
       network_browse_drawer.close_drawer
       expect(network_browse_drawer.drawer_not_displayed?).to be_truthy
