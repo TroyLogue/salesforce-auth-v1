@@ -48,7 +48,10 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       description_1 = Faker::Lorem.sentence(word_count: 5)
       description_2 = Faker::Lorem.sentence(word_count: 5)
 
-      new_referral.fill_out_referral(description: description_1)
+      new_referral.fill_out_referral(
+        description: description_1,
+        oon: false
+      )
       new_referral.add_another_referral
       new_referral.fill_out_referral(
         description: description_2,
