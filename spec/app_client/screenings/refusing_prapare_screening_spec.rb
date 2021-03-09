@@ -3,6 +3,7 @@
 require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/dashboard_nav'
+require_relative '../clients/pages/clients_page'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../facesheet/pages/facesheet_overview_page'
 require_relative '../facesheet/pages/facesheet_forms_page'
@@ -15,8 +16,8 @@ describe '[Screenings - Refuse PRAPARE Screening]', :screenings, :app_client do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:left_nav) { LeftNav.new(@driver) }
-  let(:clients_page) { ClientsPage.new(@driver)}
-  let(:facesheet_overview_page) { FacesheetOverviewPage.new(@driver) }
+  let(:clients_page) { ClientsPage.new(@driver) }
+  let(:facesheet_overview) { FacesheetOverview.new(@driver) }
   let(:facesheet_forms) { FacesheetForms.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:new_screening_page) { NewScreeningPage.new(@driver) }
@@ -27,7 +28,7 @@ describe '[Screenings - Refuse PRAPARE Screening]', :screenings, :app_client do
       expect(homepage.page_displayed?).to be_truthy
       left_nav.go_to_clients
       clients_page.go_to_facesheet_random_authorized_client
-      expect(facesheet_overview_page.page_displayed?).to be_truthy
+      expect(facesheet_overview.page_displayed?).to be_truthy
       expect(facesheet_header.page_displayed?).to be_truthy
       facesheet_header.go_to_forms
     }
