@@ -58,15 +58,15 @@ Note: There is a [webdrivers gem](https://github.com/titusfortner/webdrivers) wh
 ### ([Chromedriver](http://chromedriver.chromium.org/))
 
 `brew tap homebrew/cask`
-`brew cask install chromedriver`
+`brew install --cask chromedriver`
 
 Note: The version of Chromedriver must match the version of Chrome running in the test. You can upgrade Chromedriver to the latest version as follows:
 
-`brew cask upgrade chromedriver`
+`brew upgrade --cask chromedriver`
 
-If you are blocked from running chromedriver with the alert "macOS cannot verify the developer of chromedriver...", you need to update your permissions. Open a Terminal window, navigate to the path in which chromedriver is installed, and run the following: 
+If you are blocked from running chromedriver with the alert "macOS cannot verify the developer of chromedriver...", you need to update your permissions. Open a Terminal window and run the following: 
 
-`xattr -d com.apple.quarantine chromedriver`
+`xattr -d com.apple.quarantine $(which chromedriver)`
 
 #### Disable login on new Chrome windows
 
