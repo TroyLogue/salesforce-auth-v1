@@ -18,10 +18,8 @@ module Login
     INSIGHTS_USER = 'insights@auto.com',
     # used in createIntakeOrgIntakeUser.js
     INTAKE_USER = 'intake@auto.com',
-    # same as nolicense; should be consolidated
-    INVALID_USER = 'martin@auto.com',
     # used in parts/login/nonLicensedUser.js
-    NOLICENSE_MARTIN = 'martin@auto.com',
+    INACTIVE_BOB = 'bob@auto.com',
     # used in 3 tests and 2 helper scripts
     ORG_ATLANTA = 'atlanta@auto.com',
     # used in ~15 ui-tests, org with referral permissions to other network

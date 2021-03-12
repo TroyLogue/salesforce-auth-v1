@@ -10,7 +10,7 @@ module LoginEhr
   TEST_USERS = [
     CC_HARVARD = 'harvard@auto.com'.freeze,
     NETWORK_DIRECTORY_USER = 'cc@bi.test'.freeze,
-    NOLICENSE_MARTIN = 'martin@auto.com'.freeze,
+    INACTIVE_BOB = 'bob@auto.com'.freeze,
     SCREENINGS_USER = 'screenings@uniteus.test'.freeze,
     SCREENINGS_USER_MULTI_NETWORK = 'screenings@emr.com'.freeze
   ]
