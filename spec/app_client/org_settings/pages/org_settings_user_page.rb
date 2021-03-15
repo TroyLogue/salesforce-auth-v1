@@ -158,6 +158,7 @@ module OrgSettings
       arr = find_elements(PROGRAM_ACCESS_CHOICES).map{ |e| e.attribute('innerText').split(', ') }
       {
         program_choice_values: arr[0],
+        # TODO - remove empty string default value after implementing UU3-52069
         program_role_value: arr[1].first || "",
         org_role_values:arr[2]
       }
