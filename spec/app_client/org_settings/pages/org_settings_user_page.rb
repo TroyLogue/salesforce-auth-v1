@@ -32,11 +32,6 @@ module OrgSettings
       emails = find_elements(USER_EMAIL_LIST)
       emails.collect(&:text)
     end
- 
-    def go_to_first_user
-      click(USER_ROW_FIRST)
-      wait_for_spinner
-    end
 
     def go_to_first_user
       click(USER_ROW_FIRST)
@@ -163,7 +158,8 @@ module OrgSettings
       arr = find_elements(PROGRAM_ACCESS_CHOICES).map{ |e| e.attribute('innerText').split(', ') }
       {
         program_choice_values: arr[0],
-        program_role_value: arr[1].first,
+        # TODO - remove empty string default value after implementing UU3-52069
+        program_role_value: arr[1].first || "",
         org_role_values:arr[2]
       }
     end
@@ -177,7 +173,7 @@ module OrgSettings
     end
 
     def program_role_value
-      text(INPUT_PROGRAM_ROLES).gsub('Remove item', '').strip 
+      text(INPUT_PROGRAM_ROLES).gsub('Remove item', '').strip
     end
 
     def org_role_values
