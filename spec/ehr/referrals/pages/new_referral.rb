@@ -88,10 +88,12 @@ class NewReferral < BasePage
     click(ADD_ANOTHER_REFERRAL_BUTTON)
   end
 
-  def fill_out_referral(description:)
+  def fill_out_referral(description:, oon: false)
     select_first_service_type
+    select_out_of_network if oon
     add_random_provider_from_table
     enter_description(description)
+    set_primary_worker_to_random_option if oon
   end
 
   def submit
