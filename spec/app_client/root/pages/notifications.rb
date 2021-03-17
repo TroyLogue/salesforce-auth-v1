@@ -36,6 +36,7 @@ class Notifications < BasePage
   SUPPORTING_ASSESSMENT_SAVED = 'Supporting Assessments Successfully Saved'
   INSECURE_PASSWORD = 'Password is not safe to use as it appears in a list of weak passwords. Please change your password to something more secure.'
   USER_UPDATED = 'User Successfully Updated'
+  EXPORT_CREATED = 'Your export will be ready for download here. At peak times this can take a few hours.'
 
   def error_banner_displayed?
     check_displayed?(ERROR_BANNER)
