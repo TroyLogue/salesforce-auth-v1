@@ -1,3 +1,6 @@
+# TODO - after https://uniteus.atlassian.net/browse/UU3-24585 is implemented
+# calls to mailtrap can be removed, and this can be reduced to one spec
+# which should live in the api-integrations-tests repo
 describe '[Messaging - Email Notifications]', :app_client, :messaging do
   include Login
   include MailtrapHelper
