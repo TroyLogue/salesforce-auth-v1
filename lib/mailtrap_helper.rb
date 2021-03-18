@@ -4,6 +4,10 @@ require 'json'
 module MailtrapHelper
   PASSWORD_RESET_SUBJECT = 'Reset password instructions'
 
+  def body(message)
+    get_html_of_message(message_id: message['id']);
+  end
+
   def find_reset_link(str)
     auth_url = ENV['auth_url'].gsub('/', '\/')
     str.match(/#{auth_url}\/secret\/edit\?client_id=\w{10}&amp;reset_password_token=\S{20}/)[0]

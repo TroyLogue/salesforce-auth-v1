@@ -64,5 +64,13 @@ module Setup
       contact.create_with_consent
       contact
     end
+
+    def self.enable_email_notifications_for_contact(contact:)
+      contact.add_email_address(
+        email_address: Faker::Internet.email,
+        primary: true,
+        notifications: true
+      )
+    end
   end
 end
