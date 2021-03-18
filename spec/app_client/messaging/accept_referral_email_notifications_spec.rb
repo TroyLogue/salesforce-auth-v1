@@ -1,12 +1,6 @@
-require_relative '../root/pages/home_page'
-require_relative '../facesheet/pages/facesheet_profile_page'
-require_relative '../facesheet/pages/facesheet_header'
-
 describe '[Messaging - Email Notifications]', :app_client, :messaging do
   include Login
   include MailtrapHelper
-
-  let(:home_page) { HomePage.new(@driver) }
 
   context('[as an org user]') do
     before {
