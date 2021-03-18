@@ -58,7 +58,7 @@ module Setup
       )
     end
 
-    def self.accept_referral_in_princeton()
+    def self.accept_referral_in_princeton
       token = JWTTokens::ORG_PRINCETON
       Referral.accept(
         token: token,
