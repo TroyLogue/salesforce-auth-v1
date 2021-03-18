@@ -25,7 +25,7 @@ module MailtrapHelper
     if response.status.success?
       return JSON.parse(response.body)
     else
-      raise StandardError.new 'Call to mailtrap API failed with status #{response.status}'
+      raise StandardError.new "Call to mailtrap API failed with status #{response.status}"
     end
   end
 
@@ -38,9 +38,9 @@ module MailtrapHelper
     response = HTTP.get("https://mailtrap.io/api/v1/inboxes/#{mailbox_id}/messages/#{message_id}/body.html",
                         :params => { :api_token => ENV['API_TOKEN'] })
     if response.status.success?
-      return response.body
+      return response.body.to_s
     else
-      raise StandardError.new 'Call to mailtrap API failed with status #{response.status}'
+      raise StandardError.new "Call to mailtrap API failed with status #{response.status}"
     end
   end
 
@@ -53,7 +53,7 @@ module MailtrapHelper
   end
 
   def get_first_reset_link
-    str = get_html_of_first_message.to_s
+    str = get_html_of_first_message
     find_reset_link(str)
   end
 
