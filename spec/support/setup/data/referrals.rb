@@ -15,6 +15,18 @@ module Setup
       )
     end
 
+    def self.send_sensitive_referral_from_harvard_to_princeton(contact_id:)
+      Referral.create(
+        token: JWTTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        contact_id: contact_id,
+        referred_by_network_id: Networks::IVY,
+        referred_to_network_id: Networks::IVY,
+        referred_to_groups: [Providers::ORG_PRINCETON],
+        service_type_id: Services::DRUG_ALCOHOL_TESTING
+      )
+    end
+
     def self.send_referral_from_harvard_to_yale(contact_id:)
       Referral.create(
         token: JWTTokens::CC_HARVARD,
