@@ -16,12 +16,4 @@ class ScreeningPage < BasePage
   def no_needs_displayed?
     is_displayed?(NO_NEEDS_DISPLAY)
   end
-
-  def needs_identified?
-    find_elements(IDENTIFIED_SERVICE_CARD_TITLES).each_with_index do |need, index|
-      service_type_message = "This client has been determined to have a #{need.text} need."
-      service_card_text = find_elements(IDENTIFIED_SERVICE_CARDS)[index].text
-      raise "E2E Error: Expected #{service_type_message}. Got #{service_card_text}" unless service_card_text.include?(service_type_message)
-    end
-  end
 end
