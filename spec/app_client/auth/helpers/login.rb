@@ -51,7 +51,11 @@ module Login
     # user with no address in org with no address
     ORG_CHICAGO = 'chicago@auto.com',
     # user in cc with 200+ users
-    ORG_200_USERS = 'test-perms4@auto.com'
+    ORG_200_USERS = 'test-perms4@auto.com',
+    # user in a network and multiple screening forms
+    SCREENINGS_USER = 'screenings@uniteus.test',
+    # user in multiple networks with multiple screening forms
+    SCREENINGS_USER_MULTI_NETWORK = 'screenings@emr.com'
   ].freeze
 
   DEFAULT_PASSWORD = 'Uniteus1!'
