@@ -37,9 +37,21 @@ If you get a not-found response to either, install the missing dependencies with
 
 ## Install Project
 
-Clone this repository and install its dependencies:
+Clone this repository
 
-`cd end-to-end-tests/ && bundle install`
+`cd end-to-end-tests`
+
+## Setup a Gemset and Install Dependencies
+
+Since you'll most likely be working across multiple projects it is a good idea to keep your gems seperate. You can set up a `.ruby-gemset` file at the root and specify the name of the gemset you are creating. 
+
+For example, using rvm:
+`rvm gemset create end-to-end-tests`
+
+You would then place the text `end-to-end-tests` inside your `.ruby-gemset` file
+
+Install your dependencies 
+`bundle install`
 
 ## Update Project
 
