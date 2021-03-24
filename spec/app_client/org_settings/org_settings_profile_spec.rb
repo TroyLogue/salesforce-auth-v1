@@ -19,36 +19,38 @@ describe '[Org Settings - Profile]', :org_settings, :app_client do
       expect(org_settings_profile.page_displayed?).to be_truthy
     end
 
-    it 'can edit and save profile fields', :uuqa_810 do
-      # New Field Values
+    it 'can edit and save description', :uuqa_810 do
       description = Faker::Lorem.word
-      phone = Faker::Number.number(digits: 10)
-      email = Faker::Internet.email
-      address = "#{Faker::Number.between(from: 1, to: 10)} Apt"
-      weburl = Faker::Internet.url
-      time = "#{Faker::Number.between(from: 1, to: 10)}:00 AM"
-
-      # Description
       org_settings_profile.save_description(description)
       expect(org_settings_profile.get_description).to eq(description)
+    end
 
-      # Phone
+    it 'can edit and save phone number', :uuqa_810 do
+      phone = Faker::Number.number(digits: 10)
       org_settings_profile.save_phone(phone)
       expect(org_settings_profile.get_phone).to eq(org_settings_profile.number_to_phone_format(phone))
+    end
 
-      # Email
+    it 'can edit and save email', :uuqa_810 do
+      email = Faker::Internet.email
       org_settings_profile.save_email(email)
       expect(org_settings_profile.get_email).to eq(email)
+    end
 
-      # Address
+    it 'can edit and save address', :uuqa_810 do
+      address = "#{Faker::Number.between(from: 1, to: 10)} Apt"
       org_settings_profile.save_address(address)
       expect(org_settings_profile.get_address).to include(address)
+    end
 
-      # Url
+    it 'can edit and save website', :uuqa_810 do
+      weburl = Faker::Internet.url
       org_settings_profile.save_website(weburl)
       expect(org_settings_profile.get_website).to eq(weburl)
+    end
 
-      # Hours
+    it 'can edit and save hours of operation', :uuqa_810 do
+      time = "#{Faker::Number.between(from: 1, to: 10)}:00 AM"
       org_settings_profile.save_time(time)
       expect(org_settings_profile.get_time).to include(time)
     end
