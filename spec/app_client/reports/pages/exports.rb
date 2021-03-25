@@ -11,7 +11,7 @@ class Exports < BasePage
   EXPORT_SOURCE_CHOICE_ORG = { css: '#choices-export-create-input__type-item-choice-2' }.freeze
   EXPORT_SOURCE_CHOICE_SELECTED = { css: '#export-create-input__type + .choices__list > div[aria-selected="true"]' }.freeze
   EXPORT_SOURCE_CLOSE = { css: '.multiple-selector.open' }.freeze
-  EXPORT_TYPE_CHOICE = { css: 'div[id^="choices-export-create-input__type-item-choice-"]' }.freeze
+  EXPORT_TYPE_CHOICE = { css: '.is-open div[id^="choices-export-create-input__type-item-choice-"]' }.freeze
   EXPORT_COMPARISON_FIELD_CHOICE = { css: 'div[id^="choices-export-create-input__filter-item-choice-"]' }.freeze
   EXPORT_DATE_RANGE_CHOICE = { css: 'div[id^="choices-export-create-input__period-item-choice-"]:not([data-value="custom"])' }.freeze
   SUBMIT_BUTTON = { css: '#form-footer-submit-btn' }.freeze
