@@ -25,7 +25,7 @@ class NetworkBrowseDrawer < BasePage
   TOGGLE_MORE_INFO = { css: '#more-or-less-toggle-btn' }
 
   # program details
-  PROGRAM_DETAILS_SERVICES = { css: '.program-details .ui-service-types' }
+  PROGRAM_DETAILS_SERVICES = { css: '.program-card-v2 .ui-service-types' }
 
   # share form
   SHARE_FORM = { css: '.expandable-container__content.open .share-form' }
