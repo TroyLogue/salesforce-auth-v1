@@ -61,12 +61,13 @@ module Setup
     def random_existing_client
       contact_indexes_response = Requests::Contacts.get_client_indexes(
         token: token, group_id: group_id,
-        page: 1, query_letter: ['a','b','c','e','h'].sample
+        page: 1, query_letter: Faker::Alphanumeric.alphanumeric(number: 1, min_alpha: 1)
       )
       expect(contact_indexes_response.status.to_s).to eq('200 OK')
 
-      # Recently updated clients (1 month ago)
-      contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find{ |x| x.updated_at > 1614368114 }
+      # Searching for a client created at least 1 month ago
+      prev_month_timestamp = (DateTime.now - 30).to_time.to_i
+      contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find{ |x| x.created_at > prev_month_timestamp }
 
       # Updating values
       @contact_id = contact.id
