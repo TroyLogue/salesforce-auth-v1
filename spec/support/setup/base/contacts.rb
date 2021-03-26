@@ -65,6 +65,7 @@ module Setup
       )
       expect(contact_indexes_response.status.to_s).to eq('200 OK')
 
+      # Recently updated clients (1 month ago)
       contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find{ |x| x.updated_at > 1614368114 }
 
       # Updating values
