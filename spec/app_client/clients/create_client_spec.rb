@@ -14,11 +14,11 @@ require_relative '../consent/pages/consent_modal'
 describe '[Dashboard - Client - Search]', :clients, :app_client do
   include Login
 
-  let(:base_page) { BasePage.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:create_menu) { RightNav::CreateMenu.new(@driver) }
+  let(:search_bar) { RightNav::SearchBar.new(@driver)}
   let(:search_client_page) { SearchClient.new(@driver) }
   let(:confirm_client_page) { ConfirmClient.new(@driver) }
   let(:add_client_page) { AddClient.new(@driver) }
@@ -100,21 +100,14 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       expect(facesheet_header.facesheet_name).to eql("#{@fname} #{@lname}")
       notifications.close_banner
 
-      # Client is now searchable
-      create_menu.start_new_client
-      expect(search_client_page.page_displayed?).to be_truthy
-      search_client_page.search_client(fname: @fname, lname: @lname, dob: @dob)
+      # Changes from ES-60 cause delays in user indexing when using Search And Match
+      # Instead we are checking against the search bar
+      # Client is now searchable in search bar
+      search_bar.go_to_search_results_page("#{@fname} #{@lname}")
+      expect(search_bar.are_results_not_displayed?).to be_truthy
+      search_bar.go_to_facesheet_of("#{@fname} #{@lname}")
 
-      expect(confirm_client_page.page_displayed?).to be_truthy
-      expect(confirm_client_page.clients_returned).to be(1)
-      confirm_client_page.select_nth_client(index: 0)
-
-      # And Info is again pre-filled correctly
-      expect(add_client_page.page_displayed?).to be_truthy
-      expect(add_client_page.is_info_prefilled?(
-        fname: @fname,
-        lname: @lname,
-        dob: @dob)).to be_truthy
+      expect(facesheet_header.facesheet_name).to eql("#{@fname} #{@lname}")
     end
   end
 end

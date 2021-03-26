@@ -17,6 +17,12 @@ module Setup
       contact
     end
 
+    def self.random_existing_harvard_client
+      contact = Contact.new(token: JWTTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
+      contact.random_existing_client
+      contact
+    end
+
     def self.create_princeton_client
       contact = Contact.new(token: JWTTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
       contact.create
