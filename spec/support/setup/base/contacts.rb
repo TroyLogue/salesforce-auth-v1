@@ -61,7 +61,7 @@ module Setup
     def random_existing_client
       contact_indexes_response = Requests::Contacts.get_client_indexes(
         token: token, group_id: group_id,
-        page: 1, query_letter: ['a', 'b', 'e'].sample
+        page: 1, query_letter: ['b', 'e'].sample
       )
       expect(contact_indexes_response.status.to_s).to eq('200 OK')
 
