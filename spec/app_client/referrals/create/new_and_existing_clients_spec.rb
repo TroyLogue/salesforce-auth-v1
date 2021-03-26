@@ -28,14 +28,14 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as a Referral User]') do
     before {
-      # Get a random existing contact
-      @contact = Setup::Data.random_existing_harvard_client
-
       log_in_as(Login::CC_HARVARD)
       expect(homepage.page_displayed?).to be_truthy
     }
 
     it 'user can create a referral for an existing client', :uuqa_1734 do
+      # Get a random existing contact
+      @contact = Setup::Data.random_existing_harvard_client
+
       create_menu.start_new_referral
       expect(search_client_page.page_displayed?).to be_truthy
       search_client_page.search_client(fname: @contact.fname, lname: @contact.lname, dob: @contact.dob_formatted)
