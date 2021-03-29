@@ -32,7 +32,10 @@ describe '[Referrals]', :app_client, :referrals do
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'user can create a referral for an existing client', :uuqa_1734 do
+    # Changes from ES-60 cause delays in user indexing when using Search And Match
+    # This test case can be re-evaluated once ES-110 has be investigated
+    # The workaround is randomly select an already existing client that has already been indexed
+    it 'user can create a referral for an existing client', :uuqa_1734, :es_110 do
       # Get a random existing contact
       @contact = Setup::Data.random_existing_harvard_client
 
