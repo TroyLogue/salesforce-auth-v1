@@ -47,9 +47,11 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
       service_type_id: Services::BENEFITS_BENEFITS_ELIGIBILITY_SCREENING,
       primary_worker_id: PrimaryWorkers::ORG_COLUMBIA
     )
-    open_cases_dashboard.open_cases_table_displayed?
+
     notification_text = notifications.success_text
     expect(notification_text).to include(Notifications::CASE_CREATED)
+    expect(open_cases_dashboard.open_cases_table_displayed?).to be_truthy
+
 
     # combining processed AR with Serve AR since serving AR == processed AR
     processed_assistance_request_dashboard_page.go_to_processed_ar_dashboard_page
