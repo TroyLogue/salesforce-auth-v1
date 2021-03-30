@@ -62,6 +62,10 @@ class FacesheetHeader < BasePage
     get("/facesheet/#{id}/#{tab}")
   end
 
+  def go_to_facesheet_screening(contact_id:, screening_id:)
+    get("/facesheet/#{contact_id}/forms/screenings/#{screening_id}")
+  end
+
   def go_to_forms
     click(FORMS_TAB)
     wait_for_spinner

@@ -23,15 +23,15 @@ module Setup
       contact
     end
 
-    # Requires an existing Contact object
-    def self.select_client_in_princeton(contact:)
-      contact.select(token: JWTTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
-      contact
-    end
-
     def self.create_princeton_client_with_consent
       contact = Contact.new(token: JWTTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
       contact.create_with_consent
+      contact
+    end
+
+    # Requires an existing Contact object
+    def self.select_client_in_princeton(contact:)
+      contact.select(token: JWTTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
       contact
     end
 
