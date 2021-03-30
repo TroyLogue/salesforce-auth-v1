@@ -27,6 +27,19 @@ module Setup
           referral_id: referral_id
         ).first.form.name
       end
+
+      def get_all_screenings_for_provider(token:, group_id:, network_id:)
+        screenings_response = Requests::Forms.get_screenings_for_provider(token: token, group_id: group_id, network_id: network_id)
+        parsed_screenigs_response = JSON.parse(screenings_response, object_class: OpenStruct).data
+      end
+
+      def get_first_screening_id_for_provider(token:, group_id:, network_id:)
+        get_all_screenings_for_provider(
+          token: token,
+          group_id: group_id,
+          network_id: network_id
+        ).first.id
+      end
     end
   end
 end
