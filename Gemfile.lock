@@ -1,6 +1,7 @@
 GIT
   remote: git@github.com:unite-us/api-integration-tests.git
-  revision: 5a23c1d92113939f3fe4c284691d0e6987cc1664
+  revision: 6dff9b68ce68f17223d6c130c12581ea6f39a00e
+  branch: UUQA-1799_screening-request-updates
   specs:
     uniteus-api-client (1.0.0)
 

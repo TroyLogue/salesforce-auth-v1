@@ -19,7 +19,7 @@ describe '[Screenings]', :app_client, :screenings, :screenings_edit do
   context('[as a user with Screening Role]') do
     before {
       @contact = Setup::Data.create_harvard_client_with_consent
-      @screening = Setup::Data.create_screening_for_harvard_contact(contact: @contact)
+      @screening = Setup::Data.create_screening_for_harvard_contact(contact_id: @contact.contact_id)
 
       log_in_as(Login::CC_HARVARD)
       expect(homepage.page_displayed?).to be_truthy

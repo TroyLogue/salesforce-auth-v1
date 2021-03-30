@@ -1,6 +1,6 @@
 module Setup
   module Data
-    def self.create_screening_for_harvard_contact(contact:)
+    def self.create_screening_for_harvard_contact(contact_id:)
 
       screening_id = Setup::Data.get_first_screening_id_for_harvard;
 
