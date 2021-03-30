@@ -58,6 +58,25 @@ module Setup
       expect(contact_response.status.to_s).to eq('200 OK')
     end
 
+    def random_existing_client
+      contact_indexes_response = Requests::Contacts.get_client_indexes(
+        token: token, group_id: group_id,
+        page: 1, query_letter: Faker::Alphanumeric.alphanumeric(number: 1, min_alpha: 1)
+      )
+      expect(contact_indexes_response.status.to_s).to eq('200 OK')
+
+      # Searching for a client created at least 1 month ago
+      prev_month_timestamp = (DateTime.now - 30).to_time.to_i
+      contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find{ |x| x.created_at > prev_month_timestamp }
+
+      # Updating values
+      @contact_id = contact.id
+      @fname = contact.first_name
+      @lname = contact.last_name
+      @dob = contact.date_of_birth
+      @dob_formatted = Time.at(@dob, in: '+05:00').strftime('%m/%d/%Y')
+    end
+
     def add_consent
       consent_response = Requests::Consent.post_on_screen_consent(token: @token, group_id: @group_id,
                                                                   contact_id: @contact_id,
