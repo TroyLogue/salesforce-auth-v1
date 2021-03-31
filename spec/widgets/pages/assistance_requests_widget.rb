@@ -94,7 +94,7 @@ class AssistanceRequestWidget < BasePage
     fill_in_race if check_displayed?(RACE_DROPDOWN)
     fill_in_ethnicity if check_displayed?(ETHNICITY_DROPDOWN)
     enter(income, GROSS_MONTHLY_INCOME_INPUT) if check_displayed?(GROSS_MONTHLY_INCOME_INPUT)
-    fill_in_military_affilitation
+    fill_in_military_affilitation if check_displayed?(MILITARY_AFFILIATION_DROPDOWN)
   end
 
   def fill_custom_form_fields(**params)
