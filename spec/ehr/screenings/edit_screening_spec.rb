@@ -31,6 +31,10 @@ describe '[Screenings]', :ehr, :screenings do
         screening_id: @screening.id
       )
       expect(screening.page_displayed?).to be_truthy
+      screening.click_edit
+      expect(screening.edit_view_displayed?).to be_truthy
+      screening.click_submit
+      expect(screening.page_displayed?).to be_truthy
     end
   end
 end
