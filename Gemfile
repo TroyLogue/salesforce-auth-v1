@@ -16,6 +16,7 @@ gem 'rake'
 gem 'faker'
 gem 'http'
 gem 'dotenv'
+gem 'httparty'
 
 #browserstack
 # enables HTTP persistent connection in selenium bindings
