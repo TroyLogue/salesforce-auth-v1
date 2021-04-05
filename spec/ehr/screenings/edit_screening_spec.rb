@@ -26,7 +26,6 @@ describe '[Screenings]', :ehr, :screenings do
     end
 
     it 'edits and saves a screening', :uuqa_593 do
-      # find or create an existing screening and go to it
       homepage.get_screening_detail(
         contact_id: @contact_id,
         screening_id: @screening.id
