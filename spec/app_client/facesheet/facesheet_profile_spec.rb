@@ -77,7 +77,7 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
       expect(facesheet_profile.current_name).to include(@fname, @lname, @mname, @title, @suffix, @nicknames)
     end
 
-    it 'updates date of birth', :debug, :uuqa_1510 do
+    it 'updates date of birth', :uuqa_1510 do
       @dob = Faker::Time.backward(days: 1000)
       facesheet_profile.edit_dob(dob: @dob.strftime('%m/%d/%Y'))
       expect(facesheet_profile.current_dob).to eql(@dob.strftime('%-m/%-d/%Y'))
