@@ -27,6 +27,6 @@ class ScreeningPage < BasePage
 
   def submit_screening
     click(SUBMIT_BTN)
-    wait_for_spinner(SUBMIT_BTN_DISABLED)
+    is_not_displayed?(SUBMIT_BTN_DISABLED)
   end
 end
