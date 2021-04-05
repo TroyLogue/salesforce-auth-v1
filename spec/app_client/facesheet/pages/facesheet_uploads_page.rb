@@ -23,8 +23,8 @@ class FacesheetUploadsPage < BasePage
   REMOVE_BUTTON = { css: 'button[aria-label="Remove"]' }
 
   def page_displayed?
-    is_displayed?(UPLOAD_DOCUMENT)
-    wait_for_spinner
+    is_displayed?(UPLOAD_DOCUMENT) &&
+      wait_for_spinner
   end
 
   def upload_document(file_name)

@@ -9,8 +9,8 @@ class ScreeningPage < BasePage
   IDENTIFIED_SERVICE_CARDS = { css: '.risk-display .ui-base-card' }
 
   def page_displayed?
-    is_displayed?(SCREENING_DETAIL)
-    wait_for_spinner
+    is_displayed?(SCREENING_DETAIL) &&
+      wait_for_spinner
   end
 
   def no_needs_displayed?

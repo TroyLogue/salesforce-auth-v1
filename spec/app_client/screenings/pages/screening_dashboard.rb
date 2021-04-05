@@ -13,8 +13,8 @@ module ScreeningDashboard
     STATUS_FILTER_TEXT_DEFAULT = 'Status'
 
     def page_displayed?
-      is_displayed?(SCREENINGS_TABLE)
-      wait_for_spinner
+      is_displayed?(SCREENINGS_TABLE) &&
+        wait_for_spinner
     end
 
     def care_coordinator_filter_text

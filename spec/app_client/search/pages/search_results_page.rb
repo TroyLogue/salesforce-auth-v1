@@ -6,8 +6,8 @@ class SearchResultsPage < BasePage
   SEARCH_NAME_LIST = { css: 'td[id^="contact-full_name"]' }
 
   def page_displayed?
-    is_displayed?(SEARCH_TABLE)
-    wait_for_spinner
+    is_displayed?(SEARCH_TABLE) &&
+      wait_for_spinner
   end
 
   def go_to_facesheet_of(name)
