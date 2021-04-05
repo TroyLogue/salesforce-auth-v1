@@ -12,7 +12,7 @@ namespace :jenkins do
     exit run_in_parallel(tag: 'app_client')
   end
 
-  task :UU3-52354 do
+  task :UU3_52354 do
     ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'app_client_staging'
     exit run_in_parallel(tag: 'app_client')
