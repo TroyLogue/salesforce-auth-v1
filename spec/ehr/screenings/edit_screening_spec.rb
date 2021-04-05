@@ -14,20 +14,21 @@ describe '[Screenings]', :ehr, :screenings do
 
   context('[default view] as a user with the Screening role') do
     before do
-      # data setup:
-      @contact_id = Contacts::TIMMY_SMART
-      @screening = Setup::Data.create_screening_for_harvard_contact(
-        contact_id: @contact_id
-      )
       # screenings only available w patient context (default view)
       log_in_default_as(LoginEhr::CC_HARVARD)
       expect(homepage.default_view_displayed?).to be_truthy
+
+      # data setup:
+      @contact_id = homepage.contact_id
+      @screening = Setup::Data.create_screening_for_harvard_contact(
+        contact_id: @contact_id
+      )
     end
 
     it 'edits and saves a screening', :uuqa_593 do
       # find or create an existing screening and go to it
       homepage.get_screening_detail(
-        contact_id: Contacts::TIMMY_SMART,
+        contact_id: @contact_id,
         screening_id: @screening.id
       )
       expect(screening.page_displayed?).to be_truthy

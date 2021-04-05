@@ -46,6 +46,7 @@ class Screening < BasePage
 
   def page_displayed?
     is_displayed?(SCREENING_DETAIL_DIV) &&
-      is_displayed?(NEEDS_SECTION)
+      is_displayed?(NEEDS_SECTION) &&
+      is_not_displayed?(SUBMIT_BTN)
   end
 end
