@@ -2,6 +2,7 @@
 
 require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/home_page'
+require_relative '../root/pages/notifications_ehr'
 require_relative './pages/screening'
 
 describe '[Screenings]', :ehr, :screenings do
@@ -10,6 +11,7 @@ describe '[Screenings]', :ehr, :screenings do
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
+  let(:notifications) { NotificationsEhr.new(@driver) }
   let(:screening) { Screening.new(@driver) }
 
   context('[default view] as a user with the Screening role') do
@@ -35,6 +37,7 @@ describe '[Screenings]', :ehr, :screenings do
       expect(screening.edit_view_displayed?).to be_truthy
       screening.click_submit
       expect(screening.page_displayed?).to be_truthy
+      expect(notifications.error_notification_not_displayed?).to be_truthy
     end
   end
 end
