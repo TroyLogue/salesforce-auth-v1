@@ -524,7 +524,7 @@ class FacesheetProfilePage < BasePage
 
   module Insurance
     INSURANCE_SECTION = { css: '.profile-panel.insurance-information'}.freeze
-    INSURANCE_LIST = { css: '.payments-insurance-information.payments-container'}.freeze
+    INSURANCE_LIST = { css: '.payments-insurance-information'}.freeze
     CURRENT_PLAN = { css: '.payments-insurance-information__plan-info'}.freeze
     CURRENT_MEMBER_ID = { xpath: ".//div[div[@class='row']//text()[contains(., 'Member Id')]]//p" }.freeze
     CURRENT_GROUP_ID = { xpath: ".//div[div[@class='row']//text()[contains(., 'Group Id')]]//p" }.freeze

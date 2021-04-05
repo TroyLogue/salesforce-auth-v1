@@ -58,16 +58,29 @@ module Setup
       expect(contact_response.status.to_s).to eq('200 OK')
     end
 
+    # when searching for clients, some query letters return 0 results; 
+    # we are searching clients using an array that has proven to be reliable
     def random_existing_client
-      contact_indexes_response = Requests::Contacts.get_client_indexes(
-        token: token, group_id: group_id,
-        page: 1, query_letter: Faker::Alphanumeric.alphanumeric(number: 1, min_alpha: 1)
-      )
-      expect(contact_indexes_response.status.to_s).to eq('200 OK')
+      default_retry_count = 2
+      retry_count = 0
+      contact = nil
 
-      # Searching for a client created at least 1 month ago
-      prev_month_timestamp = (DateTime.now - 30).to_time.to_i
-      contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find{ |x| x.created_at > prev_month_timestamp }
+      while contact.nil? && retry_count <= default_retry_count
+        contact_indexes_response = Requests::Contacts.get_client_indexes(
+          token: token, group_id: group_id,
+          page: 1, query_letter: Faker::Alphanumeric.alphanumeric(number: 1, min_alpha: 1)
+        )
+        expect(contact_indexes_response.status.to_s).to eq('200 OK')
+
+        # Searching for a client created within the past month
+        # with ES-60 we migrated only contacts created since ~ Jan 2021; 
+        # in developing this method we saw reliable search results when scoped to one month
+        prev_month_timestamp = (DateTime.now - 30).to_time.to_i
+        contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find{ |x| x.created_at > prev_month_timestamp }
+
+        retry_count += 1
+        contact
+      end
 
       # Updating values
       @contact_id = contact.id
