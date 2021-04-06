@@ -10,8 +10,8 @@ class ClientsPage < BasePage
   CLIENT_SECOND_AUTHORIZED = { css: '.ui-table-body > tr:not(.unauthorized):nth-child(2) > td' }
 
   def page_displayed?
-    is_displayed?(FILTER_BAR)
-    wait_for_spinner
+    is_displayed?(FILTER_BAR) &&
+      wait_for_spinner
   end
 
   def click_filter_lastname_letter(letter)

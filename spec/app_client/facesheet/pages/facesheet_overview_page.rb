@@ -163,7 +163,7 @@ class FacesheetOverview < BasePage
   OVERVIEW = { css: '.facesheet-overview' }.freeze
 
   def page_displayed?
-    is_displayed?(OVERVIEW)
-    wait_for_spinner
+    is_displayed?(OVERVIEW) &&
+      wait_for_spinner
   end
 end

@@ -13,7 +13,7 @@ class ScreeningPage < BasePage
 
   def page_displayed?
     is_displayed?(SCREENING_DETAIL) &&
-    wait_for_spinner
+      wait_for_spinner
   end
 
   def edit_screening
