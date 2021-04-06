@@ -6,6 +6,10 @@ class DashboardNav < BasePage
   DASHBOARD_NAV = { class: 'dashboard-nav' }
   SCREENINGS_ALL = { id: 'dashboard-screenings-all' }
 
+  def go_to_screening(screening_id:)
+    get("/dashboard/screenings/all/#{screening_id}")
+  end
+
   def go_to_screenings
     click(SCREENINGS_ALL)
   end
