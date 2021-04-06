@@ -16,12 +16,22 @@ class HomePage < BasePage
       is_displayed?(SCREENINGS_SECTION)
   end
 
+  def get_screening_detail(contact_id:, screening_id:)
+    session_id = ehr_session_support_id
+    get "/#{session_id}/contact/#{contact_id}/screenings/#{screening_id}"
+  end
+
   def go_to_create_referral
     click(CREATE_REFERRAL_BUTTON)
   end
 
   def page_displayed?
     is_displayed?(NAVBAR)
+  end
+
+  # must be on the home page in patient context
+  def contact_id
+    current_url.split("#{ENV['web_url']}/").last.split('/').last
   end
 
   # When using EHR in a browser, the base URL is followed by an ID which is dynamically generated
