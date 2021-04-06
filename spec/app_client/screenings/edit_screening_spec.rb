@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require_relative '../auth/helpers/login'
-require_relative '../root/pages/home_page'
 require_relative '../root/pages/dashboard_nav'
+require_relative '../root/pages/home_page'
+require_relative '../root/pages/notifications'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../screenings/pages/screening_page'
 
@@ -13,6 +14,7 @@ describe '[Screenings]', :app_client, :screenings, :screenings_edit do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:dashboard) { DashboardNav.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
+  let(:notifications) { Notifications.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:screening_page) { ScreeningPage.new(@driver) }
 
@@ -32,6 +34,7 @@ describe '[Screenings]', :app_client, :screenings, :screenings_edit do
 
       screening_page.edit_screening
       screening_page.submit_screening
+      expect(notifications.error_notification_not_displayed?).to be_truthy
       expect(screening_page.page_displayed?).to be_truthy
     end
 
@@ -43,6 +46,7 @@ describe '[Screenings]', :app_client, :screenings, :screenings_edit do
       expect(screening_page.page_displayed?).to be_truthy
       screening_page.edit_screening
       screening_page.submit_screening
+      expect(notifications.error_notification_not_displayed?).to be_truthy
       expect(screening_page.page_displayed?).to be_truthy
     end
   end
