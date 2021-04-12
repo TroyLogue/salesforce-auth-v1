@@ -3,7 +3,7 @@ require_relative '../../../../lib/file_helper'
 
 class FacesheetUploadsPage < BasePage
   UPLOAD_DOCUMENT = { css: '#upload-document-btn' }
-  DOCUMENT_UPLOAD_MODEL = { css: '.upload-and-attach-documents-form-fields' }
+  DOCUMENT_UPLOAD_MODEL = { css: '.dialog.open.large .upload-and-attach-documents-form-fields' }
   DOCUMENT_UPLOAD_CONTEXT = { css: '#upload-document-modal' }
   DOCUMENT_UPLOAD_INPUT = { css: 'input[type="file"]' }
   DOCUMENT_PREVIEW = { css: '.preview-item' }
@@ -17,14 +17,14 @@ class FacesheetUploadsPage < BasePage
   DOCUMENT_MENU_RENAME = { css: '#document-menu-item-rename' }
   DOCUMENT_MENU_REMOVE = { css: '#document-menu-item-remove'}
 
-  DIALOG = { css: '.dialog-paper' }
+  DIALOG = { css: '.dialog.open.small .dialog-paper' }
   RENAME_TEXT_FIELD = { css: '#rename-document-title-field' }
   SAVE_BUTTON = { css: 'button[aria-label="Save"]' }
   REMOVE_BUTTON = { css: 'button[aria-label="Remove"]' }
 
   def page_displayed?
-    is_displayed?(UPLOAD_DOCUMENT)
-    wait_for_spinner
+    is_displayed?(UPLOAD_DOCUMENT) &&
+      wait_for_spinner
   end
 
   def upload_document(file_name)
@@ -32,7 +32,6 @@ class FacesheetUploadsPage < BasePage
     local_file_path = create_consent_file(file_name)
     # opening upload dialog
     click(UPLOAD_DOCUMENT)
-    sleep(1) #slide in animation
     is_displayed?(DOCUMENT_UPLOAD_MODEL)
     enter_within(local_file_path, DOCUMENT_UPLOAD_CONTEXT, DOCUMENT_UPLOAD_INPUT)
     is_displayed?(DOCUMENT_PREVIEW)
@@ -61,12 +60,9 @@ class FacesheetUploadsPage < BasePage
     click_within(DOCUMENT_MENU.transform_values { |v| v % file_name }, DOCUMENT_MENU_REMOVE)
     is_displayed?(DIALOG)
     click(REMOVE_BUTTON)
-    refresh
-    wait_for_spinner
   end
 
   def is_document_removed?(file_name)
-    # The method is_not_displayed? is throwing TimeOutErrors and returning True even when document is still present
     is_not_displayed?(DOCUMENT_NAME.transform_values { |v| v % file_name })
   end
 
@@ -76,8 +72,10 @@ class FacesheetUploadsPage < BasePage
 
   # for clean up purposes deleting all documents created during test cases
   def delete_documents
-    while is_displayed?(CLIENT_DOCUMENTS) do
-      remove_document(text(DOCUMENT_NAME_LIST))
+    while is_displayed?(CLIENT_DOCUMENTS)
+      document = text(DOCUMENT_NAME_LIST)
+      remove_document(document)
+      is_document_removed?(document)
     end
   end
 end

@@ -14,6 +14,21 @@ describe '[User Settings - Update Notification Preferences]', :user_settings, :a
   let(:notifications) { Notifications.new(@driver) }
   let(:user_settings_notification_prefs_page) { UserSettings::NotificationPrefsPage.new(@driver) }
 
+  # this test case was added when Ivy League users got errors while trying to load notification preferences
+  context('[As a user with network notification preferences]') do
+    before do
+      log_in_as(Login::CC_HARVARD)
+      expect(home_page.page_displayed?).to be_truthy
+    end
+
+    # UU3-51340 skip until bug is prioritized
+    it 'loads network notification preferences correctly without error messages', :uuqa_1613, skip: true do
+      user_settings_notification_prefs_page.load_page
+      expect(notifications.is_displayed?(Notifications::ERROR_BANNER)).to be false
+      expect(user_settings_notification_prefs_page.page_displayed?).to be_truthy
+    end
+  end
+
   context('[As a user]') do
     before do
       log_in_as(Login::SETTINGS_USER)
@@ -22,13 +37,14 @@ describe '[User Settings - Update Notification Preferences]', :user_settings, :a
 
     it 'updates provider assistance request preference', :uuqa_1613 do
       user_settings_notification_prefs_page.load_page
+      expect(notifications.is_displayed?(Notifications::ERROR_BANNER)).to be false
       expect(user_settings_notification_prefs_page.page_displayed?).to be_truthy
 
       checkbox_value = user_settings_notification_prefs_page.assistance_request_received_checkbox_value
       user_settings_notification_prefs_page.click_assistance_request_received_toggle
 
       notification_text = notifications.success_text
-      expect(notification_text).to include(Notifications::SETTINGS_UPDATED)
+      expect(notification_text).to include(Notifications::USER_UPDATED)
 
       if checkbox_value == 'true'
         expect(user_settings_notification_prefs_page.assistance_request_received_checkbox_value).to eq nil

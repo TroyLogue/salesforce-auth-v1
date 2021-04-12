@@ -10,7 +10,7 @@ module UserSettings
     PERSONAL_INFO_ROW = { css: '.user-personal-information.editable-panel' }.freeze
     NAME_AND_TITLE_ROW = { css: '.user-personal-information .col-sm-9' }.freeze
     EDIT_PERSONAL_INFO_BUTTON = { css: '#edit-personal-btn' }.freeze
-    EDIT_PERSONAL_INFO_MODAL = { css: '#edit-personal-modal' }.freeze
+    EDIT_PERSONAL_INFO_MODAL = { css: '#edit-personal-modal.dialog.open' }.freeze
     EDIT_WORK_TITLE_INPUT = { css: '#work-title' }.freeze
     SAVE_PERSONAL_INFO_BUTTON = { css: '#save-personal-information-btn' }.freeze
 
@@ -47,7 +47,7 @@ module UserSettings
     end
 
     def personal_info_modal_not_displayed?
-      is_not_displayed?(EDIT_PERSONAL_INFO_MODAL, 0.5)
+      is_not_displayed?(EDIT_PERSONAL_INFO_MODAL, 3)
     end
 
     private

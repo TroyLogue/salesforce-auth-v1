@@ -15,112 +15,126 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_profile) { FacesheetProfilePage.new(@driver) }
 
+  # # option 1 - new browser session with each spec
   context('[as org user]') do
-    before {
+    before(:all) do
+      @contact = Setup::Data.create_columbia_client_with_consent
+    end
+
+    before(:each) do
       log_in_as(Login::ORG_COLUMBIA)
       expect(home_page.page_displayed?).to be_truthy
-      # Create Contact
-      @contact = Setup::Data.create_columbia_client_with_consent
-    }
-
-    it 'User can update profile values of existing client', :uuqa_1510 do
+ 
       facesheet_header.go_to_facesheet_with_contact_id(
         id: @contact.contact_id,
         tab: 'profile'
       )
+    end
 
-      aggregate_failures 'Updating all profile fields' do
-        # Phone Number, Address, Email and Contact Preferences share the same component
-        # can be removed by api-integration tests: UU3-48770
-        # Update Phone Number
-        @phone_number = Faker::Number.number(digits: 10)
-        facesheet_profile.add_mobile_phone_number_with_enabled_notifications(phone: @phone_number)
-        expect(facesheet_profile.current_phone_number).to eql(facesheet_profile.number_to_phone_format(@phone_number))
+    # Phone Number, Address, Email and Contact Preferences share the same component
+    # can be removed by api-integration tests: UU3-48770
+    it 'updates phone number', :uuqa_1510 do
+      @phone_number = Faker::Number.number(digits: 10)
+      facesheet_profile.add_mobile_phone_number_with_enabled_notifications(phone: @phone_number)
+      expect(facesheet_profile.current_phone_number).to eql(facesheet_profile.number_to_phone_format(@phone_number))
+    end
 
-        # Update Address
-        @address_line1 = Faker::Address.street_address
-        @city = Faker::Address.city
-        @state = Faker::Address.state
-        # UU does a soft validation of addresses, therefore zip code needs to map to state
-        @zip = Faker::Address.zip(state_abbreviation: state_name_to_abbr(name: @state))
-        facesheet_profile.add_address(address_line1: @address_line1, city: @city, state: @state, zip: @zip)
-        expect(facesheet_profile.current_address).to include(
-          @address_line1, @city, state_name_to_abbr(name: @state), @zip
-        )
+    it 'updates address', :uuqa_1510 do
+      @address_line1 = Faker::Address.street_address
+      @city = Faker::Address.city
+      @state = Faker::Address.state
+      # UU does a soft validation of addresses, therefore zip code needs to map to state
+      @zip = Faker::Address.zip(state_abbreviation: state_name_to_abbr(name: @state))
+      facesheet_profile.add_address(address_line1: @address_line1, city: @city, state: @state, zip: @zip)
+      expect(facesheet_profile.current_address).to include(
+        @address_line1, @city, state_name_to_abbr(name: @state), @zip
+      )
+    end
 
-        # Update Email
-        @email = Faker::Internet.email
-        facesheet_profile.add_email_with_enabled_notifications(email: @email)
-        expect(facesheet_profile.current_email).to eql(@email)
+    it 'updates email address', :uuqa_1510 do
+      @email = Faker::Internet.email
+      facesheet_profile.add_email_with_enabled_notifications(email: @email)
+      expect(facesheet_profile.current_email).to eql(@email)
+    end
+    
+    it 'updates contact preferences', :uuqa_1510 do
+      @method = facesheet_profile.class::METHOD_CONTACT_CALL
+      @time = facesheet_profile.class::TIME_CONTACT_MORNING
+      facesheet_profile.edit_contact_preferences(method: @method, time: @time)
+      expect(facesheet_profile.current_contact_preferences).to include(@method, @time)
+    end
 
-        # Update Contact Preferences
-        @method = facesheet_profile.class::METHOD_CONTACT_CALL
-        @time = facesheet_profile.class::TIME_CONTACT_MORNING
-        facesheet_profile.edit_contact_preferences(method: @method, time: @time)
-        expect(facesheet_profile.current_contact_preferences).to include(@method, @time)
+    it 'updates name', :uuqa_1510 do
+      @fname = Faker::Name.first_name
+      @lname = Faker::Name.last_name
+      @mname = Faker::Name.initials(number: 1)
+      @title = facesheet_profile.class::MR_TITLE
+      @suffix = facesheet_profile.class::III_SUFFIX
+      @nicknames = Faker::Name.middle_name
+      facesheet_profile.edit_name(
+        fname: @fname, lname: @lname, mname: @mname, title: @title, suffix: @suffix, nicknames: @nicknames
+      )
+      expect(facesheet_profile.current_name).to include(@fname, @lname, @mname, @title, @suffix, @nicknames)
+    end
 
-        # Update Name
-        @fname = Faker::Name.first_name
-        @lname = Faker::Name.last_name
-        @mname = Faker::Name.initials(number: 1)
-        @title = facesheet_profile.class::MR_TITLE
-        @suffix = facesheet_profile.class::III_SUFFIX
-        @nicknames = Faker::Name.middle_name
-        facesheet_profile.edit_name(
-          fname: @fname, lname: @lname, mname: @mname, title: @title, suffix: @suffix, nicknames: @nicknames
-        )
-        expect(facesheet_profile.current_name).to include(@fname, @lname, @mname, @title, @suffix, @nicknames)
+    it 'updates date of birth', :uuqa_1510 do
+      @dob = Faker::Time.backward(days: 1000)
+      facesheet_profile.edit_dob(dob: @dob.strftime('%m/%d/%Y'))
+      expect(facesheet_profile.current_dob).to eql(@dob.strftime('%-m/%-d/%Y'))
+    end
 
-        # Update DOB
-        @dob = Faker::Time.backward(days: 1000)
-        facesheet_profile.edit_dob(dob: @dob.strftime('%m/%d/%Y'))
-        expect(facesheet_profile.current_dob).to eql(@dob.strftime('%-m/%-d/%Y'))
+    it 'updates citizenship', :uuqa_1510 do
+      @citizenship = facesheet_profile.class::CITIZENSHIP_US
+      facesheet_profile.edit_citizenship(citizenship: @citizenship)
+      expect(facesheet_profile.current_citizenship).to eql(@citizenship)
+    end
 
-        # Update Citizenship
-        @citizenship = facesheet_profile.class::CITIZENSHIP_US
-        facesheet_profile.edit_citizenship(citizenship: @citizenship)
-        expect(facesheet_profile.current_citizenship).to eql(@citizenship)
+    it 'updates SSN', :uuqa_1510 do
+      @ssn = Faker::Number.number(digits: 9).to_s
+      facesheet_profile.edit_ssn(ssn: @ssn)
+      expect(facesheet_profile.current_ssn).to eql('*** - ** - ' + @ssn[-4..])
+    end
 
-        # Update SSN
-        @ssn = Faker::Number.number(digits: 9).to_s
-        facesheet_profile.edit_ssn(ssn: @ssn)
-        expect(facesheet_profile.current_ssn).to eql('*** - ** - ' + @ssn[-4..])
+    it 'updates gender, race, and ethnicity', :uuqa_1510 do
+      @gender = facesheet_profile.class::GENDER_F
+      @race = facesheet_profile.class::RACE_O
+      @ethnicity = facesheet_profile.class::ETHNICITY_NH_NL
+      facesheet_profile.edit_identify_as(gender: @gender, race: @race, ethnicity: @ethnicity)
+      expect(facesheet_profile.current_identity).to include(@gender, @race, @ethnicity)
+    end
 
-        # Update Identify As
-        @gender = facesheet_profile.class::GENDER_F
-        @race = facesheet_profile.class::RACE_O
-        @ethnicity = facesheet_profile.class::ETHNICITY_NH_NL
-        facesheet_profile.edit_identify_as(gender: @gender, race: @race, ethnicity: @ethnicity)
-        expect(facesheet_profile.current_identity).to include(@gender, @race, @ethnicity)
+    it 'updates household count', :uuqa_1510 do
+      @total = Faker::Number.non_zero_digit.to_s
+      facesheet_profile.edit_household_numerical_size(total: @total)
+      expect(facesheet_profile.current_household_count).to eql(@total)
+    end
 
-        # Update Household
-        # Count
-        @total = Faker::Number.non_zero_digit.to_s
-        facesheet_profile.edit_household_numerical_size(total: @total)
-        expect(facesheet_profile.current_household_count).to eql(@total)
+    it 'updates marital status', :uuqa_1510 do
+      @marital = facesheet_profile.class::MARITAL_STATUS_M_CU
+      facesheet_profile.edit_marital_status(status: @marital)
+      expect(facesheet_profile.current_marital_status).to eql(@marital)
+    end
 
-        # Marital Status
-        @marital = facesheet_profile.class::MARITAL_STATUS_M_CU
-        facesheet_profile.edit_marital_status(status: @marital)
-        expect(facesheet_profile.current_marital_status).to eql(@marital)
+    it 'updates income', :uuqa_1510 do
+      @income = Faker::Number.number(digits: 5).to_s
+      facesheet_profile.edit_income(income: @income)
+      expect(facesheet_profile.current_income).to eql(@income)
+    end
 
-        # Update Income
-        @income = Faker::Number.number(digits: 5).to_s
-        facesheet_profile.edit_income(income: @income)
-        expect(facesheet_profile.current_income).to eql(@income)
+    it 'updates insurance', :uuqa_1510 do
+      @plan_type = facesheet_profile.class::MEDICARE_PLAN
+      @plan = facesheet_profile.class::MEDICARE_PLAN
+      @member_id = Medicare.generate_id
+      facesheet_profile.add_insurance(plan_type: @plan_type,
+                                              insurance_plan: @plan,
+                                              member_id: @member_id)
+      expect(facesheet_profile.list_insurances).to include(@plan_type, @plan, @member_id)
+    end
 
-        # Update Insurance
-        @medicaid_id = Faker::Alphanumeric.alphanumeric(number: 10).upcase
-        @beneficiary_id = Medicare.generate_id
-        @state = Faker::Address.state
-        facesheet_profile.add_insurance_section(medicaid_id: @medicaid_id, beneficiary_id: @beneficiary_id, state: @state)
-        expect(facesheet_profile.current_insurance).to include(@medicaid_id, @beneficiary_id, @state)
-
-        # Update Military status
-        @affiliation = facesheet_profile.class::AFFILIATION_CAREGIVER
-        facesheet_profile.edit_military_affiliation(affiliation: @affiliation)
-        expect(facesheet_profile.current_military_info).to eql(@affiliation)
-      end
+    it 'updates military status', :uuqa_1510 do
+      @affiliation = facesheet_profile.class::AFFILIATION_CAREGIVER
+      facesheet_profile.edit_military_affiliation(affiliation: @affiliation)
+      expect(facesheet_profile.current_military_info).to eql(@affiliation)
     end
   end
 

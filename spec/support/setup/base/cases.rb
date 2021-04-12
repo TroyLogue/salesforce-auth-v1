@@ -40,6 +40,35 @@ module Setup
 
         JSON.parse(service_case_response, object_class: OpenStruct).data
       end
+
+      def close(
+        token:,
+        group_id:,
+        contact_id:,
+        case_id:,
+        resolved:
+      )
+        close_case_payload = {
+          closing: {
+            exited_at: DateTime.now.to_time.to_i,
+            note: Faker::Lorem.sentence,
+            outcome_id: resolved ? Resolutions::RESOLVED : Resolutions::UNRESOLVED,
+            resolved: resolved
+          }
+        }
+
+        closed_case_response = Requests::Cases.close(
+          token: token,
+          group_id: group_id,
+          contact_id: contact_id,
+          case_id: case_id,
+          payload: close_case_payload
+        )
+
+        raise("Response returned: #{closed_case_response.status}") unless closed_case_response.status == 200
+
+        JSON.parse(closed_case_response, object_class: OpenStruct).data
+      end
     end
   end
 end

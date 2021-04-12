@@ -7,15 +7,8 @@ module UserSettings
     NOTIFICATIONS_ENABLED_TOGGLE = { name: 'email_updates_enabled' }.freeze
     NOTIFICATIONS_PREFERENCES_CONTENT = { css: '.notification-preferences__content' }.freeze
 
-    # provider notifs
-    GROUP_NOTIFICATIONS_FORM = { css: '.group-notifications-pref-form__slider' }.freeze
+    # Global notifs
     AR_RECEIVED_TOGGLE = { name: 'new_assistance_request' }.freeze
-
-    # network notifs
-    NETWORK_NOTIFICATIONS_FORM = { css: '.network-notifications-pref-form__slider' }.freeze
-
-    # client notifs
-    CLIENT_NOTIFICATIONS_FORM = { css: '.contact-notification-preferences-form' }.freeze
 
     def load_page
       get('/user/settings/notifications')
@@ -24,10 +17,7 @@ module UserSettings
     def page_displayed?
       enable_notifications_if_disabled
 
-      is_displayed?(NOTIFICATIONS_PREFERENCES_CONTENT) &&
-        is_displayed?(GROUP_NOTIFICATIONS_FORM) &&
-        is_displayed?(NETWORK_NOTIFICATIONS_FORM) &&
-        is_displayed?(CLIENT_NOTIFICATIONS_FORM)
+      is_displayed?(NOTIFICATIONS_PREFERENCES_CONTENT) 
     end
 
     def assistance_request_received_checkbox_value

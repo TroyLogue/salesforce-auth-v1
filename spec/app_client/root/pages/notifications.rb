@@ -8,14 +8,19 @@ class Notifications < BasePage
   SUCCESS_BANNER = { css: '#notifications .notification.success' }.freeze
   CLOSE_BANNER = { css: '.close' }.freeze
 
+  ACCESS_DENIED = 'Access to the requested resource has been forbidden.'
+  ASSISTANCE_REQUEST_CLOSED = 'Assistance Request Successfully Closed'
   BLANK_EMAIL_MESSAGE = "EmailAddress can't be blank"
   CASE_CREATED = 'Case Created'
+  CASE_REOPENED = 'Case Successfully Reopened'
   CLIENT_UPDATED = 'Client Successfully Updated'
   CONSENT_REQUEST_SENT = 'Consent Request Sent'
   CONSENT_UPLOADED = 'Consent Uploaded'
   EMAIL_ADDRESS_UPDATED = 'Email Address Successfully Updated'
   GROUP_UPDATED = 'Group Successfully Updated'
-  MESSAGE_SENT = 'Message successfully sent'
+  INTAKE_CREATED = 'Intake Successfully Created'
+  MESSAGE_SENT_SUCCESS = 'Message successfully sent'
+  MESSAGE_SENT = 'Message Sent'
   NOTE_ADDED = 'Note Successfully Added'
   ORG_UPDATED = 'Organization Updated'
   PHONE_NUMBER_INVALID = "Twilio verification for 'to' number"
@@ -31,13 +36,19 @@ class Notifications < BasePage
   SUPPORTING_ASSESSMENT_SAVED = 'Supporting Assessments Successfully Saved'
   INSECURE_PASSWORD = 'Password is not safe to use as it appears in a list of weak passwords. Please change your password to something more secure.'
   USER_UPDATED = 'User Successfully Updated'
-  ACCESS_DENIED = 'Access to the requested resource has been forbidden.'
-  INTAKE_CREATED = 'Intake Successfully Created'
-  ASSISTANCE_REQUEST_CLOSED = "Assistance Request Successfully Closed"
+  EXPORT_CREATED = 'Your export will be ready for download here. At peak times this can take a few hours.'
+
+  def error_banner_displayed?
+    check_displayed?(ERROR_BANNER)
+  end
 
   def error_text
     find(ERROR_BANNER)
     text(NOTIFICATION_BANNER)
+  end
+
+  def success_banner_displayed?
+    check_displayed?(SUCCESS_BANNER)
   end
 
   def success_text
@@ -48,5 +59,9 @@ class Notifications < BasePage
   def close_banner
     is_displayed?(SUCCESS_BANNER)
     click_within(SUCCESS_BANNER, CLOSE_BANNER)
+  end
+
+  def error_notification_not_displayed?
+    is_not_displayed?(ERROR_BANNER)
   end
 end

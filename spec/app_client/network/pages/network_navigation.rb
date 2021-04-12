@@ -6,4 +6,12 @@ class NetworkNavigation < BasePage
   USERS_TAB = { css: '#users-tab' }
 
   PAGE_FOOTER = { css: '.oon-group-form__footer' }
+
+  def go_to_org_tab
+    click(ORG_TAB)
+  end
+
+  def go_to_users_tab
+    click(USERS_TAB)
+  end
 end

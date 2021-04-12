@@ -15,6 +15,9 @@ module OrgSettings
     INPUT_PHONE = { css: 'input[id^="phoneNumber"]' }.freeze
     SAVE_PHONE = { css: '#edit-phone-number-save-btn' }.freeze
     TEXT_PHONE = { css: '.phone-number-display > p' }.freeze
+    PHONE_TYPE_SELECT_LIST = { css: '[id^="phoneType"] + .choices__list' }.freeze
+    PHONE_TYPE_CHOICES = { css: '[id^="choices-phoneType"]' }.freeze
+    PHONE_TYPE_FAX = 'Fax'
 
     EDIT_EMAIL = { css: '#edit-email-btn' }.freeze
     INPUT_EMAIL = { css: 'input[name="emails[0].email_address"]' }.freeze
@@ -45,8 +48,7 @@ module OrgSettings
     end
 
     def save_description(description)
-      save_field(edit_button: EDIT_DESCRIPTION, save_button: SAVE_DESCRIPTION, input_field: INPUT_DESCRIPTION, text_value: description)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
+      edit_and_save_field(edit_button: EDIT_DESCRIPTION, save_button: SAVE_DESCRIPTION, input_field: INPUT_DESCRIPTION, text_value: description)
     end
 
     def get_description
@@ -54,8 +56,9 @@ module OrgSettings
     end
 
     def save_phone(phone)
-      save_field(edit_button: EDIT_PHONE, save_button: SAVE_PHONE, input_field: INPUT_PHONE, text_value: phone)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
+      click(EDIT_PHONE)
+      select_phone_type_fax
+      save_field(save_button: SAVE_PHONE, input_field: INPUT_PHONE, text_value: phone)
     end
 
     def get_phone
@@ -63,8 +66,7 @@ module OrgSettings
     end
 
     def save_email(email)
-      save_field(edit_button: EDIT_EMAIL, save_button: SAVE_EMAIL, input_field: INPUT_EMAIL, text_value: email)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
+      edit_and_save_field(edit_button: EDIT_EMAIL, save_button: SAVE_EMAIL, input_field: INPUT_EMAIL, text_value: email)
     end
 
     def get_email
@@ -72,8 +74,7 @@ module OrgSettings
     end
 
     def save_address(address)
-      save_field(edit_button: EDIT_ADDRESS, save_button: SAVE_ADDRESS, input_field: INPUT_ADDRESS, text_value: address)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
+      edit_and_save_field(edit_button: EDIT_ADDRESS, save_button: SAVE_ADDRESS, input_field: INPUT_ADDRESS, text_value: address)
     end
 
     def get_address
@@ -81,8 +82,7 @@ module OrgSettings
     end
 
     def save_website(website)
-      save_field(edit_button: EDIT_WEBSITE, save_button: SAVE_WEBSITE, input_field: INPUT_WEBSITE, text_value: website)
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
+      edit_and_save_field(edit_button: EDIT_WEBSITE, save_button: SAVE_WEBSITE, input_field: INPUT_WEBSITE, text_value: website)
     end
 
     def get_website
@@ -97,7 +97,6 @@ module OrgSettings
       click_element_from_list_by_text(LIST_HOURS, time)
       click(SAVE_HOURS)
       is_field_saved?
-      click_within(Notifications::SUCCESS_BANNER, Notifications::CLOSE_BANNER)
     end
 
     def get_time
@@ -106,22 +105,29 @@ module OrgSettings
 
     private
 
-    def save_field(edit_button:, save_button:, input_field:, text_value:)
+    def edit_and_save_field(edit_button:, save_button:, input_field:, text_value:)
       click(edit_button)
-      sleep_for(1) # glide in animation
       is_displayed?(DIALOG_MODAL)
 
-      # deleting everything before entering
-      delete_all_char(input_field)
-      enter(text_value, input_field)
-      click(save_button)
-      is_field_saved?
+      save_field(save_button: save_button, input_field: input_field, text_value: text_value)
     end
 
     def is_field_saved?
       wait_for_spinner
       is_not_displayed?(DIALOG_MODAL, 3)
       is_displayed?(Notifications::SUCCESS_BANNER)
+    end
+
+    def save_field(save_button:, input_field:, text_value:)
+      delete_all_char(input_field)
+      enter(text_value, input_field)
+      click(save_button)
+      is_field_saved?
+    end
+
+    def select_phone_type_fax
+      click(PHONE_TYPE_SELECT_LIST)
+      click_element_from_list_by_text(PHONE_TYPE_CHOICES, PHONE_TYPE_FAX)
     end
   end
 end

@@ -1,12 +1,13 @@
 require_relative '../../../shared_components/base_page'
 
 class PendingConsentPage < BasePage
-  CONSENT_MODAL = { css: '#consent-dialog' }
+  CONSENT_MODAL = { css: '#consent-dialog.dialog.open' }
   FILTERS_BAR = { css: '.filter-bar' }
   PENDING_CONSENT_REFERRAL_FIRST = { css: '.ui-table-body tr:nth-of-type(1)' }
   PENDING_CONSENT_REFERRAL_SECOND = { css: '.ui-table-body tr:nth-of-type(2)' }
   REFERRALS_TABLE = { css: '.dynamic-table' }
   REQUEST_OR_UPLOAD_CONSENT_BUTTON = { css: '#vertical-dots-menu-item-0' }
+  CLOSE_REFERRAL_BUTTON = { css: '#vertical-dots-menu-item-1' }
   VERTICAL_DOTS_MENU_FIRST = { css: '#-pending-consent-referrals-table-row-0 #vertical-dots-menu' }
   VERTICAL_DOTS_MENU = { css: '#vertical-dots-menu' }
 
@@ -21,7 +22,12 @@ class PendingConsentPage < BasePage
   def open_first_consent_modal
     click(VERTICAL_DOTS_MENU)
     click(REQUEST_OR_UPLOAD_CONSENT_BUTTON)
-    sleep(1) #waiting for slide in animation
+    is_displayed?(CONSENT_MODAL)
+  end
+
+  def open_first_close_referral_modal
+    click(VERTICAL_DOTS_MENU)
+    click(CLOSE_REFERRAL_BUTTON)
   end
 
   def page_displayed?

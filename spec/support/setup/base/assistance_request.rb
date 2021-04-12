@@ -15,7 +15,7 @@ module Setup
                 :gross_monthly_income, :citizenship, :form_id, :signature_image
 
     def initialize
-      @ar_id = 0  
+      @ar_id = 0
       @description = Faker::Lorem.sentence(word_count: 5)
       @fname = Faker::Name.first_name
       @lname = Faker::Name.last_name
@@ -38,14 +38,23 @@ module Setup
                                                                 })
       ar_response = Requests::AssistanceRequest.create(payload: ar_request_body)
       expect(ar_response.status.to_s).to eq('201 Created')
-      @ar_id = JSON.parse(ar_response, object_class: OpenStruct).data.id
+      @ar_data = JSON.parse(ar_response, object_class: OpenStruct).data
+      @ar_id = @ar_data.id
+    end
+
+    def full_name
+      "#{@fname} #{@lname}"
+    end
+
+    def service_type_name
+      @ar_data.service_type.name.capitalize
     end
   end
 
   class CloseAssistanceRequest
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
-    
+
     def close(token:, group_id:, ar_id:, resolution:)
       payload = {
         closing:{
@@ -64,7 +73,7 @@ module Setup
     end
 
     def date_ar_closed
-      Time.at(@closed_ar_data.closing.created_at).strftime("%m/%-d/%Y")
+      Time.at(@closed_ar_data.closing.created_at).strftime("%-m/%-d/%Y")
     end
 
     def time_ar_closed

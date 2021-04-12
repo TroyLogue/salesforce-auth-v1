@@ -1,14 +1,16 @@
 require_relative '../../../shared_components/base_page'
 
 class NewAssistanceRequestPage < BasePage
-  #Close AR page
+  # AR page
   TAKE_ACTION = { css: '.choices__item' }.freeze
   START_INTAKE_CHOICE = { css: '#choices-assistance-request-action-select-item-choice-2' }.freeze
+  SERVE_AR_CHOICE = { css: '#choices-assistance-request-action-select-item-choice-3' }.freeze
+  REFER_AR_CHOICE = { css: '#choices-assistance-request-action-select-item-choice-4' }.freeze
   REQUEST_CLOSE = { css: '#choices-assistance-request-action-select-item-choice-5' }.freeze
   IS_RESOLVED = { css: '#resolved-input' }.freeze
   STATUS_DETAIL = { css: '.detail-status-text' }.freeze
   
-  #Close AR Modal
+  # Close AR Modal
   RESOLUTION_INPUT = { css: '.choices__input--cloned' }.freeze
   OUTCOME = { css: '#outcome-input' }.freeze
   OUTCOME_CHOICE = { css: '#choices-outcome-input-item-choice-1' }.freeze
@@ -16,7 +18,7 @@ class NewAssistanceRequestPage < BasePage
   CLOSE_BUTTON = { css: '#close-ar-close-btn' }.freeze
   AR_CLOSE_MODAL = { css: '.close-ar__inputs' }.freeze
 
-  #AR Statuses
+  # AR Statuses
   NEED_ACTION_STATUS_TEXT = 'NEEDS ACTION'
   
   def go_to_new_ar_with_id(ar_id:)
@@ -27,6 +29,16 @@ class NewAssistanceRequestPage < BasePage
   def select_start_intake_action
     click(TAKE_ACTION)
     click(START_INTAKE_CHOICE)
+  end
+
+  def select_serve_ar_action
+    click(TAKE_ACTION)
+    click(SERVE_AR_CHOICE)
+  end
+
+  def select_refer_ar_action
+    click(TAKE_ACTION)
+    click(REFER_AR_CHOICE)
   end
 
   def select_close_assistance_request

@@ -72,11 +72,19 @@ class ConsentModal < BasePage
     click_via_js(ACCEPT_BTN)
   end
 
+  def select_consent_by_email
+    click(EMAIL_RADIO_BTN)
+  end
+
   def request_consent_by_email(address)
     click(EMAIL_RADIO_BTN)
     click(EMAIL_INPUT_FIELD)
     clear_then_enter(address, EMAIL_INPUT_FIELD)
     click(EMAIL_SUBMIT_BTN)
+  end
+
+  def select_consent_by_text
+    click(PHONE_NUMBER_RADIO_BTN)
   end
 
   def request_consent_by_text(phone_number)

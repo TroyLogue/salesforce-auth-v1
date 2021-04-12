@@ -20,7 +20,7 @@ describe '[User Settings - Update Personal Info]', :user_settings, :app_client d
       expect(home_page.page_displayed?).to be_truthy
     end
 
-    it 'updates my work title', :uuqa_1614 do
+    it 'updates my work title', :uuqa_1610 do
       user_settings_account_info_page.load_page
       expect(user_settings_account_info_page.page_displayed?).to be_truthy
 

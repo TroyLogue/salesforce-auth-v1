@@ -3,6 +3,14 @@
 module ReferralDashboard
   module SharedComponents
     HEADER_COLUMNS = { css: '.ui-table-header-column' }.freeze
+    LOCKED_MESSAGE = { css: '.unauthorized-message' }.freeze
+    CARE_COORDINATOR_FILTER = { css: '#care-coordinator-filter.ui-filter' }.freeze
+    CARE_COORDINATOR_INPUT = { css: '#care-coordinator-filter.ui-filter-search__input' }.freeze
+    CARE_COORDINATOR_LOAD = { css: '.filter-options__container--loading' }.freeze
+    CARE_COORDINATOR_FIRST = { css: '.ui-filter-option' }.freeze
+    EMPTY_TABLE = { css: '.empty-table' }.freeze
+
+    UNAUTHORIZED_MESSAGE = "Client is not being served by your organization. [20001]\nClient has not granted consent. [20000]"
 
     def headers_displayed?
       displayed_headers = find_elements(HEADER_COLUMNS)[1..].map(&:text)
@@ -23,10 +31,42 @@ module ReferralDashboard
     end
 
     def row_values_for_client(client:)
-      # Find row that matches client name, if not found throw an error
-      index = find_elements(self.class::ALL_CLIENT_NAMES).map(&:text).index(client) + 1 || raise("#{client} not found in table")
-      # Return an array of all values in the row for the client
-      find_elements(self.class::CLIENT_ROW.transform_values { |v| v % index }).map(&:text)
+      # List of client names
+      clients = find_elements(self.class::ALL_CLIENT_NAMES).map(&:text)
+      # Return indexes that match client name
+      indexes = clients.filter_map.with_index { |name, index| index if name == client }
+      raise("#{client} not found in table") unless indexes.any?
+
+      # Return an array of strings
+      client_values = []
+      indexes.each do |index|
+        client_values << find_elements(self.class::CLIENT_ROW.transform_values { |v| v % (index + 1) }).map(&:text).join(', ')
+      end
+      # Returning an array of strings if multiple results, otherwise a single string
+      client_values.count > 1 ? client_values : client_values[0]
+    end
+
+    def click_on_row_by_client_name(client:)
+      list_clients = find_elements(self.class::ALL_CLIENT_NAMES).map(&:text)
+      index = list_clients.index(client) || raise("#{client} not found in table")
+      client_locator = self.class::CLIENT_ROW.transform_values { |v| v % (index + 1) }
+      click(client_locator)
+    end
+
+    def pop_up_message
+      text(LOCKED_MESSAGE)
+    end
+
+    def is_empty_table_displayed?
+      is_displayed?(EMPTY_TABLE)
+    end
+
+    def filter_by_care_coordinator(coordinator:)
+      click(CARE_COORDINATOR_FILTER)
+      clear_then_enter(coordinator, CARE_COORDINATOR_INPUT)
+      is_not_displayed?(CARE_COORDINATOR_LOAD)
+      click(CARE_COORDINATOR_FIRST)
+      wait_for_spinner
     end
   end
 
@@ -124,6 +164,42 @@ module ReferralDashboard
 
     def go_to_p2p_referrals_dashboard
       get('/dashboard/referrals/provider-to-provider')
+    end
+  end
+
+  class Drafts < BasePage
+    include SharedComponents
+
+    DRAFT_REFERRALS = { css: '#draft-referrals-table' }.freeze
+    ALL_CLIENT_NAMES = { css: 'tr[id^="draft-referrals-table-row"] .ui-table-row-column:nth-child(2) > span' }.freeze
+    CLIENT_ROW = { css: 'tr[id^="draft-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
+
+    def page_displayed?
+      wait_for_spinner
+      is_displayed?(DRAFT_REFERRALS)
+    end
+
+    def go_to_draft_referrals_dashboard
+      get('/dashboard/referrals/drafts')
+    end
+  end
+
+  class Closed < BasePage
+    include SharedComponents
+
+    CLOSED_REFERRALS = { css: '#closed-referrals-table' }.freeze
+    ALL_CLIENT_NAMES = { css: 'tr[id^="closed-referrals-table-row"] .ui-table-row-column:nth-child(4) > span' }.freeze
+    CLIENT_ROW = { css: 'tr[id^="closed-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
+
+    HEADERS = ['SENDER', 'RECIPIENT', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'OUTCOME', 'DATE CLOSED'].freeze
+
+    def page_displayed?
+      wait_for_spinner
+      is_displayed?(CLOSED_REFERRALS)
+    end
+
+    def go_to_closed_referrals_dashboard
+      get('/dashboard/referrals/closed')
     end
   end
 

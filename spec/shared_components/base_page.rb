@@ -15,6 +15,19 @@ class BasePage
     find(selector).attribute(attribute)
   end
 
+  # similar to is_present? but checks for displayed
+  # useful when an element may appear sometimes and sometimes may be hidden
+  # is designed to be used when a page is loaded; note the short wait
+  def check_displayed?(selector)
+    wait_for(0.5) { driver.find_element(selector).displayed? }
+  rescue Selenium::WebDriver::Error::NoSuchElementError
+    false
+  rescue Selenium::WebDriver::Error::StaleElementReferenceError
+    false
+  rescue Selenium::WebDriver::Error::TimeOutError
+    false
+  end
+
   # may return true, false, or nil
   def checkbox_value(element)
     checkbox = find(element)
@@ -56,12 +69,36 @@ class BasePage
     raise StandardError, "E2E ERROR: Option '#{text}' was not found in list of Selector #{selector}" unless found
   end
 
+  # Modification to above method for not strictly matching text
+  def click_element_from_list_including_text(selector, text)
+    list = find_elements(selector)
+    found = false
+    list.each do |element|
+      next unless element.text.include?(text)
+
+      element.click
+      found = true
+      break
+    end
+    raise StandardError, "E2E ERROR: Option '#{text}' was not found in list of Selector #{selector}" unless found
+  end
+
+  def click_random(selector)
+    random_option = find_elements(selector).sample
+    raise StandardError, "E2E ERROR: No elements of Selector '#{selector}' were found" unless random_option
+    random_option.click
+  end
+
   def click_via_js(selector)
     driver.execute_script('arguments[0].click();', find(selector))
   end
 
   def click_within(context, selector)
     find_within(context, selector).click
+  end
+
+  def count(selector)
+    find_elements(selector).length
   end
 
   def current_url
@@ -178,6 +215,11 @@ class BasePage
     false
   end
 
+  # to be used when waiting for an element to disappear
+  # but still present in the DOM; 
+  # because this method uses an implicit wait, it is subject to flakiness;
+  # if an element disappears and is not present in the DOM,
+  # use is_not_present?
   def is_not_displayed?(selector, timeout = 10)
     wait_for(timeout) { !driver.find_element(selector).displayed? }
   rescue Selenium::WebDriver::Error::NoSuchElementError
@@ -185,10 +227,15 @@ class BasePage
   rescue Selenium::WebDriver::Error::StaleElementReferenceError
     true
   rescue Selenium::WebDriver::Error::TimeOutError
-    true
+    # this will time out both when the element exists and does not exist - so we need to check again after the waiting period
+    displayed = check_displayed?(selector)
+    print "E2E ERROR: Selector #{selector} was present" if displayed
+    !displayed
   else
-    print "E2E ERROR: Selector #{selector} was present"
-    false
+    # this execute anytime no exception is thrown - so we need to check if the element is displayed or not
+    displayed = check_displayed?(selector)
+    print "E2E ERROR: Selector #{selector} was present" if displayed
+    !displayed
   end
 
   # Similar to is_displayed? but without the time wrapper, and therefore returns
@@ -203,6 +250,14 @@ class BasePage
     false
   else
     true
+  end
+
+  # to be used when waiting for an element to disappear
+  # and removed from the DOM; 
+  # if an element disappears but is still present in the DOM,
+  # use is_not_displayed?
+  def is_not_present?(selector, timeout = 10)
+    wait_for(timeout) { driver.find_elements(selector).empty? }
   end
 
   def is_selected?(selector)
@@ -239,6 +294,11 @@ class BasePage
   def scroll_to(selector)
     element = find(selector)
     driver.execute_script('arguments[0].scrollIntoView(true);', element)
+  end
+
+  def scroll_to_bottom_of_page
+    main_container = find({ css: 'main' })
+    driver.execute_script('arguments[0].scrollTo(0, arguments[0].scrollHeight);', main_container)
   end
 
   # Some text boxes glide into the page, making local development difficult

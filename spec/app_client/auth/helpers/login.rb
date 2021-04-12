@@ -18,13 +18,11 @@ module Login
     INSIGHTS_USER = 'insights@auto.com',
     # used in createIntakeOrgIntakeUser.js
     INTAKE_USER = 'intake@auto.com',
-    # same as nolicense; should be consolidated
-    INVALID_USER = 'martin@auto.com',
     # used in parts/login/nonLicensedUser.js
-    NOLICENSE_MARTIN = 'martin@auto.com',
+    INACTIVE_BOB = 'bob@auto.com',
     # used in 3 tests and 2 helper scripts
     ORG_ATLANTA = 'atlanta@auto.com',
-    # used in ~15 ui-tests
+    # used in ~15 ui-tests, org with referral permissions to other network
     ORG_COLUMBIA = 'columbia@auto.com',
     # used in ~20 ui-tests
     ORG_NEWYORK = 'newyork@auto.com',
@@ -47,7 +45,17 @@ module Login
     # columbia org with New-Search Feature Flag enabled
     NEW_SEARCH_USER = 'client-search@auto.com',
     # used to test provider-selector features
-    USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test'
+    USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test',
+    # user with valid address
+    ORG_UPENN = 'upenn@auto.com',
+    # user with no address in org with no address
+    ORG_CHICAGO = 'chicago@auto.com',
+    # user in cc with 200+ users
+    ORG_200_USERS = 'test-perms4@auto.com',
+    # user in a network and multiple screening forms
+    SCREENINGS_USER = 'screenings@uniteus.test',
+    # user in multiple networks with multiple screening forms
+    SCREENINGS_USER_MULTI_NETWORK = 'screenings@emr.com'
   ].freeze
 
   DEFAULT_PASSWORD = 'Uniteus1!'

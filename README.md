@@ -37,9 +37,21 @@ If you get a not-found response to either, install the missing dependencies with
 
 ## Install Project
 
-Clone this repository and install its dependencies:
+Clone this repository
 
-`cd end-to-end-tests/ && bundle install`
+`cd end-to-end-tests`
+
+## Setup a Gemset and Install Dependencies
+
+Since you'll most likely be working across multiple projects it is a good idea to keep your gems seperate. You can set up a `.ruby-gemset` file at the root and specify the name of the gemset you are creating. 
+
+For example, using rvm:
+`rvm gemset create end-to-end-tests`
+
+You would then place the text `end-to-end-tests` inside your `.ruby-gemset` file
+
+Install your dependencies 
+`bundle install`
 
 ## Update Project
 
@@ -58,15 +70,19 @@ Note: There is a [webdrivers gem](https://github.com/titusfortner/webdrivers) wh
 ### ([Chromedriver](http://chromedriver.chromium.org/))
 
 `brew tap homebrew/cask`
-`brew cask install chromedriver`
+`brew install --cask chromedriver`
 
 Note: The version of Chromedriver must match the version of Chrome running in the test. You can upgrade Chromedriver to the latest version as follows:
 
-`brew cask upgrade chromedriver`
+`brew upgrade --cask chromedriver`
 
-If you are blocked from running chromedriver with the alert "macOS cannot verify the developer of chromedriver...", you need to update your permissions. Open a Terminal window, navigate to the path in which chromedriver is installed, and run the following: 
+If you are blocked from running chromedriver with the alert "macOS cannot verify the developer of chromedriver...", you need to update your permissions. Open a Terminal window and run the following: 
 
-`xattr -d com.apple.quarantine chromedriver`
+`xattr -d com.apple.quarantine $(which chromedriver)`
+
+#### Disable login on new Chrome windows
+
+Unite Us IT has implemented a policy by which users are prompted to login when a new Chrome window is launched. In support ticket [UUI-507](https://uniteus.atlassian.net/browse/UUI-507) team members who needed to run automated tests in Chrome were added to an exceptions list to disable this prompted. New contributors to the project should submit a request like [UUI-1613](https://uniteus.atlassian.net/browse/UUI-1613) in order to be added to that list.
 
 ### ([Geckodriver](https://github.com/mozilla/geckodriver)) (for Firefox)
 
@@ -173,11 +189,10 @@ Page Objects, developed and popularized by Google, have proven to be a best prac
 
 - Page-object classes should contain (1) constants defining selectors on the relevant page, and (2) functions to be called by specs
 - If a route contains three tabs (e.g., /network is a parent to browse map, orgs, and users), create one page object for each tab
-- Similarly modals warrant distinct page-object classes
 - Method activities are limited to locating and interacting with elements
 - Page object methods do not as a general rule contain assertions; assertions should be executed in a spec or spec helper
 - Spec helpers are comprised of multiple page object methods for DRY purposes (e.g., a helper called log_in_as could contain the steps to load the home page, click log in, and submit a user's credentials)
-  - Helper methods should be moved to back-end calls if possible (e.g., send an API request to set up the conditions required by the test, or use machine tokens to bypass the UI login flow)
+  - Helper methods should be moved to back-end calls if possible (e.g., send an API request to set up the conditions required by the test, or use tokens to bypass the UI login flow)
 
 ### Tagging guidelines
 
@@ -192,13 +207,13 @@ As the project matures we might consider additional dimensions for running regre
 - `:browsers_chrome` for tests that need to be run on only one browsers
 - `:parallel` for tests that can be run in parallel
 - `:single_threaded` for tests that cannot be run in parallel
-- `:pending => "UU3-##### reason test is skipped"` where the reason includes a JIRA ticket ID, e.g., known bug (there are several ways to skip examples, but this is the most expressive approach, cf. [the rspec-core docs](https://www.rubydoc.info/github/rspec/rspec-core/RSpec/Core/Pending))
+
 
 A significant tagging effort can decrease maintenance tests in reflecting the value and purpose of a test.
 
 #### Tags as expression
 
-Thoughtful Test design is at least as meaningful as clean coding. Deciding whether a test case is a smoke vs. regression test and whether it needs to be run on all browsers vs. just one browser are high-value expressions that we should take care to optimize.
+Thoughtful test design is at least as meaningful as clean coding. Deciding whether a test case is a smoke vs. regression test and whether it needs to be run on all browsers vs. just one browser are high-value expressions that we should take care to optimize.
 
 #### Tags as function
 
@@ -222,13 +237,13 @@ We are using [RuboCop](https://docs.rubocop.org/rubocop/index.html) for code for
 Files and descriptions in `spec/` are named by feature, context, and test case, e.g.,
 
 ```
-describe '[Network]', :network do # description and tag match Feature in UUQA JIRA project
+describe '[Network]', :app_client, :network do # description and tag match Feature in UUQA JIRA project
   ...
-  context('[as cc user]') do # define the user executing the test
+  context('[as Network Directory User]') do # define the user executing the test
     ...
     context('[on Browse Drawer Share Form]') do # define the component under test
       ...
-      it 'shares provider details via email', :uuqa_652, :app_client, :smoke, :cross_browser, :parallel do # describe the scenario
+      it 'shares provider details via email', :uuqa_652 do # describe the scenario
         ...
 ```
 
@@ -279,9 +294,9 @@ Error handling is defined in the base page object, `pages/page.rb`.
 
 - Jenkins
 
-  - [ ]  TODO [UU3-35212](https://uniteus.atlassian.net/browse/UU3-35212)
+  - Server
     - [x] configure server to run tests headlessly
-    - [ ] configure server to send tests to BrowserStack
+    - [ ] TODO configure server to send tests to BrowserStack
     - [x] install plugin for test results
 
 - BrowserStack

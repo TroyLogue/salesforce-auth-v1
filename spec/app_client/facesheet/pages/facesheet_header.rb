@@ -3,6 +3,7 @@
 require_relative '../../../shared_components/base_page'
 
 class FacesheetHeader < BasePage
+  SUBHEADER = { css: '.facesheet-index__subheader-container' }.freeze
   NAME_HEADER = { css: '.status-select__full-name.display' }.freeze
   OVERVIEW_TAB = { css: '#facesheet-overview-tab' }.freeze
   PROFILE_TAB = { css: '#facesheet-profile-tab' }.freeze
@@ -11,6 +12,7 @@ class FacesheetHeader < BasePage
   UPLOADS_TAB = { css: '#facesheet-uploads-tab' }.freeze
   REFERALS_TAB = { css: '#facesheet-referrals-tab' }.freeze
 
+  REFER_CLIENT = { css: '#subheader-refer-btn' }.freeze
   CONSENT_STATUS = { css: '#status-select-options > option' }.freeze
   EXPAND_CONSENT_OPTIONS = { css: '#status-select-options + div' }.freeze
   LIST_CONSENT_OPTIONS = { css: 'div[id^="choices-status"]' }.freeze
@@ -24,8 +26,8 @@ class FacesheetHeader < BasePage
   VIEW = 'View'
 
   def page_displayed?
-    is_displayed?(FILTER_BAR)
-    wait_for_spinner
+    is_displayed?(SUBHEADER) &&
+      wait_for_spinner
   end
 
   def facesheet_name
@@ -51,8 +53,17 @@ class FacesheetHeader < BasePage
     wait_for_spinner
   end
 
+  def go_to_cases
+    click(CASES_TAB)
+    wait_for_spinner
+  end
+
   def go_to_facesheet_with_contact_id(id:, tab: '')
     get("/facesheet/#{id}/#{tab}")
+  end
+
+  def go_to_facesheet_screening(contact_id:, screening_id:)
+    get("/facesheet/#{contact_id}/forms/screenings/#{screening_id}")
   end
 
   def go_to_forms
@@ -63,5 +74,9 @@ class FacesheetHeader < BasePage
   def select_consent_option(option:)
     click(EXPAND_CONSENT_OPTIONS)
     click_element_from_list_by_text(LIST_CONSENT_OPTIONS, option)
+  end
+
+  def refer_client
+    click(REFER_CLIENT)
   end
 end

@@ -32,10 +32,7 @@ class Intake < BasePage
   REMOVE_BUTTON = { css: 'a[title = "Remove intake need"]' }.freeze
 
   # insurance information
-  MEDICARE_BENIFIARY_ID_INPUT = { id: '#insurance-id-0' }.freeze
-  MEDICAID_ID_INPUT = { id: '#insurance-id-1' }.freeze
-  STATE = { css: '#insurance-state-1 + .choices__list' }.freeze
-  DEFAULT_STATE_NEW_YORK = { id: 'choices-insurance-state-1-item-choice-38' }.freeze
+  INSURANCES = { css: '.payments-insurance-information'}
 
   # Other Information fields
   MARITAL_STATUS = { css: '#marital-status + .choices__list' }.freeze
@@ -74,6 +71,13 @@ class Intake < BasePage
   RACE_TEXT = { css: '#other-information div:nth-child(5) div' }.freeze
   ETHNICITY_TEXT = { css: '#other-information div:nth-child(6) div' }.freeze
   CITIZENSHIP_TEXT = { css: '#other-information div:nth-child(7) div' }.freeze
+
+  CARE_COORDINATOR_NAMES_LIST = { css: '#care-coordinator .care-coordinator-selector tbody tr td:nth-of-type(1)' }.freeze
+
+  def go_to_edit_intake_for_contact(intake_id:, contact_id:)
+    get("/intakes/#{intake_id}/edit?contactId=#{contact_id}")
+    wait_for_spinner
+  end
 
   def page_displayed?
     is_displayed?(INTAKE_NAVIGATION) &&
@@ -179,6 +183,11 @@ class Intake < BasePage
       text_include?(race, RACE_TEXT) &&
       text_include?(ethnicity, ETHNICITY_TEXT) &&
       text_include?(citizenship, CITIZENSHIP_TEXT)
+  end
+
+  def care_coordinator_list_not_include(name)
+    names = find_elements(CARE_COORDINATOR_NAMES_LIST).map(&:text)
+    names.none? { |n| n.eql?(name) }
   end
 end
 

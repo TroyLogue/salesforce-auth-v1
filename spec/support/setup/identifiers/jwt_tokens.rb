@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module MachineTokens
+module JWTTokens
   CC_HARVARD = ENV['CC_HARVARD_TOKEN'] # harvard@auto
   ORG_ATLANTA = ENV['ORG_ATLANTA_TOKEN'] # atlanta@auto.com
   ORG_COLUMBIA = ENV['ORG_COLUMBIA_TOKEN'] # columbia@auto.com

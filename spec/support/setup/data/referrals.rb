@@ -1,123 +1,171 @@
 require_relative '../base/referrals'
-require_relative '../identifiers/provider_ids'
-require_relative '../identifiers/network_ids'
-require_relative '../identifiers/primary_worker_ids'
-require_relative '../identifiers/program_ids'
-require_relative '../identifiers/resolution_ids'
-require_relative '../identifiers/service_types_ids'
-require_relative '../identifiers/machine_tokens'
 
 # helper methods for referrals in the Ivy Network
 module Setup
   module Data
     def self.send_referral_from_harvard_to_princeton(contact_id:)
-      referral = CreateReferral.new({ contact_id: contact_id,
-                                      referred_by_network_id: IVY_NETWORK,
-                                      referred_to_network_id: IVY_NETWORK,
-                                      referred_to_groups: [Providers::ORG_PRINCETON],
-                                      service_type_id: BENEFITS_DISABILITY_BENEFITS })
-      referral.create(
-        token: MachineTokens::CC_HARVARD,
-        group_id: Providers::CC_HARVARD
+      Referral.create(
+        token: JWTTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        contact_id: contact_id,
+        referred_by_network_id: Networks::IVY,
+        referred_to_network_id: Networks::IVY,
+        referred_to_groups: [Providers::ORG_PRINCETON],
+        service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
-      referral
+    end
+
+    def self.send_sensitive_referral_from_harvard_to_princeton(contact_id:)
+      Referral.create(
+        token: JWTTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        contact_id: contact_id,
+        referred_by_network_id: Networks::IVY,
+        referred_to_network_id: Networks::IVY,
+        referred_to_groups: [Providers::ORG_PRINCETON],
+        service_type_id: Services::DRUG_ALCOHOL_TESTING
+      )
     end
 
     def self.send_referral_from_harvard_to_yale(contact_id:)
-      referral = CreateReferral.new({ contact_id: contact_id,
-                                      referred_by_network_id: IVY_NETWORK,
-                                      referred_to_network_id: IVY_NETWORK,
-                                      referred_to_groups: [Providers::ORG_YALE],
-                                      service_type_id: BENEFITS_DISABILITY_BENEFITS })
-      referral.create(
-        token: MachineTokens::CC_HARVARD,
-        group_id: Providers::CC_HARVARD
-      )
-      referral
-    end
-
-    def self.reject_referral_in_harvard(referral_id:, note:)
-      referral = RejectReferral.new({ reject_note: note })
-      referral.reject_referral(
-        token: MachineTokens::CC_HARVARD,
+      Referral.create(
+        token: JWTTokens::CC_HARVARD,
         group_id: Providers::CC_HARVARD,
-        referral_id: referral_id
+        contact_id: contact_id,
+        referred_by_network_id: Networks::IVY,
+        referred_to_network_id: Networks::IVY,
+        referred_to_groups: [Providers::ORG_YALE],
+        service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
     end
 
-    def self.accept_referral_in_princeton(referral_id:)
-      referral = AcceptReferral.new({ primary_case_worker_id: PrimaryWorkers::ORG_PRINCETON,
-                                      program_id: Programs::ORG_PRINCETON })
-      referral.accept_in_network(
-        token: MachineTokens::ORG_PRINCETON,
-        group_id: Providers::ORG_PRINCETON,
-        referral_id: referral_id
+    def self.reject_referral_in_harvard(note:)
+      Referral.reject(
+        token: JWTTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        note: note,
+        reason: 'Client is not eligible for our services',
+        reason_short: 'Not Eligible'
       )
-      referral
+    end
+
+    def self.hold_referral_in_harvard(note:)
+      Referral.hold(
+        token: JWTTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        note: note,
+        reason: 'Other'
+      )
+    end
+
+    def self.accept_referral_in_princeton
+      token = JWTTokens::ORG_PRINCETON
+      Referral.accept(
+        token: token,
+        group_id: Providers::ORG_PRINCETON,
+        primary_case_worker_id: PrimaryWorkers::ORG_PRINCETON,
+        program_id: Setup::Programs.in_network_program_id(token: token, group_id: Providers::ORG_PRINCETON)
+      )
     end
 
     def self.send_referral_from_yale_to_harvard(contact_id:)
-      referral = CreateReferral.new({ contact_id: contact_id,
-                                      referred_by_network_id: IVY_NETWORK,
-                                      referred_to_network_id: IVY_NETWORK,
-                                      referred_to_groups: [Providers::CC_HARVARD],
-                                      service_type_id: BENEFITS_DISABILITY_BENEFITS })
-      referral.create(
-        token: MachineTokens::ORG_YALE,
-        group_id: Providers::ORG_YALE
+      Referral.create(
+        token: JWTTokens::ORG_YALE,
+        group_id: Providers::ORG_YALE,
+        contact_id: contact_id,
+        referred_by_network_id: Networks::IVY,
+        referred_to_network_id: Networks::IVY,
+        referred_to_groups: [Providers::CC_HARVARD],
+        service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
-      referral
     end
 
     def self.send_referral_from_yale_to_princeton(contact_id:)
-      referral = CreateReferral.new({ contact_id: contact_id,
-                                      referred_by_network_id: IVY_NETWORK,
-                                      referred_to_network_id: IVY_NETWORK,
-                                      referred_to_groups: [Providers::ORG_PRINCETON],
-                                      service_type_id: BENEFITS_DISABILITY_BENEFITS })
-      referral.create(
-        token: MachineTokens::ORG_YALE,
-        group_id: Providers::ORG_YALE
+      Referral.create(
+        token: JWTTokens::ORG_YALE,
+        group_id: Providers::ORG_YALE,
+        contact_id: contact_id,
+        referred_by_network_id: Networks::IVY,
+        referred_to_network_id: Networks::IVY,
+        referred_to_groups: [Providers::ORG_PRINCETON],
+        service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
-      referral
     end
 
-    def self.close_referral_in_harvard(referral_id:)
-      referral = CloseReferral.new
-      referral.close(
-        token: MachineTokens::CC_HARVARD,
+    def self.draft_referral_in_harvard(contact_id:)
+      Referral.draft(
+        token: JWTTokens::CC_HARVARD,
         group_id: Providers::CC_HARVARD,
-        referral_id: referral_id,
-        resolution: RESOLVED
-      )
-      referral
-    end
-
-    def self.recall_referral_in_princeton(referral_id:, note:)
-      referral = RecallReferral.new({ recall_note: note,
-                                      reason: 'Client No Longer Requires Service' })
-      referral.recall_referral(
-        token: MachineTokens::ORG_PRINCETON,
-        group_id: Providers::ORG_PRINCETON,
-        referral_id: referral_id
+        contact_id: contact_id,
+        referred_by_network_id: Networks::IVY,
+        referred_to_network_id: Networks::IVY,
+        referred_to_groups: [],
+        service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
     end
 
-    def self.reject_referral_in_princeton(referral_id:, note:)
-      referral = RejectReferral.new({ reject_note: note })
-      referral.reject_referral(
-        token: MachineTokens::ORG_PRINCETON,
-        group_id: Providers::ORG_PRINCETON,
-        referral_id: referral_id
-      )
-    end
-
-    def self.recall_referral_in_harvard(referral_id:, note:)
-      referral = RecallReferral.new({ recall_note: note,
-                                      reason: 'Client No Longer Requires Service' })
-      referral.recall_referral(
-        token: MachineTokens::CC_HARVARD,
+    def self.close_referral_in_harvard(note:)
+      Referral.close(
+        token: JWTTokens::CC_HARVARD,
         group_id: Providers::CC_HARVARD,
+        note: note,
+        outcome_id: Resolutions::RESOLVED,
+        resolved: true
+      )
+    end
+
+    def self.recall_referral_in_princeton(note: 'Data Setup', reason: 'Client No Longer Requires Service')
+      Referral.recall(
+        token: JWTTokens::ORG_PRINCETON,
+        group_id: Providers::ORG_PRINCETON,
+        note: note,
+        reason: reason
+      )
+    end
+
+    def self.reject_referral_in_princeton(note:)
+      Referral.reject(
+        token: JWTTokens::ORG_PRINCETON,
+        group_id: Providers::ORG_PRINCETON,
+        note: note,
+        reason: 'Client is not eligible for our services',
+        reason_short: 'Not Eligible'
+      )
+    end
+
+    def self.close_referral_in_princeton(note:)
+      Referral.close(
+        token: JWTTokens::ORG_PRINCETON,
+        group_id: Providers::ORG_PRINCETON,
+        note: note,
+        outcome_id: Resolutions::RESOLVED,
+        resolved: true
+      )
+    end
+
+    def self.hold_referral_in_princeton(note:)
+      Referral.hold(
+        token: JWTTokens::ORG_PRINCETON,
+        group_id: Providers::ORG_PRINCETON,
+        note: note,
+        reason: 'Other'
+      )
+    end
+
+    def self.recall_referral_in_harvard(note: 'Data Setup', reason: 'Client No Longer Requires Service')
+      Referral.recall(
+        token: JWTTokens::CC_HARVARD,
+        group_id: Providers::CC_HARVARD,
+        note: note,
+        reason: reason
+      )
+    end
+
+    # ASSESSMENTS
+    def self.get_referral_form_name_for_yale(referral_id:)
+      Setup::Forms.get_first_form_name_for_referral(
+        token: JWTTokens::ORG_YALE,
+        group_id: Providers::ORG_YALE,
         referral_id: referral_id
       )
     end

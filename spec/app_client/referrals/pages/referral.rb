@@ -10,10 +10,19 @@ class Referral < BasePage
   OUTCOME_NOTES = { css: '#outcome-notes-expandable p' }.freeze
   INACTIVE_BTN = { css: '.detail-action-wrapper > span' }.freeze
   CLOSED_BY = { css: '#outcome-column-one-table-closed-by-value' }.freeze
+  SERVICE_TYPE = { css: '.referral-service-type' }.freeze
+  DESCRIPTION = { css: '#detail-description-expandable .expandable-container__content .add-line-breaks' }.freeze
+
+  EDIT_REFERRAL_BTN = { css: '#edit-referral-network-btn' }.freeze
+  EDIT_REFERRAL_MODAL = { css: '#edit-referral-network-modal.dialog.open.large .dialog-paper' }.freeze
+  EDIT_REFERRAL_ORG_CHOICES = { css: '#select-field-group-0 + div' }.freeze
+  EDIT_REFERRAL_FIRST_ORG = { css: '#choices-select-field-group-0-item-choice-2' }.freeze
+  EDIT_REFERRAL_SAVE_BTN = { css: '#edit-draft-referral-submit-btn' }.freeze
+  EDIT_REFERRAL_SELECTED_ORG = { css: '#select-field-group-0 + div > div:not(button)' }.freeze
 
   TAKE_ACTION_DROP_DOWN = { css: '.action-select-container' }.freeze
   TAKE_ACTION_HOLD_OPTION = { css: 'div[data-value="holdForReview"]' }.freeze
-  TAKE_ACTION_SEND_OPTION = { css: 'div[data-value="send"]' }.freeze
+  TAKE_ACTION_SEND_OPTION = { css: 'div[data-value^="send"]' }.freeze
   TAKE_ACTION_ACCEPT_OPTION = { css: 'div[data-value="accept"]' }.freeze
   TAKE_ACTION_REJECT_OPTION = { css: 'div[data-value="reject"]' }.freeze
   TAKE_ACTION_INTAKE_OPTION = { css: 'div[data-value="startIntake"]' }.freeze
@@ -43,7 +52,7 @@ class Referral < BasePage
   CLOSE_REFERRAL_BTN = { css: '#close-referral-close-btn' }.freeze
 
   SENDER_INFO = { css: '#basic-table-sender-value' }.freeze
-  RECIPIENT_INFO = { css: '#basic-table-recipient-value' }.freeze
+  RECIPIENT_INFO = { css: "td[id^='basic-table-recipient']" }.freeze
 
   REJECT_REFERRAL_MODAL = { css: '.reject-modal-dialog .open' }.freeze
   REJECT_REFERRAL_REASON_DROPDOWN = { css: '.referral-reject-display .referral-reason-field .choices__inner' }.freeze
@@ -51,6 +60,16 @@ class Referral < BasePage
   REJECT_REFERRAL_REASON_OPTIONS = { css: '.referral-reason-field div[id^="choices-reject-reason-input-item-choice-"]' }.freeze
   REJECT_REFERRAL_NOTE = { css: '#reject-note-input' }.freeze
   REJECT_BTN = { css: '.referral-reject-display__reject-modal-form #reject-referral-reject-btn' }.freeze
+
+  ASSIGN_CARE_COORDINATOR_LINK = { css: '#assign-care-coordinator-link' }.freeze
+  ASSIGN_CARE_COORDINATOR_MODAL = { css: '#care-coordinator-modal.dialog.open.normal .dialog-paper' }.freeze
+  ASSIGN_CARE_COORDINATOR_DROPDOWN = { css: '.care-coordinator-select .choices' }.freeze
+  ASSIGN_CARE_COORDINATOR_FIRST = { css: 'div[id^="choices-care-coordinator"]' }.freeze
+  ASSIGN_CARE_COORDINATOR_SELECTED = { css: '#care-coordinator-selector + div > div:not(button)' }.freeze
+  ASSIGN_CARE_COORDINATOR_BUTTON = { css: '#edit-care-coordinator-assign-btn' }.freeze
+  CURRENT_CARE_COORDINATOR = { css: '.edit-care-coordinator > span' }.freeze
+
+  VIEW_INTAKE_LINK = { css: '.intake-label__link' }.freeze
 
   DOCUMENT_ADD_LINK = { css: '#upload-document-link' }.freeze
   DOCUMENT_ATTACH_MODAL = { css: '.dialog.open.large' }.freeze
@@ -75,6 +94,7 @@ class Referral < BasePage
   CLOSED_STATUS = 'CLOSED'
 
   CLOSED_REFERRAL_ACTION = 'REFERRAL CLOSED'
+  REMOVE_TEXT = 'Remove item'
 
   REJECTED_OPTION = [
     'Client is not eligible for our services',
@@ -125,6 +145,11 @@ class Referral < BasePage
     wait_for_spinner
   end
 
+  def go_to_draft_referral_with_id(referral_id:)
+    get("/dashboard/referrals/drafts/#{referral_id}")
+    wait_for_spinner
+  end
+
   def page_displayed?
     wait_for_spinner
     is_displayed?(STATUS_TEXT) &&
@@ -156,6 +181,22 @@ class Referral < BasePage
     text(OUTCOME_NOTES)
   end
 
+  def service_type
+    text(SERVICE_TYPE).capitalize
+  end
+
+  def description
+    text(DESCRIPTION)
+  end
+
+  def referral_summary_info
+    {
+      service_type: service_type,
+      recipients: recipient_info,
+      description: description
+    }
+  end
+
   # ACCEPT
   def accept_action
     click(TAKE_ACTION_DROP_DOWN)
@@ -167,7 +208,6 @@ class Referral < BasePage
     click(ACCEPT_FIRST_PRIMARY_WORKER_OPTION)
     click(ACCEPT_SAVE_BTN)
     wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
   end
 
   # HOLD FOR REVIEW
@@ -180,13 +220,10 @@ class Referral < BasePage
     enter(note, HOLD_REFERRAL_NOTE)
     click(HOLD_REFERRAL_BTN)
     wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
   end
 
   # CLOSE
-  def close_referral_action(note:)
-    click(TAKE_ACTION_DROP_DOWN)
-    click(TAKE_ACTION_CLOSE_OPTION)
+  def submit_close_referral_modal(note:)
     is_displayed?(CLOSE_REFERRAL_MODAL)
     # Selecting resolved option by default
     click(CLOSE_RESOLVED_DROPDOWN)
@@ -197,23 +234,18 @@ class Referral < BasePage
     enter(note, CLOSE_REFERRAL_NOTE)
     click(CLOSE_REFERRAL_BTN)
     wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
+  end
+
+  def close_referral_action(note:)
+    click(TAKE_ACTION_DROP_DOWN)
+    click(TAKE_ACTION_CLOSE_OPTION)
+    submit_close_referral_modal(note: note)
   end
 
   # P2P referrals only have the option to close a referral
   def close_referral_through_btn(note:)
     click(TAKE_ACTION_CLOSE_REFERRAL_BTN)
-    is_displayed?(CLOSE_REFERRAL_MODAL)
-    # Selecting resolved option by default
-    click(CLOSE_RESOLVED_DROPDOWN)
-    click(CLOSE_RESOLVED_OPTION)
-    # Selecing first outcome option by default
-    click(CLOSE_OUTCOME_DROPDOWN)
-    click(CLOSE_OUTCOME_OPTION)
-    enter(note, CLOSE_REFERRAL_NOTE)
-    click(CLOSE_REFERRAL_BTN)
-    wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
+    submit_close_referral_modal(note: note)
   end
 
   # REJECT
@@ -232,7 +264,6 @@ class Referral < BasePage
     enter(note, REJECT_REFERRAL_NOTE)
     click(REJECT_BTN)
     wait_for_spinner
-    Time.now.strftime('%l:%M %P').strip
   end
 
   # SEND
@@ -279,7 +310,65 @@ class Referral < BasePage
     text(ASSESSMENT_LIST)
   end
 
+  def military_assessment_displayed?
+    is_displayed?(MILITARY_ASSESSMENT)
+  end
+
   def open_assessment(assessment_name:)
     click(ASSESSMENT_LINK.transform_values { |v| v % assessment_name })
+  end
+
+  def open_military_assessment
+    click(MILITARY_ASSESSMENT)
+  end
+
+  # EDITS
+  def open_edit_referral_modal
+    click(EDIT_REFERRAL_BTN)
+    wait_for_spinner
+    is_displayed?(EDIT_REFERRAL_MODAL)
+  end
+
+  def add_recipient_in_edit_referral_modal
+    click(EDIT_REFERRAL_ORG_CHOICES)
+    click(EDIT_REFERRAL_FIRST_ORG)
+
+    # Removing distance and "Remove Item" to return just the provider name
+    selected_org = text(EDIT_REFERRAL_SELECTED_ORG)
+    distance = selected_org.rindex(/\(/) # finds the last open paren in the string
+    selected_org[0..(distance - 1)].strip # returns provider_text up to the distance
+  end
+
+  def save_edit_referral_modal
+    click(EDIT_REFERRAL_SAVE_BTN)
+    wait_for_spinner
+  end
+
+  # Care Coordinator
+  def assign_first_care_coordinator
+    click(ASSIGN_CARE_COORDINATOR_LINK)
+    is_displayed?(ASSIGN_CARE_COORDINATOR_MODAL)
+    click(ASSIGN_CARE_COORDINATOR_DROPDOWN)
+    click(ASSIGN_CARE_COORDINATOR_FIRST)
+    # Return name of care coordinator to use later, removing unwanted text
+    coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
+    click(ASSIGN_CARE_COORDINATOR_BUTTON)
+    wait_for_spinner
+    coordinator
+  end
+
+  # Intakes
+  def is_intake_link_displayed?
+    is_displayed?(VIEW_INTAKE_LINK)
+  end
+
+  def click_view_intake_link
+    click(VIEW_INTAKE_LINK)
+    wait_for_spinner
+  end
+
+  def current_care_coordinator
+    is_displayed?(CURRENT_CARE_COORDINATOR)
+    text(CURRENT_CARE_COORDINATOR)
   end
 end

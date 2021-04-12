@@ -21,6 +21,7 @@ describe '[Network - Browse Map - Browse Drawer]', :network, :app_client do
       log_in_as(Login::CC_HARVARD)
       left_nav.go_to_my_network
       expect(network_browse_map.page_displayed?).to be_truthy
+      expect(network_browse_map.provider_card_first_displayed?).to be_truthy
     end
 
     it 'shares provider details via email', :uuqa_652 do
@@ -36,7 +37,7 @@ describe '[Network - Browse Map - Browse Drawer]', :network, :app_client do
       network_browse_drawer.share_provider_details_via_email(address)
 
       notification_text = notifications.success_text
-      expect(notification_text).to include(Notifications::MESSAGE_SENT)
+      expect(notification_text).to include(Notifications::MESSAGE_SENT_SUCCESS)
 
       network_browse_drawer.close_drawer
       expect(network_browse_drawer.drawer_not_displayed?).to be_truthy

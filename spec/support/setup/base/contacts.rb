@@ -8,7 +8,7 @@ module Setup
   class Contact
     include RSpec::Mocks::ExampleMethods::ExpectHost
     include RSpec::Matchers
-    attr_reader :fname, :lname, :dob_formatted, :military_affiliation_key
+    attr_reader :fname, :lname, :dob, :dob_formatted, :military_affiliation_key
     attr_accessor :contact_id, :token, :group_id
 
     def initialize(token:, group_id:)
@@ -63,6 +63,38 @@ module Setup
       expect(contact_response.status.to_s).to eq('200 OK')
     end
 
+    # when searching for clients, some query letters return 0 results; 
+    # we are searching clients using an array that has proven to be reliable
+    def random_existing_client
+      default_retry_count = 2
+      retry_count = 0
+      contact = nil
+
+      while contact.nil? && retry_count <= default_retry_count
+        contact_indexes_response = Requests::Contacts.get_client_indexes(
+          token: token, group_id: group_id,
+          page: 1, query_letter: Faker::Alphanumeric.alphanumeric(number: 1, min_alpha: 1)
+        )
+        expect(contact_indexes_response.status.to_s).to eq('200 OK')
+
+        # Searching for a client created within the past month
+        # with ES-60 we migrated only contacts created since ~ Jan 2021; 
+        # in developing this method we saw reliable search results when scoped to one month
+        prev_month_timestamp = (DateTime.now - 30).to_time.to_i
+        contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find{ |x| x.created_at > prev_month_timestamp }
+
+        retry_count += 1
+        contact
+      end
+
+      # Updating values
+      @contact_id = contact.id
+      @fname = contact.first_name
+      @lname = contact.last_name
+      @dob = contact.date_of_birth
+      @dob_formatted = Time.at(@dob, in: '+05:00').strftime('%m/%d/%Y')
+    end
+
     def add_consent
       consent_response = Requests::Consent.post_on_screen_consent(token: @token, group_id: @group_id,
                                                                   contact_id: @contact_id,
@@ -98,12 +130,45 @@ module Setup
       expect(phone_response.status.to_s).to eq('201 Created')
     end
 
+    def add_address(**params)
+      # Addresses need to be valid, defaulting to 56 Mott
+      @address = Payloads::Addresses::Create.new(
+        address_type: params[:address_type] || 'home',
+        city: params[:city] || 'New York',
+        country: params[:country] || 'USA',
+        line_1: params[:line_1] || '56 Mott St',
+        line_2: params[:line_2] || '',
+        postal_code: params[:postal_code] || '10013',
+        state: params[:state] || 'NY'
+      ).to_h
+
+      address_response = Requests::Contacts.add_address(token: @token, group_id: @group_id,
+                                                        contact_id: @contact_id,
+                                                        payload: { address: @address })
+
+      expect(address_response.status.to_s).to eq('201 Created')
+    end
+
+    def add_email_address(email_address:, primary: false, notifications: false)
+      @email_address = Payloads::Emails::Create.new(
+        acceptable_communication_types: notifications ? ['message', 'notification'] : [],
+        is_primary: primary,
+        email_address: email_address
+      ).to_h
+
+      email_response = Requests::Contacts.add_email(token: @token, group_id: @group_id,
+                                                    contact_id: @contact_id, payload: @email_address)
+
+      expect(email_response.status.to_s).to eq('201 Created')
+    end
+
     def searchable_name
       "#{@fname} #{@lname}"
     end
 
     def formatted_address
-      @address[:line_1] + ' ' + @address[:line_2] + ' ' + @address[:city] + ' ' + @address[:postal_code]
+      @address[:line_1] + ', ' + @address[:city] + ', ' + \
+        @address[:state] + ' ' + @address[:postal_code]
     end
 
     def formatted_phone

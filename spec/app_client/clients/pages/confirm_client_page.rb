@@ -1,17 +1,24 @@
 require_relative '../../../shared_components/base_page'
 
 class ConfirmClient < BasePage
-  CONFIRMATION_CONTAINER = { css: '.contact-confirmation' }
-  CONTACT_LIST = { css: '.contact-card' }
-  CONTACT_BUTTON = { css: '.ui-button.contact-card__confirmation' }
-  CONTACT_NAMES = { css: '.ui-base-card-header__title' }
-  CONTACT_DOB = { css: '.ui-base-card-body dl:nth-child(1)'}
-  CONTACT_PHONE = { css: '.ui-base-card-body dl:nth-child(2)' }
-  CONTACT_ADDRESS = { css: '.ui-base-card-body dl:nth-child(3)' }
+  CONFIRMATION_CONTAINER = { css: '.contact-confirmation' }.freeze
+  CONFIRMATION_CONTAINER_REFERRAL = { css: '.new-referrals-confirmation' }.freeze
+  CONTACT_LIST = { css: '.contact-card' }.freeze
+  CONTACT_BUTTON = { css: '.ui-button.contact-card__confirmation' }.freeze
+  CONTACT_NAMES = { css: '.ui-base-card-header__title' }.freeze
+  CONTACT_DOB = { css: '.ui-base-card-body dl:nth-child(1)' }.freeze
+  CONTACT_PHONE = { css: '.ui-base-card-body dl:nth-child(2)' }.freeze
+  CONTACT_ADDRESS = { css: '.ui-base-card-body dl:nth-child(3)' }.freeze
+  CREATE_NEW_CLIENT_BTN = { css: '#create-new-client' }.freeze
 
   def page_displayed?
     is_displayed?(CONFIRMATION_CONTAINER) &&
     is_displayed?(CONTACT_LIST)
+  end
+
+  def check_page_displayed?
+    check_displayed?(CONFIRMATION_CONTAINER) &&
+      check_displayed?(CONTACT_LIST)
   end
 
   def clients_returned
@@ -52,5 +59,9 @@ class ConfirmClient < BasePage
     raise Selenium::WebDriver::Error::NoSuchElementError, "#{CONTACT_ADDRESS} with value #{address} not found" if found.empty?
 
     select_nth_client(index: found[0])
+  end
+
+  def click_create_new_client
+    click(CREATE_NEW_CLIENT_BTN)
   end
 end

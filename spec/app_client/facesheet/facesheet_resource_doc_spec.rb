@@ -30,7 +30,7 @@ describe '[Facesheet]', :app_client, :facesheet do
       expect(homepage.page_displayed?).to be_truthy
 
       # Navigate to referral and attach document
-      new_referral.go_to_new_referral_with_id(referral_id: @referral.referral_id)
+      new_referral.go_to_new_referral_with_id(referral_id: @referral.id)
       @document = Faker::Alphanumeric.alpha(number: 8) + '.txt'
       new_referral.attach_document_to_referral(file_name: @document)
       expect(new_referral.document_list).to include(@document)

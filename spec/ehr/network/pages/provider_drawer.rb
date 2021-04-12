@@ -5,13 +5,12 @@ require_relative '../../../shared_components/base_page'
 class ProviderDrawer < BasePage
   ADD_BTN = { css: '#group-title__add-btn' }
   CLOSE_DRAWER_BTN = { css: '.ui-drawer__close-btn.ui-drawer__close-btn--opened' }
-  CONTACT_INFO = { css: '.group-details__contact-info-contact' }
-  DESCRIPTION = { css: '.group-details__description' }
+  CONTACT_INFO = { css: '.group-details__contact-info' }
+  DESCRIPTION = { css: '.group-details-content__description' }
   EMAIL_INPUT = { css: '#share-email-field' }
   OPENED_DRAWER = { css: '.ui-drawer--opened' }
   PROGRAMS = { css: '.group-details__programs' }
   MAP = { css: '.map' }
-  SERVICES_PROVIDED = { css: '.group-details__service-types' }
   SHARE_BY_SMS = { css: "#sms-label" }
   SHARE_BY_EMAIL = { css: "#email-label" }
   SHARE_BY_PRINT = { css: "#print-label" }
@@ -21,6 +20,10 @@ class ProviderDrawer < BasePage
   SHARE_CANCEL_BTN = { css: '#share-cancel-button' }
   SHARE_SEND_BTN = { css: '#share-send-button' }
   TITLE = { css: '.group-title__text--name' }
+
+  def add_provider
+    click(ADD_BTN)
+  end
 
   def click_share
     click(SHARE_BTN)
@@ -39,12 +42,22 @@ class ProviderDrawer < BasePage
       is_displayed?(MAP) &&
       is_displayed?(DESCRIPTION) &&
       is_displayed?(CONTACT_INFO) &&
-      is_displayed?(SERVICES_PROVIDED) &&
       is_displayed?(PROGRAMS)
   end
 
   def provider_name
     text(TITLE)
+  end
+
+  def referral_page_displayed?
+     is_displayed?(OPENED_DRAWER) &&
+      is_displayed?(CLOSE_DRAWER_BTN) &&
+      is_displayed?(TITLE) &&
+      is_displayed?(ADD_BTN) &&
+      is_displayed?(MAP) &&
+      is_displayed?(DESCRIPTION) &&
+      is_displayed?(CONTACT_INFO) &&
+      is_displayed?(PROGRAMS)
   end
 
   def share_by_email(email)

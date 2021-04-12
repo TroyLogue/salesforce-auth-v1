@@ -23,9 +23,9 @@ describe '[Auth - Login - Logout]', :app_client, :auth, :login do
     expect(login_password.invalid_alert_displayed?).to be_truthy
   end
 
-  it 'Prevents login as unlicensed user', :uuqa_778 do
-    log_in_as(Login::NOLICENSE_MARTIN)
-    expect(login_password.page_displayed?).to be_truthy
-    expect(login_password.invalid_alert_displayed?).to be_truthy
+  it 'Inactive user is automatically signed off', :uuqa_778 do
+    log_in_as(Login::INACTIVE_BOB)
+    expect(login_email.page_displayed?).to be_truthy
+    expect(login_email.signed_out_message_displayed?).to be_truthy
   end
 end

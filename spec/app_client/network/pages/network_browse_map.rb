@@ -34,8 +34,10 @@ class NetworkBrowseMap < BasePage
     is_displayed?(SEARCH_BAR) &&
     is_displayed?(SERVICE_TYPE_FILTER) &&
     is_displayed?(NETWORK_FILTER) &&
-    is_displayed?(NETWORK_SCOPE_FILTER) &&
+    is_displayed?(NETWORK_SCOPE_FILTER)
+  end
 
+  def provider_card_first_displayed?
     # providers_list_elements
     is_displayed?(PROVIDER_CARD_FIRST)
   end

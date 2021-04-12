@@ -1,31 +1,87 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
-class FacesheetOverviewPage < BasePage
-  OVERVIEW = { css: '.facesheet-overview' }
-  INTERACTION_TAB = { css: '.interactions-interaction-tab' }
-  PHONE_INTERACTION = { css: '#phone_call-label' }
-  EMAIL_INTERACTION = { css: '#email-label' }
-  INPERSON_INTERACTION = { css: '#meeting-label' }
-  DURATION_DROPDOWN = { css: "div[aria-activedescendant='choices-interactionDuration-item-choice-1'] > .choices__inner" }
-  DURATION_OPTIONS = { css: ".choices__list > div[data-value='%s']" }
-  DURATIONS = { '< 15m' => '1', '15m' => '15', '30m' => '30', '45m' => '45',
-                '1h' => '60', '1h 15m' => '75', '1h 30m' => '90', '1h 45m' => '105',
-                '2h' => '120', '2h 15m' => '135', '2h 30m' => '150', '> 2h 30m' => '999999' }
+module Timeline
+  TIMELINE_INTERACTION_TYPE = { css: '#create-interaction-0-type' }.freeze
+  TIMELINE_INTERACTION_DURATION = { css: '#create-interaction-0-duration' }.freeze
+  TIMELINE_INTERACTION_NOTE = { css: '#create-interaction-0-note > span > span' }.freeze
+  TIMELINE_GENERAL_ENTRY = { css: '.entry-context' }.freeze
+  TIMELINE_ENTRIES = { css: '.entry-card' }.freeze
+  LOADING_ENTRIES = { css: '.loading-entries__content' }.freeze
+  SUCCESS_BANNER = { css: '.notification.success.velocity-animating' }.freeze
 
-  ATTACHED_TO_CASE = { css: '#case-label' }
-  GENERAL_NOTE = { css: '#general-label' }
-  TEXT_BOX = { css: '#interactionNote' }
-  POST_NOTE = { css: '#log-interaction-post-note-btn' }
-  SUCCESS_BANNER = { css: '.notification.success.velocity-animating' }
-  CLIENT_TIMELINE_CREATED_ENTRY = { css: '.ui-base-card.ui-base-card--bordered.entry-card.create-interaction-entry' }
-  CLIENT_TIMELINE_TYPE = { css: '#create-interaction-0-type' }
-  CLIENT_TIMELINE_DURATION = { css: '#create-interaction-0-duration' }
-  CLIENT_TIMELINE_NOTE = { css: '#create-interaction-0-note > span > span' }
-  CLIENT_TIMELINE_GENERAL_ENTRY = { css: '.entry-context' }
+  def first_interaction_note_in_timeline
+    # Wait for new entry to be created by waiting for banner to dissapear
+    is_not_displayed?(SUCCESS_BANNER)
 
-  def page_displayed?
-    is_displayed?(OVERVIEW)
-    wait_for_spinner
+    # verify the timeline is updated with the new note
+    get_timeline_event(event_type: TIMELINE_INTERACTION_TYPE)
+
+    # Return a note struct we can compare to
+    { type: text(TIMELINE_INTERACTION_TYPE), duration: text(TIMELINE_INTERACTION_DURATION).gsub('Duration: ', ''), content: text(TIMELINE_INTERACTION_NOTE) }
+  end
+
+  private
+
+  # uniteus-timeline is asyncronous; we will need to use retries to avoid flaky tests
+  # until Core Consolidation is complete
+  def get_timeline_event(event_type:, retries: 5)
+    begin
+      return unless retries > 0
+
+      refresh
+      find(event_type)
+    rescue RuntimeError
+      get_timeline_event(event_type: event_type, retries: retries - 1)
+    end
+  end
+end
+
+module Notes
+  INTERACTION_TAB = { css: '#interactions-interaction-tab' }.freeze
+  MESSAGE_TAB = { css: '#interactions-message-tab' }.freeze
+  SERVICE_PROVIDED_TAB = { css: '#interactions-service-provided-tab' }.freeze
+  OTHER_TAB = { css: '#interactions-other-tab' }.freeze
+  PHI_INFO = { css: '.info-panel__text' }.freeze
+  TEXT_BOX = { css: '#interactionNote' }.freeze
+  POST_NOTE = { css: '.post-note-button > button' }.freeze
+  ERROR_NO_CASE_SELECTED = { css: '.select-service-cases__error-message' }.freeze
+
+  PHONE_INTERACTION = { css: '#phone_call-label' }.freeze
+  EMAIL_INTERACTION = { css: '#email-label' }.freeze
+  INPERSON_INTERACTION = { css: '#meeting-label' }.freeze
+  DURATION_DROPDOWN = { css: "div[aria-activedescendant='choices-interactionDuration-item-choice-1'] > .choices__inner" }.freeze
+  DURATION_OPTIONS = { css: ".choices__list > div[data-value='%s']" }.freeze
+  DURATIONS = { '15m' => '15', '> 2h 30m' => '999999' }.freeze
+
+  MESSAGE_BOX = { css: '.message' }.freeze
+  MESSAGE_INFO = { css: '.message-enabled-communication-text' }.freeze
+  MESSAGE_FIELD = { css: '#message-field' }.freeze
+
+  SERVICE_PROVIDED = { css: '#providedServiceType' }.freeze
+  SERVICE_PROVIDED_AMOUNT = { css: '#providedServiceAmount' }.freeze
+  SERVICE_PROVIDED_UNIT_DROPDOWN = { css: '#providedServiceUnit + div' }.freeze
+  SERVICE_PROVIDED_UNIT_DOLLAR = { css: '#choices-providedServiceUnit-item-choice-1' }.freeze
+  SERVICE_PROVIDED_POST_BTN = { css: '#track-service-post-note-btn' }.freeze
+
+  ATTACHED_TO_CASE_RADIO = { css: '#case-label' }.freeze
+  ADD_TO_CASE_SELECTIONS = { css: '.select-service-cases:not(.hidden)' }.freeze
+  CASE_CHECK_BOX = { css: 'label[for="case-0-checkbox"]' }.freeze
+
+  PHI_NOTE = 'Only include personally identifiable information (PII), protected health information (PHI), or other sensitive information if it is necessary to provide services to the client.'
+
+  def click_type_of_note(type:)
+    case type
+    when 'Interaction'
+      click(INTERACTION_TAB)
+    when 'Message'
+      click(MESSAGE_TAB)
+    when 'Service'
+      click(SERVICE_PROVIDED_TAB)
+    when 'Other'
+      click(OTHER_TAB)
+    end
   end
 
   def add_interaction(note)
@@ -42,19 +98,72 @@ class FacesheetOverviewPage < BasePage
       click(DURATION_OPTIONS.transform_values { |v| v % DURATIONS[note[:duration]] })
     end
 
+    raise StandardError, 'PHI warning not displayed' unless text(PHI_INFO) == PHI_NOTE
+
     enter(note[:content], TEXT_BOX)
     click(POST_NOTE)
-    is_displayed?(SUCCESS_BANNER) # wait for banner to appear
   end
 
-  def first_note_in_timeline
-    # Wait for new entry to be displayed by waiting for banner to dissapear
-    is_not_displayed?(SUCCESS_BANNER)
-    # Return a note struct we can compare to
-    { type: text(CLIENT_TIMELINE_TYPE), duration: text(CLIENT_TIMELINE_DURATION).gsub('Duration: ', ''), content: text(CLIENT_TIMELINE_NOTE) }
+  def add_note_to_case_displayed?
+    is_displayed?(ADD_TO_CASE_SELECTIONS)
   end
 
-  def first_entry_in_timeline
-    text(CLIENT_TIMELINE_GENERAL_ENTRY)
+  def send_message_to_client(method:, note:)
+    click_type_of_note(type: 'Message')
+    message_content = text(MESSAGE_INFO)
+    raise StandardError, "#{message_content} did not contain #{method}" unless message_content.include?(method)
+
+    enter(note, MESSAGE_FIELD)
+    click(POST_NOTE)
+  end
+
+  def enter_service_provided_note(note)
+    click_type_of_note(type: 'Service')
+    enter(note[:service], SERVICE_PROVIDED)
+    enter(note[:amount], SERVICE_PROVIDED_AMOUNT)
+    click(SERVICE_PROVIDED_UNIT_DROPDOWN)
+    click(SERVICE_PROVIDED_UNIT_DOLLAR)
+
+    raise StandardError, 'PHI warning not displayed' unless text(PHI_INFO) == PHI_NOTE
+
+    enter(note[:content], TEXT_BOX)
+  end
+
+  def add_service_provided_to_first_case(note)
+    raise StandardError, 'Cases not displayed' unless is_displayed?(ADD_TO_CASE_SELECTIONS)
+
+    enter_service_provided_note(note)
+    click(CASE_CHECK_BOX)
+    click(POST_NOTE)
+    is_not_displayed?(ERROR_NO_CASE_SELECTED)
+  end
+
+  def enter_other_note(note)
+    click_type_of_note(type: 'Other')
+    raise StandardError, 'PHI warning not displayed' unless text(PHI_INFO) == PHI_NOTE
+
+    enter(note[:content], TEXT_BOX)
+  end
+
+  def add_other_note_to_first_case(note)
+    raise StandardError, 'Cases not displayed' unless is_displayed?(ADD_TO_CASE_SELECTIONS)
+
+    enter_other_note(note)
+    click(CASE_CHECK_BOX)
+    click(POST_NOTE)
+    is_not_displayed?(ERROR_NO_CASE_SELECTED)
+  end
+end
+
+# Modules need to be declared before being included in a class
+class FacesheetOverview < BasePage
+  include Timeline
+  include Notes
+
+  OVERVIEW = { css: '.facesheet-overview' }.freeze
+
+  def page_displayed?
+    is_displayed?(OVERVIEW) &&
+      wait_for_spinner
   end
 end

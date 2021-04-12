@@ -2,6 +2,7 @@ require_relative '../../../shared_components/base_page'
 
 class AddClient < BasePage
   ADD_CONTACT_FORM = { css: '.add-contact-information-form' }
+  ADD_CONTACT_FROM_REFERRAL = { css: '.add-contact-from-referral' }
   FIRSTNAME_INPUT = { css: '#first-name' }
   LASTNAME_INPUT = { css: '#last-name' }
   DOB_INPUT = { css: '#date-of-birth' }
@@ -31,7 +32,7 @@ class AddClient < BasePage
 
   def is_info_prefilled?(**params)
     if params.key?(:fname) && value(FIRSTNAME_INPUT) != params[:fname]
-      print "First Name value saved '#{params[:fname]}' do not equal value displayed '#{params[:fname]}'"
+      print "First Name value saved '#{params[:fname]}' do not equal value displayed '#{value(FIRSTNAME_INPUT)}'"
       return false
     end
     if params.key?(:lname) && value(LASTNAME_INPUT) != params[:lname]
