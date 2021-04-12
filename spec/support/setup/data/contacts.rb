@@ -29,11 +29,6 @@ module Setup
     end
 
     def self.create_princeton_client
-      contact = Contact.new(token: MachineTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
-      contact.create
-    end
-
-    def self.create_princeton_client
       contact = Contact.new(token: JWTTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
       contact.create
       contact
