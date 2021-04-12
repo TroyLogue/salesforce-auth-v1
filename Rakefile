@@ -41,6 +41,17 @@ namespace :jenkins do
     ENV['environment'] = 'widgets_staging'
     exit run_in_parallel(tag: 'widgets')
   end
+
+  desc 'specs tagged consent on IE10'
+  task :consent do
+    ENV['host'] = 'browserstack'
+    ENV['environment'] = 'consent_staging'
+    ENV['os'] = 'Windows'
+    ENV['os_version'] = '7'
+    ENV['browser'] = 'ie'
+    ENV['browser_version'] = '10.0'
+    exit run_in_parallel(tag: 'consent')
+  end
 end
 
 namespace :docker do
