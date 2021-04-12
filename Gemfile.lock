@@ -1,6 +1,7 @@
 GIT
   remote: git@github.com:unite-us/api-integration-tests.git
-  revision: 9c92b4358f891b3cac2591b88dfa1a2f9d53fac9
+  revision: 020c2f2c40ae8dda0db00206432183863fc7ac8c
+  branch: UUQA-1630_get-consent-token
   specs:
     uniteus-api-client (1.0.0)
 
