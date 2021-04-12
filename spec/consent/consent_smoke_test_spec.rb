@@ -1,6 +1,6 @@
 require_relative './pages/consent'
 
-describe '[Consent]', :consent do
+describe '[Consent]', :consent_app do
   let(:base_page) { BasePage.new(@driver) }
   let(:consent) { Consent.new(@driver) }
 
