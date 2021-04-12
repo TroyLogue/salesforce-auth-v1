@@ -50,7 +50,7 @@ namespace :jenkins do
     ENV['os_version'] = '7'
     ENV['browser'] = 'ie'
     ENV['browser_version'] = '10.0'
-    exit run_in_parallel(tag: 'uniteus_consent_app')
+    exit run_in_parallel(tag: 'consent_app')
   end
 end
 
