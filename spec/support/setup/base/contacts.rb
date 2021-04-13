@@ -38,7 +38,7 @@ module Setup
 
     def create_with_consent_token
       create
-      get_consent_token
+      consent_token
     end
 
     def create_with_military
@@ -63,7 +63,7 @@ module Setup
       expect(contact_response.status.to_s).to eq('200 OK')
     end
 
-    # when searching for clients, some query letters return 0 results; 
+    # when searching for clients, some query letters return 0 results;
     # we are searching clients using an array that has proven to be reliable
     def random_existing_client
       default_retry_count = 2
@@ -78,7 +78,7 @@ module Setup
         expect(contact_indexes_response.status.to_s).to eq('200 OK')
 
         # Searching for a client created within the past month
-        # with ES-60 we migrated only contacts created since ~ Jan 2021; 
+        # with ES-60 we migrated only contacts created since ~ Jan 2021;
         # in developing this method we saw reliable search results when scoped to one month
         prev_month_timestamp = (DateTime.now - 30).to_time.to_i
         contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find{ |x| x.created_at > prev_month_timestamp }
@@ -102,7 +102,7 @@ module Setup
       expect(consent_response.status.to_s).to eq('200 OK')
     end
 
-    def get_consent_token
+    def consent_token
       token = Requests::Consent.get_consent_token(token: @token, group_id: @group_id,
                                                   contact_id: @contact_id)
     end

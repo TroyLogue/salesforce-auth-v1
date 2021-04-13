@@ -17,7 +17,7 @@ module Setup
       contact
     end
 
-    def self.get_consent_token_for_new_harvard_client
+    def self.consent_token_for_new_harvard_client
       contact = Contact.new(token: JWTTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
       contact.create_with_consent_token
     end
