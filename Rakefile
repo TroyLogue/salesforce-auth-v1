@@ -88,13 +88,6 @@ namespace :local do
     exit run_in_parallel(tag: 'app_client')
   end
 
-  desc 'Run app-client tests on staging by tag'
-  task :app_client_staging_tag, [:tag] do |t, args|
-    ENV['browser'] = 'chrome'
-    ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(tag: (args[:tag]).to_s)
-  end
-
   # example:
   # rake local:ehr_staging
   desc 'Run ehr tests on staging in chrome headless'
