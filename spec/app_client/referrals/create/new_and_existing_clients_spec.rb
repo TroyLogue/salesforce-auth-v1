@@ -10,7 +10,7 @@ require_relative '../../consent/pages/consent_modal'
 require_relative './../pages/create_referral'
 require_relative './../pages/referral_dashboard'
 
-describe '[Referrals]', :app_client, :referrals do
+describe '[Referrals]', :app_client, :referrals, :smoke do
   include Login
 
   let(:homepage) { HomePage.new(@driver) }
@@ -35,7 +35,7 @@ describe '[Referrals]', :app_client, :referrals do
     # Changes from ES-60 cause delays in user indexing when using Search And Match
     # This test case can be re-evaluated once ES-110 has be investigated
     # The workaround is randomly select an already existing client that has already been indexed
-    it 'user can create a referral for an existing client', :uuqa_1734, :es_110 do
+    it 'user can create a referral for an existing client', :uuqa_1734, :es_110, :debug do
       # Get a random existing contact
       @contact = Setup::Data.random_existing_harvard_client
 
