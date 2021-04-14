@@ -39,7 +39,7 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
       expect(facesheet_profile.current_phone_number).to eql(facesheet_profile.number_to_phone_format(@phone_number))
     end
 
-    it 'updates address', :uuqa_1510, :address do
+    it 'updates address', :uuqa_1510 do
       @city = Faker::Address.city
       @state = Faker::Address.state
       # UU does a soft validation of addresses, therefore zip code needs to map to state
