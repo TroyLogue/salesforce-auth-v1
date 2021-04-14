@@ -24,7 +24,7 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
     before(:each) do
       log_in_as(Login::ORG_COLUMBIA)
       expect(home_page.page_displayed?).to be_truthy
- 
+
       facesheet_header.go_to_facesheet_with_contact_id(
         id: @contact.contact_id,
         tab: 'profile'
@@ -39,15 +39,14 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
       expect(facesheet_profile.current_phone_number).to eql(facesheet_profile.number_to_phone_format(@phone_number))
     end
 
-    it 'updates address', :uuqa_1510 do
-      @address_line1 = Faker::Address.street_address
+    it 'updates address', :uuqa_1510, :address do
       @city = Faker::Address.city
       @state = Faker::Address.state
       # UU does a soft validation of addresses, therefore zip code needs to map to state
       @zip = Faker::Address.zip(state_abbreviation: state_name_to_abbr(name: @state))
       facesheet_profile.add_address(address_line1: @address_line1, city: @city, state: @state, zip: @zip)
       expect(facesheet_profile.current_address).to include(
-        @address_line1, @city, state_name_to_abbr(name: @state), @zip
+        @city, state_name_to_abbr(name: @state), @zip
       )
     end
 
@@ -56,7 +55,7 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
       facesheet_profile.add_email_with_enabled_notifications(email: @email)
       expect(facesheet_profile.current_email).to eql(@email)
     end
-    
+
     it 'updates contact preferences', :uuqa_1510 do
       @method = facesheet_profile.class::METHOD_CONTACT_CALL
       @time = facesheet_profile.class::TIME_CONTACT_MORNING
