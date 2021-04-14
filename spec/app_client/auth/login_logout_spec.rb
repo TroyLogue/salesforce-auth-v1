@@ -10,7 +10,7 @@ describe '[Auth - Login - Logout]', :app_client, :auth, :login do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
 
-  it 'Logs in with a valid email, then logs out', :uuqa_5, :uuqa_1608 do
+  it 'Logs in with a valid email, then logs out', :uuqa_5, :uuqa_1608, :smoke do
     log_in_as(Login::CC_HARVARD)
     expect(home_page.page_displayed?).to be_truthy
     user_menu.log_out

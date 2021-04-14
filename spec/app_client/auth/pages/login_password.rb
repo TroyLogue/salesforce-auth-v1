@@ -7,12 +7,9 @@ class LoginPassword < BasePage
   INVALID_ALERT = { css: 'div.flash_alert-container:nth-child(5) > p.flash_alert' }.freeze
   INVALID_TEXT = 'Invalid Email or password.'.freeze
   NOT_YOU_LINK = { css: '#not-you-link' }.freeze
-  PASSWORD_INPUT = { css: '#app_2_user_password' }.freeze
+  PASSWORD_INPUT = { css: '.password input' }.freeze
   SUBMIT_BUTTON = { css: 'input[value="Sign in"]' }.freeze
   USER_EMAIL = { css: '#user-email' }.freeze
-
-  # string to pass to enter_via_js which uses getElementById
-  PASSWORD_INPUT_ID = 'app_2_user_password'.freeze
 
   def click_forgot_password
     click_via_js(FORGOT_PASSWORD_LINK)
@@ -35,10 +32,11 @@ class LoginPassword < BasePage
   end
 
   def submit(password)
-    find(PASSWORD_INPUT)
+    # string to pass to enter_via_js which uses getElementById
+    pw_input_id = find(PASSWORD_INPUT).attribute("id")
 
     # js scripts are used with the dynamic login form to avoid race conditions
-    enter_via_js(password, PASSWORD_INPUT_ID)
+    enter_via_js(password, pw_input_id)
     click_via_js(SUBMIT_BUTTON)
   end
 end
