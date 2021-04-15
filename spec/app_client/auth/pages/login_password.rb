@@ -6,7 +6,7 @@ class LoginPassword < BasePage
   FORGOT_PASSWORD_LINK = { css: '#forgot-password-link' }.freeze
   INVALID_ALERT = { css: 'div.flash_alert-container:nth-child(5) > p.flash_alert' }.freeze
   INVALID_TEXT = 'Invalid Email or password.'.freeze
-  NOT_YOU_LINK = { css: '#not-you-link' }.freeze
+  EDIT_EMAIL_LINK = { css: '#not-you-link' }.freeze
   PASSWORD_INPUT = { css: '#app_2_user_password' }.freeze
   SUBMIT_BUTTON = { css: 'input[value="Sign in"]' }.freeze
   USER_EMAIL = { css: '#user-email' }.freeze
@@ -29,7 +29,7 @@ class LoginPassword < BasePage
 
   def page_displayed?
     is_displayed?(FORGOT_PASSWORD_LINK) &&
-      is_displayed?(NOT_YOU_LINK) &&
+      is_displayed?(EDIT_EMAIL_LINK) &&
       is_displayed?(USER_EMAIL) &&
       is_displayed?(PASSWORD_INPUT)
   end
