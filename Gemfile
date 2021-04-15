@@ -30,4 +30,4 @@ gem 'rspec_junit_formatter'
 gem 'byebug' # https://github.com/deivid-rodriguez/byebug
 
 #internal
-gem 'uniteus-api-client', git: 'git@github.com:unite-us/api-integration-tests.git', branch: 'UUQA-1630_get-consent-token'
+gem 'uniteus-api-client', git: 'git@github.com:unite-us/api-integration-tests.git'
