@@ -13,9 +13,8 @@ class Consent < BasePage
   SIGNATURE_PAD = { css: '#signature-pad' }
 
   def get_consent_page(token:)
-    base_url = ENV['consent_url']
-    consent_url = base_url + '/?' + token
-    driver.get consent_url
+  # make sure environment='consent_staging' is passed for correct base_url
+    get "/?#{token}"
   end
 
   def page_displayed?
