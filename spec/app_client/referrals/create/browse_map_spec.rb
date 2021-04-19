@@ -7,7 +7,7 @@ require_relative '../../facesheet/pages/facesheet_header'
 require_relative '../../referrals/pages/create_referral'
 require_relative '../../referrals/pages/referral_network_map'
 
-describe '[Referrals]', :app_client, :referrals do
+describe '[Referrals]', :app_client, :referrals, :smoke do
   include Login
 
   let(:home_page) { HomePage.new(@driver) }

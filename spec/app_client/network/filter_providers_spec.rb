@@ -2,7 +2,7 @@ require_relative '../auth/helpers/login'
 require_relative '../root/pages/left_nav'
 require_relative './pages/network_browse_map'
 
-describe '[Network - Browse Map]', :network, :app_client do
+describe '[Network - Browse Map]', :network, :app_client, :smoke do
   include Login
 
   let(:left_nav) { LeftNav.new(@driver) }
