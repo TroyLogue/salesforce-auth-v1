@@ -133,9 +133,9 @@ namespace :local do
     exit run_in_parallel(tag: 'referrals', processes: 2)
   end
 
-  task :training_smoke do
+  task :smoke, :environment do |t, args|
     ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'app_client_training'
+    ENV['environment'] = args[:environment]
     exit run_in_parallel(tag: 'smoke')
   end
 end
