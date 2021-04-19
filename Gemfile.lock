@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:unite-us/api-integration-tests.git
-  revision: 9c92b4358f891b3cac2591b88dfa1a2f9d53fac9
+  revision: 775353c7cb4964aac0c90f5032dfe390fde0ca48
   specs:
     uniteus-api-client (1.0.0)
 
