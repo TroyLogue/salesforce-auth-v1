@@ -132,6 +132,11 @@ namespace :local do
     ENV['environment'] = 'app_client_staging'
     exit run_in_parallel(tag: 'referrals', processes: 2)
   end
+
+  task :app_client_training_smoke do
+    ENV['environment'] = 'app_client_training'
+    exit run_in_parallel(tag: 'smoke')
+  end
 end
 
 namespace :browserstack do
