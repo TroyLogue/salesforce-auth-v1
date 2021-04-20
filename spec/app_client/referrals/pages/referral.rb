@@ -110,6 +110,10 @@ class Referral < BasePage
     wait_for_spinner
   end
 
+  def path_of_new_referral_with_id(referral_id:)
+    "/dashboard/new/referrals/#{referral_id}"
+  end
+
   def go_to_in_review_referral_with_id(referral_id:)
     get("/dashboard/referrals/in-review/#{referral_id}")
     wait_for_spinner

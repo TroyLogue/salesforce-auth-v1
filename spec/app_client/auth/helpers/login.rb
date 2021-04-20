@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-# require_relative '../pages/login_email' # UU3-48209 uncomment login page-objects when task is addressed
+# UU3-48209 Currently most tests login through the UI;
+# the login_email and login_password files are required in spec_helper as they are needed throughout the repo.
+# Once we replace the UI-based login procedure with a headless solution we can remove the files from spec_helper
+# and uncomment these `require_relative` lines for login tests.
+# require_relative '../pages/login_email'
 # require_relative '../pages/login_password'
 
 module Login

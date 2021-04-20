@@ -1,23 +1,19 @@
-require_relative '../auth/helpers/login'
-require_relative '../root/pages/home_page'
-require_relative '../root/pages/right_nav'
 require_relative './pages/facesheet_header'
 require_relative './pages/facesheet_uploads_page'
 require_relative '../referrals/pages/referral.rb'
 
 describe '[Facesheet]', :app_client, :facesheet do
-  include Login
+  include_context :with_authenticated_session
 
-  let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
-  let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:new_referral) { Referral.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_uploads_page) { FacesheetUploadsPage.new(@driver) }
 
   context('[as org user]') do
     before {
+      # Auth Session
+      @auth_token = get_encoded_auth_token(email_address: Login::ORG_PRINCETON)
+
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent
 
@@ -26,11 +22,10 @@ describe '[Facesheet]', :app_client, :facesheet do
         contact_id: @contact.contact_id
       )
 
-      log_in_as(Login::ORG_PRINCETON)
-      expect(homepage.page_displayed?).to be_truthy
-
       # Navigate to referral and attach document
-      new_referral.go_to_new_referral_with_id(referral_id: @referral.id)
+      new_referral_path = new_referral.path_of_new_referral_with_id(referral_id: @referral.id)
+      new_referral.authenticate_and_navigate_to(token: @auth_token, path: new_referral_path)
+
       @document = Faker::Alphanumeric.alpha(number: 8) + '.txt'
       new_referral.attach_document_to_referral(file_name: @document)
       expect(new_referral.document_list).to include(@document)

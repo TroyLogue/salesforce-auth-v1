@@ -25,11 +25,9 @@ Dotenv.load(".env.#{domain}")
 ENV['web_url'] = ENV[application + '_url']
 ENV['auth_url'] = ENV[application + '_auth_url']
 
-# Gives specs access to the setup modules that contain the methods
-# to create clients, referrals and other data dependencies
-Dir.glob('./spec/support/setup/base/*.rb').sort.each { |file| require file }
-Dir.glob('./spec/support/setup/data/*.rb').sort.each { |file| require file }
-Dir.glob('./spec/support/setup/identifiers/*.rb').sort.each { |file| require file }
+# Gives specs access to the support setup modules that contain the methods
+# to create data needed for test cases
+Dir.glob('./spec/support/**/*/*.rb').sort.each { |file| require file }
 
 # before and after hooks for every spec
 RSpec.configure do |config|
@@ -123,6 +121,13 @@ RSpec.configure do |config|
   config.verbose_retry = true # show retry status in spec process
   config.display_try_failure_messages = true
   config.default_retry_count = 2
+
+  # From rspec-core: This option will default to `:apply_to_host_groups` in RSpec 4 (and will
+  # have no way to turn it off -- the option exists only for backwards
+  # compatibility in RSpec 3). It causes shared context metadata to be
+  # inherited by the metadata hash of host groups and examples, rather than
+  # triggering implicit auto-inclusion in groups with matching metadata.
+  config.shared_context_metadata_behavior = :apply_to_host_groups
 
   # reporting
   config.after(:each) do |example|
