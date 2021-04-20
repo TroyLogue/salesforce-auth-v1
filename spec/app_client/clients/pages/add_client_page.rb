@@ -31,11 +31,11 @@ class AddClient < BasePage
   end
 
   def is_info_prefilled?(**params)
-    if params.key?(:fname) && value(FIRSTNAME_INPUT) != params[:fname]
+    if params.key?(:fname) && value(FIRSTNAME_INPUT).downcase != params[:fname].downcase
       print "First Name value saved '#{params[:fname]}' do not equal value displayed '#{value(FIRSTNAME_INPUT)}'"
       return false
     end
-    if params.key?(:lname) && value(LASTNAME_INPUT) != params[:lname]
+    if params.key?(:lname) && value(LASTNAME_INPUT).downcase != params[:lname].downcase
       print "Last Name value saved '#{params[:lname]}' do not equal value displayed '#{value(LASTNAME_INPUT)}'"
       return false
     end
