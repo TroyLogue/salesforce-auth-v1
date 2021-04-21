@@ -37,7 +37,8 @@ describe '[Cases]', :app_client, :cases do
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CASE_REOPENED)
 
-      expect(case_detail_page.page_displayed?).to be_truthy
+      # When a case is reopened, button updates to `Close Case` and `Case Status` updates
+      expect(case_detail_page.close_case_button_displayed?).to be_truthy
       expect(case_detail_page.status).to eq Case::OPEN_STATUS
     end
   end

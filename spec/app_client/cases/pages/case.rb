@@ -13,6 +13,7 @@ class Case < BasePage
   SERVICE_TYPE = { css: '#basic-table-service-type-value' }.freeze
 
   REOPEN_BTN = { css: '#reopen-case' }.freeze
+  CLOSE_BTN = { css: '#close-case-btn' }.freeze
 
   def page_displayed?
     is_displayed?(CASE_VIEW)
@@ -48,6 +49,10 @@ class Case < BasePage
 
   def reopen_case
     is_displayed?(REOPEN_BTN) && click(REOPEN_BTN)
+  end
+
+  def close_case_button_displayed?
+    is_displayed?(CLOSE_BTN)
   end
 
   # ASSSESMENTS
