@@ -62,7 +62,8 @@ class NetworkBrowseDrawer < BasePage
     is_displayed?(PROVIDER_DETAILS_LOCATION_HEADER) &&
     is_displayed?(PROVIDER_DETAILS_ADDRESS) &&
     is_displayed?(PROVIDER_DETAILS_HOURS) &&
-    is_displayed?(PROVIDER_DETAILS_PROGRAMS)
+    is_displayed?(PROVIDER_DETAILS_PROGRAMS) &&
+    is_displayed?(PROGRAM_DETAILS_SERVICES)
   end
 
   def drawer_not_displayed?

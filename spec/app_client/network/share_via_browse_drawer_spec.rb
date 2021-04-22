@@ -27,7 +27,7 @@ describe '[Network - Browse Map - Browse Drawer]', :network, :app_client do
     it 'shares provider details via email', :uuqa_652 do
       # UU3-49164 workaround for banner blocking drawer elements
       banner.dismiss_alert_if_displayed
-      network_browse_map.click_first_provider_detail
+      network_browse_map.click_first_in_network_provider_detail
       expect(network_browse_drawer.drawer_displayed?).to be_truthy
 
       network_browse_drawer.click_share_button
