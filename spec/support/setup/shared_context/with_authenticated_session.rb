@@ -12,6 +12,16 @@ RSpec.shared_context :with_authenticated_session do
     encode_access_token(token: access_token)
   end
 
+  def access_token(email_address:, password: Login::DEFAULT_PASSWORD)
+    are_environment_vars_set?
+    csrf_auth = load_auth_and_csrf_tokens
+    auth_cookie = get_auth_cookie(email_address: email_address, password: password, tokens: csrf_auth)
+    code = set_auth_code(auth_cookie: auth_cookie)
+    response_body = get_access_token(code: code)
+    parsed_response = JSON.parse response_body, symbolize_names: true
+    parsed_response[:access_token]
+  end
+
   private
 
   def are_environment_vars_set?
