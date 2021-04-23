@@ -17,6 +17,7 @@ gem 'faker'
 gem 'http'
 gem 'dotenv'
 gem 'httparty'
+gem 'nokogiri'
 
 #browserstack
 # enables HTTP persistent connection in selenium bindings

@@ -11,8 +11,22 @@ class BasePage
     @driver = driver
   end
 
+  def add_cookie(**params)
+    driver.manage.add_cookie(name: params[:name], value: params[:value], domain: params[:domain])
+  end
+
   def attribute(selector, attribute)
     find(selector).attribute(attribute)
+  end
+
+  def authenticate_and_navigate_to(token:, path: '')
+    get(path)
+    add_cookie(
+      name: token[:name],
+      value: token[:value],
+      domain: ".#{ENV['web_url'].partition('.').last}"
+    )
+    get(path)
   end
 
   # similar to is_present? but checks for displayed
@@ -168,34 +182,6 @@ class BasePage
 
   def get_title
     wait_for { driver.title }
-  end
-
-  def get_uniteus_api_token
-    JSON.parse(URI.decode_www_form_component((driver.manage.cookie_named('uniteusApiToken')[:value]).to_s))['access_token']
-  end
-
-  def get_uniteus_group
-    driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentGroup");')
-  end
-
-  def get_uniteus_network
-    driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentNetwork");')
-  end
-
-  def get_uniteus_first_service_type_id
-    networks = JSON.parse(driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentUser");'))['networks']
-    user_network = networks.find { |network| network['id'] == get_uniteus_network }
-    user_network['service_types'][0]['children'][0]['id']
-  end
-
-  def get_uniteus_service_type_id_by_name(service_type)
-    networks = JSON.parse(driver.execute_script('return window.sessionStorage.getItem("uniteusApiCurrentUser");'))['networks']
-    user_network = networks.find { |network| network['id'] == get_uniteus_network }
-
-    user_network['service_types'].each do |service|
-      found = service['children'].find { |child| child['name'] == service_type }
-      return found['id'] if found
-    end
   end
 
   def hover_over(selector)
