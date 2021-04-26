@@ -12,6 +12,7 @@ require_relative './../pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals, :smoke do
   include Login
+  include_context :with_authenticated_session
 
   let(:homepage) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
@@ -37,7 +38,9 @@ describe '[Referrals]', :app_client, :referrals, :smoke do
     # The workaround is randomly select an already existing client that has already been indexed
     it 'user can create a referral for an existing client', :uuqa_1734, :es_110 do
       # Get a random existing contact
-      @contact = Setup::Data.random_existing_harvard_client
+
+      @token = access_token(email_address: Login::CC_HARVARD)
+      @contact = Setup::Data.random_existing_harvard_client(token: @token)
 
       create_menu.start_new_referral
       expect(search_client_page.page_displayed?).to be_truthy
