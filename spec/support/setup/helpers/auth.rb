@@ -18,8 +18,8 @@ class Auth
     access_token = get_access_token(code: code)
 
     # store token for later
-    parsed_response = JSON.parse access_token, symbolize_names: true
-    parsed_token = parsed_response[:access_token]
+#    parsed_response = JSON.parse access_token, symbolize_names: true
+#    parsed_token = parsed_response[:access_token]
 #    set_token(email_address: email_address, value: parsed_token)
 
     encode_access_token(token: access_token)
