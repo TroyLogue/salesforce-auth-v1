@@ -59,10 +59,14 @@ class Auth
   end
 
   def get_auth_cookie(email_address:, password: , tokens:)
+    # for now, set app_2 or app_1 based on environment variable
+    domain = ENV['environment'].split('_')[-1]
+    app_param = (domain == 'staging') ? 'app_2' : 'app_1'
+
     parameters = {
       'authenticity_token': tokens[:csrf],
-      'app_2_user[email]': email_address,
-      'app_2_user[password]': password,
+      "#{app_param}_user[email]": email_address,
+      "#{app_param}_user[password]": password,
       'commit': 'Sign in'
     }
 
