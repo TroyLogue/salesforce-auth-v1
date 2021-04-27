@@ -6,10 +6,11 @@ module Providers
   case domain
   when 'prod'
   when 'training'
-    # refers to group United Coordination Center
-    # which harvard@auto.com belongs to in Training
-    # to update before merge
-    CC_HARVARD = '6df9b6a0-d17a-4b39-80cb-397866df75e2'
+    # TODO - update const names
+    # QA Deployment CC in training
+    CC_HARVARD = '2018360f-ff91-47fc-9b24-904e43fdb7f0'
+    # QA Deployment Org 01
+    ORG_YALE = '2e5f0b9a-d878-484f-b9df-e36b7b4ab405'
   else
     ORG_YALE = '72af0e4d-8d83-4887-9c47-520632ae4861'
     CC_HARVARD = 'fdc38854-2b82-4ce1-9598-73278cea971b'
