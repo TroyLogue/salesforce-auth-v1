@@ -6,72 +6,72 @@ require_relative '../identifiers/jwt_tokens'
 module Setup
   module Data
     def self.create_harvard_client
-      contact = Contact.new(token: JWTTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
+      contact = Contact.new(token: JWTTokens.cc_user, group_id: Providers::CC_HARVARD)
       contact.create
       contact
     end
 
     def self.create_harvard_client_with_consent
-      contact = Contact.new(token: JWTTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
+      contact = Contact.new(token: JWTTokens.cc_user, group_id: Providers::CC_HARVARD)
       contact.create_with_consent
       contact
     end
 
     def self.consent_token_for_new_harvard_client
-      contact = Contact.new(token: JWTTokens::CC_HARVARD, group_id: Providers::CC_HARVARD)
+      contact = Contact.new(token: JWTTokens.cc_user, group_id: Providers::CC_HARVARD)
       contact.create_with_consent_token
     end
 
-    def self.random_existing_harvard_client(token:)
-      contact = Contact.new(token: token, group_id: Providers::CC_HARVARD)
+    def self.random_existing_harvard_client
+      contact = Contact.new(token: JWTTokens.cc_user, group_id: Providers::CC_HARVARD)
       contact.random_existing_client
       contact
     end
 
     def self.create_princeton_client
-      contact = Contact.new(token: JWTTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
+      contact = Contact.new(token: JWTTokens.princeton, group_id: Providers::ORG_PRINCETON)
       contact.create
       contact
     end
 
     def self.create_princeton_client_with_consent
-      contact = Contact.new(token: JWTTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
+      contact = Contact.new(token: JWTTokens.princeton, group_id: Providers::ORG_PRINCETON)
       contact.create_with_consent
       contact
     end
 
     # Requires an existing Contact object
     def self.select_client_in_princeton(contact:)
-      contact.select(token: JWTTokens::ORG_PRINCETON, group_id: Providers::ORG_PRINCETON)
+      contact.select(token: JWTTokens.princeton, group_id: Providers::ORG_PRINCETON)
       contact
     end
 
     def self.create_yale_client
-      contact = Contact.new(token: JWTTokens::ORG_YALE, group_id: Providers::ORG_YALE)
+      contact = Contact.new(token: JWTTokens.yale, group_id: Providers::ORG_YALE)
       contact.create
       contact
     end
 
     def self.create_yale_client_with_consent
-      contact = Contact.new(token: JWTTokens::ORG_YALE, group_id: Providers::ORG_YALE)
+      contact = Contact.new(token: JWTTokens.yale, group_id: Providers::ORG_YALE)
       contact.create_with_consent
       contact
     end
 
     def self.create_yale_client_with_military_and_consent
-      contact = Contact.new(token: JWTTokens::ORG_YALE, group_id: Providers::ORG_YALE)
+      contact = Contact.new(token: JWTTokens.yale, group_id: Providers::ORG_YALE)
       contact.create_with_military_and_consent
       contact
     end
 
     def self.create_columbia_client
-      contact = Contact.new(token: JWTTokens::ORG_COLUMBIA, group_id: Providers::ORG_COLUMBIA)
+      contact = Contact.new(token: JWTTokens.columbia, group_id: Providers::ORG_COLUMBIA)
       contact.create
       contact
     end
 
     def self.create_columbia_client_with_consent
-      contact = Contact.new(token: JWTTokens::ORG_COLUMBIA, group_id: Providers::ORG_COLUMBIA)
+      contact = Contact.new(token: JWTTokens.columbia, group_id: Providers::ORG_COLUMBIA)
       contact.create_with_consent
       contact
     end

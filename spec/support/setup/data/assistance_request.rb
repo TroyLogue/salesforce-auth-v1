@@ -16,7 +16,7 @@ module Setup
 
     def self.close_columbia_assistance_request(ar_id:)
       close_ar = Setup::CloseAssistanceRequest.new
-      close_ar.close(token: JWTTokens::ORG_COLUMBIA, group_id: Providers::ORG_COLUMBIA, ar_id: ar_id, resolution: Resolutions::RESOLVED)
+      close_ar.close(token: JWTTokens.columbia, group_id: Providers::ORG_COLUMBIA, ar_id: ar_id, resolution: Resolutions::RESOLVED)
       close_ar
     end
   end

@@ -11,12 +11,9 @@ require_relative './../pages/create_referral'
 require_relative './../pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals, :smoke do
-  include Login
   include_context :with_authenticated_session
 
   let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:create_menu) { RightNav::CreateMenu.new(@driver) }
   let(:search_client_page) { SearchClient.new(@driver) }
   let(:confirm_client_page) { ConfirmClient.new(@driver) }
@@ -29,7 +26,8 @@ describe '[Referrals]', :app_client, :referrals, :smoke do
 
   context('[as a Referral User]') do
     before {
-      log_in_as(Login::CC_HARVARD)
+      @auth_token = get_encoded_auth_token(email_address: Login::CC_HARVARD)
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }
 
@@ -39,8 +37,7 @@ describe '[Referrals]', :app_client, :referrals, :smoke do
     it 'user can create a referral for an existing client', :uuqa_1734, :es_110 do
       # Get a random existing contact
 
-      @token = access_token(email_address: Login::CC_HARVARD)
-      @contact = Setup::Data.random_existing_harvard_client(token: @token)
+      @contact = Setup::Data.random_existing_harvard_client
 
       create_menu.start_new_referral
       expect(search_client_page.page_displayed?).to be_truthy
