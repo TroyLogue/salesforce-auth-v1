@@ -5,7 +5,7 @@ require_relative '../../../app_client/auth/helpers/login'
 class Auth
   include RSpec::Matchers
 
-  @@tokens = {}
+#  @@tokens = {}
 
   def initialize
   end
@@ -16,11 +16,18 @@ class Auth
     auth_cookie = get_auth_cookie(email_address: email_address, password: password, tokens: csrf_auth)
     code = set_auth_code(auth_cookie: auth_cookie)
     access_token = get_access_token(code: code)
+
+    # store token for later
+    parsed_response = JSON.parse access_token, symbolize_names: true
+    parsed_token = parsed_response[:access_token]
+#    set_token(email_address: email_address, value: parsed_token)
+
     encode_access_token(token: access_token)
   end
 
   def access_token(email_address:, password: Login::DEFAULT_PASSWORD)
-    token(email_address: email_address) || get_parsed_access_token(email_address: email_address, password: password)
+#    token(email_address: email_address) ||
+    get_parsed_access_token(email_address: email_address, password: password)
   end
 
   private
@@ -112,7 +119,7 @@ class Auth
     response_body = get_access_token(code: code)
     parsed_response = JSON.parse response_body, symbolize_names: true
     parsed_token = parsed_response[:access_token]
-    set_token(email_address: email_address, value: parsed_token)
+#    set_token(email_address: email_address, value: parsed_token)
     parsed_token
   end
 end
