@@ -32,7 +32,6 @@ class Auth
 
   private
   def token(email_address:)
-    p "fetching token for: #{email_address}. Returning #{@@tokens[email_address]}"
     @@tokens[email_address]
   end
 
@@ -111,7 +110,6 @@ class Auth
   end
 
   def get_parsed_access_token(email_address:, password:)
-    p "getting parsed access token for #{email_address}"
     are_environment_vars_set?
     csrf_auth = load_auth_and_csrf_tokens
     auth_cookie = get_auth_cookie(email_address: email_address, password: password, tokens: csrf_auth)
