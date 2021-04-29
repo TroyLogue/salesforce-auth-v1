@@ -1,5 +1,6 @@
 require_relative '../auth/helpers/login'
 require_relative '../root/pages/left_nav'
+require_relative '../root/pages/notifications'
 require_relative '../clients/pages/clients_page'
 require_relative './pages/facesheet_header'
 require_relative './pages/facesheet_uploads_page'
@@ -13,9 +14,10 @@ describe '[Facesheet]', :app_client, :facesheet do
   let(:clients_page) { ClientsPage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_uploads_page) { FacesheetUploadsPage.new(@driver) }
+  let(:notifications) { Notifications.new(@driver) }
 
   context('[as org user]') do
-    before {
+    before do
       log_in_as(Login::ORG_COLUMBIA)
       left_nav.go_to_clients
       expect(clients_page.page_displayed?).to be_truthy
@@ -24,8 +26,11 @@ describe '[Facesheet]', :app_client, :facesheet do
       # Uploading as part of set up
       facesheet_header.go_to_uploads
       @file = Faker::Alphanumeric.alpha(number: 8) + '.txt'
-      expect(facesheet_uploads_page.upload_document(@file)).to be_truthy
-    }
+
+      facesheet_uploads_page.upload_document(file_name: @file)
+      expect(notifications.success_text).to eq(Notifications::DOCUMENTS_SAVED)
+      expect(facesheet_uploads_page.document_uploaded?(file_name: @file)).to be_truthy
+    end
 
     it 'Rename client document in uploads', :uuqa_341 do
       facesheet_uploads_page.rename_document(current_file_name: @file, new_file_name: 'rename.txt')
@@ -33,12 +38,12 @@ describe '[Facesheet]', :app_client, :facesheet do
     end
 
     it 'Remove client document in uploads', :uuqa_342 do
-      facesheet_uploads_page.remove_document(@file)
+      facesheet_uploads_page.remove_document(file_name: @file)
       expect(facesheet_uploads_page.is_document_removed?(@file)).to be_truthy
     end
 
-    after {
+    after do
       facesheet_uploads_page.delete_documents
-    }
+    end
   end
 end
