@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../../../app_client/auth/helpers/login'
 require_relative '../helpers/auth'
 
 RSpec.shared_context :with_authenticated_session do

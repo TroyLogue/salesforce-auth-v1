@@ -24,8 +24,6 @@ module Login
     INTAKE_USER = 'intake@auto.com',
     # used in parts/login/nonLicensedUser.js
     INACTIVE_BOB = 'bob@auto.com',
-    # used in 3 tests and 2 helper scripts
-    ORG_ATLANTA = 'atlanta@auto.com',
     # used in ~15 ui-tests, org with referral permissions to other network
     ORG_COLUMBIA = 'columbia@auto.com',
     # used in ~20 ui-tests
