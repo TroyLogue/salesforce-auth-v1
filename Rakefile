@@ -54,7 +54,7 @@ namespace :jenkins do
   end
 
   desc 'testing out new auth tokens'
-  task :UU3-52630
+  task :UU3-52630 do
     ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'app_client_staging'
     exit run_in_parallel(tag: 'app_client')
