@@ -16,6 +16,7 @@ class Notifications < BasePage
   CLIENT_UPDATED = 'Client Successfully Updated'
   CONSENT_REQUEST_SENT = 'Consent Request Sent'
   CONSENT_UPLOADED = 'Consent Uploaded'
+  DOCUMENTS_SAVED = 'Documents Saved'
   EMAIL_ADDRESS_UPDATED = 'Email Address Successfully Updated'
   GROUP_UPDATED = 'Group Successfully Updated'
   INTAKE_CREATED = 'Intake Successfully Created'

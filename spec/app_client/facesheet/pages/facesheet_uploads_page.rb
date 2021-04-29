@@ -7,15 +7,15 @@ class FacesheetUploadsPage < BasePage
   DOCUMENT_UPLOAD_CONTEXT = { css: '#upload-document-modal' }
   DOCUMENT_UPLOAD_INPUT = { css: 'input[type="file"]' }
   DOCUMENT_PREVIEW = { css: '.preview-item' }
-  DOCUMENT_ATTATCH_BUTTON  = { css: '#upload-submit-btn'}
+  DOCUMENT_ATTATCH_BUTTON = { css: '#upload-submit-btn' }
   STATUS_BAR = { css: '.notification.success.velocity-animating' }
 
-  CLIENT_DOCUMENTS = { css: '.contact-documents__client-wrapper'}
-  DOCUMENT_NAME = { xpath: ".//p[text()='%s']"}
-  DOCUMENT_NAME_LIST = { css: ".contact-document-card-menu__title" }
+  CLIENT_DOCUMENTS = { css: '.contact-documents__client-wrapper' }
+  DOCUMENT_NAME = { xpath: ".//p[text()='%s']" }
+  DOCUMENT_NAME_LIST = { css: '.contact-document-card-menu__title' }
   DOCUMENT_MENU = { xpath: ".//p[text()='%s']/following-sibling::div" }
   DOCUMENT_MENU_RENAME = { css: '#document-menu-item-rename' }
-  DOCUMENT_MENU_REMOVE = { css: '#document-menu-item-remove'}
+  DOCUMENT_MENU_REMOVE = { css: '#document-menu-item-remove' }
 
   DIALOG = { css: '.dialog.open.small .dialog-paper' }
   RENAME_TEXT_FIELD = { css: '#rename-document-title-field' }
@@ -27,7 +27,7 @@ class FacesheetUploadsPage < BasePage
       wait_for_spinner
   end
 
-  def upload_document(file_name)
+  def upload_document(file_name:)
     # creating a local file with an identifiable name
     local_file_path = create_consent_file(file_name)
     # opening upload dialog
@@ -38,7 +38,9 @@ class FacesheetUploadsPage < BasePage
     click(DOCUMENT_ATTATCH_BUTTON)
     # deleting local file
     delete_consent_file(file_name)
-    # new file displays
+  end
+
+  def document_uploaded?(file_name:)
     is_displayed?(DOCUMENT_NAME.transform_values { |v| v % file_name })
   end
 
@@ -53,7 +55,7 @@ class FacesheetUploadsPage < BasePage
     click(SAVE_BUTTON)
   end
 
-  def remove_document(file_name)
+  def remove_document(file_name:)
     # opening specified document menu
     click(DOCUMENT_MENU.transform_values { |v| v % file_name })
     # opening remove dialog
@@ -74,7 +76,7 @@ class FacesheetUploadsPage < BasePage
   def delete_documents
     while is_displayed?(CLIENT_DOCUMENTS)
       document = text(DOCUMENT_NAME_LIST)
-      remove_document(document)
+      remove_document(file_name: document)
       is_document_removed?(document)
     end
   end
