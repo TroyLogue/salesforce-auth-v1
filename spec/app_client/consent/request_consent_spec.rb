@@ -54,7 +54,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
-      address = Faker::Internet.email.to_s
+      address = Faker::Internet.email
       consent_modal.request_consent_by_email(address)
 
       notification_text = notifications.success_text
