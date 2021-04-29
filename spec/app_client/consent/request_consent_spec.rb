@@ -16,7 +16,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
   let(:pending_consent_page) { PendingConsentPage.new(@driver) }
 
   context('[as cc user] On an incoming Pending Consent referral,') do
-    before {
+    before do
       log_in_as(Login::CC_HARVARD)
       expect(home_page.page_displayed?).to be_truthy
 
@@ -28,7 +28,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
       home_page.go_to_pending_consent
       expect(pending_consent_page.page_displayed?).to be_truthy
-    }
+    end
 
     it 'adds consent by document upload', :uuqa_753 do
       @first_referral_text = pending_consent_page.text_of_first_referral
@@ -42,6 +42,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
       # confirm the referral we added consent to
       # is removed from the pending consent page on refresh
+      # CORE-807 to address behavior
       base_page.refresh
       expect(pending_consent_page.page_displayed?).to be_truthy
 
@@ -53,7 +54,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
-      address = "#{Faker::Internet.email}"
+      address = Faker::Internet.email.to_s
       consent_modal.request_consent_by_email(address)
 
       notification_text = notifications.success_text
@@ -72,33 +73,39 @@ describe '[Consent - Request Consent]', :consent, :app_client do
   end
 
   context('[as cc user] On a sent Pending Consent referral,') do
-    before {
+    before do
+      # create contact
+      @contact = Setup::Data.create_harvard_client
+
+      # create referral
+      @referral = Setup::Data.send_referral_from_harvard_to_yale(contact_id: @contact.contact_id)
+
       log_in_as(Login::CC_HARVARD)
       expect(home_page.page_displayed?).to be_truthy
 
       home_page.go_to_sent_pending_consent
       expect(pending_consent_page.page_displayed?).to be_truthy
-    }
+    end
 
     it 'adds consent by document upload', :uuqa_758 do
-      @first_referral_text = pending_consent_page.text_of_first_referral
-      @second_referral_text = pending_consent_page.text_of_second_referral
+      @original_first_referral_text = pending_consent_page.text_of_first_referral
       pending_consent_page.open_first_consent_modal
       expect(pending_consent_page.consent_modal_displayed?).to be_truthy
 
       consent_modal.add_consent_by_document_upload
-
       expect(pending_consent_page.consent_modal_not_displayed?).to be_truthy
 
+      # Need to refresh page so that another call is made to update values
+      # CORE-807 to address
       base_page.refresh
       expect(pending_consent_page.page_displayed?).to be_truthy
       @new_first_referral_text = pending_consent_page.text_of_first_referral
-      expect(@new_first_referral_text).to eq(@second_referral_text)
+      expect(@new_first_referral_text).to_not eq(@original_first_referral_text)
     end
   end
 
   context('[as a Referrals Admin user] On an incoming referral pending consent') do
-    before {
+    before do
       log_in_as(Login::CC_HARVARD)
       expect(home_page.page_displayed?).to be_truthy
 
@@ -110,7 +117,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
       home_page.go_to_pending_consent
       expect(pending_consent_page.page_displayed?).to be_truthy
-    }
+    end
 
     it 'request consent text and email fields are prefilled', :uuqa_1717 do
       # Adding email to contact that will be pre-filled
@@ -122,6 +129,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       @contact.add_phone_number(number: phone_number)
 
       # Need to refresh page so that another call is made to update values
+      # CORE-807 to address
       base_page.refresh
 
       pending_consent_page.open_first_consent_modal
