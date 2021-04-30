@@ -19,7 +19,8 @@ module Timeline
     get_timeline_event(event_type: TIMELINE_INTERACTION_TYPE)
 
     # Return a note struct we can compare to
-    { type: text(TIMELINE_INTERACTION_TYPE), duration: text(TIMELINE_INTERACTION_DURATION).gsub('Duration: ', ''), content: text(TIMELINE_INTERACTION_NOTE) }
+    { type: text(TIMELINE_INTERACTION_TYPE), duration: text(TIMELINE_INTERACTION_DURATION).gsub('Duration: ', ''),
+      content: text(TIMELINE_INTERACTION_NOTE) }
   end
 
   private
@@ -27,14 +28,12 @@ module Timeline
   # uniteus-timeline is asyncronous; we will need to use retries to avoid flaky tests
   # until Core Consolidation is complete
   def get_timeline_event(event_type:, retries: 5)
-    begin
-      return unless retries > 0
+    return unless retries > 0
 
-      refresh
-      find(event_type)
-    rescue RuntimeError
-      get_timeline_event(event_type: event_type, retries: retries - 1)
-    end
+    refresh
+    find(event_type)
+  rescue RuntimeError
+    get_timeline_event(event_type: event_type, retries: retries - 1)
   end
 end
 
@@ -45,7 +44,8 @@ module Notes
   OTHER_TAB = { css: '#interactions-other-tab' }.freeze
   PHI_INFO = { css: '.info-panel__text' }.freeze
   TEXT_BOX = { css: '#interactionNote' }.freeze
-  POST_NOTE = { css: '.post-note-button > button' }.freeze
+  POST_NOTE = { css: '#log-interaction-post-note-btn' }.freeze
+  SEND_MESSAGE_BUTTON = { css: '#new-note-post-note-btn' }.freeze
   ERROR_NO_CASE_SELECTED = { css: '.select-service-cases__error-message' }.freeze
 
   PHONE_INTERACTION = { css: '#phone_call-label' }.freeze
@@ -114,7 +114,7 @@ module Notes
     raise StandardError, "#{message_content} did not contain #{method}" unless message_content.include?(method)
 
     enter(note, MESSAGE_FIELD)
-    click(POST_NOTE)
+    click(SEND_MESSAGE_BUTTON)
   end
 
   def enter_service_provided_note(note)
