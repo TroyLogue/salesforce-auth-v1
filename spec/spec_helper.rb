@@ -120,7 +120,7 @@ RSpec.configure do |config|
   # config.verbose_retry = false # recommended for development mode
   config.verbose_retry = true # show retry status in spec process
   config.display_try_failure_messages = true
-  config.default_retry_count = 2
+  config.default_retry_count = 0
 
   # From rspec-core: This option will default to `:apply_to_host_groups` in RSpec 4 (and will
   # have no way to turn it off -- the option exists only for backwards

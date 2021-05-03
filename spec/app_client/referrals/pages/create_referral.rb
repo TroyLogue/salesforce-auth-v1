@@ -9,22 +9,24 @@ module CreateReferral
     FIRST_RECIPIENT_NETWORK = { css: '#choices-recipient-network-item-choice-1' }.freeze
     SELECTED_RECIPIENT_NETWORK = { css: '#recipient-network + div > div:not(button)' }.freeze
 
-    EXPAND_SERVICE_CHOICES = { css: '.service-type-dropdown' }.freeze
-    FIRST_SERVICE_CHOICE = { css: '#choices-service-type-item-choice-2' }.freeze
-    SELECTED_SERVICE_TYPE = { css: '#service-type + div > div:not(button)' }.freeze
+    EXPAND_SERVICE_CHOICES = { css: '.ui-expandable__container--expanded .service-type-dropdown div.choices:not(.is-disabled)' }.freeze
+    FIRST_SERVICE_CHOICE = { css: '.ui-expandable__container--expanded #choices-service-type-item-choice-2' }.freeze
+    SELECTED_SERVICE_TYPE = { css: '.ui-expandable__container--expanded #service-type + div > div:not(button)' }.freeze
     BROWSE_MAP_LINK = { css: '#browse-map-button' }.freeze
-    CREATE_OUT_OF_NETWORK_CASE_BUTTON = { css: '#open-out-of-network-case-btn' }.freeze
+    CREATE_OUT_OF_NETWORK_CASE_BUTTON = { css: '.ui-expandable__container--expanded #open-out-of-network-case-btn' }.freeze
     CREATE_CASE_BUTTON = { css: '#create-case-btn' }.freeze
 
-    PRIMARY_WORKER_DROPDOWN = { css: '#primary-worker + .choices__list' }.freeze
-    PRIMARY_WORKER_FIRST_OPTION = { css: '#choices-primary-worker-item-choice-3' }.freeze
+    PRIMARY_WORKER_DROPDOWN = { css: '.ui-expandable__container--expanded #primary-worker + .choices__list' }.freeze
+    PRIMARY_WORKER_FIRST_OPTION = { css: '.ui-expandable__container--expanded #choices-primary-worker-item-choice-3' }.freeze
     SAVE_BUTTON = { css: '#save-case-assessments-btn' }.freeze
+
+    ENROLLED_DATE = { css: '.ui-expandable__container--expanded #program-entry'}.freeze
 
     ADD_ANOTHER_RECIPIENT = { css: 'button[aria-label="+ ADD ANOTHER RECIPIENT"]' }.freeze
     AUTO_RECALL_CHECKBOX = { css: '#send-referral-auto-recallable-checkbox-0 + label' }.freeze
     ERROR_MESSAGE = { css: '.field-error-message > p' }.freeze
 
-    DESCRIPTION_TEXT = { css: '#referral-notes' }.freeze
+    DESCRIPTION_TEXT = { css: '.ui-expandable__container--expanded #referral-notes' }.freeze
     SAVE_DRAFT_BTN = { css: '#save-draft-btn' }.freeze
     NEXT_BTN = { css: '#next-btn' }.freeze
 
@@ -34,117 +36,7 @@ module CreateReferral
 
     ERROR_MULTIPLE_RECIPIENT_CC = 'A referral with multiple recipients cannot include a Coordination Center. Refer to a Coordination Center only if you are uncertain about which organization(s) can serve your client.'.freeze
 
-    def page_displayed?
-      # Initializing recipient for locators
-      @recipient_index = 0
-      wait_for_spinner
-      is_displayed?(THIRD_STEP) &&
-        is_displayed?(REFERRAL_FORM) &&
-        is_displayed?(INFO_TEXT)
-    end
-
-    def warning_info_text
-      text(INFO_TEXT)
-    end
-
-    def refer_to_another_network
-      is_displayed?(REFER_OTHER_NETWORK_CHECKBOX)
-      click(REFER_OTHER_NETWORK_CHECKBOX)
-
-      is_displayed?(EXPAND_RECIPIENT_NETWORK_CHOICES)
-      click(EXPAND_RECIPIENT_NETWORK_CHOICES)
-
-      click(FIRST_RECIPIENT_NETWORK)
-      is_displayed?(EXPAND_SERVICE_CHOICES)
-
-      text(SELECTED_RECIPIENT_NETWORK).sub(REMOVE_TEXT, '').strip.capitalize
-    end
-
-    def select_first_service_type
-      click(EXPAND_SERVICE_CHOICES)
-      click(FIRST_SERVICE_CHOICE)
-      wait_for_spinner
-      text(SELECTED_SERVICE_TYPE).sub(REMOVE_TEXT, '').strip.capitalize
-    end
-
-    def open_network_browse_map
-      click(BROWSE_MAP_LINK)
-    end
-
-    def select_first_org
-      org_choices = { css: "#select-field-group-#{@recipient_index} + .choices__list" }
-      first_org_choice = { css: "div[id^='choices-select-field-group-#{@recipient_index}-item-choice']:not([aria-disabled*='true']):not([data-value=''])" }
-      selected_org = { css: "#select-field-group-#{@recipient_index} + div > div:not(button)" }
-
-      click(org_choices)
-      click(first_org_choice)
-
-      if is_displayed?(ERROR_MESSAGE, 2) && text(ERROR_MESSAGE) == ERROR_MULTIPLE_RECIPIENT_CC
-        info_message = 'Users are unable to add a Coordination Center when there are multiple recipients. '\
-                       'One of the providers selected is a Coordination Center.'
-        raise StandardError, info_message
-      end
-
-      # Removing distance and "Remove Item" to return just the provider name
-      provider = text(selected_org)
-      provider_distance = provider.rindex(/\(/) # finds the last open paren in the string
-      provider[0..(provider_distance - 1)].strip # returns provider_text up to the distance
-    end
-
-    def select_first_program
-      select_program_link = { css: ".referral-program-selected__add-program-#{@recipient_index}" }
-      program_choices = { css: "div[aria-activedescendant^='choices-select-field-program-#{@recipient_index}-item-choice']" }
-      first_program_choice = { css: "div[id^='choices-select-field-program-#{@recipient_index}-item-choice']" }
-      selected_program = { css: "#select-field-program-#{@recipient_index} + div > div:not(button)" }
-
-      click(select_program_link)
-      click(program_choices)
-      click(first_program_choice)
-      text(selected_program).sub(REMOVE_TEXT, '').strip
-    end
-
-    def create_oon_case_selecting_first_options(description:)
-      selected_service_type = select_first_service_type
-      click_create_oon_case
-      selected_oon_org = select_first_oon_org
-      selected_primary_worker = select_first_primary_worker
-      fill_out_referral_description(description: description)
-      click_create_case
-
-      {
-        service_type: selected_service_type,
-        org: selected_oon_org,
-        primary_worker: selected_primary_worker
-      }
-    end
-
-    def select_first_oon_org
-      org_choices = { css: "#select-field-oon-group-#{@recipient_index} + .choices__list" }
-      first_org_choice = { css: "div[id^='choices-select-field-oon-group-#{@recipient_index}-item-choice']:not([aria-disabled*='true']):not([data-value=''])" }
-      selected_org = { css: "#select-field-oon-group-#{@recipient_index} + div > div:not(button)" }
-
-      click(org_choices)
-      click(first_org_choice)
-
-      if is_displayed?(ERROR_MESSAGE, 2) && text(ERROR_MESSAGE) == ERROR_MULTIPLE_RECIPIENT_CC
-        info_message = 'Users are unable to add a Coordination Center when there are multiple recipients. '\
-                       'One of the providers selected is a Coordination Center.'
-        raise StandardError, info_message
-      end
-
-      # Removing distance and "Remove Item" to return just the provider name
-      provider = text(selected_org)
-      provider_distance = provider.rindex(/\(/) # finds the last open paren in the string
-      provider[0..(provider_distance - 1)].strip # returns provider_text up to the distance
-    end
-
-    def select_first_primary_worker
-      selected_worker = { css: '#primary-worker + div > div:not(button)' }
-
-      click(PRIMARY_WORKER_DROPDOWN)
-      click(PRIMARY_WORKER_FIRST_OPTION)
-      text(selected_worker).sub(REMOVE_TEXT, '').strip
-    end
+    ADD_ANOTHER_REFERRAL = { css: '#add-another-referral-btn' }.freeze
 
     def add_another_recipient
       click(ADD_ANOTHER_RECIPIENT)
@@ -154,32 +46,39 @@ module CreateReferral
       is_displayed?(org_choices)
     end
 
+    def add_another_referral
+      click(ADD_ANOTHER_REFERRAL)
+      wait_for_spinner
+    end
+
     def add_multiple_recipients(count:)
       recipient_info = ''
       count.times do
         provider = select_first_org
         program = select_first_program
         recipient_info << "#{provider} - #{program}"
-        add_another_recipient
+        add_another_recipient if count > 1
       end
       recipient_info
     end
 
-    def create_referral_selecting_first_options(description:, count: 1)
+    def add_oon_case_selecting_first_options(description:)
+      selected_service_type = select_first_service_type
+      click_create_oon_case
+      selected_oon_org = select_first_oon_org
       fill_out_referral_description(description: description)
-      referral_selections = {
-        service_type: select_first_service_type,
-        recipients: add_multiple_recipients(count: count),
-        description: description
+      fill_out_enrolled_date
+      selected_primary_worker = select_first_primary_worker
+
+      {
+        service_type: selected_service_type,
+        org: selected_oon_org,
+        primary_worker: selected_primary_worker
       }
     end
 
     def click_auto_recall_checkbox
       click(AUTO_RECALL_CHECKBOX)
-    end
-
-    def fill_out_referral_description(description:)
-      enter(description, DESCRIPTION_TEXT)
     end
 
     def click_next_button
@@ -203,8 +102,138 @@ module CreateReferral
       click(SAVE_DRAFT_BTN)
     end
 
+    def create_oon_case_selecting_first_options(description:)
+      selected_service_type = select_first_service_type
+      click_create_oon_case
+      selected_oon_org = select_first_oon_org
+      selected_primary_worker = select_first_primary_worker
+      fill_out_referral_description(description: description)
+      click_create_case
+
+      {
+        service_type: selected_service_type,
+        org: selected_oon_org,
+        primary_worker: selected_primary_worker
+      }
+    end
+
+    def create_referral_selecting_first_options(description:, count: 1)
+      fill_out_referral_description(description: description)
+      referral_selections = {
+        service_type: select_first_service_type,
+        recipients: add_multiple_recipients(count: count),
+        description: description
+      }
+    end
+
+    def fill_out_referral_description(description:)
+      enter(description, DESCRIPTION_TEXT)
+    end
+
+    def fill_out_enrolled_date
+      formatted_date = Date.today.strftime("%d%m%y")
+      enter(formatted_date, ENROLLED_DATE)
+    end
+
+    def open_network_browse_map
+      click(BROWSE_MAP_LINK)
+    end
+
+    def page_displayed?
+      # Initializing recipient for locators
+      @recipient_index = 0
+      wait_for_spinner
+      is_displayed?(THIRD_STEP) &&
+        is_displayed?(REFERRAL_FORM) &&
+        is_displayed?(INFO_TEXT)
+    end
+
+    def refer_to_another_network
+      is_displayed?(REFER_OTHER_NETWORK_CHECKBOX)
+      click(REFER_OTHER_NETWORK_CHECKBOX)
+
+      is_displayed?(EXPAND_RECIPIENT_NETWORK_CHOICES)
+      click(EXPAND_RECIPIENT_NETWORK_CHOICES)
+
+      click(FIRST_RECIPIENT_NETWORK)
+      is_displayed?(EXPAND_SERVICE_CHOICES)
+
+      text(SELECTED_RECIPIENT_NETWORK).sub(REMOVE_TEXT, '').strip.capitalize
+    end
+
     def save_button_displayed?
       is_displayed?(SAVE_BUTTON)
+    end
+
+    def select_first_oon_org
+      org_choices = { css: ".ui-expandable__container--expanded #select-field-oon-group-#{@recipient_index} + .choices__list" }
+      first_org_choice = { css: ".ui-expandable__container--expanded div[id^='choices-select-field-oon-group-#{@recipient_index}-item-choice']:not([aria-disabled*='true']):not([data-value=''])" }
+      selected_org = { css: ".ui-expandable__container--expanded #select-field-oon-group-#{@recipient_index} + div > div:not(button)" }
+
+      click(org_choices)
+      click(first_org_choice)
+
+      if is_displayed?(ERROR_MESSAGE, 2) && text(ERROR_MESSAGE) == ERROR_MULTIPLE_RECIPIENT_CC
+        info_message = 'Users are unable to add a Coordination Center when there are multiple recipients. '\
+                       'One of the providers selected is a Coordination Center.'
+        raise StandardError, info_message
+      end
+
+      # Removing distance and "Remove Item" to return just the provider name
+      provider = text(selected_org)
+      provider_distance = provider.rindex(/\(/) # finds the last open paren in the string
+      provider[0..(provider_distance - 1)].strip # returns provider_text up to the distance
+    end
+
+    def select_first_org
+      org_choices = { css: ".ui-expandable__container--expanded #select-field-group-#{@recipient_index} + .choices__list" }
+      first_org_choice = { css: ".ui-expandable__container--expanded div[id^='choices-select-field-group-#{@recipient_index}-item-choice']:not([aria-disabled*='true']):not([data-value=''])" }
+      selected_org = { css: ".ui-expandable__container--expanded #select-field-group-#{@recipient_index} + div > div:not(button)" }
+
+      click(org_choices)
+      click(first_org_choice)
+
+      if is_displayed?(ERROR_MESSAGE, 2) && text(ERROR_MESSAGE) == ERROR_MULTIPLE_RECIPIENT_CC
+        info_message = 'Users are unable to add a Coordination Center when there are multiple recipients. '\
+                       'One of the providers selected is a Coordination Center.'
+        raise StandardError, info_message
+      end
+
+      # Removing distance and "Remove Item" to return just the provider name
+      provider = text(selected_org)
+      provider_distance = provider.rindex(/\(/) # finds the last open paren in the string
+      provider[0..(provider_distance - 1)].strip # returns provider_text up to the distance
+    end
+
+    def select_first_primary_worker
+      selected_worker = { css: '.ui-expandable__container--expanded #primary-worker + div > div:not(button)' }
+
+      click(PRIMARY_WORKER_DROPDOWN)
+      click(PRIMARY_WORKER_FIRST_OPTION)
+      text(selected_worker).sub(REMOVE_TEXT, '').strip
+    end
+
+    def select_first_program
+      select_program_link = { css: ".referral-program-selected__add-program-#{@recipient_index}" }
+      program_choices = { css: "div[aria-activedescendant^='choices-select-field-program-#{@recipient_index}-item-choice']" }
+      first_program_choice = { css: "div[id^='choices-select-field-program-#{@recipient_index}-item-choice']" }
+      selected_program = { css: "#select-field-program-#{@recipient_index} + div > div:not(button)" }
+
+      click(select_program_link)
+      click(program_choices)
+      click(first_program_choice)
+      text(selected_program).sub(REMOVE_TEXT, '').strip
+    end
+
+    def select_first_service_type
+      click(EXPAND_SERVICE_CHOICES)
+      click(FIRST_SERVICE_CHOICE)
+      wait_for_spinner
+      text(SELECTED_SERVICE_TYPE).sub(REMOVE_TEXT, '').strip.capitalize
+    end
+
+    def warning_info_text
+      text(INFO_TEXT)
     end
   end
 
