@@ -52,13 +52,6 @@ namespace :jenkins do
     ENV['browser_version'] = '10.0'
     exit run_in_parallel(tag: 'consent_app')
   end
-
-  desc 'testing out new auth tokens'
-  task :UU3_52630 do
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(tag: 'app_client')
-  end
 end
 
 namespace :docker do
