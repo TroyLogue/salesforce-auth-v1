@@ -10,7 +10,7 @@ require_relative '../../consent/pages/consent_modal'
 require_relative './../pages/create_referral'
 require_relative './../pages/referral_dashboard'
 
-describe '[Referrals]', :app_client, :referrals, :smoke do
+describe '[Referrals]', :app_client, :referrals do
   include_context :with_authenticated_session
 
   let(:homepage) { HomePage.new(@driver) }

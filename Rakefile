@@ -139,12 +139,6 @@ namespace :local do
     ENV['environment'] = 'app_client_staging'
     exit run_in_parallel(tag: 'referrals', processes: 2)
   end
-
-  task :smoke, :environment do |t, args|
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = args[:environment]
-    exit run_in_parallel(tag: 'smoke')
-  end
 end
 
 namespace :browserstack do
