@@ -11,7 +11,7 @@ class HomePage < BasePage
   def default_view_displayed?
     # extending timeout for test cases that create multiple referrals i.e. uuqa_1771
     # and there is a delay in returning to the homepage
-    is_displayed?(NAVBAR, 40) &&
+    is_displayed?(NAVBAR, 60) &&
       is_displayed?(CREATE_REFERRAL_BUTTON) &&
       is_displayed?(CASES_SECTION) &&
       is_displayed?(ASSESSMENTS_SECTION) &&
