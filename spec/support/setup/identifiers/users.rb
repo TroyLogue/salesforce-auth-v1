@@ -1,11 +1,21 @@
 # frozen_string_literal: true
 
 module Users
-  CC_USER = ENV['CC_USER_EMAIL']
-  ORG_PRINCETON = ENV['ORG_PRINCETON_EMAIL']
-  ORG_YALE = ENV['ORG_YALE_EMAIL']
-  ORG_COLUMBIA = ENV['ORG_COLUMBIA_EMAIL']
-  ORG_NEWYORK = ENV['ORG_NEWYORK_EMAIL']
-  DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
+  domain = ENV['environment'].split('_')[-1]
+  case domain
+  when 'prod'
+  when 'training'
+    CC_USER = 'harvard@auto.com'
+    DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
+  when 'staging', 'devqa'
+    CC_USER = 'harvard@auto.com'
+    ORG_PRINCETON = 'princeton@auto.com'
+    ORG_YALE = 'yale@auto.com'
+    ORG_COLUMBIA = 'columbia@auto.com'
+    ORG_NEWYORK = 'newyork@auto.com'
+    DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
+  else
+    raise "Missing required ENV['environment']: prod, training, staging, devqa"
+  end
 end
 
