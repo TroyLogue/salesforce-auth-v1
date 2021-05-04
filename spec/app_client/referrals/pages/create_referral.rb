@@ -51,6 +51,10 @@ module CreateReferral
       wait_for_spinner
     end
 
+    def can_add_another_referral?
+      check_displayed?(ADD_ANOTHER_REFERRAL)
+    end
+
     def add_multiple_recipients(count:)
       recipient_info = ''
       count.times do
@@ -249,7 +253,6 @@ module CreateReferral
     end
 
     def click_next_button
-      p "clicking next button on additional info page"
       is_not_displayed?(NEXT_BTN_DISABLED) &&
         click(NEXT_BTN)
     end
