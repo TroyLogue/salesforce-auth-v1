@@ -42,9 +42,9 @@ describe '[Referrals]', :app_client, :referrals do
       submitted_case_options = add_referral_page.add_oon_case_selecting_first_options(
         description: Faker::Lorem.sentence(word_count: 5),
       )
-
       add_referral_page.click_next_button
 
+      byebug
       # Adding if condition since page is optional
       additional_info_page.click_next_button if additional_info_page.page_displayed?
 
