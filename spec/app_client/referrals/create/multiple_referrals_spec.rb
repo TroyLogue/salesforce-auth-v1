@@ -26,7 +26,7 @@ describe '[Referrals]', :app_client, :referrals do
       expect(home_page.page_displayed?).to be_truthy
     end
 
-    it 'send new referral and out of network case in same workflow', :uuqa_1771_app do
+    it 'can create a new referral and out of network case in same workflow', :uuqa_1771_app do
 #      facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)
       facesheet_header.go_to_facesheet_with_contact_id(id: '20109d33-94ac-4f30-84bf-70a85b41ea81')
       facesheet_header.refer_client
@@ -43,14 +43,14 @@ describe '[Referrals]', :app_client, :referrals do
         description: Faker::Lorem.sentence(word_count: 5),
       )
       add_referral_page.click_next_button
-
-      byebug
-      # Adding if condition since page is optional
+      p "checking for additional info page"
       additional_info_page.click_next_button if additional_info_page.page_displayed?
+      p "expecting final review page now"
 
       expect(final_review_page.page_displayed?).to be_truthy
-      expect(final_review_page.referral_summary_info).to include(submitted_referral_options)
-      expect(final_review_page.referral_summary_info).to include(submitted_case_options)
+      expect(final_review_page.review_sections_count).to eq(2)
+      expect(final_review_page.referral_summary_info[0]).to eq(submitted_referral_options)
+      expect(final_review_page.referral_summary_info[1]).to eq(submitted_case_options)
 
       final_review_page.click_submit_button
       expect(sent_referral_dashboard.page_displayed?).to be_truthy

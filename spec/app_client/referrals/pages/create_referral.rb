@@ -72,8 +72,8 @@ module CreateReferral
 
       {
         service_type: selected_service_type,
-        org: selected_oon_org,
-        primary_worker: selected_primary_worker
+        recipients: selected_oon_org,
+        description: description
       }
     end
 
@@ -240,6 +240,7 @@ module CreateReferral
   class AdditionalInfo < BasePage
     THIRD_STEP = { css: '.MuiStep-root:nth-of-type(5) > button .MuiStepLabel-active' }.freeze
     NEXT_BTN = { css: '#next-btn' }.freeze
+    NEXT_BTN_DISABLED = { css: 'button#next-btn:disabled' }.freeze
 
     def page_displayed?
       wait_for_spinner
@@ -248,7 +249,9 @@ module CreateReferral
     end
 
     def click_next_button
-      click(NEXT_BTN)
+      p "clicking next button on additional info page"
+      is_not_displayed?(NEXT_BTN_DISABLED) &&
+        click(NEXT_BTN)
     end
   end
 
@@ -256,6 +259,7 @@ module CreateReferral
     FOURTH_STEP = { css: '.MuiStep-root:nth-of-type(7) > button .MuiStepLabel-active' }.freeze
     REFERRAL_FORM = { css: '.referral-review' }.freeze
 
+    REVIEW_SECTIONS = { css: '.referral-services-review > li' }.freeze
     SERVICE_TYPE = { css: '.referral-service-minimized__header-text' }.freeze
     DESCRIPTION = { css: '.detail-info__description-text' }.freeze
     RECIPIENTS = { css: '.service-type-section:nth-of-type(2) .detail-info__groups-list > li' }.freeze
@@ -264,41 +268,55 @@ module CreateReferral
 
     SUBMIT_BTN = { css: '#submit-referral-btn' }.freeze
 
-    def page_displayed?
-      is_displayed?(FOURTH_STEP) &&
-        is_displayed?(REFERRAL_FORM)
+    def click_submit_button
+      click(SUBMIT_BTN)
     end
 
-    def service_type
-      text(SERVICE_TYPE).capitalize
-    end
-
-    def description
-      text(DESCRIPTION)
-    end
-
-    def recipients
-      find_elements(RECIPIENTS).collect { |ele| ele.text.sub('undefined', '').strip }.join('')
-    end
-
-    def network
-      text(NETWORK).capitalize
-    end
-
-    def referral_summary_info
-      {
-        service_type: service_type,
-        recipients: recipients,
-        description: description
-      }
+    def description(section)
+      section.find_elements(DESCRIPTION)[0].text
     end
 
     def full_name
       text(FULL_NAME)
     end
 
-    def click_submit_button
-      click(SUBMIT_BTN)
+    def network
+      text(NETWORK).capitalize
+    end
+
+    def page_displayed?
+      is_displayed?(FOURTH_STEP) &&
+        is_displayed?(REFERRAL_FORM)
+    end
+
+    def recipients(section)
+      section.find_elements(RECIPIENTS).collect { |ele| ele.text.sub('undefined', '').strip }.join('')
+    end
+
+    def referral_summary_info
+      info = []
+      review_sections.each do |section|
+        info << {
+          service_type: service_type(section),
+          recipients: recipients(section),
+          description: description(section)
+        }
+      end
+      info
+    end
+
+    def review_sections
+      find_elements(REVIEW_SECTIONS)
+    end
+
+    def review_sections_count
+      review_sections.length
+    end
+
+    def service_type(section)
+      service_type_str = section.find_elements(SERVICE_TYPE)[0].text
+      # formatted - return only text after  "New referral: " or New Out of Network Case: "
+      service_type_str.split(": ")[1].capitalize
     end
   end
 end
