@@ -36,7 +36,8 @@ describe '[Referrals]', :app_client, :referrals do
       facesheet_header.refer_client
       expect(add_referral_page.page_displayed?).to be_truthy
 
-      submitted_case_selections = add_referral_page.add_oon_case_selecting_first_options(description: Faker::Lorem.sentence(word_count: 5))
+      add_referral_page.add_oon_case_selecting_first_options(description: Faker::Lorem.sentence(word_count: 5))
+      @primary_worker = add_referral_page.selected_primary_worker
       add_referral_page.click_next_button
 
       # Skip assessments if assessments page appears
@@ -48,7 +49,7 @@ describe '[Referrals]', :app_client, :referrals do
       facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id, tab: 'Cases')
       facesheet_cases_page.click_first_case
       expect(case_detail_page.page_displayed?).to be_truthy
-      expect(case_detail_page.primary_worker).to eq submitted_case_selections[:primary_worker]
+      expect(case_detail_page.primary_worker).to eq @primary_worker
     end
   end
 end

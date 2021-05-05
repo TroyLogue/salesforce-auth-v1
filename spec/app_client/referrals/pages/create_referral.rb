@@ -18,6 +18,7 @@ module CreateReferral class AddReferral < BasePage
     PRIMARY_WORKER_DROPDOWN = { css: '.ui-expandable__container--expanded #primary-worker + .choices__list' }.freeze
     PRIMARY_WORKER_FIRST_OPTION = { css: '.ui-expandable__container--expanded #choices-primary-worker-item-choice-3' }.freeze
     SAVE_BUTTON = { css: '#save-case-assessments-btn' }.freeze
+    SELECTED_PRIMARY_WORKER = { css: '.ui-expandable__container--expanded #primary-worker + div > div:not(button)' }
 
     ENROLLED_DATE = { css: '.ui-expandable__container--expanded #program-entry'}.freeze
 
@@ -71,13 +72,12 @@ module CreateReferral class AddReferral < BasePage
       selected_oon_org = select_first_oon_org
       fill_out_referral_description(description: description)
       fill_out_enrolled_date
-      selected_primary_worker = select_first_primary_worker
+      select_first_primary_worker
 
       {
         service_type: selected_service_type,
         recipients: selected_oon_org,
         description: description,
-        primary_worker: selected_primary_worker
       }
     end
 
@@ -195,11 +195,9 @@ module CreateReferral class AddReferral < BasePage
     end
 
     def select_first_primary_worker
-      selected_worker = { css: '.ui-expandable__container--expanded #primary-worker + div > div:not(button)' }
-
       click(PRIMARY_WORKER_DROPDOWN)
       click(PRIMARY_WORKER_FIRST_OPTION)
-      text(selected_worker).sub(REMOVE_TEXT, '').strip
+      selected_primary_worker
     end
 
     def select_first_program
@@ -219,6 +217,10 @@ module CreateReferral class AddReferral < BasePage
       click(FIRST_SERVICE_CHOICE)
       wait_for_spinner
       text(SELECTED_SERVICE_TYPE).sub(REMOVE_TEXT, '').strip.capitalize
+    end
+
+    def selected_primary_worker
+      text(SELECTED_PRIMARY_WORKER).sub(REMOVE_TEXT, '').strip
     end
 
     def warning_info_text
