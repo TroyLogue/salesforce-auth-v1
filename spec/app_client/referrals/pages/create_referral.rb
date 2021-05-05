@@ -285,7 +285,7 @@ module CreateReferral class AddReferral < BasePage
     end
 
     # returns an array containing one summary object for each referral/case being reviewed
-    def referral_summary_info
+    def summary_info
       info = []
       review_sections.each do |section|
         info << {

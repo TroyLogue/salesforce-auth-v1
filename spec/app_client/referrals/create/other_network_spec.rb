@@ -44,7 +44,7 @@ describe '[Referrals]', :app_client, :referrals do
 
       expect(final_review_page.page_displayed?).to be_truthy
       expect(final_review_page.network).to eq(recipient_network)
-      expect(final_review_page.referral_summary_info[0]).to eq(submitted_referral_options)
+      expect(final_review_page.summary_info[0]).to eq(submitted_referral_options)
 
       final_review_page.click_submit_button
       expect(sent_referral_dashboard.page_displayed?).to be_truthy
