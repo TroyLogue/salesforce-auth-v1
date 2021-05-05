@@ -1,5 +1,4 @@
-module CreateReferral
-  class AddReferral < BasePage
+module CreateReferral class AddReferral < BasePage
     THIRD_STEP = { css: '.MuiStep-root:nth-of-type(5) > button .MuiStepLabel-active' }.freeze
     REFERRAL_FORM = { css: '.referral-service-form-expanded' }.freeze
     INFO_TEXT = { css: '.info-panel__text' }.freeze
@@ -77,7 +76,8 @@ module CreateReferral
       {
         service_type: selected_service_type,
         recipients: selected_oon_org,
-        description: description
+        description: description,
+        primary_worker: selected_primary_worker
       }
     end
 
@@ -104,21 +104,6 @@ module CreateReferral
 
     def click_save_draft_button
       click(SAVE_DRAFT_BTN)
-    end
-
-    def create_oon_case_selecting_first_options(description:)
-      selected_service_type = select_first_service_type
-      click_create_oon_case
-      selected_oon_org = select_first_oon_org
-      selected_primary_worker = select_first_primary_worker
-      fill_out_referral_description(description: description)
-      click_create_case
-
-      {
-        service_type: selected_service_type,
-        org: selected_oon_org,
-        primary_worker: selected_primary_worker
-      }
     end
 
     def create_referral_selecting_first_options(description:, count: 1)
@@ -272,7 +257,8 @@ module CreateReferral
     SUBMIT_BTN = { css: '#submit-referral-btn' }.freeze
 
     def click_submit_button
-      click(SUBMIT_BTN)
+      #element is behind an overlay so firefox cannot click it without using click_via_js
+      click_via_js(SUBMIT_BTN)
     end
 
     def description(section)
@@ -296,6 +282,7 @@ module CreateReferral
       section.find_elements(RECIPIENTS).collect { |ele| ele.text.sub('undefined', '').strip }.join('')
     end
 
+    # returns an array containing one summary object for each referral/case being reviewed
     def referral_summary_info
       info = []
       review_sections.each do |section|
