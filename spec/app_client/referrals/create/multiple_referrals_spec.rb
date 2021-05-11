@@ -21,14 +21,13 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as a Referral User]') do
     before do
-#      @contact = Setup::Data.create_harvard_client_with_consent
+      @contact = Setup::Data.create_harvard_client_with_consent
       log_in_as(Login::CC_HARVARD)
       expect(home_page.page_displayed?).to be_truthy
     end
 
-    it 'can create a new referral and out of network case in same workflow', :uuqa_1771_app do
-#      facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)
-      facesheet_header.go_to_facesheet_with_contact_id(id: '20109d33-94ac-4f30-84bf-70a85b41ea81')
+    it 'can create a new referral and out of network case in same workflow', :uuqa_1771 do
+      facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)
       facesheet_header.refer_client
       expect(add_referral_page.page_displayed?).to be_truthy
 
@@ -55,7 +54,6 @@ describe '[Referrals]', :app_client, :referrals do
 
       final_review_page.click_submit_button
       expect(sent_referral_dashboard.page_displayed?).to be_truthy
-      # validate notifications?
     end
   end
 end
