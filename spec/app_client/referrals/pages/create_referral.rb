@@ -235,8 +235,7 @@ module CreateReferral
 
   class AdditionalInfo < BasePage
     THIRD_STEP = { css: '.MuiStep-root:nth-of-type(5) > button .MuiStepLabel-active' }.freeze
-    NEXT_BTN = { css: '#next-btn' }.freeze
-    NEXT_BTN_DISABLED = { css: 'button#next-btn:disabled' }.freeze
+    NEXT_BTN = { css: "button#next-btn:not(:disabled)" }.freeze
 
     def page_displayed?
       wait_for_spinner
@@ -245,8 +244,7 @@ module CreateReferral
     end
 
     def click_next_button
-      is_not_displayed?(NEXT_BTN_DISABLED) &&
-        click(NEXT_BTN)
+      click(NEXT_BTN)
     end
   end
 
