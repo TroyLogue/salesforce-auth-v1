@@ -137,11 +137,12 @@ module CreateReferral
 
     def add_multiple_in_network_recipients(count:)
       recipient_info = ''
-      count.times do
+      count.times do |index|
         provider = select_first_org
         program = select_first_program
         recipient_info << "#{provider} - #{program}"
-        add_another_recipient if count > 1
+        # don't add another recipient the last time
+        add_another_recipient unless index == (count - 1)
       end
       recipient_info
     end
