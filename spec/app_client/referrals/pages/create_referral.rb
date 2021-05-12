@@ -300,6 +300,10 @@ module CreateReferral
       section.find_elements(RECIPIENTS).collect { |ele| ele.text.sub('undefined', '').strip }.join('')
     end
 
+    def review_sections
+      find_elements(REVIEW_SECTIONS)
+    end
+
     def description(section)
       section.find_elements(DESCRIPTION)[0].text
     end
