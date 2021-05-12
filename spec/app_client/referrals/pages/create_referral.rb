@@ -268,10 +268,6 @@ module CreateReferral
       click_via_js(SUBMIT_BTN)
     end
 
-    def description(section)
-      section.find_elements(DESCRIPTION)[0].text
-    end
-
     def full_name
       text(FULL_NAME)
     end
@@ -283,10 +279,6 @@ module CreateReferral
     def page_displayed?
       is_displayed?(FOURTH_STEP) &&
         is_displayed?(REFERRAL_FORM)
-    end
-
-    def recipients(section)
-      section.find_elements(RECIPIENTS).collect { |ele| ele.text.sub('undefined', '').strip }.join('')
     end
 
     # returns an array containing one summary object for each referral/case being reviewed
@@ -302,8 +294,14 @@ module CreateReferral
       info
     end
 
-    def review_sections
-      find_elements(REVIEW_SECTIONS)
+    private
+
+    def recipients(section)
+      section.find_elements(RECIPIENTS).collect { |ele| ele.text.sub('undefined', '').strip }.join('')
+    end
+
+    def description(section)
+      section.find_elements(DESCRIPTION)[0].text
     end
 
     def service_type(section)
