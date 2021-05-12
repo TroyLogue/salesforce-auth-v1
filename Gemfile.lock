@@ -1,6 +1,6 @@
 GIT
   remote: git@github.com:unite-us/api-integration-tests.git
-  revision: 775353c7cb4964aac0c90f5032dfe390fde0ca48
+  revision: 56933e4d541e9eed96538a3ee34226aa822592ae
   specs:
     uniteus-api-client (1.0.0)
 
@@ -43,8 +43,10 @@ GEM
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2021.0225)
+    mini_portile2 (2.5.1)
     multi_xml (0.6.0)
-    nokogiri (1.11.3-x86_64-darwin)
+    nokogiri (1.11.3)
+      mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
     parallel (1.20.1)
     parallel_tests (3.6.0)
