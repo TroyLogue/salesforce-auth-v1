@@ -1,4 +1,5 @@
-module CreateReferral class AddReferral < BasePage
+module CreateReferral
+  class AddReferral < BasePage
     THIRD_STEP = { css: '.MuiStep-root:nth-of-type(5) > button .MuiStepLabel-active' }.freeze
     REFERRAL_FORM = { css: '.referral-service-form-expanded' }.freeze
     INFO_TEXT = { css: '.info-panel__text' }.freeze
@@ -38,32 +39,9 @@ module CreateReferral class AddReferral < BasePage
 
     ADD_ANOTHER_REFERRAL = { css: '#add-another-referral-btn' }.freeze
 
-    def add_another_recipient
-      click(ADD_ANOTHER_RECIPIENT)
-      @recipient_index += 1
-      org_choices = { css: "#select-field-group-#{@recipient_index} + .choices__list" }
-
-      is_displayed?(org_choices)
-    end
-
     def add_another_referral
       click(ADD_ANOTHER_REFERRAL)
       wait_for_spinner
-    end
-
-    def can_add_another_referral?
-      check_displayed?(ADD_ANOTHER_REFERRAL)
-    end
-
-    def add_multiple_recipients(count:)
-      recipient_info = ''
-      count.times do
-        provider = select_first_org
-        program = select_first_program
-        recipient_info << "#{provider} - #{program}"
-        add_another_recipient if count > 1
-      end
-      recipient_info
     end
 
     def add_oon_case_selecting_first_options(description:)
@@ -81,6 +59,19 @@ module CreateReferral class AddReferral < BasePage
       }
     end
 
+    def add_referral_selecting_first_options(description:, count: 1)
+      fill_out_referral_description(description: description)
+      referral_selections = {
+        service_type: select_first_service_type,
+        recipients: add_multiple_in_network_recipients(count: count),
+        description: description
+      }
+    end
+
+    def can_add_another_referral?
+      check_displayed?(ADD_ANOTHER_REFERRAL)
+    end
+
     def click_auto_recall_checkbox
       click(AUTO_RECALL_CHECKBOX)
     end
@@ -89,39 +80,8 @@ module CreateReferral class AddReferral < BasePage
       click(NEXT_BTN)
     end
 
-    def click_create_oon_case
-      click(CREATE_OUT_OF_NETWORK_CASE_BUTTON)
-      wait_for_spinner
-    end
-
-    def click_create_case
-      click(CREATE_CASE_BUTTON)
-    end
-
-    def click_save_button
-      click(SAVE_BUTTON)
-    end
-
     def click_save_draft_button
       click(SAVE_DRAFT_BTN)
-    end
-
-    def create_referral_selecting_first_options(description:, count: 1)
-      fill_out_referral_description(description: description)
-      referral_selections = {
-        service_type: select_first_service_type,
-        recipients: add_multiple_recipients(count: count),
-        description: description
-      }
-    end
-
-    def fill_out_referral_description(description:)
-      enter(description, DESCRIPTION_TEXT)
-    end
-
-    def fill_out_enrolled_date
-      formatted_date = Date.today.strftime("%d%m%y")
-      enter(formatted_date, ENROLLED_DATE)
     end
 
     def open_network_browse_map
@@ -148,6 +108,64 @@ module CreateReferral class AddReferral < BasePage
       is_displayed?(EXPAND_SERVICE_CHOICES)
 
       text(SELECTED_RECIPIENT_NETWORK).sub(REMOVE_TEXT, '').strip.capitalize
+    end
+
+    def select_first_service_type
+      click(EXPAND_SERVICE_CHOICES)
+      click(FIRST_SERVICE_CHOICE)
+      wait_for_spinner
+      text(SELECTED_SERVICE_TYPE).sub(REMOVE_TEXT, '').strip.capitalize
+    end
+
+    def selected_primary_worker
+      text(SELECTED_PRIMARY_WORKER).sub(REMOVE_TEXT, '').strip
+    end
+
+    def warning_info_text
+      text(INFO_TEXT)
+    end
+
+    private
+
+    def add_another_recipient
+      click(ADD_ANOTHER_RECIPIENT)
+      @recipient_index += 1
+      org_choices = { css: "#select-field-group-#{@recipient_index} + .choices__list" }
+
+      is_displayed?(org_choices)
+    end
+
+    def add_multiple_in_network_recipients(count:)
+      recipient_info = ''
+      count.times do
+        provider = select_first_org
+        program = select_first_program
+        recipient_info << "#{provider} - #{program}"
+        add_another_recipient if count > 1
+      end
+      recipient_info
+    end
+
+    def click_create_oon_case
+      click(CREATE_OUT_OF_NETWORK_CASE_BUTTON)
+      wait_for_spinner
+    end
+
+    def click_create_case
+      click(CREATE_CASE_BUTTON)
+    end
+
+    def click_save_button
+      click(SAVE_BUTTON)
+    end
+
+    def fill_out_referral_description(description:)
+      enter(description, DESCRIPTION_TEXT)
+    end
+
+    def fill_out_enrolled_date
+      formatted_date = Date.today.strftime("%d%m%y")
+      enter(formatted_date, ENROLLED_DATE)
     end
 
     def save_button_displayed?
@@ -212,20 +230,6 @@ module CreateReferral class AddReferral < BasePage
       text(selected_program).sub(REMOVE_TEXT, '').strip
     end
 
-    def select_first_service_type
-      click(EXPAND_SERVICE_CHOICES)
-      click(FIRST_SERVICE_CHOICE)
-      wait_for_spinner
-      text(SELECTED_SERVICE_TYPE).sub(REMOVE_TEXT, '').strip.capitalize
-    end
-
-    def selected_primary_worker
-      text(SELECTED_PRIMARY_WORKER).sub(REMOVE_TEXT, '').strip
-    end
-
-    def warning_info_text
-      text(INFO_TEXT)
-    end
   end
 
   class AdditionalInfo < BasePage
@@ -299,10 +303,6 @@ module CreateReferral class AddReferral < BasePage
 
     def review_sections
       find_elements(REVIEW_SECTIONS)
-    end
-
-    def review_sections_count
-      review_sections.length
     end
 
     def service_type(section)

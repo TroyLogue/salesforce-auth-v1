@@ -76,7 +76,7 @@ describe '[Referrals]', :app_client, :referrals do
 
       # User should land in referral page
       expect(add_referral_page.page_displayed?).to be_truthy
-      submitted_referral_options = add_referral_page.create_referral_selecting_first_options(
+      submitted_referral_options = add_referral_page.add_referral_selecting_first_options(
         description: Faker::Lorem.sentence(word_count: 5)
       )
       add_referral_page.click_next_button
