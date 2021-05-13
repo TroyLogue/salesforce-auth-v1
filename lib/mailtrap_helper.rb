@@ -3,6 +3,8 @@ require 'json'
 
 module MailtrapHelper
   PASSWORD_RESET_SUBJECT = 'Reset password instructions'
+  RESET_PASSWORD_REQUEST_SUBJECT = 'Password Reset Request'
+  UNABLE_TO_RESET_PASSWORD_VIA_EMAIL_MESSAGE = 'This is a managed account, so we are unable to complete this request.'
 
   def body(message)
     get_html_of_message(message_id: message['id']);
@@ -61,6 +63,10 @@ module MailtrapHelper
     get_first_message(filter: PASSWORD_RESET_SUBJECT)
   end
 
+  def get_first_reset_password_request_email
+    get_first_message(filter: RESET_PASSWORD_REQUEST_SUBJECT)
+  end
+
   def get_first_share_email(network:, provider: '')
     share_subject = "#{network} Has Sent You Information About #{provider}"
     get_first_message(filter: share_subject)
@@ -73,6 +79,10 @@ module MailtrapHelper
 
   def is_password_reset_email?(message)
     message['subject'] == PASSWORD_RESET_SUBJECT
+  end
+
+  def is_manual_password_reset_email?(message)
+    get_html_of_message(message_id: message['id']).include?(UNABLE_TO_RESET_PASSWORD_VIA_EMAIL_MESSAGE)
   end
 
   def is_share_email?(message:, network:, provider:)

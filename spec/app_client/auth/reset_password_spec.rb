@@ -55,4 +55,33 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
       expect(login_email.page_displayed?).to be_truthy
     end
   end
+
+  context('[as app-client and emr user] From login page,') do
+    let(:email) { Login::CC_HARVARD }
+
+    before do
+      base_page.get ''
+      expect(login_email.page_displayed?).to be_truthy
+
+      login_email.submit(email)
+      expect(login_password.page_displayed?).to be_truthy
+
+      login_password.click_forgot_password
+      expect(forgot_password.page_displayed?).to be_truthy
+      expect(forgot_password.user_email_value).to include(email)
+    end
+
+    it 'sends email notifying user their password can only be reset manually', :uuqa_1921 do
+      forgot_password.click_to_send_email
+      expect(login_password.page_displayed?).to be_truthy
+      expect(login_email.password_reset_message_displayed?).to be_truthy
+
+      # verify in mailtrap:
+      message = get_first_reset_password_request_email
+      expect(message_sent_to(message)).to include(email)
+
+      # verify that the emr user gets the email notifying they can not reset pw via email and have to contact UU to reset pw
+      expect(is_manual_password_reset_email?(message)).to be_truthy
+    end
+  end
 end
