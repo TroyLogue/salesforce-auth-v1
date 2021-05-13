@@ -48,6 +48,8 @@ module Login
     NEXTGATE_USER = 'test-perms9@auto.com',
     # columbia org with New-Search Feature Flag enabled
     NEW_SEARCH_USER = 'client-search@auto.com',
+    # user that does not have EHR login access - used for reset pw test
+    NON_EHR_USER = 'yale@auto.com',
     # used to test provider-selector features
     USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test',
     # user with valid address
