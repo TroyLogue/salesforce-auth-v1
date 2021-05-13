@@ -57,7 +57,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
   end
 
   context('[as app-client and emr user] From login page,') do
-    let(:email) { Login::CC_HARVARD }
+    let(:email) { Login::EHR_USER }
 
     before do
       base_page.get ''
