@@ -19,13 +19,19 @@ module CreateReferral
     PRIMARY_WORKER_DROPDOWN = { css: '.ui-expandable__container--expanded #primary-worker + .choices__list' }.freeze
     PRIMARY_WORKER_FIRST_OPTION = { css: '.ui-expandable__container--expanded #choices-primary-worker-item-choice-3' }.freeze
     SAVE_BUTTON = { css: '#save-case-assessments-btn' }.freeze
-    SELECTED_PRIMARY_WORKER = { css: '.ui-expandable__container--expanded #primary-worker + div > div:not(button)' }
+    SELECTED_PRIMARY_WORKER = { css: '.ui-expandable__container--expanded #primary-worker + div > div:not(button)' }.freeze
 
     ENROLLED_DATE = { css: '.ui-expandable__container--expanded #program-entry'}.freeze
 
     ADD_ANOTHER_RECIPIENT = { css: 'button[aria-label="+ ADD ANOTHER RECIPIENT"]' }.freeze
+    ADD_ANOTHER_OON_RECIPIENT = { css: '#add-another-oon-group-btn' }.freeze
     AUTO_RECALL_CHECKBOX = { css: '#send-referral-auto-recallable-checkbox-0 + label' }.freeze
+    CUSTOM_ORG_INPUT = { css: '.referral-oon-group-select  .single-select-with-custom-value .choices__list.choices__list--dropdown.is-active .choices__input.choices__input--cloned' }.freeze
     ERROR_MESSAGE = { css: '.field-error-message > p' }.freeze
+    FIRST_SELECTED_ORG = { css: '#select-field-group-0 + div > div:not(button)' }.freeze
+    FIRST_SELECTED_OON_ORG = { css: '#select-field-oon-group-0 + div > div:not(button)' }.freeze
+    SECOND_OON_ORG_CHOICE = { css: '#select-field-oon-group-1 + .choices__list' }.freeze
+    SECOND_SELECTED_OON_ORG = { css: '#select-field-oon-group-1 + div > div:not(button)' }.freeze
 
     DESCRIPTION_TEXT = { css: '.ui-expandable__container--expanded #referral-notes' }.freeze
     SAVE_DRAFT_BTN = { css: '#save-draft-btn' }.freeze
@@ -42,6 +48,11 @@ module CreateReferral
     def add_another_referral
       click(ADD_ANOTHER_REFERRAL)
       wait_for_spinner
+    end
+
+    def add_custom_org(name:)
+      click(ADD_ANOTHER_OON_RECIPIENT)
+      enter_and_select_custom_oon_org(name: name)
     end
 
     def add_oon_case_selecting_first_options(description:)
@@ -61,7 +72,7 @@ module CreateReferral
 
     def add_referral_selecting_first_options(description:, count: 1)
       fill_out_referral_description(description: description)
-      referral_selections = {
+      {
         service_type: select_first_service_type,
         recipients: add_multiple_in_network_recipients(count: count),
         description: description
@@ -76,12 +87,25 @@ module CreateReferral
       click(AUTO_RECALL_CHECKBOX)
     end
 
+    def click_create_case
+      click(CREATE_CASE_BUTTON)
+    end
+
     def click_next_button
       click(NEXT_BTN)
     end
 
     def click_save_draft_button
       click(SAVE_DRAFT_BTN)
+    end
+
+    def fill_out_referral_description(description:)
+      enter(description, DESCRIPTION_TEXT)
+    end
+
+    def fill_out_enrolled_date
+      formatted_date = Date.today.strftime("%d%m%y")
+      enter(formatted_date, ENROLLED_DATE)
     end
 
     def open_network_browse_map
@@ -110,11 +134,34 @@ module CreateReferral
       text(SELECTED_RECIPIENT_NETWORK).sub(REMOVE_TEXT, '').strip.capitalize
     end
 
+    def selected_recipient(org: FIRST_SELECTED_ORG)
+      # Removing distance and "Remove Item" to return just the provider name
+      provider = text(org)
+      provider_distance = provider.rindex(/\(/) # finds the last open paren in the string
+      provider[0..(provider_distance - 1)].strip # returns provider_text up to the distance
+    end
+
     def select_first_service_type
       click(EXPAND_SERVICE_CHOICES)
       click(FIRST_SERVICE_CHOICE)
       wait_for_spinner
       text(SELECTED_SERVICE_TYPE).sub(REMOVE_TEXT, '').strip.capitalize
+    end
+
+    def select_first_org
+      org_choices = { css: ".ui-expandable__container--expanded #select-field-group-#{@recipient_index} + .choices__list" }
+      first_org_choice = { css: ".ui-expandable__container--expanded div[id^='choices-select-field-group-#{@recipient_index}-item-choice']:not([aria-disabled*='true']):not([data-value=''])" }
+      selected_org = { css: ".ui-expandable__container--expanded #select-field-group-#{@recipient_index} + div > div:not(button)" }
+
+      click(org_choices)
+      click(first_org_choice)
+
+      if is_displayed?(ERROR_MESSAGE, 2) && text(ERROR_MESSAGE) == ERROR_MULTIPLE_RECIPIENT_CC
+        info_message = 'Users are unable to add a Coordination Center when there are multiple recipients. '\
+                       'One of the providers selected is a Coordination Center.'
+        raise StandardError, info_message
+      end
+      selected_recipient(org: selected_org)
     end
 
     def selected_primary_worker
@@ -152,21 +199,17 @@ module CreateReferral
       wait_for_spinner
     end
 
-    def click_create_case
-      click(CREATE_CASE_BUTTON)
-    end
-
     def click_save_button
       click(SAVE_BUTTON)
     end
 
-    def fill_out_referral_description(description:)
-      enter(description, DESCRIPTION_TEXT)
+    def enter_and_select_custom_oon_org(name:)
+      click(SECOND_OON_ORG_CHOICE)
+      enter_and_return(name, CUSTOM_ORG_INPUT)
     end
 
-    def fill_out_enrolled_date
-      formatted_date = Date.today.strftime("%d%m%y")
-      enter(formatted_date, ENROLLED_DATE)
+    def fill_out_referral_description(description:)
+      enter(description, DESCRIPTION_TEXT)
     end
 
     def save_button_displayed?
@@ -187,36 +230,12 @@ module CreateReferral
         raise StandardError, info_message
       end
 
-      # Removing distance and "Remove Item" to return just the provider name
-      provider = text(selected_org)
-      provider_distance = provider.rindex(/\(/) # finds the last open paren in the string
-      provider[0..(provider_distance - 1)].strip # returns provider_text up to the distance
-    end
-
-    def select_first_org
-      org_choices = { css: ".ui-expandable__container--expanded #select-field-group-#{@recipient_index} + .choices__list" }
-      first_org_choice = { css: ".ui-expandable__container--expanded div[id^='choices-select-field-group-#{@recipient_index}-item-choice']:not([aria-disabled*='true']):not([data-value=''])" }
-      selected_org = { css: ".ui-expandable__container--expanded #select-field-group-#{@recipient_index} + div > div:not(button)" }
-
-      click(org_choices)
-      click(first_org_choice)
-
-      if is_displayed?(ERROR_MESSAGE, 2) && text(ERROR_MESSAGE) == ERROR_MULTIPLE_RECIPIENT_CC
-        info_message = 'Users are unable to add a Coordination Center when there are multiple recipients. '\
-                       'One of the providers selected is a Coordination Center.'
-        raise StandardError, info_message
-      end
-
-      # Removing distance and "Remove Item" to return just the provider name
-      provider = text(selected_org)
-      provider_distance = provider.rindex(/\(/) # finds the last open paren in the string
-      provider[0..(provider_distance - 1)].strip # returns provider_text up to the distance
+      selected_recipient(org: selected_org)
     end
 
     def select_first_primary_worker
       click(PRIMARY_WORKER_DROPDOWN)
       click(PRIMARY_WORKER_FIRST_OPTION)
-      selected_primary_worker
     end
 
     def select_first_program
@@ -230,7 +249,6 @@ module CreateReferral
       click(first_program_choice)
       text(selected_program).sub(REMOVE_TEXT, '').strip
     end
-
   end
 
   class AdditionalInfo < BasePage

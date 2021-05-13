@@ -117,6 +117,10 @@ A template `.env.example` file is provided but in order to run against staging c
 
 Run tests from the root path of this project in a Terminal window.
 
+The `spec_helper.rb` is configured to retry failing specs by default. When in development or debug mode, pass the `RETRY=false` param to not retry on failure, e.g., 
+
+`RETRY=false rspec spec -t uuqa_1901`
+
 ## Using Rake Tasks
 
 See the `Rakefile` for examples of how to run defined tasks.
@@ -171,6 +175,7 @@ To run two tests in `networks/browse_map_spec` at lines 20 and 31:
 `rake docker:build` builds the image with the tag `end-to-end`
 `rake docker:run[chrome]` or `rake docker:run[firefox]` creates and starts the containers
 `rake docker:clean[chrome]` or `rake docker:clean[firefox]` deletes all the containers
+
 # Developing Tests
 
 Tests are comprised of three types of activities:
