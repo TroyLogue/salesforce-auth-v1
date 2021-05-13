@@ -284,6 +284,10 @@ module CreateReferral
       click_via_js(SUBMIT_BTN)
     end
 
+    def description(section)
+      section.find_elements(DESCRIPTION)[0].text
+    end
+
     def full_name
       text(FULL_NAME)
     end
@@ -295,6 +299,12 @@ module CreateReferral
     def page_displayed?
       is_displayed?(FOURTH_STEP) &&
         is_displayed?(REFERRAL_FORM)
+    end
+
+    def service_type(section)
+      service_type_str = section.find_elements(SERVICE_TYPE)[0].text
+      # formatted - return only text after  "New referral: " or New Out of Network Case: "
+      service_type_str.split(": ")[1].capitalize
     end
 
     # returns an array containing one summary object for each referral/case being reviewed
@@ -318,16 +328,6 @@ module CreateReferral
 
     def review_sections
       find_elements(REVIEW_SECTIONS)
-    end
-
-    def description(section)
-      section.find_elements(DESCRIPTION)[0].text
-    end
-
-    def service_type(section)
-      service_type_str = section.find_elements(SERVICE_TYPE)[0].text
-      # formatted - return only text after  "New referral: " or New Out of Network Case: "
-      service_type_str.split(": ")[1].capitalize
     end
   end
 end
