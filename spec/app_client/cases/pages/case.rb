@@ -3,7 +3,7 @@
 class Case < BasePage
   ASSESSMENT_LIST = { css: '.detail-info__relationship-files' }.freeze
   ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
-  CASE_VIEW = { css: '.dashboard-content .case-detail-view'}.freeze
+  CASE_VIEW = { css: '.dashboard-content .case-detail-view' }.freeze
   CASE_STATUS = { css: '.detail-status-text' }.freeze
   MILITARY_ASSESSMENT = { css: '#military-information-link' }.freeze
   NOTES = { css: '.detail-info__summary p > span' }.freeze
@@ -39,6 +39,11 @@ class Case < BasePage
     text(REFERRED_TO)
   end
 
+  # converts comma-separated list of orgs to array
+  def referred_to_array
+    text(REFERRED_TO).split(/\s*,\s*/)
+  end
+
   def primary_worker
     text(PRIMARY_WORKER)
   end
@@ -71,5 +76,4 @@ class Case < BasePage
   def open_military_assessment
     click(MILITARY_ASSESSMENT)
   end
-
 end
