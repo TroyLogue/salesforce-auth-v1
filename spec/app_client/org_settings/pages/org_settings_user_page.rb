@@ -38,6 +38,14 @@ module OrgSettings
       wait_for_spinner
     end
 
+    def go_to_user_with_id(user_id:)
+      # Current work around to get provider id for route
+      # To potentially be removed once we have context of provider per employee
+      org = current_url.split('/')[4]
+      get("/org/#{org}/users/#{user_id}")
+      wait_for_spinner
+    end
+
     def go_to_new_user_form
       click(ADD_USER_BTN)
     end
@@ -95,16 +103,26 @@ module OrgSettings
     EDIT_EMAIL_CLOSE_BUTTON = { css: '#edit-email-address-modal .title-closeable .ui-icon' }.freeze
     BTN_CANCEL_EMAIL = { css: '#edit-email-cancel-btn' }.freeze
     EDITABLE_PROGRAM = { css: '#edit-program-information-modal-btn' }.freeze
+    BTN_SAVE_PROGRAM = { css: '#program-data-save-btn' }.freeze
     BTN_CANCEL_PROGRAM = { css: '#program-data-cancel-btn' }.freeze
     EDIT_PROGRAM_CLOSE_BUTTON = { css: '#edit-program-information-modal .title-closeable .ui-icon' }.freeze
     EDITABLE_NETWORK = { css: '#edit-network-licenses-modal-btn' }.freeze
-    EDITABLE_ORG = { css: '#dit-group-licenses-modal-btn' }.freeze
+    EDITABLE_ORG = { css: '#edit-group-licenses-modal-btn' }.freeze
+    PROGRAM_ACCESS_DROPDOWN = { css: '#user-programs + div' }.freeze
+    PROGRAM_ACCESS_DROPDOWN_CHOICES = { css: '[id^=choices-user-programs-item-choice]' }.freeze
+    ORG_ROLE_DROPDOWN = { css: '#org-roles + div' }.freeze
+    ORG_ROLE_DROPDOWN_CHOICES = { css: '[id^=choices-org-roles-item-choice]' }.freeze
+    ORG_ROLE_REMOVE_BUTTONS = { css: '#org-roles + div .choices__button' }.freeze
     EDITABLE_STATE = { css: '#edit-employee-state-modal-btn' }.freeze
     EDITABLE_STATE_MODAL = { css: '#edit-employee-state-modal.dialog.open' }.freeze
     STATE_DROPDOWN = { css: '.edit-employee-state-form__state-select .choices' }.freeze
     STATE_DROPDOWN_CHOICES = { css: '.edit-employee-state-form__state-select .choices .choices__item--selectable' }.freeze
     EDIT_STATE_SAVE_BUTTON = { css: '#edit-employee-state-save-btn' }.freeze
 
+    def page_displayed?
+      is_displayed?(USER_HEADER) &&
+        is_displayed?(NAME_AND_TITLE_ROW)
+    end
 
     def get_user_title
       text(USER_HEADER)
@@ -180,6 +198,34 @@ module OrgSettings
       get_selectable_input_text(INPUT_ORG_ROLES_SELECTABLES)
     end
 
+    def add_program
+      go_to_edit_program_access
+      click(PROGRAM_ACCESS_DROPDOWN)
+      program_element = find_elements(PROGRAM_ACCESS_DROPDOWN_CHOICES).sample
+      program_new_value = program_element.text
+      program_element.click
+      click(BTN_SAVE_PROGRAM)
+      program_new_value
+    end
+
+    def add_org_role
+      go_to_edit_program_access
+      click(ORG_ROLE_DROPDOWN)
+      org_role_element = find_elements(ORG_ROLE_DROPDOWN_CHOICES).sample
+      org_new_value = org_role_element.text
+      org_role_element.click
+      click(BTN_SAVE_PROGRAM)
+      org_new_value
+    end
+
+    def remove_org_role
+      go_to_edit_program_access
+      org_role_element = find_elements(ORG_ROLE_REMOVE_BUTTONS).sample
+      org_removed_value = org_role_element.attribute('aria-label').gsub('Remove item:', '').gsub("'", '').strip
+      org_role_element.click
+      click(BTN_SAVE_PROGRAM)
+      org_removed_value
+    end
 
     def save_email_field
       click(EDITABLE_EMAIL)
