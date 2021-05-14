@@ -52,13 +52,6 @@ namespace :jenkins do
     ENV['browser_version'] = '10.0'
     exit run_in_parallel(tag: 'consent_app')
   end
-
-  desc 'UU3-49568'
-  task :UU3_49568 do
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(tag: 'app_client')
-  end
 end
 
 namespace :docker do
