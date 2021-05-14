@@ -19,7 +19,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
   let(:reset_password) { ResetPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
 
-  context('[as cc user] From login page,') do
+  context('[as app-client user] From login page,') do
     let(:email) { Login::NON_EHR_USER }
 
     before do
