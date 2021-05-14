@@ -42,8 +42,9 @@ describe '[Refer Assistance Request]', :app_client, :assistance_request do
     additional_info_page.click_next_button if additional_info_page.page_displayed?
     final_review_page.page_displayed?
     expect(final_review_page.full_name).to eq(@assistance_request.full_name)
-    expect(final_review_page.description).to eq(@assistance_request.description)
-    expect(final_review_page.service_type).to eq(@assistance_request.service_type_name)
+    summary = final_review_page.summary_info[0]
+    expect(summary[:description]).to eq(@assistance_request.description)
+    expect(summary[:service_type]).to eq(@assistance_request.service_type_name)
 
     final_review_page.click_submit_button
     referral_sent_dashboard.page_displayed?
