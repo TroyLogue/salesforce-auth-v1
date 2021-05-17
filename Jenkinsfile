@@ -90,6 +90,7 @@ def build() {
 
      withCredentials([file(credentialsId: 'browserstack_credentials', variable: 'browserstack_credentials_file')]) {
         sh '''
+        cp .env.example .env.staging
         echo "Grabbing Browserstack Credentials"
         set +x
         while read token ; do \
