@@ -9,6 +9,7 @@ module Users
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
   when 'staging', 'devqa'
     CC_USER = 'harvard@auto.com'
+    CC_QA_ADMIN = 'qa.perms@auto.com'
     ORG_PRINCETON = 'princeton@auto.com'
     ORG_YALE = 'yale@auto.com'
     ORG_COLUMBIA = 'columbia@auto.com'

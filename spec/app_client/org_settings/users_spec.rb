@@ -14,6 +14,9 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:org_settings_user_table) { OrgSettings::UserTable.new(@driver) }
   let(:org_settings_user_form) { OrgSettings::UserCard.new(@driver) }
+  let(:employee_id) {
+    Setup::Data.initialize_employee_with_role_and_program_in_qa_admin(logged_in_as: Login::SETTINGS_USER)
+  }
 
   context('[as an org admin]') do
     before do
@@ -69,6 +72,43 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       expect(org_settings_user_form.program_choice_values).to eq program_access_values[:program_choice_values]
       expect(org_settings_user_form.program_role_value).to eq program_access_values[:program_role_value]
       expect(org_settings_user_form.org_role_values).to eq program_access_values[:org_role_values]
+    end
+
+    it 'can add a program to an employee', :uuqa_1705 do
+      org_settings_user_table.go_to_user_with_id(user_id: employee_id)
+      expect(org_settings_user_form.page_displayed?).to be_truthy
+
+      programs_access_values = org_settings_user_form.displayed_program_access_values[:program_choice_values]
+
+      program_value_added = org_settings_user_form.add_program
+      expect(notifications.success_text).to include(Notifications::USER_UPDATED)
+      expect(org_settings_user_form.displayed_program_access_values[:program_choice_values])
+        .to match_array(programs_access_values << program_value_added)
+    end
+
+    it 'can add an employee org role', :uuqa_1706 do
+      org_settings_user_table.go_to_user_with_id(user_id: employee_id)
+      expect(org_settings_user_form.page_displayed?).to be_truthy
+
+      org_access_values = org_settings_user_form.displayed_program_access_values[:org_role_values]
+
+      new_value = org_settings_user_form.add_org_role
+      expect(notifications.success_text).to include(Notifications::USER_UPDATED)
+      expect(org_settings_user_form.displayed_program_access_values[:org_role_values])
+        .to match_array(org_access_values << new_value)
+    end
+
+    it 'can remove an employee org role', :uuqa_1707 do
+      org_settings_user_table.go_to_user_with_id(user_id: employee_id)
+      expect(org_settings_user_form.page_displayed?).to be_truthy
+
+      org_access_values = org_settings_user_form.displayed_program_access_values[:org_role_values]
+
+      removed_value = org_settings_user_form.remove_org_role
+      org_access_values.delete(removed_value)
+      expect(notifications.success_text).to include(Notifications::USER_UPDATED)
+      expect(org_settings_user_form.displayed_program_access_values[:org_role_values])
+        .to match_array(org_access_values)
     end
 
     it 'can save employee status', :uuqa_1767 do

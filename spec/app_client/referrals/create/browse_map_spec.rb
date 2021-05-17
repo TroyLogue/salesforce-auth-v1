@@ -15,11 +15,11 @@ describe '[Referrals]', :app_client, :referrals do
   let(:login_password) { LoginPassword.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:add_referral_page) { CreateReferral::AddReferral.new(@driver) }
-  let(:network_map) { ReferralNetworkMap.new(@driver) }
+  let(:referral_network_map) { ReferralNetworkMap.new(@driver) }
 
   context('[as a Referrals user]') do
     context('[existing client with address]') do
-      it 'view orgs based on distance of client', :uuqa_1679 do
+      it 'view orgs based on distance of client', :uuqa_1679, :uuqa_159 do
         @contact = Setup::Data.create_harvard_client_with_consent
         @contact.add_address
         log_in_as(Login::CC_HARVARD)
@@ -32,8 +32,12 @@ describe '[Referrals]', :app_client, :referrals do
         add_referral_page.select_first_service_type
         add_referral_page.open_network_browse_map
 
-        expect(network_map.page_displayed?).to be_truthy
-        expect(network_map.address_summary).to include(@contact.formatted_address)
+        expect(referral_network_map.page_displayed?).to be_truthy
+        expect(referral_network_map.address_summary).to include(@contact.formatted_address)
+
+        recipient = referral_network_map.add_first_organization_from_list
+        referral_network_map.add_organizations_to_referral
+        expect(add_referral_page.selected_recipient).to eq(recipient)
       end
     end
   end
