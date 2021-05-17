@@ -3,8 +3,6 @@ require_relative './pages/facesheet_uploads_page'
 require_relative '../referrals/pages/referral.rb'
 
 describe '[Facesheet]', :app_client, :facesheet do
-  include_context :with_authenticated_session
-
   let(:new_referral) { Referral.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_uploads_page) { FacesheetUploadsPage.new(@driver) }
@@ -12,7 +10,7 @@ describe '[Facesheet]', :app_client, :facesheet do
   context('[as org user]') do
     before {
       # Auth Session
-      @auth_token = get_encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      @auth_token = Auth.get_encoded_auth_token(email_address: Users::ORG_PRINCETON)
 
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent

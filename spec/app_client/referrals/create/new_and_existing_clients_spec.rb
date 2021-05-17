@@ -11,8 +11,6 @@ require_relative './../pages/create_referral'
 require_relative './../pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals do
-  include_context :with_authenticated_session
-
   let(:homepage) { HomePage.new(@driver) }
   let(:create_menu) { RightNav::CreateMenu.new(@driver) }
   let(:search_client_page) { SearchClient.new(@driver) }
@@ -26,7 +24,7 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as a Referral User]') do
     before {
-      @auth_token = get_encoded_auth_token(email_address: Login::CC_HARVARD)
+      @auth_token = Auth.get_encoded_auth_token(email_address: Login::CC_HARVARD)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }

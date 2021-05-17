@@ -8,8 +8,8 @@ module Setup
         token: Auth.access_token(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         contact_id: contact_id,
-        referred_by_network_id: Networks::IVY,
-        referred_to_network_id: Networks::IVY,
+        referred_by_network_id: Networks::NETWORK_ID,
+        referred_to_network_id: Networks::NETWORK_ID,
         referred_to_groups: [Providers::ORG_PRINCETON],
         service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
@@ -20,8 +20,8 @@ module Setup
         token: Auth.access_token(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         contact_id: contact_id,
-        referred_by_network_id: Networks::IVY,
-        referred_to_network_id: Networks::IVY,
+        referred_by_network_id: Networks::NETWORK_ID,
+        referred_to_network_id: Networks::NETWORK_ID,
         referred_to_groups: [Providers::ORG_PRINCETON],
         service_type_id: Services::DRUG_ALCOHOL_TESTING
       )
@@ -32,8 +32,8 @@ module Setup
         token: Auth.access_token(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         contact_id: contact_id,
-        referred_by_network_id: Networks::IVY,
-        referred_to_network_id: Networks::IVY,
+        referred_by_network_id: Networks::NETWORK_ID,
+        referred_to_network_id: Networks::NETWORK_ID,
         referred_to_groups: [Providers::ORG_YALE],
         service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
@@ -73,8 +73,8 @@ module Setup
         token: Auth.access_token(email_address: Users::ORG_YALE),
         group_id: Providers::ORG_YALE,
         contact_id: contact_id,
-        referred_by_network_id: Networks::IVY,
-        referred_to_network_id: Networks::IVY,
+        referred_by_network_id: Networks::NETWORK_ID,
+        referred_to_network_id: Networks::NETWORK_ID,
         referred_to_groups: [Providers::CC_HARVARD],
         service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
@@ -85,8 +85,8 @@ module Setup
         token: Auth.access_token(email_address: Users::ORG_YALE),
         group_id: Providers::ORG_YALE,
         contact_id: contact_id,
-        referred_by_network_id: Networks::IVY,
-        referred_to_network_id: Networks::IVY,
+        referred_by_network_id: Networks::NETWORK_ID,
+        referred_to_network_id: Networks::NETWORK_ID,
         referred_to_groups: [Providers::ORG_PRINCETON],
         service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
@@ -97,8 +97,8 @@ module Setup
         token: Auth.access_token(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         contact_id: contact_id,
-        referred_by_network_id: Networks::IVY,
-        referred_to_network_id: Networks::IVY,
+        referred_by_network_id: Networks::NETWORK_ID,
+        referred_to_network_id: Networks::NETWORK_ID,
         referred_to_groups: [],
         service_type_id: Services::BENEFITS_DISABILITY_BENEFITS
       )
