@@ -32,7 +32,7 @@ describe '[Referrals]', :app_client, :referrals do
       expect(add_referral_page.page_displayed?).to be_truthy
 
       # Fill out referral info for multiple recipients(2)
-      submitted_referral_options = add_referral_page.create_referral_selecting_first_options(
+      submitted_referral_options = add_referral_page.add_referral_selecting_first_options(
         description: Faker::Lorem.sentence(word_count: 5),
         count: 2
       )
@@ -43,7 +43,7 @@ describe '[Referrals]', :app_client, :referrals do
       additional_info_page.click_next_button if additional_info_page.page_displayed?
 
       expect(final_review_page.page_displayed?).to be_truthy
-      expect(final_review_page.referral_summary_info).to eq(submitted_referral_options)
+      expect(final_review_page.summary_info[0]).to eq(submitted_referral_options)
 
       final_review_page.click_submit_button
       expect(sent_referral_dashboard.page_displayed?).to be_truthy

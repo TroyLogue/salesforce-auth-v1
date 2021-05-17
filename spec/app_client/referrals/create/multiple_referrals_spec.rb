@@ -4,12 +4,12 @@ require_relative '../../auth/helpers/login'
 require_relative '../../root/pages/home_page'
 require_relative '../../facesheet/pages/facesheet_header'
 require_relative './../pages/create_referral'
-require_relative './../pages/referral_dashboard'
+require_relative './../pages/referral_dashboard.rb'
 
 describe '[Referrals]', :app_client, :referrals do
   include Login
 
-  let(:homepage) { HomePage.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:login_email) { LoginEmail.new(@driver) }
   let(:login_password) { LoginPassword.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
@@ -18,33 +18,38 @@ describe '[Referrals]', :app_client, :referrals do
   let(:final_review_page) { CreateReferral::FinalReview.new(@driver) }
   let(:sent_referral_dashboard) { ReferralDashboard::Sent::All.new(@driver) }
 
-  context('[as a Referral User in an org with referral permissions to another network]') do
-    before {
-      # Create Contact
-      @contact = Setup::Data.create_columbia_client_with_consent
-      @contact.add_address # So that orgs display as opposed to a CC
+  context('[as a Referral User]') do
+    before do
+      @contact = Setup::Data.create_harvard_client_with_consent
+      log_in_as(Login::CC_HARVARD)
+      expect(home_page.page_displayed?).to be_truthy
+    end
 
-      log_in_as(Login::ORG_COLUMBIA)
-      expect(homepage.page_displayed?).to be_truthy
-    }
-
-    it 'user can create a referral and send to another network', :uuqa_1736 do
+    it 'can create a new referral and out of network case in same workflow', :uuqa_1771 do
       facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)
       facesheet_header.refer_client
-
       expect(add_referral_page.page_displayed?).to be_truthy
-      recipient_network = add_referral_page.refer_to_another_network
-      submitted_referral_options = add_referral_page.add_referral_selecting_first_options(
-        description: Faker::Lorem.sentence(word_count: 5)
-      )
-      add_referral_page.click_next_button
 
-      # Adding if condition since page is optional
+      # Fill out referral info
+      submitted_referral_options = add_referral_page.add_referral_selecting_first_options(
+        description: Faker::Lorem.sentence(word_count: 5),
+      )
+
+      # add an OON case
+      add_referral_page.add_another_referral
+      submitted_oon_case_options = add_referral_page.add_oon_case_selecting_first_options(
+        description: Faker::Lorem.sentence(word_count: 5),
+      )
+      # validate that Add Another option appears after adding an OON case
+      expect(add_referral_page.can_add_another_referral?).to be_truthy
+
+      add_referral_page.click_next_button
       additional_info_page.click_next_button if additional_info_page.page_displayed?
 
       expect(final_review_page.page_displayed?).to be_truthy
-      expect(final_review_page.network).to eq(recipient_network)
+      expect(final_review_page.summary_info.length).to eq(2)
       expect(final_review_page.summary_info[0]).to eq(submitted_referral_options)
+      expect(final_review_page.summary_info[1]).to eq(submitted_oon_case_options)
 
       final_review_page.click_submit_button
       expect(sent_referral_dashboard.page_displayed?).to be_truthy

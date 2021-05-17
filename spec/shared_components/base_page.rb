@@ -202,7 +202,7 @@ class BasePage
   end
 
   # to be used when waiting for an element to disappear
-  # but still present in the DOM; 
+  # but still present in the DOM;
   # because this method uses an implicit wait, it is subject to flakiness;
   # if an element disappears and is not present in the DOM,
   # use is_not_present?
@@ -239,7 +239,7 @@ class BasePage
   end
 
   # to be used when waiting for an element to disappear
-  # and removed from the DOM; 
+  # and removed from the DOM;
   # if an element disappears but is still present in the DOM,
   # use is_not_displayed?
   def is_not_present?(selector, timeout = 10)
