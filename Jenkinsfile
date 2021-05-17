@@ -88,23 +88,6 @@ def build() {
         '''
     }
 
-    // Grabbing tokens saved in Jenkin Credentials and mapping those values
-    // in our local .env.staging file. This is to avoid potentital formatting issues
-    // such as inline-comments and spaces between '=' as well as to
-    // not overwrite other stored env vars such as URLs
-    withCredentials([file(credentialsId: 'jwt_tokens_staging', variable: 'jwt_tokens_file')]) {
-        sh '''
-        cp .env.example .env.staging
-        echo "Grabbing JWT Tokens"
-        set +x
-        while read token ; do \
-            key=$(echo $token | cut -d '=' -f1 | tr -d ' '); \
-            value=$(echo $token | cut -d '=' -f2 | tr -d ' '); \
-            sed -i -e "s/{$key}/$value/" .env.staging; \
-        done < $jwt_tokens_file
-        set -x
-        '''
-    }
      withCredentials([file(credentialsId: 'browserstack_credentials', variable: 'browserstack_credentials_file')]) {
         sh '''
         echo "Grabbing Browserstack Credentials"
