@@ -99,10 +99,6 @@ module CreateReferral
       click(SAVE_DRAFT_BTN)
     end
 
-    def fill_out_referral_description(description:)
-      enter(description, DESCRIPTION_TEXT)
-    end
-
     def fill_out_enrolled_date
       formatted_date = Date.today.strftime("%d%m%y")
       enter(formatted_date, ENROLLED_DATE)
