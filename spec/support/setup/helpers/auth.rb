@@ -17,11 +17,12 @@ class Auth
 
     private
     def are_environment_vars_set?
-      unless ENV['app_client_client_id'] && ENV['web_url'] && ENV['auth_url']
+      unless ENV['app_client_client_id'] && ENV['web_url'] && ENV['auth_url'] && ENV['DEFAULT_PASSWORD']
         raise("An environment variable is not set \n
               app_client_client_id: #{ENV['app_client_client_id']} \n
               web_url: #{ENV['web_url']} \n
-              auth_url: #{ENV['auth_url']} \n ")
+              auth_url: #{ENV['auth_url']} \n
+              default_password: #{ENV['DEFAULT_PASSWORD']} \n")
       end
     end
 
