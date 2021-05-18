@@ -108,9 +108,9 @@ module OrgSettings
     EDIT_PROGRAM_CLOSE_BUTTON = { css: '#edit-program-information-modal .title-closeable .ui-icon' }.freeze
     EDITABLE_NETWORK = { css: '#edit-network-licenses-modal-btn' }.freeze
     EDITABLE_ORG = { css: '#edit-group-licenses-modal-btn' }.freeze
-    PROGRAM_ACCESS_DROPDOWN = { css: '#user-programs + div' }.freeze
+    PROGRAM_ACCESS_DROPDOWN = { css: '.program-data-form .multiple-selector' }.freeze
     PROGRAM_ACCESS_DROPDOWN_CHOICES = { css: '[id^=choices-user-programs-item-choice]' }.freeze
-    ORG_ROLE_DROPDOWN = { css: '#org-roles + div' }.freeze
+    ORG_ROLE_DROPDOWN = { css: '.program-data-form__org-roles .multiple-selector' }.freeze
     ORG_ROLE_DROPDOWN_CHOICES = { css: '[id^=choices-org-roles-item-choice]' }.freeze
     ORG_ROLE_REMOVE_BUTTONS = { css: '#org-roles + div .choices__button' }.freeze
     EDITABLE_STATE = { css: '#edit-employee-state-modal-btn' }.freeze

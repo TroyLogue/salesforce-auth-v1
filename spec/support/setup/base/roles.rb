@@ -12,7 +12,6 @@ module Setup
                           'Assistance Requests User',
                           'Insurance User',
                           'Intakes User',
-                          'Payments User',
                           'Referrals Admin User',
                           'Referrals User',
                           'Screening User',
