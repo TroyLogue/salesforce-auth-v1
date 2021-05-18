@@ -12,12 +12,6 @@ namespace :jenkins do
     exit run_in_parallel(tag: 'app_client')
   end
 
-  task :UU3_52630 do
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(tag: 'uuqa_341')
-  end
-
   # UU3-48322 DEBUG errors running tests in multiple processes:
   # To troubleshoot, use any tag(s) that efficiently reproduce the errors being debugged.
   # The end goal is to update the app_client task with 2 processes and to delete this task.
