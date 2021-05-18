@@ -15,7 +15,7 @@ namespace :jenkins do
   task :UU3_52630 do
     ENV['browser'] = 'chrome_headless'
     ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(tag: 'app_client')
+    exit run_in_parallel(tag: 'uuqa_1706')
   end
 
   # UU3-48322 DEBUG errors running tests in multiple processes:
