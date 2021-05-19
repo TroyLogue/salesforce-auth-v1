@@ -16,10 +16,15 @@ class NetworkBrowseMap < BasePage
 
   # providers list
   PROVIDER_CARD = { css: '.ui-provider-card.group-list-item' }
+  PROVIDER_CARD_IN_NETWORK = { css: '.ui-provider-card__name:first-child' }
   PROVIDER_CARD_FIRST = { css: '.ui-provider-card.group-list-item:nth-of-type(1)' }
   PROVIDER_CARD_DETAIL_FIRST = { css: '.ui-provider-card__detail:nth-of-type(1)' }
   PROVIDER_CARD_ADD_REMOVE_BUTTON_FIRST = { css: '.provider-card-add-remove-button a:nth-of-type(1)' }
   PROVIDER_CARD_OON = { css: '.ui-provider-card__detail > .ui-provider-card__oon' }
+
+  def click_first_in_network_provider_detail
+    click(PROVIDER_CARD_IN_NETWORK)
+  end
 
   def click_first_provider_detail
     click(PROVIDER_CARD_DETAIL_FIRST)
