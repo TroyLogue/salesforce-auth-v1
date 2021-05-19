@@ -20,10 +20,11 @@ class BasePage
   end
 
   def authenticate_and_navigate_to(token:, path: '')
+    encoded_token = encode_access_token(token: token)
     get(path)
     add_cookie(
-      name: token[:name],
-      value: token[:value],
+      name: encoded_token[:name],
+      value: encoded_token[:value],
       domain: ".#{ENV['web_url'].partition('.').last}"
     )
     get(path)
@@ -130,6 +131,10 @@ class BasePage
 
   def delete_char(selector)
     find(selector).send_keys :backspace
+  end
+
+  def encode_access_token(token:)
+    { name: 'uniteusApiToken', value: "{#{CGI.escape(token[1..-2]).gsub("%3A", ":").gsub("+","%20")}}" }
   end
 
   def enter(text, selector)

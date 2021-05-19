@@ -87,10 +87,6 @@ class Auth
       response.body
     end
 
-    def encode_access_token(token:)
-      { name: 'uniteusApiToken', value: "{#{CGI.escape(token[1..-2]).gsub("%3A", ":").gsub("+","%20")}}" }
-    end
-
     def get_parsed_access_token(email_address:, password:)
       are_environment_vars_set?
       csrf_auth = load_auth_and_csrf_tokens
@@ -99,6 +95,7 @@ class Auth
       response_body = get_access_token(code: code)
       parsed_response = JSON.parse response_body, symbolize_names: true
       parsed_token = parsed_response[:access_token]
+      p "get_parsed_access_token returning: #{parsed_token}"
       parsed_token
     end
   end
