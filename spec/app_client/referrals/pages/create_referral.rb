@@ -14,6 +14,7 @@ module CreateReferral
     SELECTED_SERVICE_TYPE = { css: '.ui-expandable__container--expanded #service-type + div > div:not(button)' }.freeze
     BROWSE_MAP_LINK = { css: '#browse-map-button' }.freeze
     CREATE_OUT_OF_NETWORK_CASE_BUTTON = { css: '.ui-expandable__container--expanded #open-out-of-network-case-btn' }.freeze
+    SHARE_BUTTON = { css: '#share-btn' }.freeze
     CREATE_CASE_BUTTON = { css: '#create-case-btn' }.freeze
 
     PRIMARY_WORKER_DROPDOWN = { css: '.ui-expandable__container--expanded #primary-worker + .choices__list' }.freeze
@@ -21,7 +22,7 @@ module CreateReferral
     SAVE_BUTTON = { css: '#save-case-assessments-btn' }.freeze
     SELECTED_PRIMARY_WORKER = { css: '.ui-expandable__container--expanded #primary-worker + div > div:not(button)' }.freeze
 
-    ENROLLED_DATE = { css: '.ui-expandable__container--expanded #program-entry'}.freeze
+    ENROLLED_DATE = { css: '.ui-expandable__container--expanded #program-entry' }.freeze
 
     ADD_ANOTHER_RECIPIENT = { css: 'button[aria-label="+ ADD ANOTHER RECIPIENT"]' }.freeze
     ADD_ANOTHER_OON_RECIPIENT = { css: '#add-another-oon-group-btn' }.freeze
@@ -66,7 +67,7 @@ module CreateReferral
       {
         service_type: selected_service_type,
         recipients: selected_oon_org,
-        description: description,
+        description: description
       }
     end
 
@@ -99,8 +100,12 @@ module CreateReferral
       click(SAVE_DRAFT_BTN)
     end
 
+    def click_share
+      click(SHARE_BUTTON)
+    end
+
     def fill_out_enrolled_date
-      formatted_date = Date.today.strftime("%d%m%y")
+      formatted_date = Date.today.strftime('%d%m%y')
       enter(formatted_date, ENROLLED_DATE)
     end
 
@@ -247,9 +252,78 @@ module CreateReferral
     end
   end
 
+  class ShareDrawer < BasePage
+    OPENED_DRAWER = { css: '.ui-drawer--opened.share-drawer' }.freeze
+    CLOSE_BUTTON = { css: '.ui-drawer__close-btn--opened.share-drawer' }.freeze
+    SHARE_LIST = { css: '.share-drawer-list' }.freeze
+    SHARE_HEADER = { css: '.ui-drawer__title + .share-drawer__header' }.freeze
+
+    RADIO_BUTTON_EMAIL = { css: '#email-label' }.freeze
+    RADIO_BUTTON_PRINT = { css: '#print-label' }.freeze
+    RADIO_BUTTON_TEXT = { css: '#sms-label' }.freeze
+
+    INPUT_FIELD_EMAIL = { css: '#share-email-field' }.freeze
+    INPUT_FIELD_TEXT = { css: '#share-phone-field' }.freeze
+
+    SHARE_PRINT_BUTTON = { css: '#share-print-button' }.freeze
+    SHARE_SEND_BUTTON = { css: '#share-send-button' }.freeze
+
+    def drawer_displayed?
+      is_displayed?(OPENED_DRAWER) &&
+        is_displayed?(CLOSE_BUTTON)
+    end
+
+    def drawer_closed?
+      !is_present?(OPENED_DRAWER)
+    end
+
+    def click_share_method(method:)
+      case method
+      when 'email'
+        click(RADIO_BUTTON_EMAIL)
+      when 'print'
+        click(RADIO_BUTTON_PRINT)
+      when 'text'
+        click(RADIO_BUTTON_TEXT)
+      else
+        raise 'Missing method: expected email, print, or text'
+      end
+    end
+
+    def form_displayed?(method:)
+      case method
+      when 'email'
+        is_displayed?(INPUT_FIELD_EMAIL) &&
+          is_displayed?(SHARE_SEND_BUTTON)
+      when 'print'
+        is_displayed?(SHARE_PRINT_BUTTON)
+      when 'text'
+        is_displayed?(INPUT_FIELD_TEXT) &&
+          is_displayed?(SHARE_SEND_BUTTON)
+      else
+        raise 'Missing method: expected email, print, or text'
+      end
+    end
+
+    def provider_header_count
+      str = text(SHARE_HEADER)
+      str.delete_prefix('Share').sub(/Org+\w+/, '').strip.to_i
+    end
+
+    def provider_list
+      text(SHARE_LIST)
+    end
+
+    def share_by_print
+      click_share_method(method: 'print')
+      form_displayed?(method: 'print')
+      click(SHARE_PRINT_BUTTON)
+    end
+  end
+
   class AdditionalInfo < BasePage
     THIRD_STEP = { css: '.MuiStep-root:nth-of-type(5) > button .MuiStepLabel-active' }.freeze
-    NEXT_BTN = { css: "button#next-btn:not(:disabled)" }.freeze
+    NEXT_BTN = { css: 'button#next-btn:not(:disabled)' }.freeze
 
     def page_displayed?
       wait_for_spinner
@@ -276,7 +350,7 @@ module CreateReferral
     SUBMIT_BTN = { css: '#submit-referral-btn' }.freeze
 
     def click_submit_button
-      #element is behind an overlay so firefox cannot click it without using click_via_js
+      # element is behind an overlay so firefox cannot click it without using click_via_js
       click_via_js(SUBMIT_BTN)
     end
 
@@ -323,7 +397,7 @@ module CreateReferral
     def service_type(section)
       service_type_str = section.find_elements(SERVICE_TYPE)[0].text
       # formatted - return only text after  "New referral: " or New Out of Network Case: "
-      service_type_str.split(": ")[1].capitalize
+      service_type_str.split(': ')[1].capitalize
     end
   end
 end

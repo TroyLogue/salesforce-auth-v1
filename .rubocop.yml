@@ -11,6 +11,14 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   Enabled: false
 
+# Page-Object classes may exceed rule length
+Metrics/MethodLength:
+  Enabled: false
+
 # Identifiers may exceed rule length
 Metrics/ModuleLength:
+  Enabled: false
+
+# Naming is hard, but we aspire to do it well
+Style/Documentation: 
   Enabled: false

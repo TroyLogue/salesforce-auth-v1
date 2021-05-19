@@ -18,9 +18,8 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
   let(:share_drawer) { ShareDrawer.new(@driver) }
   let(:shares_page) { SharesPage.new(@driver) }
 
-
   context('[as an EHR Network Directory user] using the Share drawer') do
-    before {
+    before do
       # user only has Network Directory permissions
       # so expect to land on the network page after login
       log_in_default_as(LoginEhr::NETWORK_DIRECTORY_USER)
@@ -29,7 +28,7 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
       # set up vars
       @first_provider_name = network.first_provider_name
       @second_provider_name = network.second_provider_name
-    }
+    end
 
     it 'can share a provider via SMS', :uuqa_400 do
       network.add_first_provider
@@ -37,7 +36,7 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
 
       expect(share_drawer.page_displayed?).to be_truthy
       expect(share_drawer.provider_list_text).to include(@first_provider_name)
-      expect(share_drawer.header_text).to eq("Share 1 Organization")
+      expect(share_drawer.header_text).to eq('Share 1 Organization')
 
       # share to a valid phone number
       share_drawer.share_by_sms(ShareDrawer::VALID_PHONE_NUMBER)
@@ -55,9 +54,9 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
       network.click_share
       expect(share_drawer.page_displayed?).to be_truthy
       expect(share_drawer.provider_list_text).to include(@second_provider_name)
-      expect(share_drawer.header_text).to eq("Share 1 Organization")
+      expect(share_drawer.header_text).to eq('Share 1 Organization')
 
-      email = "test@test.com"
+      email = 'test@test.com'
       share_drawer.share_by_email(email)
 
       # verify "Message sent" notification
@@ -68,10 +67,10 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
       # check mailtrap:
       # adding a short wait so mailtrap can update
       sleep(10)
-      network_name = "QA-Carol Coordination Center with All Service Types"
+      network_name = 'QA-Carol Coordination Center with All Service Types'
       message = get_first_share_email(network: network_name, provider: @second_provider_name)
 
-      #follow link to share page:
+      # follow link to share page:
       share_link = get_share_link(message: message)
       @driver.get(share_link)
       expect(shares_page.page_displayed?).to be_truthy
@@ -80,19 +79,20 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
 
     it 'can share a provider via print', :uuqa_402 do
       # add first and second providers:
-      network.add_providers_by_index([0,1])
+      network.add_providers_by_index([0, 1])
 
       network.click_share
 
       expect(share_drawer.page_displayed?).to be_truthy
       expect(share_drawer.provider_list_text).to include(@first_provider_name, @second_provider_name)
-      expect(share_drawer.header_text).to eq("Share 2 Organizations")
+      expect(share_drawer.header_text).to eq('Share 2 Organizations')
 
       share_drawer.share_by_print
       expect(network.drawer_closed?).to be_truthy
 
       # verify second window opens with share page
       expect(base_page.new_tab_opened?).to be_truthy
+      expect(shares_page.page_title).to eq(SharesPage::TITLE)
     end
   end
 end

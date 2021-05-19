@@ -45,6 +45,8 @@ RSpec.configure do |config|
       caps['acceptSslCerts'] = 'true'
       # needed for IE 11 https://www.browserstack.com/automate/using-sendkeys-on-remote-IE11
       caps['browserstack.sendKeys'] = 'true'
+      caps['browserstack.console'] = 'errors'
+      caps['browserstack.networkLogs'] = 'true'
       # uncomment the line below to capture screenshots at every command throughout the test
       # caps['browserstack.debug'] = 'true'
       # comment the line below to disable video recording

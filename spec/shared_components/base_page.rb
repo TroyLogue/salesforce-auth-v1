@@ -180,10 +180,6 @@ class BasePage
     driver.get ENV['auth_url'] + path
   end
 
-  def get_title
-    wait_for { driver.title }
-  end
-
   def hover_over(selector)
     driver.action.move_to(find(selector)).perform
   end
@@ -302,12 +298,20 @@ class BasePage
     driver.switch_to.frame(iframe)
   end
 
+  def switch_to_last_window
+    driver.switch_to.window(driver.window_handles.last)
+  end
+
   def text(selector)
     find(selector).text
   end
 
   def text_include?(text, selector)
     find(selector).text.include?(text)
+  end
+
+  def title
+    wait_for { driver.title }
   end
 
   def value(selector)

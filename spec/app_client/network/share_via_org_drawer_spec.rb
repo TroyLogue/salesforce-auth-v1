@@ -26,7 +26,7 @@ describe '[Network - Organizations - Browse Drawer]', :network, :app_client do
       expect(network_organizations.page_displayed?).to be_truthy
     end
 
-    it 'shares provider details via text from the organizations tab', :uuqa_1725 do
+    it 'shares provider details via text from the organizations tab', :uuqa_1785 do
       # UU3-49164 workaround for banner blocking drawer elements
       banner.dismiss_alert_if_displayed
       network_organizations.click_first_provider_row
