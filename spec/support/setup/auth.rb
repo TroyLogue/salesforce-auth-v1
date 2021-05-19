@@ -2,17 +2,16 @@
 
 class Auth
   class << self
-    def get_encoded_auth_token(email_address:, password: Users::DEFAULT_PASSWORD)
-      are_environment_vars_set?
-      csrf_auth = load_auth_and_csrf_tokens
-      auth_cookie = get_auth_cookie(email_address: email_address, password: password, tokens: csrf_auth)
-      code = set_auth_code(auth_cookie: auth_cookie)
-      access_token = get_access_token(code: code)
-      encode_access_token(token: access_token)
+    def access_token(email_address:, password: Users::DEFAULT_PASSWORD)
+      # returns only a string of the JWT
+      response_body = auth_token(email_address: email_address, password: password)
+      parsed_response = JSON.parse response_body, symbolize_names: true
+      parsed_response[:access_token]
     end
 
-    def access_token(email_address:, password: Users::DEFAULT_PASSWORD)
-      get_parsed_access_token(email_address: email_address, password: password)
+    def get_encoded_auth_token(email_address:, password: Users::DEFAULT_PASSWORD)
+      # returns the whole token object, encoded to be added to browser cookies
+      encode_access_token(token: auth_token(email_address: email_address, password: password))
     end
 
     private
@@ -24,6 +23,19 @@ class Auth
               auth_url: #{ENV['auth_url']} \n
               default_password: #{ENV['DEFAULT_PASSWORD']} \n")
       end
+    end
+
+    def auth_token(email_address:, password: Users::DEFAULT_PASSWORD)
+      # returns the whole token object, including expiration, scope, etc
+      are_environment_vars_set?
+      csrf_auth = load_auth_and_csrf_tokens
+      auth_cookie = get_auth_cookie(email_address: email_address, password: password, tokens: csrf_auth)
+      code = set_auth_code(auth_cookie: auth_cookie)
+      get_access_token(code: code)
+    end
+
+    def encode_access_token(token:)
+      { name: 'uniteusApiToken', value: "{#{CGI.escape(token[1..-2]).gsub("%3A", ":").gsub("+","%20")}}" }
     end
 
     def load_auth_and_csrf_tokens
@@ -85,18 +97,6 @@ class Auth
       raise("Response returned: #{response.code}") unless response.code == 200
 
       response.body
-    end
-
-    def get_parsed_access_token(email_address:, password:)
-      are_environment_vars_set?
-      csrf_auth = load_auth_and_csrf_tokens
-      auth_cookie = get_auth_cookie(email_address: email_address, password: password, tokens: csrf_auth)
-      code = set_auth_code(auth_cookie: auth_cookie)
-      response_body = get_access_token(code: code)
-      parsed_response = JSON.parse response_body, symbolize_names: true
-      parsed_token = parsed_response[:access_token]
-      p "get_parsed_access_token returning: #{parsed_token}"
-      parsed_token
     end
   end
 end
