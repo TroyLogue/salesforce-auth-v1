@@ -5,7 +5,7 @@ module Setup
   module Data
     def self.send_referral_from_harvard_to_princeton(contact_id:)
       Referral.create(
-        token: Auth.access_token(email_address: Users::CC_USER),
+        token: Auth.jwt(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         contact_id: contact_id,
         referred_by_network_id: Networks::NETWORK_ID,
@@ -17,7 +17,7 @@ module Setup
 
     def self.send_sensitive_referral_from_harvard_to_princeton(contact_id:)
       Referral.create(
-        token: Auth.access_token(email_address: Users::CC_USER),
+        token: Auth.jwt(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         contact_id: contact_id,
         referred_by_network_id: Networks::NETWORK_ID,
@@ -29,7 +29,7 @@ module Setup
 
     def self.send_referral_from_harvard_to_yale(contact_id:)
       Referral.create(
-        token: Auth.access_token(email_address: Users::CC_USER),
+        token: Auth.jwt(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         contact_id: contact_id,
         referred_by_network_id: Networks::NETWORK_ID,
@@ -41,7 +41,7 @@ module Setup
 
     def self.reject_referral_in_harvard(note:)
       Referral.reject(
-        token: Auth.access_token(email_address: Users::CC_USER),
+        token: Auth.jwt(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         note: note,
         reason: 'Client is not eligible for our services',
@@ -51,7 +51,7 @@ module Setup
 
     def self.hold_referral_in_harvard(note:)
       Referral.hold(
-        token: Auth.access_token(email_address: Users::CC_USER),
+        token: Auth.jwt(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         note: note,
         reason: 'Other'
@@ -59,7 +59,7 @@ module Setup
     end
 
     def self.accept_referral_in_princeton
-      token = Auth.access_token(email_address: Users::ORG_PRINCETON)
+      token = Auth.jwt(email_address: Users::ORG_PRINCETON)
       Referral.accept(
         token: token,
         group_id: Providers::ORG_PRINCETON,
@@ -70,7 +70,7 @@ module Setup
 
     def self.send_referral_from_yale_to_harvard(contact_id:)
       Referral.create(
-        token: Auth.access_token(email_address: Users::ORG_YALE),
+        token: Auth.jwt(email_address: Users::ORG_YALE),
         group_id: Providers::ORG_YALE,
         contact_id: contact_id,
         referred_by_network_id: Networks::NETWORK_ID,
@@ -82,7 +82,7 @@ module Setup
 
     def self.send_referral_from_yale_to_princeton(contact_id:)
       Referral.create(
-        token: Auth.access_token(email_address: Users::ORG_YALE),
+        token: Auth.jwt(email_address: Users::ORG_YALE),
         group_id: Providers::ORG_YALE,
         contact_id: contact_id,
         referred_by_network_id: Networks::NETWORK_ID,
@@ -94,7 +94,7 @@ module Setup
 
     def self.draft_referral_in_harvard(contact_id:)
       Referral.draft(
-        token: Auth.access_token(email_address: Users::CC_USER),
+        token: Auth.jwt(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         contact_id: contact_id,
         referred_by_network_id: Networks::NETWORK_ID,
@@ -106,7 +106,7 @@ module Setup
 
     def self.close_referral_in_harvard(note:)
       Referral.close(
-        token: Auth.access_token(email_address: Users::CC_USER),
+        token: Auth.jwt(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         note: note,
         outcome_id: Resolutions::RESOLVED,
@@ -116,7 +116,7 @@ module Setup
 
     def self.recall_referral_in_princeton(note: 'Data Setup', reason: 'Client No Longer Requires Service')
       Referral.recall(
-        token: Auth.access_token(email_address: Users::ORG_PRINCETON),
+        token: Auth.jwt(email_address: Users::ORG_PRINCETON),
         group_id: Providers::ORG_PRINCETON,
         note: note,
         reason: reason
@@ -125,7 +125,7 @@ module Setup
 
     def self.reject_referral_in_princeton(note:)
       Referral.reject(
-        token: Auth.access_token(email_address: Users::ORG_PRINCETON),
+        token: Auth.jwt(email_address: Users::ORG_PRINCETON),
         group_id: Providers::ORG_PRINCETON,
         note: note,
         reason: 'Client is not eligible for our services',
@@ -135,7 +135,7 @@ module Setup
 
     def self.close_referral_in_princeton(note:)
       Referral.close(
-        token: Auth.access_token(email_address: Users::ORG_PRINCETON),
+        token: Auth.jwt(email_address: Users::ORG_PRINCETON),
         group_id: Providers::ORG_PRINCETON,
         note: note,
         outcome_id: Resolutions::RESOLVED,
@@ -145,7 +145,7 @@ module Setup
 
     def self.hold_referral_in_princeton(note:)
       Referral.hold(
-        token: Auth.access_token(email_address: Users::ORG_PRINCETON),
+        token: Auth.jwt(email_address: Users::ORG_PRINCETON),
         group_id: Providers::ORG_PRINCETON,
         note: note,
         reason: 'Other'
@@ -154,7 +154,7 @@ module Setup
 
     def self.recall_referral_in_harvard(note: 'Data Setup', reason: 'Client No Longer Requires Service')
       Referral.recall(
-        token: Auth.access_token(email_address: Users::CC_USER),
+        token: Auth.jwt(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         note: note,
         reason: reason
@@ -164,7 +164,7 @@ module Setup
     # ASSESSMENTS
     def self.get_referral_form_name_for_yale(referral_id:)
       Setup::Forms.get_first_form_name_for_referral(
-        token: Auth.access_token(email_address: Users::ORG_YALE),
+        token: Auth.jwt(email_address: Users::ORG_YALE),
         group_id: Providers::ORG_YALE,
         referral_id: referral_id
       )

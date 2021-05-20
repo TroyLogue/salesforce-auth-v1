@@ -3,7 +3,7 @@ module Setup
     def self.initialize_employee_with_role_and_program_in_qa_admin(logged_in_as:)
       # We want to avoid updating the employee that we are currently logged in as
       # Get all employees
-      @cc_qa_admin_token = Auth.access_token(email_address: Users::CC_QA_ADMIN)
+      @cc_qa_admin_token = Auth.jwt(email_address: Users::CC_QA_ADMIN)
       all_employees = Setup::Employees.get_all(token: @cc_qa_admin_token,
                                                group_id: Providers::CC_QA_ADMIN)
 
