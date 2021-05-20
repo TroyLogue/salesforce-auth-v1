@@ -24,7 +24,7 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as a Referral User]') do
     before {
-      @auth_token = Auth.get_encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }

@@ -1,7 +1,7 @@
 module Setup
   module Data
     def self.create_service_case_for_harvard(contact_id:)
-      token = Auth.access_token(email_address: Users::CC_USER)
+      token = Auth.jwt(email_address: Users::CC_USER)
       group_id = Providers::CC_HARVARD
 
       Setup::Cases.create(
@@ -17,7 +17,7 @@ module Setup
 
     def self.close_service_case_for_harvard(contact_id:, case_id:, resolved: true)
       Setup::Cases.close(
-        token: Auth.access_token(email_address: Users::CC_USER),
+        token: Auth.jwt(email_address: Users::CC_USER),
         group_id: Providers::CC_HARVARD,
         contact_id: contact_id,
         case_id: case_id,
@@ -26,7 +26,7 @@ module Setup
     end
 
     def self.create_service_case_for_yale(contact_id:)
-      token = Auth.access_token(email_address: Users::ORG_YALE)
+      token = Auth.jwt(email_address: Users::ORG_YALE)
       group_id = Providers::ORG_YALE
 
       Setup::Cases.create(
@@ -42,7 +42,7 @@ module Setup
 
     def self.close_service_case_for_yale(contact_id:, case_id:, resolved: true)
       Setup::Cases.close(
-        token: Auth.access_token(email_address: Users::ORG_YALE),
+        token: Auth.jwt(email_address: Users::ORG_YALE),
         group_id: Providers::ORG_YALE,
         contact_id: contact_id,
         case_id: case_id,
@@ -53,7 +53,7 @@ module Setup
     # ASSESSMENTS
     def self.get_case_form_name_for_yale(contact_id:, case_id:)
       Setup::Forms.get_first_form_name_for_case(
-        token: Auth.access_token(email_address: Users::ORG_YALE),
+        token: Auth.jwt(email_address: Users::ORG_YALE),
         group_id: Providers::ORG_YALE,
         contact_id: contact_id,
         case_id: case_id

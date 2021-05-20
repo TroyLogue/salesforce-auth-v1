@@ -2,16 +2,16 @@
 
 class Auth
   class << self
-    def access_token(email_address:, password: Users::DEFAULT_PASSWORD)
+    def jwt(email_address:, password: Users::DEFAULT_PASSWORD)
       # returns only a string of the JWT
       response_body = auth_token(email_address: email_address, password: password)
       parsed_response = JSON.parse response_body, symbolize_names: true
       parsed_response[:access_token]
     end
 
-    def get_encoded_auth_token(email_address:, password: Users::DEFAULT_PASSWORD)
+    def encoded_auth_token(email_address:, password: Users::DEFAULT_PASSWORD)
       # returns the whole token object, encoded to be added to browser cookies
-      encode_access_token(token: auth_token(email_address: email_address, password: password))
+      encode_token(token: auth_token(email_address: email_address, password: password))
     end
 
     private
@@ -25,16 +25,7 @@ class Auth
       end
     end
 
-    def auth_token(email_address:, password: Users::DEFAULT_PASSWORD)
-      # returns the whole token object, including expiration, scope, etc
-      are_environment_vars_set?
-      csrf_auth = load_auth_and_csrf_tokens
-      auth_cookie = get_auth_cookie(email_address: email_address, password: password, tokens: csrf_auth)
-      code = set_auth_code(auth_cookie: auth_cookie)
-      get_access_token(code: code)
-    end
-
-    def encode_access_token(token:)
+    def encode_token(token:)
       { name: 'uniteusApiToken', value: "{#{CGI.escape(token[1..-2]).gsub("%3A", ":").gsub("+","%20")}}" }
     end
 
@@ -97,6 +88,15 @@ class Auth
       raise("Response returned: #{response.code}") unless response.code == 200
 
       response.body
+    end
+
+    def auth_token(email_address:, password: Users::DEFAULT_PASSWORD)
+      # returns the whole token object, including expiration, scope, etc
+      are_environment_vars_set?
+      csrf_auth = load_auth_and_csrf_tokens
+      auth_cookie = get_auth_cookie(email_address: email_address, password: password, tokens: csrf_auth)
+      code = set_auth_code(auth_cookie: auth_cookie)
+      get_access_token(code: code)
     end
   end
 end
