@@ -1,14 +1,9 @@
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative 'pages/new_assistance_request_page'
 require_relative 'pages/new_assistance_request_dashboard_page'
 require_relative '../intakes/pages/intake'
 
 describe '[start intake from AR]', :app_client, :assistance_request do
-  include Login
-  
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:new_assistance_request_page) { NewAssistanceRequestPage.new(@driver) }
   let(:new_assistance_request_dashboard_page) { NewAssistanceRequestDashboardPage.new(@driver) }
@@ -17,8 +12,12 @@ describe '[start intake from AR]', :app_client, :assistance_request do
   before {
     # Submit assistance request
     @assistance_request = Setup::Data.submit_assistance_request_to_columbia_org
+    @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
 
-    log_in_as(Login::ORG_COLUMBIA)
+    homepage.authenticate_and_navigate_to(
+      token: @auth_token,
+      path: '/'
+    )
     expect(homepage.page_displayed?).to be_truthy
   }
 

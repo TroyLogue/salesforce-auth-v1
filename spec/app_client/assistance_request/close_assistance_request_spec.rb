@@ -1,4 +1,3 @@
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative 'pages/new_assistance_request_dashboard_page'
 require_relative 'pages/closed_assistance_request_dashboard_page'
@@ -7,25 +6,25 @@ require_relative 'pages/new_assistance_request_page'
 require_relative '../root/pages/notifications'
 
 describe '[Assistance request]', :app_client, :assistance_request do
-  include Login
-  
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:new_assistance_request_page) { NewAssistanceRequestPage.new(@driver) }
   let(:new_assistance_request_dashboard_page) { NewAssistanceRequestDashboardPage.new(@driver) }
   let(:closed_assistance_request_page) { ClosedAssistanceRequestPage.new(@driver) }
   let(:closed_assistance_request_dashboard_page) { ClosedAssistanceRequestDashboardPage.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
-  
+
   before {
     # Submit assistance request before each test
     @assistance_request = Setup::Data.submit_assistance_request_to_columbia_org
+    @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
   }
 
   context '[As ORG user]' do
     before {
-      log_in_as(Login::ORG_COLUMBIA)
+      homepage.authenticate_and_navigate_to(
+        token: @auth_token,
+        path: '/'
+      )
       expect(homepage.page_displayed?).to be_truthy
     }
 
@@ -55,7 +54,10 @@ describe '[Assistance request]', :app_client, :assistance_request do
       # Close the assistance request that is created via API before the test run
       @closed_ar = Setup::Data::close_columbia_assistance_request(ar_id: @assistance_request.ar_id)
 
-      log_in_as(Login::ORG_COLUMBIA)
+      homepage.authenticate_and_navigate_to(
+        token: @auth_token,
+        path: '/'
+      )
       expect(homepage.page_displayed?).to be_truthy
     }
 
