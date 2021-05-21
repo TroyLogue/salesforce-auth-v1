@@ -24,7 +24,7 @@ class BasePage
     add_cookie(
       name: token[:name],
       value: token[:value],
-      domain: ".#{ENV['web_url'].partition('.').last}"
+      domain: ".#{ENV['web_url'].partition('.').last.partition('/').first}"
     )
     get(path)
   end
