@@ -1,15 +1,10 @@
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative './pages/assessment_page'
 require_relative '../referrals/pages/referral'
 
 describe '[Assessments - Referrals]', :assessments, :app_client do
-  include Login
-
   let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:assessment) { Assessment.new(@driver) }
   let(:referral) { Referral.new(@driver) }
@@ -23,7 +18,8 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       @assessment_form_values = [QUESTION_ONE_TEXT, QUESTION_TWO_TEXT]
 
       # Generate pending referral for CC user:
-      log_in_as(Login::ORG_YALE)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
 
       # Create Contact
@@ -48,8 +44,8 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       user_menu.log_out
 
       # Log in as CC user to view referral
-      expect(login_email.page_displayed?).to be_truthy
-      log_in_as(Login::CC_HARVARD)
+      @cc_auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      homepage.authenticate_and_navigate_to(token: @cc_auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }
 

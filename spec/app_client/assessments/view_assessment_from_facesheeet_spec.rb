@@ -1,4 +1,3 @@
-require_relative '../auth/helpers/login'
 require_relative '../facesheet/pages/facesheet_forms_page'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../root/pages/home_page'
@@ -6,11 +5,7 @@ require_relative '../root/pages/right_nav'
 require_relative './pages/facesheet_assessment_page'
 
 describe '[Assessments - Facesheet]', :assessments, :app_client do
-  include Login
-
   let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:facesheet_forms) { FacesheetForms.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:assessment) { FacesheetAssessment.new(@driver) }
@@ -30,7 +25,8 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
 
   context('[as org user] With a new contact') do
     before {
-      log_in_as(Login::ORG_PRINCETON)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
 
       #creating contact
