@@ -1,17 +1,12 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
 require_relative '../cases/pages/case'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[Cases]', :app_client, :cases do
-  include Login
-
   let(:case_detail_page) { Case.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
   context('[as a Referrals Admin user]') do
@@ -24,7 +19,11 @@ describe '[Cases]', :app_client, :cases do
         contact_id: @contact.contact_id, case_id: @case.id, resolved: false
       )
 
-      log_in_as(Login::CC_HARVARD)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      homepage.authenticate_and_navigate_to(
+        token: @auth_token,
+        path: '/'
+      )
       expect(homepage.page_displayed?).to be_truthy
     end
 

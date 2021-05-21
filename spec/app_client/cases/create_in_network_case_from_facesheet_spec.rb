@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
 require_relative '../cases/pages/case'
 require_relative '../cases/pages/case_review'
 require_relative '../cases/pages/create_case'
@@ -11,16 +10,12 @@ require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[cases]', :app_client, :cases do
-  include Login
-
   let(:case_detail_page) { Case.new(@driver) }
   let(:case_review) { CaseReview.new(@driver) }
   let(:create_case) { CreateCase.new(@driver) }
   let(:facesheet_cases_page) { FacesheetCases.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
 
@@ -28,7 +23,11 @@ describe '[cases]', :app_client, :cases do
     before do
       @contact = Setup::Data.create_yale_client_with_consent
 
-      log_in_as(Login::ORG_YALE)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      homepage.authenticate_and_navigate_to(
+        token: @auth_token,
+        path: '/'
+      )
       expect(homepage.page_displayed?).to be_truthy
     end
 

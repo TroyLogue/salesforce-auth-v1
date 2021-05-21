@@ -1,22 +1,21 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../cases/pages/open_cases_dashboard'
 require_relative '../root/pages/notifications'
 
 describe '[cases]', :app_client, :cases do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
   context('[as non cc user]') do
     before(:each) do
-      log_in_as(Login::ORG_YALE)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      homepage.authenticate_and_navigate_to(
+        token: @auth_token,
+        path: '/'
+      )
       expect(homepage.page_displayed?).to be_truthy
     end
 
@@ -33,7 +32,11 @@ describe '[cases]', :app_client, :cases do
 
   context('[as cc user]') do
     before(:each) do
-      log_in_as(Login::CC_HARVARD)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      homepage.authenticate_and_navigate_to(
+        token: @auth_token,
+        path: '/'
+      )
       expect(homepage.page_displayed?).to be_truthy
     end
 
