@@ -16,11 +16,11 @@ class Auth
 
     private
     def are_environment_vars_set?
-      unless ENV['app_client_client_id'] && ENV['web_url'] && ENV['auth_url'] && ENV['DEFAULT_PASSWORD']
+      unless ENV['app_client_client_id'] && ENV['app_client_url'] && ENV['app_client_auth_url'] && ENV['DEFAULT_PASSWORD']
         raise("An environment variable is not set \n
               app_client_client_id: #{ENV['app_client_client_id']} \n
-              web_url: #{ENV['web_url']} \n
-              auth_url: #{ENV['auth_url']} \n
+              app_client_url: #{ENV['app_client_url']} \n
+              app_client_auth_url: #{ENV['app_client_auth_url']} \n
               default_password: #{ENV['DEFAULT_PASSWORD']} \n")
       end
     end
@@ -30,9 +30,9 @@ class Auth
     end
 
     def load_auth_and_csrf_tokens
-      callback_path = "/oauth2/auth?client_id=#{ENV['app_client_client_id']}&redirect_uri=#{ENV['web_url']}/callback&scope=app:read%20app:write&response_type=code"
+      callback_path = "/oauth2/auth?client_id=#{ENV['app_client_client_id']}&redirect_uri=#{ENV['app_client_url']}/callback&scope=app:read%20app:write&response_type=code"
 
-      initial_login = HTTParty.get("#{ENV['auth_url']}#{callback_path}")
+      initial_login = HTTParty.get("#{ENV['app_client_auth_url']}#{callback_path}")
       csrf_token = Nokogiri::HTML(initial_login.body).css('meta[name="csrf-token"]')[0]['content']
       auth_cookie = initial_login.headers['set-cookie'].split(';')[0]
 
@@ -63,10 +63,10 @@ class Auth
     end
 
     def set_auth_code(auth_cookie:)
-      callback_path = "/oauth2/auth?client_id=#{ENV['app_client_client_id']}&redirect_uri=#{ENV['web_url']}/callback/&scope=app:read%20app:write&response_type=code"
+      callback_path = "/oauth2/auth?client_id=#{ENV['app_client_client_id']}&redirect_uri=#{ENV['app_client_url']}/callback/&scope=app:read%20app:write&response_type=code"
 
       response = HTTParty.get(
-        "#{ENV['auth_url']}#{callback_path}",
+        "#{ENV['app_client_auth_url']}#{callback_path}",
         headers: { 'cookie': auth_cookie[:auth] },
         follow_redirects: false
       )
@@ -79,12 +79,12 @@ class Auth
     def get_access_token(code:)
       body = {
         'client_id': ENV['app_client_client_id'],
-        'redirect_uri': "#{ENV['web_url']}/callback/",
+        'redirect_uri': "#{ENV['app_client_url']}/callback/",
         'grant_type': 'authorization_code',
         'code': code[:code]
       }
 
-      response = HTTParty.post("#{ENV['auth_url']}/oauth2/token", body: body)
+      response = HTTParty.post("#{ENV['app_client_auth_url']}/oauth2/token", body: body)
       raise("Response returned: #{response.code}") unless response.code == 200
 
       response.body
