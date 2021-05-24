@@ -10,6 +10,7 @@ module Users
   when 'staging', 'devqa'
     CC_USER = 'harvard@auto.com'
     CC_QA_ADMIN = 'qa.perms@auto.com'
+    ORG_NO_ADDRESS = 'chicago@auto.com'
     ORG_PRINCETON = 'princeton@auto.com'
     ORG_YALE = 'yale@auto.com'
     ORG_COLUMBIA = 'columbia@auto.com'
@@ -19,4 +20,3 @@ module Users
     raise "Missing required ENV['environment']: prod, training, staging, devqa"
   end
 end
-

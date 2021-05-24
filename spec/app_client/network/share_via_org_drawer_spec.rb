@@ -1,5 +1,7 @@
-require_relative '../auth/helpers/login'
+# frozen_string_literal: true
+
 require_relative '../root/pages/banner'
+require_relative '../root/pages/home_page'
 require_relative '../root/pages/left_nav'
 require_relative '../root/pages/notifications'
 require_relative './pages/network_browse_drawer'
@@ -7,12 +9,9 @@ require_relative './pages/network_organizations'
 require_relative './pages/network_navigation'
 
 describe '[Network - Organizations - Browse Drawer]', :network, :app_client do
-  include Login
-
   let(:banner) { Banner.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:left_nav) { LeftNav.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:network_browse_drawer) { NetworkBrowseDrawer.new(@driver) }
   let(:network_navigation) { NetworkNavigation.new(@driver) }
   let(:network_organizations) { NetworkOrganizations.new(@driver) }
@@ -20,7 +19,10 @@ describe '[Network - Organizations - Browse Drawer]', :network, :app_client do
 
   context('[as a Network Directory User]') do
     before do
-      log_in_as(Login::CC_HARVARD)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+
       left_nav.go_to_my_network
       network_navigation.go_to_org_tab
       expect(network_organizations.page_displayed?).to be_truthy
