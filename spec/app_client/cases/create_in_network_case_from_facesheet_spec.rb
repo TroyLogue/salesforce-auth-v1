@@ -24,10 +24,7 @@ describe '[cases]', :app_client, :cases do
       @contact = Setup::Data.create_yale_client_with_consent
 
       @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
-      homepage.authenticate_and_navigate_to(
-        token: @auth_token,
-        path: '/'
-      )
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     end
 

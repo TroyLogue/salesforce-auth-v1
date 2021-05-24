@@ -21,10 +21,7 @@ describe '[Assistance request]', :app_client, :assistance_request do
 
   context '[As ORG user]' do
     before {
-      homepage.authenticate_and_navigate_to(
-        token: @auth_token,
-        path: '/'
-      )
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }
 
@@ -54,10 +51,7 @@ describe '[Assistance request]', :app_client, :assistance_request do
       # Close the assistance request that is created via API before the test run
       @closed_ar = Setup::Data::close_columbia_assistance_request(ar_id: @assistance_request.ar_id)
 
-      homepage.authenticate_and_navigate_to(
-        token: @auth_token,
-        path: '/'
-      )
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }
 

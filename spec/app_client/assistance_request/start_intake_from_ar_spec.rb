@@ -14,10 +14,7 @@ describe '[start intake from AR]', :app_client, :assistance_request do
     @assistance_request = Setup::Data.submit_assistance_request_to_columbia_org
     @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
 
-    homepage.authenticate_and_navigate_to(
-      token: @auth_token,
-      path: '/'
-    )
+    homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
     expect(homepage.page_displayed?).to be_truthy
   }
 
