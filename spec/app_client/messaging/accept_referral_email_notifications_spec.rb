@@ -1,3 +1,5 @@
+require_relative '../../../lib/mailtrap_helper'
+
 describe '[Messaging - Email Notifications]', :app_client, :messaging do
   include MailtrapHelper
 
