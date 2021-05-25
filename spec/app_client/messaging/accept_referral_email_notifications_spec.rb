@@ -1,5 +1,4 @@
 describe '[Messaging - Email Notifications]', :app_client, :messaging do
-  include Login
   include MailtrapHelper
 
   context('[as an org user] When I accept a referral for a Sensitive service type') do

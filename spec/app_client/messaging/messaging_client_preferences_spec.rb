@@ -1,21 +1,17 @@
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../facesheet/pages/facesheet_profile_page'
 require_relative '../facesheet/pages/facesheet_header'
 
 describe '[Messaging - Facesheet - Preferences]', :app_client, :messaging do
-  include Login
-
   let(:base_page) { BasePage.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_profile_page) { FacesheetProfilePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
 
   context('[as org user]') do
     before {
-      log_in_as(Login::ORG_COLUMBIA)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
       @contact = Setup::Data.create_columbia_client_with_consent
