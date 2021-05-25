@@ -11,13 +11,13 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
   let(:facesheet_profile) { FacesheetProfilePage.new(@driver) }
 
   # # option 1 - new browser session with each spec
-  context('[as org user]') do
+  context('[as org user with military and insurance]') do
     before(:all) do
       @contact = Setup::Data.create_columbia_client_with_consent
     end
 
     before(:each) do
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      auth_token = Auth.encoded_auth_token(email_address: Users::MILITARY_AND_INSURANCE_ORG)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -138,7 +138,7 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
     let(:clients_page) { ClientsPage.new(@driver) }
 
     before {
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      auth_token = Auth.encoded_auth_token(email_address: Users::NON_MILITARY_NON_INSURANCE_ORG)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
