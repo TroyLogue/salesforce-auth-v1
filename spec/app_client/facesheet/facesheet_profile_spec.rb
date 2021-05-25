@@ -1,5 +1,4 @@
 require_relative '../../../lib/state_name_abbr'
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative './pages/facesheet_header'
 require_relative './pages/facesheet_profile_page'
@@ -7,10 +6,6 @@ require_relative '../root/pages/left_nav'
 require_relative '../clients/pages/clients_page'
 
 describe '[Facesheet][Profile]', :app_client, :facesheet do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_profile) { FacesheetProfilePage.new(@driver) }
@@ -22,7 +17,8 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
     end
 
     before(:each) do
-      log_in_as(Login::ORG_COLUMBIA)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
       facesheet_header.go_to_facesheet_with_contact_id(
@@ -137,12 +133,13 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
     end
   end
 
-  context('[as non-military and non-insurance forcused org]') do
+  context('[as non-military and non-insurance focused org]') do
     let(:left_nav) { LeftNav.new(@driver) }
     let(:clients_page) { ClientsPage.new(@driver) }
 
     before {
-      log_in_as(Login::ORG_PRINCETON)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
       # Navigate to any existing contact's profile
