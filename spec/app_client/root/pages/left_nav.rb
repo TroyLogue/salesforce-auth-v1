@@ -7,10 +7,6 @@ class LeftNav < BasePage
   EXPORTS_LINK = { css: '.network-menu-exports-btn' }
   CLIENTS_LINK = { css: '#nav-clients' }
 
-  def clients_path
-    "/dashboard/clients/all"
-  end
-
   def go_to_dashboard
     click(DASHBOARD_LINK)
   end

@@ -1,14 +1,12 @@
-require_relative '../root/pages/left_nav'
 require_relative './pages/clients_page'
 
 describe '[Dashboard - Client - Filter]', :clients, :app_client do
-  let(:left_nav) { LeftNav.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
 
   context('[as cc user]') do
     before {
       @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
-      left_nav.authenticate_and_navigate_to(token: @auth_token, path: left_nav.clients_path)
+      clients_page.authenticate_and_navigate_to(token: @auth_token, path: ClientsPage::ALL_CLIENTS_PATH)
       expect(clients_page.page_displayed?).to be_truthy
     }
 
