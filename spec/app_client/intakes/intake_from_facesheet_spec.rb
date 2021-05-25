@@ -1,19 +1,12 @@
 # frozen_string_literal: true
 
 require_relative '../root/pages/notifications'
-require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../intakes/pages/intake'
 require_relative '../facesheet/pages/facesheet_forms_page'
 
 describe '[Intake]', :app_client, :intake do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:base_page) { BasePage.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
   let(:facesheet_forms_page) { FacesheetForms.new(@driver) }
@@ -23,7 +16,8 @@ describe '[Intake]', :app_client, :intake do
 
   context('[as org user]') do
     before do
-      log_in_as(Login::ORG_YALE)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
       # Create Contact
