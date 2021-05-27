@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
+require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative './pages/org_settings_programs_page'
 
 describe '[Org Settings - Programs]', :org_settings, :app_client do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:org_settings_program_table) { OrgSettings::ProgramTable.new(@driver) }
   let(:org_settings_program_form) { OrgSettings::ProgramForm.new(@driver) }
 
   context('[as an org admin]') do
     before do
-      log_in_as(Login::SETTINGS_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::SETTINGS_USER)
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+
       org_menu.go_to_programs
       expect(org_settings_program_table.page_displayed?).to be_truthy
     end

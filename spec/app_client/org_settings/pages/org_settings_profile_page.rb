@@ -7,7 +7,7 @@ module OrgSettings
     DIALOG_MODAL = { css: '.dialog.open' }.freeze
 
     EDIT_DESCRIPTION = { css: '#edit-description-btn' }.freeze
-    INPUT_DESCRIPTION = { css: '.public-DraftStyleDefault-block > span' }.freeze
+    INPUT_DESCRIPTION = { css: '#edit-description-modal .public-DraftEditor-content' }.freeze
     SAVE_DESCRIPTION = { css: '#edit-description-save-btn' }.freeze
     TEXT_DESCRIPTION = { css: '.html-parsed-text' }.freeze
 
@@ -48,7 +48,8 @@ module OrgSettings
     end
 
     def save_description(description)
-      edit_and_save_field(edit_button: EDIT_DESCRIPTION, save_button: SAVE_DESCRIPTION, input_field: INPUT_DESCRIPTION, text_value: description)
+      edit_and_save_field(edit_button: EDIT_DESCRIPTION, save_button: SAVE_DESCRIPTION, input_field: INPUT_DESCRIPTION,
+                          text_value: description)
     end
 
     def get_description
@@ -74,7 +75,8 @@ module OrgSettings
     end
 
     def save_address(address)
-      edit_and_save_field(edit_button: EDIT_ADDRESS, save_button: SAVE_ADDRESS, input_field: INPUT_ADDRESS, text_value: address)
+      edit_and_save_field(edit_button: EDIT_ADDRESS, save_button: SAVE_ADDRESS, input_field: INPUT_ADDRESS,
+                          text_value: address)
     end
 
     def get_address
@@ -82,7 +84,8 @@ module OrgSettings
     end
 
     def save_website(website)
-      edit_and_save_field(edit_button: EDIT_WEBSITE, save_button: SAVE_WEBSITE, input_field: INPUT_WEBSITE, text_value: website)
+      edit_and_save_field(edit_button: EDIT_WEBSITE, save_button: SAVE_WEBSITE, input_field: INPUT_WEBSITE,
+                          text_value: website)
     end
 
     def get_website

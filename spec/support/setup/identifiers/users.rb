@@ -26,6 +26,7 @@ module Users
     ORG_YALE = 'yale@auto.com'
     ORG_COLUMBIA = 'columbia@auto.com'
     ORG_NEWYORK = 'newyork@auto.com'
+    SETTINGS_USER = 'qa.perms@auto.com'
     SCREENINGS_USER_MULTI_NETWORK = 'screenings@emr.com'
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
   else

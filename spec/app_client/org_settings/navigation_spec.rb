@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
 require_relative './pages/org_settings_navigation'
@@ -9,13 +8,9 @@ require_relative './pages/org_settings_programs_page'
 require_relative './pages/org_settings_user_page'
 
 describe '[Org Settings Navigation]', :org_settings, :app_client do
-  include Login
-
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:org_settings_profile) { OrgSettings::Profile.new(@driver) }
   let(:org_settings_navigation) { OrgSettings::Navigation.new(@driver) }
   let(:org_settings_program_table) { OrgSettings::ProgramTable.new(@driver) }
@@ -23,7 +18,9 @@ describe '[Org Settings Navigation]', :org_settings, :app_client do
 
   context('[As an org admin]') do
     before do
-      log_in_as(Login::CC_HARVARD)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::SETTINGS_USER)
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
     end
 
     it 'Navigate through Org Settings Tabs', :uuqa_323, :uuqa_322, :uuqa_321 do
