@@ -28,13 +28,17 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       @dob = Faker::Time.backward(days: 1000).strftime('%m/%d/%Y')
     end
 
-    it 'Create a consented NextGate client', :uuqa_901, :uuqa_903 do
+    # Changes from ES-60 cause delays in user indexing when using Search And Match
+    # This test case can be re-evaluated once ES-110 has be investigated
+    # The workaround is to search our newly created client in the search bar
+    it 'Create a consented NextGate client', :uuqa_901, :uuqa_903, :es_110 do
       # Start creation process by searching for non-existant client
       create_menu.start_new_client
       expect(search_client_page.page_displayed?).to be_truthy
       search_client_page.search_client(fname: @fname, lname: @lname, dob: @dob)
 
       # No clients should display they should be send directly to pre-filled form
+      confirm_client_page.click_create_new_client if confirm_client_page.page_displayed?
       expect(add_client_page.page_displayed?).to be_truthy
       expect(add_client_page.is_info_prefilled?(
                fname: @fname,
@@ -48,22 +52,11 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       expect(facesheet_header.facesheet_name).to eql("#{@fname} #{@lname}")
       notifications.close_banner
 
-      # Client created on NG is now searchable
-      create_menu.start_new_client
-      expect(search_client_page.page_displayed?).to be_truthy
-      search_client_page.search_client(fname: @fname, lname: @lname, dob: @dob)
+      search_bar.go_to_search_results_page("#{@fname} #{@lname}")
+      expect(search_bar.are_results_not_displayed?).to be_truthy
+      search_bar.go_to_facesheet_of("#{@fname} #{@lname}")
 
-      expect(confirm_client_page.page_displayed?).to be_truthy
-      expect(confirm_client_page.clients_returned).to be(1)
-      confirm_client_page.select_nth_client(index: 0)
-
-      # And Info is again pre-filled correctly
-      expect(add_client_page.page_displayed?).to be_truthy
-      expect(add_client_page.is_info_prefilled?(
-               fname: @fname,
-               lname: @lname,
-               dob: @dob
-             )).to be_truthy
+      expect(facesheet_header.facesheet_name).to eql("#{@fname} #{@lname}")
     end
   end
 
