@@ -24,13 +24,13 @@ describe '[User Settings - Change Password]', :app_client, :user_settings, order
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
 
   context('[as licensed user] From user settings page,') do
-    let(:reset_user) { Login::RESET_PW_USER }
-    let(:original_pw) { Login::DEFAULT_PASSWORD }
-    let(:insecure_pw) { Login::INSECURE_PASSWORD }
+    let(:reset_user) { Users::RESET_PW_USER }
+    let(:original_pw) { Users::DEFAULT_PASSWORD }
+    let(:insecure_pw) { 'password123' }
     let(:new_pw) { 'Uniteus123' }
 
     it 'cancels password change while logged in', :uuqa_1493 do
-      log_in_as(reset_user)
+      log_in_as(email_address: reset_user)
       expect(home_page.page_displayed?).to be_truthy # checking for a successful login
       user_menu.go_to_user_settings
       expect(account_info_page.page_displayed?).to be_truthy
@@ -47,7 +47,7 @@ describe '[User Settings - Change Password]', :app_client, :user_settings, order
     end
 
     it 'cannot change password to an insecure password', :uuqa_803 do
-      log_in_as(reset_user)
+      log_in_as(email_address: reset_user)
       expect(home_page.page_displayed?).to be_truthy # checking for a successful login
       user_menu.go_to_user_settings
       expect(account_info_page.page_displayed?).to be_truthy
@@ -63,7 +63,7 @@ describe '[User Settings - Change Password]', :app_client, :user_settings, order
     end
 
     it 'can change password to a secure password', :uuqa_247 do
-      log_in_as(reset_user)
+      log_in_as(email_address: reset_user)
       expect(home_page.page_displayed?).to be_truthy # checking for a successful login
       user_menu.go_to_user_settings
       expect(account_info_page.page_displayed?).to be_truthy
@@ -83,7 +83,7 @@ describe '[User Settings - Change Password]', :app_client, :user_settings, order
 
     # TODO: - convert to API call for cleanup and remove :order => :defined tag
     it 'changes password back to default password', :uuqa_247 do
-      log_in_as(reset_user, new_pw)
+      log_in_as(email_address: reset_user, password: new_pw)
       expect(home_page.page_displayed?).to be_truthy # checking for a successful login
       user_menu.go_to_user_settings
 

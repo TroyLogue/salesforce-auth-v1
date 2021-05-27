@@ -13,7 +13,7 @@ describe '[Users - ]', :app_client, :users do
   let(:login_password) { LoginPassword.new(@driver) }
 
   it 'Logs in as a user who is a subscribed employee of multiple providers', :uuqa_1607 do
-    log_in_as(Login::USER_IN_MULTIPLE_PROVIDERS)
+    log_in_as(email_address: Users::USER_IN_MULTIPLE_PROVIDERS)
     expect(group_selector_page.page_displayed?).to be_truthy
     expect(group_selector_page.number_of_provider_buttons).to be > 1
 

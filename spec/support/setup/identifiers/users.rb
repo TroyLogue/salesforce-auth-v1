@@ -30,8 +30,11 @@ module Users
     ORG_YALE = 'yale@auto.com'
     ORG_COLUMBIA = 'columbia@auto.com'
     ORG_NEWYORK = 'newyork@auto.com'
+    RESET_PW_USER = 'reset_pw_org@auto.com'
     SETTINGS_USER = 'qa.perms@auto.com'
     SCREENINGS_USER_MULTI_NETWORK = 'screenings@emr.com'
+    USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test'
+
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
   else
     raise "Missing required ENV['environment']: prod, training, staging, devqa"
