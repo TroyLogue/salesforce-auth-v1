@@ -10,15 +10,13 @@ describe '[User Settings - 2FA]', :app_client, :user_settings do
   include Login
 
   let(:home_page) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:security_settings_page) { UserSettings::SecuritySettingsPage.new(@driver) }
   let(:two_factor_auth_edit_page) { UserSettings::TwoFactorAuthEditPage.new(@driver) }
   let(:two_factor_auth_new_page) { UserSettings::TwoFactorAuthNewPage.new(@driver) }
 
   context('as licensed user') do
     before do
-      log_in_as(Login::CC_HARVARD)
+      log_in_as(email_address: Users::CC_USER)
       expect(home_page.page_displayed?).to be_truthy
     end
 
