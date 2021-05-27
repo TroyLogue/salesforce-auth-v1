@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class Exports < BasePage
@@ -22,6 +23,8 @@ class Exports < BasePage
 
   # Date Range Options
   DAYS_7 = 'Last 7 Days'
+
+  INDEX_PATH = '/exports'
 
   def page_displayed?
     is_displayed?(NEW_EXPORT_BUTTON) &&
