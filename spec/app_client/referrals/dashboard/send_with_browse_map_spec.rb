@@ -1,4 +1,5 @@
-require_relative '../../auth/helpers/login'
+# frozen_string_literal: true
+
 require_relative '../../root/pages/right_nav'
 require_relative '../../root/pages/home_page'
 require_relative '../../referrals/pages/referral'
@@ -7,11 +8,7 @@ require_relative '../../referrals/pages/referral_network_map'
 require_relative '../../referrals/pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals do
-  include Login
-
-  let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
   let(:referral) { Referral.new(@driver) }
   let(:sent_referral_dashboard) { ReferralDashboard::Sent::All.new(@driver) }
@@ -19,17 +16,17 @@ describe '[Referrals]', :app_client, :referrals do
   let(:network_map) { ReferralNetworkMap.new(@driver) }
 
   context('[as a Referral user]') do
-    before {
+    before do
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent
-
       # Create Referral
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
 
       # login in as org user where referral was sent
-      log_in_as(Login::ORG_PRINCETON)
-      expect(homepage.page_displayed?).to be_truthy
-    }
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+    end
 
     it 'user can send a new referral using Browse map', :uuqa_48, :uuqa_166 do
       # Opening send referral page
@@ -65,10 +62,10 @@ describe '[Referrals]', :app_client, :referrals do
       @referral.id = referral.current_referral_id
     end
 
-    after {
+    after do
       # closing referral for cleanup purposes
       Setup::Data.recall_referral_in_princeton(note: 'Data cleanup')
       Setup::Data.close_referral_in_princeton(note: 'Data cleanup')
-    }
+    end
   end
 end

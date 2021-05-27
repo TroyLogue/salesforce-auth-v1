@@ -10,6 +10,7 @@ module Users
   when 'staging', 'devqa'
     CC_USER = 'harvard@auto.com'
     CC_QA_ADMIN = 'qa.perms@auto.com'
+    ORG_200_USERS = 'test-perms4@auto.com'
     # org with military focus and health insurance enabled
     MILITARY_AND_INSURANCE_ORG = 'columbia@auto.com'
     # org without military focus and without health insurance focus

@@ -1,4 +1,3 @@
-require_relative '../../auth/helpers/login'
 require_relative '../../root/pages/right_nav'
 require_relative '../../root/pages/home_page'
 require_relative '../../referrals/pages/referral'
@@ -7,26 +6,24 @@ require_relative '../../referrals/pages/referral_network_map'
 require_relative '../../referrals/pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals do
-  include Login
-
-  let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:referral) { Referral.new(@driver) }
   let(:sent_referral_dashboard) { ReferralDashboard::Sent::All.new(@driver) }
   let(:draft_referral_dashboard) { ReferralDashboard::Draft.new(@driver) }
   let(:referral_send) { ReferralSend.new(@driver) }
 
   context('[as a Referral user with a received referral]') do
-    before {
+    before do
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent
       # Create Referral
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
+
       # login in as org user where referral was sent
-      log_in_as(Login::ORG_PRINCETON)
-      expect(homepage.page_displayed?).to be_truthy
-    }
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+    end
 
     it 'user can send a referral in review', :uuqa_1652 do
       # Hold referral for review
@@ -62,15 +59,17 @@ describe '[Referrals]', :app_client, :referrals do
   end
 
   context('[as a Referral user with a sent referral]') do
-    before {
+    before do
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent
       # Create Referral
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
+
       # login in as cc user who sent referral
-      log_in_as(Login::CC_HARVARD)
-      expect(homepage.page_displayed?).to be_truthy
-    }
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+    end
 
     it 'user can send a rejected referral', :uuqa_1662 do
       # Reject Referral
@@ -151,15 +150,17 @@ describe '[Referrals]', :app_client, :referrals do
   end
 
   context('[as a Referral user with a draft referral]') do
-    before {
+    before do
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent
       # Create Referral
       @draft_referral = Setup::Data.draft_referral_in_harvard(contact_id: @contact.contact_id)
-      # login in as cc user who drafted referral
-      log_in_as(Login::CC_HARVARD)
-      expect(homepage.page_displayed?).to be_truthy
-    }
+
+      # auth as user who drafted referral
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+    end
 
     it 'user can select a provider and send a draft referral', :uuqa_1733 do
       # Go to drafted referral

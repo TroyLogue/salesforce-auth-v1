@@ -1,17 +1,12 @@
 # frozen_string_literal: true
 
-require_relative '../../auth/helpers/login'
 require_relative '../../root/pages/home_page'
 require_relative '../../facesheet/pages/facesheet_header'
 require_relative './../pages/create_referral'
 require_relative './../pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals do
-  include Login
-
-  let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:add_referral_page) { CreateReferral::AddReferral.new(@driver) }
   let(:additional_info_page) { CreateReferral::AdditionalInfo.new(@driver) }
@@ -19,14 +14,15 @@ describe '[Referrals]', :app_client, :referrals do
   let(:sent_referral_dashboard) { ReferralDashboard::Sent::All.new(@driver) }
 
   context('[as a Referral User in an org with referral permissions to another network]') do
-    before {
+    before do
       # Create Contact
       @contact = Setup::Data.create_columbia_client_with_consent
       @contact.add_address # So that orgs display as opposed to a CC
 
-      log_in_as(Login::ORG_COLUMBIA)
-      expect(homepage.page_displayed?).to be_truthy
-    }
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+    end
 
     it 'user can create a referral and send to another network', :uuqa_1736 do
       facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)
