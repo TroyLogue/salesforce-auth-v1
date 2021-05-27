@@ -1,19 +1,14 @@
 # frozen_string_literal: true
 
 require_relative './../pages/create_referral'
-require_relative '../../auth/helpers/login'
 require_relative '../../facesheet/pages/facesheet_header'
 require_relative '../../root/pages/home_page'
 require_relative '../../../shared_components/shares_page'
 
 describe '[Referrals - External]', :app_client, :referrals do
-  include Login
-
   let(:add_referral_page) { CreateReferral::AddReferral.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
-  let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:share_drawer) { CreateReferral::ShareDrawer.new(@driver) }
   let(:shares_page) { SharesPage.new(@driver) }
 
@@ -22,8 +17,9 @@ describe '[Referrals - External]', :app_client, :referrals do
       # since we're not creating or updating data on the client we can use a random, existing contact
       @contact = Setup::Data.random_existing_harvard_client
 
-      log_in_as(Login::CC_HARVARD)
-      expect(homepage.page_displayed?).to be_truthy
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
     end
 
     context('creates OON referral to one provider and opens share drawer') do

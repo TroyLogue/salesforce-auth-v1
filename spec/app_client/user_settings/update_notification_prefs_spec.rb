@@ -1,28 +1,21 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
-require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 require_relative './pages/notification_prefs_page'
 
 describe '[User Settings - Update Notification Preferences]', :user_settings, :app_client do
-  include Login
-
-  let(:home_page) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:user_settings_notification_prefs_page) { UserSettings::NotificationPrefsPage.new(@driver) }
 
   # this test case was added when Ivy League users got errors while trying to load notification preferences
   context('[As a user with network notification preferences]') do
     before do
-      log_in_as(Login::CC_HARVARD)
-      expect(home_page.page_displayed?).to be_truthy
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      user_settings_notification_prefs_page.authenticate_and_navigate_to(token: @auth_token,
+                                                                         path: UserSettings::NotificationPrefsPage::PATH)
     end
 
     it 'loads network notification preferences correctly without error messages', :uuqa_1613 do
-      user_settings_notification_prefs_page.load_page
       expect(notifications.is_displayed?(Notifications::ERROR_BANNER)).to be false
       expect(user_settings_notification_prefs_page.page_displayed?).to be_truthy
     end
@@ -30,12 +23,12 @@ describe '[User Settings - Update Notification Preferences]', :user_settings, :a
 
   context('[As a user]') do
     before do
-      log_in_as(Login::SETTINGS_USER)
-      expect(home_page.page_displayed?).to be_truthy
+      @auth_token = Auth.encoded_auth_token(email_address: Users::SETTINGS_USER)
+      user_settings_notification_prefs_page.authenticate_and_navigate_to(token: @auth_token,
+                                                                         path: UserSettings::NotificationPrefsPage::PATH)
     end
 
     it 'updates provider assistance request preference', :uuqa_1613 do
-      user_settings_notification_prefs_page.load_page
       expect(notifications.is_displayed?(Notifications::ERROR_BANNER)).to be false
       expect(user_settings_notification_prefs_page.page_displayed?).to be_truthy
 

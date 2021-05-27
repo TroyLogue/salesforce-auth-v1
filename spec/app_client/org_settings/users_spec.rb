@@ -1,32 +1,34 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
+require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 require_relative '../root/pages/right_nav'
 require_relative './pages/org_settings_user_page'
 
 describe '[Org Settings - Users]', :org_settings, :app_client do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:org_settings_user_table) { OrgSettings::UserTable.new(@driver) }
   let(:org_settings_user_form) { OrgSettings::UserCard.new(@driver) }
-  let(:employee_id) {
-    Setup::Data.initialize_employee_with_role_and_program_in_qa_admin(logged_in_as: Login::SETTINGS_USER)
-  }
+  let(:employee_id) do
+    Setup::Data.initialize_employee_with_role_and_program_in_qa_admin(current_user_email_address: Users::SETTINGS_USER)
+  end
 
   context('[as an org admin]') do
     before do
-      log_in_as(Login::SETTINGS_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::SETTINGS_USER)
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+
       org_menu.go_to_users_table
       expect(org_settings_user_table.page_displayed?).to be_truthy
     end
 
     it 'displays users in alphabetical order', :uuqa_809 do
-      expect(org_settings_user_table.get_list_of_user_names.each_cons(2).all? { |a, b| a.downcase <= b.downcase }).to be_truthy
+      expect(org_settings_user_table.get_list_of_user_names.each_cons(2).all? do |a, b|
+               a.downcase <= b.downcase
+             end).to be_truthy
     end
 
     it 'can view new user form', :uuqa_354 do

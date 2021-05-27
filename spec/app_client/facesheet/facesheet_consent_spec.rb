@@ -1,20 +1,16 @@
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative './pages/facesheet_header'
 require_relative '../consent/pages/consent_modal'
 
 describe '[Facesheet][Header]', :app_client, :facesheet do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:consent_modal) { ConsentModal.new(@driver) }
 
   context('[as org user]') do
     before {
-      log_in_as(Login::ORG_COLUMBIA)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
       # Create Contact
       @contact = Setup::Data.create_columbia_client

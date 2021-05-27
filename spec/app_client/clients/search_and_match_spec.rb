@@ -1,4 +1,3 @@
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative '../clients/pages/search_client_page'
@@ -6,11 +5,7 @@ require_relative '../clients/pages/confirm_client_page'
 require_relative '../clients/pages/add_client_page'
 
 describe '[Dashboard - Client - Search]', :clients, :app_client do
-  include Login
-
   let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:create_menu) { RightNav::CreateMenu.new(@driver) }
   let(:search_client_page) { SearchClient.new(@driver) }
   let(:confirm_client_page) { ConfirmClient.new(@driver) }
@@ -21,7 +16,8 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       # Get a random existing contact
       @contact = Setup::Data.random_existing_harvard_client
 
-      log_in_as(Login::CC_HARVARD)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }
 

@@ -1,19 +1,12 @@
-require_relative '../auth/helpers/login'
-require_relative '../root/pages/left_nav'
 require_relative './pages/clients_page'
 
 describe '[Dashboard - Client - Filter]', :clients, :app_client do
-  include Login
-
-  let(:left_nav) { LeftNav.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
 
   context('[as cc user]') do
     before {
-      log_in_as(Login::CC_HARVARD)
-      left_nav.go_to_clients
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      clients_page.authenticate_and_navigate_to(token: @auth_token, path: ClientsPage::ALL_CLIENTS_PATH)
       expect(clients_page.page_displayed?).to be_truthy
     }
 

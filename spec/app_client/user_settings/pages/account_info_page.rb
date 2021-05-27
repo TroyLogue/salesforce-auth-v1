@@ -20,9 +20,7 @@ module UserSettings
     # security settings
     EDIT_SECURITY_SETTINGS_BUTTON = { css: 'button[data-qa=edit-security-settings-btn]' }.freeze
 
-    def load_page
-      get('/user/settings')
-    end
+    PATH = '/user/settings'
 
     def page_displayed?
       is_displayed?(SETTINGS_DIV) &&

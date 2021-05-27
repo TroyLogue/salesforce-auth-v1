@@ -1,22 +1,18 @@
-require_relative '../auth/helpers/login'
-require_relative '../root/pages/left_nav'
+# frozen_string_literal: true
+
+require_relative '../root/pages/notifications'
 require_relative './pages/exports'
 
 describe '[Reports - Create Export]', :reports, :app_client do
-  include Login
-
-  let(:left_nav) { LeftNav.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:exports) { Exports.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
   context('[as cc user]') do
-    before {
-      log_in_as(Login::CC_HARVARD)
-      left_nav.go_to_exports
+    before do
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      exports.authenticate_and_navigate_to(token: @auth_token, path: Exports::INDEX_PATH)
       expect(exports.page_displayed?).to be_truthy
-    }
+    end
 
     context('with network export source,') do
       it 'creates an export', :uuqa_152 do
@@ -40,11 +36,11 @@ describe '[Reports - Create Export]', :reports, :app_client do
   end
 
   context('[as org user]') do
-    before {
-      log_in_as(Login::ORG_COLUMBIA)
-      left_nav.go_to_exports
+    before do
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      exports.authenticate_and_navigate_to(token: @auth_token, path: Exports::INDEX_PATH)
       expect(exports.page_displayed?).to be_truthy
-    }
+    end
     # With the resolution of UU3-47689, test case can be updated to match requirements in UU3-52079
     it 'creates an export', :uuqa_152 do
       exports.click_new_export

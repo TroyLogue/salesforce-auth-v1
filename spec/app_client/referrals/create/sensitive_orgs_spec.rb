@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../../auth/helpers/login'
 require_relative '../../root/pages/home_page'
 require_relative '../../root/pages/left_nav'
 require_relative '../../clients/pages/clients_page'
@@ -9,11 +8,7 @@ require_relative './../pages/create_referral'
 require_relative './../pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals do
-  include Login
-
-  let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:left_nav) { LeftNav.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
@@ -21,8 +16,9 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as a Referral User in sensitive org]') do
     it 'Warning displays when creating a referral', :uuqa_1678 do
-      log_in_as(Login::ORG_YALE)
-      expect(homepage.page_displayed?).to be_truthy
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
 
       left_nav.go_to_clients
       expect(clients_page.page_displayed?).to be_truthy
@@ -38,8 +34,9 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as a Referral User in a non-sensitive org]') do
     it 'Warning displays when creating a referral', :uuqa_1678 do
-      log_in_as(Login::CC_HARVARD)
-      expect(homepage.page_displayed?).to be_truthy
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
 
       left_nav.go_to_clients
       expect(clients_page.page_displayed?).to be_truthy

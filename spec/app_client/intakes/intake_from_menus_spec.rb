@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/home_page'
 require_relative '../clients/pages/add_client_page'
@@ -9,10 +8,6 @@ require_relative '../clients/pages/search_client_page'
 require_relative '../intakes/pages/intake'
 
 describe '[Intake]', :app_client, :intake do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:create_menu) { RightNav::CreateMenu.new(@driver) }
   let(:home_page) {HomePage.new(@driver)}
   let(:intake_page) {Intake.new(@driver)}
@@ -22,7 +17,10 @@ describe '[Intake]', :app_client, :intake do
 
   context('[as a user with Intakes User role]') do
     before {
-      log_in_as(Login::ORG_YALE)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+
       create_menu.start_new_intake
       expect(search_client_page.page_displayed?).to be_truthy
     }

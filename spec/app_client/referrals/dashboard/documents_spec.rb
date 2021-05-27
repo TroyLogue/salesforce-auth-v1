@@ -1,27 +1,24 @@
-require_relative '../../auth/helpers/login'
-require_relative '../../root/pages/right_nav'
+# frozen_string_literal: true
+
 require_relative '../../root/pages/home_page'
+require_relative '../../root/pages/right_nav'
 require_relative '../../referrals/pages/referral'
 
 describe '[Referrals]', :app_client, :referrals do
-  include Login
-
-  let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:new_referral) { Referral.new(@driver) }
 
   context('[as a Referral user]') do
-    before {
+    before do
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent
-
       # Create Referral
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
 
-      log_in_as(Login::ORG_PRINCETON)
-      expect(homepage.page_displayed?).to be_truthy
-    }
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+    end
 
     it 'user can add and remove document on a new referral', :uuqa_134, :uuqa_136 do
       new_referral.go_to_new_referral_with_id(referral_id: @referral.id)
@@ -34,9 +31,9 @@ describe '[Referrals]', :app_client, :referrals do
       expect(new_referral.no_documents?).to be_truthy
     end
 
-    after {
+    after do
       # recalling referral
       Setup::Data.recall_referral_in_harvard(note: 'Data cleanup')
-    }
+    end
   end
 end

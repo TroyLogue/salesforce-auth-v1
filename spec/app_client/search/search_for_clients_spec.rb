@@ -1,19 +1,20 @@
-require_relative '../auth/helpers/login'
+# frozen_string_literal: true
+
+require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative './pages/search_results_page'
 
 describe '[Search]', :app_client, :search do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:search_bar) { RightNav::SearchBar.new(@driver) }
   let(:search_results_page) { SearchResultsPage.new(@driver) }
 
   context('[as org user]') do
-    before {
-      log_in_as(Login::ORG_YALE)
-    }
+    before do
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+    end
 
     it 'Search Bar Results Table', :uuqa_170 do
       search_bar.search_for('E')

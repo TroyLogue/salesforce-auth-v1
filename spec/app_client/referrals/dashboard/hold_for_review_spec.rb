@@ -1,31 +1,29 @@
-require_relative '../../auth/helpers/login'
-require_relative '../../root/pages/right_nav'
+# frozen_string_literal: true
+
 require_relative '../../root/pages/home_page'
+require_relative '../../root/pages/right_nav'
 require_relative '../../referrals/pages/referral'
 require_relative '../../referrals/pages/referral_dashboard'
 
 describe '[Referrals]', :app_client, :referrals do
-  include Login
-
-  let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:referral) { Referral.new(@driver) }
   let(:inreview_referral_dashboard) { ReferralDashboard::InReview.new(@driver) }
   let(:rejected_referral_dashboard) { ReferralDashboard::Rejected.new(@driver) }
 
-  before {
+  before do
     # Create Contact
     @contact = Setup::Data.create_harvard_client_with_consent
 
     # Create Referral
     @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
-  }
+  end
 
   context('[as a Referral user]') do
     it 'user can hold a new referral for review', :uuqa_909 do
-      log_in_as(Login::ORG_PRINCETON)
-      expect(homepage.page_displayed?).to be_truthy
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
 
       referral.go_to_new_referral_with_id(referral_id: @referral.id)
 
@@ -53,8 +51,9 @@ describe '[Referrals]', :app_client, :referrals do
       Setup::Data.reject_referral_in_princeton(note: reject_note)
 
       # Log in as user who originally sent referral
-      log_in_as(Login::CC_HARVARD)
-      expect(homepage.page_displayed?).to be_truthy
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
 
       # Newly rejected referral should appear on dashboard
       rejected_referral_dashboard.go_to_rejected_referrals_dashboard
@@ -84,8 +83,9 @@ describe '[Referrals]', :app_client, :referrals do
       Setup::Data.recall_referral_in_harvard(note: recall_note)
 
       # Log in as user who originally sent referral
-      log_in_as(Login::CC_HARVARD)
-      expect(homepage.page_displayed?).to be_truthy
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
 
       # Moving referral to in review
       referral.go_to_recalled_referral_with_id(referral_id: @referral.id)

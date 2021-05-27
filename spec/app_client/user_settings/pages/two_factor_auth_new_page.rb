@@ -14,10 +14,6 @@ module UserSettings
     # https://www.twilio.com/docs/iam/test-credentials
     VALID_TEST_PHONE_NUMBER = '5005550006'
 
-    def load_page
-      get_auth('/users/two_factor_registration/new')
-    end
-
     def page_displayed?
       is_displayed?(PHONE_NUMBER_INPUT) &&
         is_displayed?(SEND_CODE_BUTTON) &&
