@@ -10,14 +10,12 @@ module UserSettings
     # Global notifs
     AR_RECEIVED_TOGGLE = { name: 'new_assistance_request' }.freeze
 
-    def load_page
-      get('/user/settings/notifications')
-    end
+    PATH = '/user/settings/notifications'
 
     def page_displayed?
       enable_notifications_if_disabled
 
-      is_displayed?(NOTIFICATIONS_PREFERENCES_CONTENT) 
+      is_displayed?(NOTIFICATIONS_PREFERENCES_CONTENT)
     end
 
     def assistance_request_received_checkbox_value

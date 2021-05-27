@@ -1,27 +1,20 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
-require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 require_relative './pages/account_info_page'
 
 describe '[User Settings - Update Personal Info]', :user_settings, :app_client do
-  include Login
-
-  let(:home_page) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:user_settings_account_info_page) { UserSettings::AccountInfoPage.new(@driver) }
 
   context('[As a user]') do
     before do
-      log_in_as(Login::SETTINGS_USER)
-      expect(home_page.page_displayed?).to be_truthy
+      @auth_token = Auth.encoded_auth_token(email_address: Users::SETTINGS_USER)
+      user_settings_account_info_page.authenticate_and_navigate_to(token: @auth_token,
+                                                                   path: UserSettings::AccountInfoPage::PATH)
     end
 
     it 'updates my work title', :uuqa_1610 do
-      user_settings_account_info_page.load_page
       expect(user_settings_account_info_page.page_displayed?).to be_truthy
 
       work_title = Faker::Job.title
