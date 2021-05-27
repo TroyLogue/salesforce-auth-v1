@@ -1,16 +1,9 @@
-require_relative '../auth/helpers/login'
-require_relative '../root/pages/left_nav'
 require_relative '../root/pages/notifications'
 require_relative '../clients/pages/clients_page'
 require_relative './pages/facesheet_header'
 require_relative './pages/facesheet_uploads_page'
 
 describe '[Facesheet]', :app_client, :facesheet do
-  include Login
-
-  let(:left_nav) { LeftNav.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:clients_page) { ClientsPage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_uploads_page) { FacesheetUploadsPage.new(@driver) }
@@ -18,8 +11,8 @@ describe '[Facesheet]', :app_client, :facesheet do
 
   context('[as org user]') do
     before do
-      log_in_as(Login::ORG_COLUMBIA)
-      left_nav.go_to_clients
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      clients_page.authenticate_and_navigate_to(token: auth_token, path: ClientsPage::ALL_CLIENTS_PATH)
       expect(clients_page.page_displayed?).to be_truthy
       clients_page.go_to_facesheet_second_authorized_client
 

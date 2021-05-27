@@ -1,16 +1,11 @@
 # frozen_string_literal: true
 
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../intakes/pages/intake'
 require_relative '../root/pages/right_nav'
 require_relative '../org_settings/pages/org_settings_user_page'
 
 describe '[Intake]', :app_client, :intake do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
   let(:intake_page) { Intake.new(@driver) }
   let(:org_menu) { RightNav::OrgMenu.new(@driver) }
@@ -30,7 +25,8 @@ describe '[Intake]', :app_client, :intake do
         dob: @contact.dob
       )
 
-      log_in_as(Login::ORG_YALE)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
     end
 
