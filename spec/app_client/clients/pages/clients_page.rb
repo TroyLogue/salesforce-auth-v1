@@ -1,6 +1,7 @@
 require_relative '../../../shared_components/base_page'
 
 class ClientsPage < BasePage
+  ALL_CLIENTS_PATH = "/dashboard/clients/all"
   AUTHORIZED_CLIENTS = { css: '.ui-table-body > tr:not(.unauthorized) .ui-table-row-column' }
   FILTER_BAR = { css: '.filter-bar' }
   FILTER_SELECTION = { css: 'button[name="%s"]' }

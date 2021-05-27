@@ -10,6 +10,11 @@ module Users
   when 'staging', 'devqa'
     CC_USER = 'harvard@auto.com'
     CC_QA_ADMIN = 'qa.perms@auto.com'
+    # next gate temp user, this user is licensed in a NG tagged organization
+    # and has New-Search Feature Flag enabled
+    NEXTGATE_USER = 'test-perms9@auto.com'
+    # columbia org with New-Search Feature Flag enabled
+    NEW_SEARCH_USER = 'client-search@auto.com'
     ORG_NO_ADDRESS = 'chicago@auto.com'
     ORG_PRINCETON = 'princeton@auto.com'
     ORG_WITH_SCREENING_ROLE = 'newyork@auto.com'

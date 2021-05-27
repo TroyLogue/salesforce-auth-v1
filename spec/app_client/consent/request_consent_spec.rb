@@ -1,23 +1,19 @@
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 require_relative './pages/consent_modal'
 require_relative './pages/pending_consent_page'
 
 describe '[Consent - Request Consent]', :consent, :app_client do
-  include Login
-
   let(:base_page) { BasePage.new(@driver) }
   let(:consent_modal) { ConsentModal.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:pending_consent_page) { PendingConsentPage.new(@driver) }
 
   context('[as cc user] On an incoming Pending Consent referral,') do
     before do
-      log_in_as(Login::CC_HARVARD)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
       # create contact
@@ -80,7 +76,8 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       # create referral
       @referral = Setup::Data.send_referral_from_harvard_to_yale(contact_id: @contact.contact_id)
 
-      log_in_as(Login::CC_HARVARD)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
       home_page.go_to_sent_pending_consent
@@ -105,7 +102,8 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
   context('[as a Referrals Admin user] On an incoming referral pending consent') do
     before do
-      log_in_as(Login::CC_HARVARD)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
       # create contact

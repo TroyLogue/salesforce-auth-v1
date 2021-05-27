@@ -1,4 +1,3 @@
-require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/right_nav'
 require_relative '../root/pages/notifications'
@@ -9,11 +8,7 @@ require_relative '../facesheet/pages/facesheet_header'
 require_relative '../consent/pages/consent_modal'
 
 describe '[Dashboard - Client - Search]', :clients, :app_client do
-  include Login
-
   let(:homepage) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:create_menu) { RightNav::CreateMenu.new(@driver) }
   let(:search_bar) { RightNav::SearchBar.new(@driver) }
   let(:search_client_page) { SearchClient.new(@driver) }
@@ -25,7 +20,8 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
 
   context('[as a user in an NextGate org]') do
     before do
-      log_in_as(Login::NEXTGATE_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::NEXTGATE_USER)
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
       @fname = Faker::Name.first_name
       @lname = Faker::Name.last_name
@@ -73,7 +69,8 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
 
   context('[as cc user]') do
     before do
-      log_in_as(Login::NEW_SEARCH_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::NEW_SEARCH_USER)
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
       @fname = Faker::Name.first_name
       @lname = Faker::Name.last_name
