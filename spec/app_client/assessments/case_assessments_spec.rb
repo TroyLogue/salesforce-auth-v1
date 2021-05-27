@@ -1,17 +1,10 @@
-require_relative '../auth/helpers/login'
-require_relative '../auth/pages/login_email'
-require_relative '../auth/pages/login_password'
 require_relative '../root/pages/home_page'
 require_relative '../cases/pages/case'
 require_relative './pages/assessment_page'
 
 describe '[Assessments - Cases]', :assessments, :app_client do
-  include Login
-
   let(:assessment) { Assessment.new(@driver) }
   let(:case_detail_page) { Case.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
 
   context('On a new case') do
@@ -30,7 +23,8 @@ describe '[Assessments - Cases]', :assessments, :app_client do
         case_id: @case.id
       )
 
-      log_in_as(Login::ORG_YALE)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }
 

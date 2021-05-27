@@ -12,12 +12,8 @@ require_relative '../facesheet/pages/facesheet_header'
 require_relative './pages/screening_page'
 
 describe '[Screenings - Create New Screening]', :screenings, :app_client, :create_screenings do
-  include Login
-
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
-  let(:homepage) { HomePage.new(@driver) }
-  let(:create_menu) {RightNav::CreateMenu.new(@driver)}
+  let(:home_page) { HomePage.new(@driver) }
+  let(:create_menu) { RightNav::CreateMenu.new(@driver) }
   let(:search_client_page) { SearchClient.new(@driver) }
   let(:confirm_client_page) { ConfirmClient.new(@driver) }
   let(:add_client_page) { AddClient.new(@driver) }
@@ -27,10 +23,11 @@ describe '[Screenings - Create New Screening]', :screenings, :app_client, :creat
   let(:screening_page) { ScreeningPage.new(@driver) }
 
   context('[as a user with Screening Role]') do
-    before {
-      log_in_as(Login::SCREENINGS_USER_MULTI_NETWORK)
-      expect(homepage.page_displayed?).to be_truthy
-    }
+    before do
+      @auth_token = Auth.encoded_auth_token(email_address: Users::SCREENINGS_USER_MULTI_NETWORK)
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
+    end
 
     it 'user can create a screening with no referral needs for a new client', :uuqa_1770 do
       fname = Faker::Name.first_name
