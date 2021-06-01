@@ -7,7 +7,6 @@ require_relative '../root/pages/notifications'
 require_relative '../root/pages/right_nav'
 
 describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
-  include Login
   include MailtrapHelper
 
   let(:base_page) { BasePage.new(@driver) }
@@ -20,7 +19,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
 
   context('[as app-client user] From login page,') do
-    let(:email) { Login::NON_EHR_USER }
+    let(:email) { Users::NON_EHR_USER }
 
     before do
       base_page.get ''
@@ -57,7 +56,7 @@ describe '[Auth - Reset Password]', :app_client, :auth, order: :defined do
   end
 
   context('[as app-client and emr user] From login page,') do
-    let(:email) { Login::EHR_USER }
+    let(:email) { Users::EHR_USER }
 
     before do
       base_page.get ''
