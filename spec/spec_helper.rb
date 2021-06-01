@@ -43,6 +43,9 @@ RSpec.configure do |config|
       caps['browserstack.selenium_version'] = '3.141.59'
       caps['browserstack.local'] = 'false'
       caps['acceptSslCerts'] = 'true'
+      # prompted via uuqa_367 for Edge, per BrowserStack support ticket # 434682:
+      # "newer browsers run in W3C by default; however, the script is still sending commands in the non-W3C mode."
+      caps['browserstack.use_w3c'] = 'true'
       # needed for IE 11 https://www.browserstack.com/automate/using-sendkeys-on-remote-IE11
       caps['browserstack.sendKeys'] = 'true'
       caps['browserstack.console'] = 'errors'
