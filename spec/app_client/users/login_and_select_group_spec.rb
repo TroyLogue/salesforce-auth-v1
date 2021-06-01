@@ -9,8 +9,6 @@ describe '[Users - ]', :app_client, :users do
 
   let(:group_selector_page) { GroupSelectorPage.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
-  let(:login_email) { LoginEmail.new(@driver) }
-  let(:login_password) { LoginPassword.new(@driver) }
 
   it 'Logs in as a user who is a subscribed employee of multiple providers', :uuqa_1607 do
     log_in_as(email_address: Users::USER_IN_MULTIPLE_PROVIDERS)
