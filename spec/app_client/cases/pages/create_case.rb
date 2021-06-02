@@ -28,8 +28,17 @@ class CreateCase < BasePage
   SUPPORTING_INFORMATION_NEXT_BUTTON = { css: '#next-btn' }.freeze
   SUPPORTING_INFORMATION_PAGE = { css: '.ui-form-field__label' }.freeze
 
+  # Uploads:
+  DOCUMENT_UPLOAD_INPUT = { css: '#contact-case-documents input[type="file"]' }
+  DOCUMENT_PREVIEW = { css: '.preview-item' }
+
   def page_displayed?
     is_displayed?(CASE_DETAILS)
+  end
+
+  def advance_to_review_step
+    click(CASE_INFORMATION_NEXT_BUTTON)
+    click(SUPPORTING_INFORMATION_NEXT_BUTTON) if is_displayed?(SUPPORTING_INFORMATION_PAGE)
   end
 
   def click_next_button
@@ -44,12 +53,11 @@ class CreateCase < BasePage
     select_program(program_id)
     select_service_type(service_type_id)
     select_primary_worker(primary_worker_id)
-    click(CASE_INFORMATION_NEXT_BUTTON)
-    click(SUPPORTING_INFORMATION_NEXT_BUTTON) if is_displayed?(SUPPORTING_INFORMATION_PAGE)
+    advance_to_review_step
     click(SUBMIT_CASE_BUTTON)
   end
 
-  # the search for primary worker calls a different endpoint than get/select 
+  # the search for primary worker calls a different endpoint than get/select
   # some specs may include the variation rather than having all create-case specs selecting the first primary-worker option
   # (e.g., in contrast to create_oon_case_selecting_first_options)
   def create_case_selecting_first_options_and_searching_for_primary_worker(description:, primary_worker_search_keys:)
@@ -63,17 +71,19 @@ class CreateCase < BasePage
       primary_worker: selected_primary_worker
     }
 
-    click(CASE_INFORMATION_NEXT_BUTTON)
-    click(SUPPORTING_INFORMATION_NEXT_BUTTON) if is_displayed?(SUPPORTING_INFORMATION_PAGE)
-
+    advance_to_review_step
+    # return selections for comparison
     submitted_case_selections
   end
-  
-  def create_oon_case_selecting_first_options(description:)
+
+  # takes an optional file_path for document upload
+  def create_oon_case_selecting_first_options(description:, file_path: nil)
     select_first_service_type
     select_first_oon_org
     select_first_primary_worker
     enter_description(description)
+
+    upload_document(file_path: file_path) if file_path
 
     submitted_case_selections = {
       service_type: selected_service_type,
@@ -81,9 +91,8 @@ class CreateCase < BasePage
       primary_worker: selected_primary_worker
     }
 
-    click(CASE_INFORMATION_NEXT_BUTTON)
-    click(SUPPORTING_INFORMATION_NEXT_BUTTON) if is_displayed?(SUPPORTING_INFORMATION_PAGE)
-
+    advance_to_review_step
+    # return selections for comparison
     submitted_case_selections
   end
 
@@ -162,5 +171,10 @@ class CreateCase < BasePage
 
   def selected_service_type
     text(SELECTED_SERVICE_TYPE).sub!(REMOVE_TEXT, '').strip!
+  end
+
+  def upload_document(file_path:)
+    enter(file_path, DOCUMENT_UPLOAD_INPUT)
+    is_displayed?(DOCUMENT_PREVIEW)
   end
 end

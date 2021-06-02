@@ -4,20 +4,19 @@ require_relative '../cases/pages/case'
 require_relative '../cases/pages/case_review'
 require_relative '../cases/pages/create_case'
 require_relative '../cases/pages/open_cases_dashboard'
-require_relative '../clients/pages/clients_page'
 require_relative '../facesheet/pages/facesheet_cases_page'
 require_relative '../facesheet/pages/facesheet_header'
-require_relative '../referrals/pages/referral'
+require_relative '../facesheet/pages/facesheet_uploads_page'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[cases]', :app_client, :cases do
   let(:case_detail_page) { Case.new(@driver) }
-  let(:client_page) { ClientsPage.new(@driver) }
   let(:create_case) { CreateCase.new(@driver) }
   let(:facesheet_cases_page) { FacesheetCases.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
-  let(:homepage) { HomePage.new(@driver) }
+  let(:facesheet_uploads_page) { FacesheetUploadsPage.new(@driver) }
+  let(:home_page) { HomePage.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
   let(:review_case) { CaseReview.new(@driver) }
@@ -26,14 +25,16 @@ describe '[cases]', :app_client, :cases do
     before do
       @contact = Setup::Data.create_harvard_client_with_consent
 
+      # set up file for upload:
+      @file_name = Faker::Alphanumeric.alpha(number: 8) + '.txt'
+      @local_file_path = create_consent_file(@file_name)
+
       @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
-      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
-      expect(homepage.page_displayed?).to be_truthy
+      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
+      expect(home_page.page_displayed?).to be_truthy
     end
 
-    # TODO deprecate when Core Consolidation cases component is complete
-    # the create OON case steps are duplicated by uuqa_1806
-    it 'creates case via facesheet using OON org select input', :uuqa_1443 do
+    it 'uploads a document while creating a case', :uuqa_1806 do
       facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id, tab: 'Cases')
       expect(facesheet_cases_page.page_displayed?).to be_truthy
 
@@ -42,7 +43,10 @@ describe '[cases]', :app_client, :cases do
       expect(create_case.is_oon_program_auto_selected?).to be_truthy
 
       description = Faker::Lorem.sentence(word_count: 5)
-      submitted_case_selections = create_case.create_oon_case_selecting_first_options(description: description)
+      submitted_case_selections = create_case.create_oon_case_selecting_first_options(
+        description: description,
+        file_path: @local_file_path
+      )
 
       expect(review_case.page_displayed?).to be_truthy
 
@@ -53,7 +57,7 @@ describe '[cases]', :app_client, :cases do
       }
       expect(review_case_selections).to eq submitted_case_selections
       expect(review_case.notes).to eq description
-
+      expect(review_case.document_uploaded?(file_name: @file_name)).to be_truthy
       review_case.click_submit_button
 
       notification_text = notifications.success_text
@@ -63,14 +67,17 @@ describe '[cases]', :app_client, :cases do
       facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id, tab: 'Cases')
       facesheet_cases_page.click_first_case
       expect(case_detail_page.page_displayed?).to be_truthy
+      expect(case_detail_page.document_list).to eq(@file_name)
 
-      case_detail_selections = {
-        service_type: case_detail_page.service_type,
-        org: case_detail_page.referred_to,
-        primary_worker: case_detail_page.primary_worker,
-      }
-      expect(case_detail_selections).to eq submitted_case_selections
-      expect(case_detail_page.notes).to eq description
+      facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id, tab: 'Uploads')
+      expect(facesheet_uploads_page.document_uploaded?(file_name: @file_name)).to be_truthy
+    end
+
+    after do
+      # delete file locally:
+      # doing this before creating the case prevents the case from saving,
+      # so doing this cleanup after the test is complete
+      delete_consent_file(@file_name)
     end
   end
 end

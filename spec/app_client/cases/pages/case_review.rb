@@ -3,8 +3,9 @@
 require_relative '../../../shared_components/base_page'
 
 class CaseReview < BasePage
-  EDIT_BUTTON = { css: '.detail-review__footer #edit-case-btn' }.freeze
   DESCRIPTION_IN_NETWORK = { css: '.detail-review__row:nth-of-type(3) .detail-review__text--short' }.freeze
+  DOCUMENT_NAME = { xpath: ".//span[text()='%s']" }
+  EDIT_BUTTON = { css: '.detail-review__footer #edit-case-btn' }.freeze
   NOTES = {  css: '.detail-review__row:nth-of-type(4) .detail-review__text--short' }.freeze
   PRIMARY_WORKER = { css: '.detail-review__row:nth-of-type(2) .col-xs-6:nth-of-type(2) .detail-review__text--short' }.freeze
   REFERRED_TO = {  css: '.detail-review__row:nth-of-type(3) .detail-review__text--short' }.freeze
@@ -27,6 +28,10 @@ class CaseReview < BasePage
 
   def description_in_network
     text(DESCRIPTION_IN_NETWORK)
+  end
+
+  def document_uploaded?(file_name:)
+    is_displayed?(DOCUMENT_NAME.transform_values { |v| v % file_name })
   end
 
   def notes
