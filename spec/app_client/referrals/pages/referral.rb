@@ -84,6 +84,11 @@ class Referral < BasePage
   DOCUMENT_REMOVE_MODAL = { css: '.dialog.open.mini' }.freeze
   DOCUMENT_REMOVE_BTN = { css: '.confirmation-dialog__actions--confirm' }.freeze
 
+  INTERACTION_TAB = { css: '#interactions-interaction-tab' }.freeze
+  OTHER_TAB = { css: '#interactions-other-tab' }.freeze
+  # Does not currently exist in Referral View, used for neg testing
+  SERVICES_TAB = { css: '#interactions-service-provided-tab' }.freeze
+
   TIMELINE_LOADING = { css: '.activity-stream .loading-entries__content' }.freeze
   STATUS_TEXT = { css: '.detail-status-text' }.freeze
 
@@ -374,5 +379,13 @@ class Referral < BasePage
   def current_care_coordinator
     is_displayed?(CURRENT_CARE_COORDINATOR)
     text(CURRENT_CARE_COORDINATOR)
+  end
+
+  # notes
+  def notes_section_displayed?
+    # SERVICE TAB should never be visible in the Referral view
+    is_displayed?(INTERACTION_TAB) &&
+      is_displayed?(OTHER_TAB) &&
+      is_not_displayed?(SERVICES_TAB)
   end
 end
