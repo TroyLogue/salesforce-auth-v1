@@ -31,6 +31,8 @@ describe '[cases]', :app_client, :cases do
       expect(homepage.page_displayed?).to be_truthy
     end
 
+    # TODO deprecate when Core Consolidation cases component is complete
+    # the create OON case steps are duplicated by uuqa_1806
     it 'creates case via facesheet using OON org select input', :uuqa_1443 do
       facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id, tab: 'Cases')
       expect(facesheet_cases_page.page_displayed?).to be_truthy
