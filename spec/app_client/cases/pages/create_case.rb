@@ -174,7 +174,6 @@ class CreateCase < BasePage
   end
 
   def upload_document(file_path:)
-    # creating a local file with an identifiable name
     enter(file_path, DOCUMENT_UPLOAD_INPUT)
     is_displayed?(DOCUMENT_PREVIEW)
   end
