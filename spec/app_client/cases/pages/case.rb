@@ -5,6 +5,7 @@ class Case < BasePage
   ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
   CASE_VIEW = { css: '.dashboard-content .case-detail-view' }.freeze
   CASE_STATUS = { css: '.detail-status-text' }.freeze
+  DOCUMENT_LIST = { css: '.list-view-document__title' }.freeze
   MILITARY_ASSESSMENT = { css: '#military-information-link' }.freeze
   NOTES = { css: '.detail-info__summary p > span' }.freeze
   OPEN_STATUS = 'OPEN'
@@ -75,5 +76,10 @@ class Case < BasePage
 
   def open_military_assessment
     click(MILITARY_ASSESSMENT)
+  end
+
+  # DOCUMENTS
+  def document_list
+    text(DOCUMENT_LIST)
   end
 end

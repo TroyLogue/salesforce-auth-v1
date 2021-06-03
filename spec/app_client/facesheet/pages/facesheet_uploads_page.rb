@@ -3,7 +3,7 @@ require_relative '../../../../lib/file_helper'
 
 class FacesheetUploadsPage < BasePage
   UPLOAD_DOCUMENT = { css: '#upload-document-btn' }
-  DOCUMENT_UPLOAD_MODEL = { css: '.dialog.open.large .upload-and-attach-documents-form-fields' }
+  DOCUMENT_UPLOAD_MODAL = { css: '.dialog.open.large .upload-and-attach-documents-form-fields' }
   DOCUMENT_UPLOAD_CONTEXT = { css: '#upload-document-modal' }
   DOCUMENT_UPLOAD_INPUT = { css: 'input[type="file"]' }
   DOCUMENT_PREVIEW = { css: '.preview-item' }
@@ -32,7 +32,7 @@ class FacesheetUploadsPage < BasePage
     local_file_path = create_consent_file(file_name)
     # opening upload dialog
     click(UPLOAD_DOCUMENT)
-    is_displayed?(DOCUMENT_UPLOAD_MODEL)
+    is_displayed?(DOCUMENT_UPLOAD_MODAL)
     enter_within(local_file_path, DOCUMENT_UPLOAD_CONTEXT, DOCUMENT_UPLOAD_INPUT)
     is_displayed?(DOCUMENT_PREVIEW)
     click(DOCUMENT_ATTATCH_BUTTON)
