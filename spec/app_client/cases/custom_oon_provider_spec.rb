@@ -37,10 +37,11 @@ describe '[cases]', :app_client, :cases do
       expect(create_case.is_oon_program_auto_selected?).to be_truthy
 
       description = Faker::Lorem.sentence(word_count: 5)
-#      submitted_case_selections = create_case.create_oon_case_selecting_first_options(description: description)
-
-      submitted_case_selections =
-
+      provider = Faker::Lorem.sentence(word_count: 2)
+      submitted_case_selections = create_case.create_oon_case_with_custom_provider(
+        description: description,
+        provider: provider
+      )
       expect(review_case.page_displayed?).to be_truthy
 
       review_case_selections = {

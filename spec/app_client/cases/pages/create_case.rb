@@ -7,6 +7,7 @@ class CreateCase < BasePage
   CASE_DETAILS = { css: '.add-case-details' }.freeze
   CASE_INFORMATION_NEXT_BUTTON = { css: '#add-case-details-next-btn' }.freeze
   CREATE_CASE_FORM = { css: '.add-case-details' }.freeze
+  CUSTOM_OON_INPUT = { css: '.case-oon-group-select input[type="text"]' }.freeze
   DESCRIPTION = { css: '#description' }.freeze
   EXPAND_OON_ORG = { css: '#select-field-oon-group-0 + .choices__list' }.freeze
   NEXT_BTN = { css: '#add-case-details-next-btn' }.freeze
@@ -96,6 +97,22 @@ class CreateCase < BasePage
     submitted_case_selections
   end
 
+  def create_oon_case_with_custom_provider(description:, provider:)
+    select_first_service_type
+    enter_custom_provider(provider: provider)
+    select_first_primary_worker
+    enter_description(description)
+
+    submitted_case_selections = {
+      service_type: selected_service_type,
+      org: selected_oon_org,
+      primary_worker: selected_primary_worker
+    }
+
+    advance_to_review_step
+    submitted_case_selections
+  end
+
   def description_text
     text(DESCRIPTION)
   end
@@ -127,6 +144,11 @@ class CreateCase < BasePage
   end
 
   private
+
+  def enter_custom_provider(provider:)
+    click(EXPAND_OON_ORG)
+    enter_and_return(provider, CUSTOM_OON_INPUT)
+  end
 
   def search_and_select_primary_worker(keys:)
     click(PRIMARY_WORKER_DROPDOWN)
@@ -162,7 +184,11 @@ class CreateCase < BasePage
     # Removing distance and "Remove Item" to return just the provider name
     provider_text = text(SELECTED_OON_ORG)
     provider_distance_index = text(SELECTED_OON_ORG).rindex(/\(/) # finds the last open paren in the string
-    provider_text[0..(provider_distance_index - 1)].strip # returns provider_text up to the distance
+    if provider_distance_index
+      provider_text[0..(provider_distance_index - 1)].strip # returns provider_text up to the distance
+    else # provider distance does not display for custom OON orgs, but still need to strip remove text
+      provider_text.sub!(REMOVE_TEXT, '').strip!
+    end
   end
 
   def selected_primary_worker
