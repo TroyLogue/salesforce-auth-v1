@@ -204,9 +204,20 @@ module ReferralDashboard
   end
 
   module Sent
+    EMPTY_SENT_REFERRALS = { css: '.empty-table__message' }.freeze
     SENT_REFERRALS = { css: '#sent-referrals-table' }.freeze
     ALL_CLIENT_NAMES = { css: 'tr[id^="sent-referrals-table-row"] .ui-table-row-column:nth-child(3) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="sent-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
+    SENT_BY_ROW_VALUES = { css: 'tr[id^="sent-referrals-table-row"] .ui-table-row-column:nth-child(4) > span' }.freeze
+    STATUS_ROW_VALUES = { css: 'tr[id^="sent-referrals-table-row"] .ui-table-row-column:nth-child(6) > span' }.freeze
+
+    SENT_BY_DROPDOWN = { id: 'sent-by-filter' }.freeze
+    SENT_BY_OPTIONS = { css: '#sent-by-filter .ui-filter-option .ui-label-roman' }.freeze
+
+    STATUS_DROPDOWN = { id: 'status-filter' }.freeze
+    STATUS_OPTION = { xpath: './/label/span[text()="%s"]' }.freeze
+
+    NO_REFERRALS_TEXT = 'There are no referrals.'
 
     def page_displayed?
       wait_for_spinner
@@ -217,9 +228,42 @@ module ReferralDashboard
       include SharedComponents
       include Sent
       HEADERS = ['RECIPIENT', 'CLIENT NAME', 'SENT BY', 'SERVICE TYPE', 'STATUS', 'LAST UPDATED'].freeze
+      STATUSES = ['Accepted', 'Auto Recalled', 'Closed', 'Declined Consent', 'In Review', 'Needs Action', 'Pending Consent', 'Recalled', 'Rejected'].freeze
 
       def go_to_sent_all_referrals_dashboard
         get('/dashboard/referrals/sent/all')
+      end
+
+      def filter_by_random_sender
+        click(SENT_BY_DROPDOWN)
+        element = find_elements(SENT_BY_OPTIONS).sample
+        sender = element.text
+        element.click
+        sender
+      end
+
+      def filtered_by_sent_by?(sent_by:)
+        sent_by_values = find_elements(SENT_BY_ROW_VALUES).map(&:text)
+        sent_by_values.all? { |sender| sender == sent_by }
+      end
+
+      def filter_by_random_status
+        selected_status = STATUSES.sample
+        click(STATUS_DROPDOWN)
+        click(STATUS_OPTION.transform_values { |v| v % selected_status })
+        selected_status
+      end
+
+      def filtered_by_status?(status:)
+        # Declined Consent and Pending Consent map to status Needs Action
+        status = 'Needs Action' if ['Declined Consent', 'Pending Consent'].include?(status)
+
+        status_values = find_elements(STATUS_ROW_VALUES).map(&:text)
+        status_values.all? { |state| state.downcase == status.downcase }
+      end
+
+      def no_referrals_message_displayed?
+        is_displayed?(EMPTY_SENT_REFERRALS) && text(EMPTY_SENT_REFERRALS) == NO_REFERRALS_TEXT
       end
     end
 
