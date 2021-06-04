@@ -17,7 +17,7 @@ describe '[cases]', :app_client, :cases do
   let(:homepage) { HomePage.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
-  let(:review_case) { CaseReview.new(@driver) }
+  let(:case_review) { CaseReview.new(@driver) }
 
   context('[as cc user]') do
     before do
@@ -42,17 +42,17 @@ describe '[cases]', :app_client, :cases do
         description: description,
         provider: provider
       )
-      expect(review_case.page_displayed?).to be_truthy
+      expect(case_review.page_displayed?).to be_truthy
 
-      review_case_selections = {
-        service_type: review_case.service_type,
-        org: review_case.referred_to,
-        primary_worker: review_case.primary_worker
+      case_review_selections = {
+        service_type: case_review.service_type,
+        org: case_review.referred_to,
+        primary_worker: case_review.primary_worker
       }
-      expect(review_case_selections).to eq submitted_case_selections
-      expect(review_case.notes).to eq description
+      expect(case_review_selections).to eq submitted_case_selections
+      expect(case_review.notes).to eq description
 
-      review_case.click_submit_button
+      case_review.click_submit_button
 
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CASE_CREATED)
