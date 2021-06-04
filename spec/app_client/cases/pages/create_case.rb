@@ -97,7 +97,7 @@ class CreateCase < BasePage
     submitted_case_selections
   end
 
-  def create_oon_case_with_custom_provider(description:, provider:)
+  def create_oon_case_with_first_options_and_custom_provider(description:, provider:)
     select_first_service_type
     enter_custom_provider(provider: provider)
     select_first_primary_worker

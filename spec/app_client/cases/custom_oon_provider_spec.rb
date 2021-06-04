@@ -38,7 +38,7 @@ describe '[cases]', :app_client, :cases do
 
       description = Faker::Lorem.sentence(word_count: 5)
       provider = Faker::Lorem.sentence(word_count: 2)
-      submitted_case_selections = create_case.create_oon_case_with_custom_provider(
+      submitted_case_selections = create_case.create_oon_case_with_first_options_and_custom_provider(
         description: description,
         provider: provider
       )
