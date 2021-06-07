@@ -13,6 +13,7 @@ class Notifications < BasePage
   BLANK_EMAIL_MESSAGE = "EmailAddress can't be blank"
   CASE_CREATED = 'Case Created'
   CASE_REOPENED = 'Case Successfully Reopened'
+  CASE_UPDATED = 'Case Successfully Updated'
   CLIENT_UPDATED = 'Client Successfully Updated'
   CONSENT_REQUEST_SENT = 'Consent Request Sent'
   CONSENT_UPLOADED = 'Consent Uploaded'

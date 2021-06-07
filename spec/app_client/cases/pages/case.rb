@@ -5,16 +5,45 @@ class Case < BasePage
   ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
   CASE_VIEW = { css: '.dashboard-content .case-detail-view' }.freeze
   CASE_STATUS = { css: '.detail-status-text' }.freeze
+  CUSTOM_OON_INPUT = { css: '.case-oon-group-select input[type="text"]' }.freeze
   DOCUMENT_LIST = { css: '.list-view-document__title' }.freeze
+  EDIT_REFERRED_TO = { css: '.service-case-details__edit-section #service-case-details__edit-button' }.freeze
   MILITARY_ASSESSMENT = { css: '#military-information-link' }.freeze
   NOTES = { css: '.detail-info__summary p > span' }.freeze
+  OON_RECIPIENT_OPTIONS = { css: '.cases-oon-group-select .choices__item--selectable' }.freeze
   OPEN_STATUS = 'OPEN'
   PRIMARY_WORKER = { css: '#basic-table-primary-worker-value' }.freeze
   REFERRED_TO = { css: '#basic-table-referred-to-value' }.freeze
+  REFERRED_TO_DROPDOWN = { css: '.case-oon-group-select .choices' }.freeze
+  SAVE_REFERRED_TO = { css: '#form-footer-submit-btn' }.freeze
   SERVICE_TYPE = { css: '#basic-table-service-type-value' }.freeze
-
   REOPEN_BTN = { css: '#reopen-case' }.freeze
   CLOSE_BTN = { css: '#close-case-btn' }.freeze
+
+  def add_custom_recipient(custom_recipient:)
+    edit_referred_to
+    add_another_out_of_network_recipient
+    click(REFERRED_TO_DROPDOWN)
+    enter_and_return()
+    click(SAVE_REFERRED_TO)
+    wait_for_spinner
+  end
+
+  def add_random_oon_recipient
+    edit_referred_to
+    add_another_out_of_network_recipient
+    click(REFERRED_TO_DROPDOWN)
+    element = find_elements(OON_RECIPIENT_OPTIONS).sample
+    recipient = element.text
+    element.click
+    click(SAVE_REFERRED_TO)
+    wait_for_spinner
+    recipient
+  end
+
+  def edit_referred_to
+    click(EDIT_REFERRED_TO)
+  end
 
   def page_displayed?
     is_displayed?(CASE_VIEW)
