@@ -13,11 +13,23 @@ class Case < BasePage
   REFERRED_TO = { css: '#basic-table-referred-to-value' }.freeze
   SERVICE_TYPE = { css: '#basic-table-service-type-value' }.freeze
 
+  # Contracted Service
+  ADD_CONTRACTED_SERVICES_BUTTON = { css: '.add-circle-plus__text' }.freeze
+  CONTRACTED_SERVICES_FORM = { css: '.payments-track-service' }.freeze
+
   REOPEN_BTN = { css: '#reopen-case' }.freeze
   CLOSE_BTN = { css: '#close-case-btn' }.freeze
 
   def page_displayed?
     is_displayed?(CASE_VIEW)
+  end
+
+  def click_contracted_service_button
+    click ADD_CONTRACTED_SERVICES_BUTTON
+  end
+
+  def contracted_service_form_displayed?
+    is_displayed? CONTRACTED_SERVICES_FORM
   end
 
   def go_to_open_case_with_id(case_id:, contact_id:)
