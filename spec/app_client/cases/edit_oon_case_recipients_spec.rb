@@ -25,11 +25,11 @@ describe '[Cases]', :app_client, :cases do
       expect(case_detail_page.page_displayed?).to be_truthy
       initial_referred_to = case_detail_page.referred_to
 
-      new_oon_recipient = case_detail_page.add_first_oon_recipient
+      new_oon_recipient = case_detail_page.add_random_oon_recipient
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CASE_UPDATED)
 
-      new_custom_recipient = Faker::String.random(length: 10)
+      new_custom_recipient = Faker::Alphanumeric.alphanumeric(number: 10)
       case_detail_page.add_custom_recipient(custom_recipient: new_custom_recipient)
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CASE_UPDATED)

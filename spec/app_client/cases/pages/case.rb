@@ -6,12 +6,13 @@ class Case < BasePage
   ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
   CASE_VIEW = { css: '.dashboard-content .case-detail-view' }.freeze
   CASE_STATUS = { css: '.detail-status-text' }.freeze
-  CUSTOM_OON_INPUT = { css: '.case-oon-group-select input[type="text"]' }.freeze
+  CUSTOM_OON_INPUT = { css: '.case-oon-group-select .is-open input[type="text"]' }.freeze
   DOCUMENT_LIST = { css: '.list-view-document__title' }.freeze
   EDIT_REFERRED_TO = { css: '.service-case-details__edit-section #service-case-details__edit-button' }.freeze
   MILITARY_ASSESSMENT = { css: '#military-information-link' }.freeze
   NOTES = { css: '.detail-info__summary p > span' }.freeze
-  # second oon org input; first oon provider
+  OON_ORG_CHOICE = { css: '.is-open .choices__item--selectable div[id^="choices-select-field-oon-group-"]' }.freeze
+  # second oon org input; first oon provider - HARDCODED
   OON_ORG_FIRST_OPTION = { id: 'choices-select-field-oon-group-1-item-choice-3' }.freeze
   OPEN_STATUS = 'OPEN'
   PRIMARY_WORKER = { css: '#basic-table-primary-worker-value' }.freeze
@@ -29,22 +30,27 @@ class Case < BasePage
   def add_custom_recipient(custom_recipient:)
     edit_referred_to
     add_another_out_of_network_recipient
-    click(REFERRED_TO_DROPDOWN)
+    click_last_referred_to_dropdown
     enter_and_return(custom_recipient, CUSTOM_OON_INPUT)
     click(SAVE_REFERRED_TO)
     wait_for_spinner
   end
 
-  def add_first_oon_recipient
-    byebug
+  def add_random_oon_recipient
     edit_referred_to
     add_another_out_of_network_recipient
-    click(REFERRED_TO_DROPDOWN)
-    click(OON_ORG_FIRST_OPTION)
-    recipient = strip_distance(text(OON_ORG_FIRST_OPTION))
+    click_last_referred_to_dropdown
+    element = find_elements(OON_ORG_CHOICE).sample
+    recipient = strip_distance(text: element.text)
+    element.click
     click(SAVE_REFERRED_TO)
     wait_for_spinner
     recipient
+  end
+
+  def click_last_referred_to_dropdown
+    referred_to_dropdowns = find_elements(REFERRED_TO_DROPDOWN)
+    referred_to_dropdowns[-1].click
   end
 
   def edit_referred_to
