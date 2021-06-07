@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Case < BasePage
+  ADD_ANOTHER_OON_RECIPIENT = { css: '#add-another-oon-group-btn' }.freeze
   ASSESSMENT_LIST = { css: '.detail-info__relationship-files' }.freeze
   ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
   CASE_VIEW = { css: '.dashboard-content .case-detail-view' }.freeze
@@ -10,7 +11,8 @@ class Case < BasePage
   EDIT_REFERRED_TO = { css: '.service-case-details__edit-section #service-case-details__edit-button' }.freeze
   MILITARY_ASSESSMENT = { css: '#military-information-link' }.freeze
   NOTES = { css: '.detail-info__summary p > span' }.freeze
-  OON_RECIPIENT_OPTIONS = { css: '.cases-oon-group-select .choices__item--selectable' }.freeze
+  # second oon org input; first oon provider
+  OON_ORG_FIRST_OPTION = { id: 'choices-select-field-oon-group-1-item-choice-3' }.freeze
   OPEN_STATUS = 'OPEN'
   PRIMARY_WORKER = { css: '#basic-table-primary-worker-value' }.freeze
   REFERRED_TO = { css: '#basic-table-referred-to-value' }.freeze
@@ -20,22 +22,26 @@ class Case < BasePage
   REOPEN_BTN = { css: '#reopen-case' }.freeze
   CLOSE_BTN = { css: '#close-case-btn' }.freeze
 
+  def add_another_out_of_network_recipient
+    click(ADD_ANOTHER_OON_RECIPIENT)
+  end
+
   def add_custom_recipient(custom_recipient:)
     edit_referred_to
     add_another_out_of_network_recipient
     click(REFERRED_TO_DROPDOWN)
-    enter_and_return()
+    enter_and_return(custom_recipient, CUSTOM_OON_INPUT)
     click(SAVE_REFERRED_TO)
     wait_for_spinner
   end
 
-  def add_random_oon_recipient
+  def add_first_oon_recipient
+    byebug
     edit_referred_to
     add_another_out_of_network_recipient
     click(REFERRED_TO_DROPDOWN)
-    element = find_elements(OON_RECIPIENT_OPTIONS).sample
-    recipient = element.text
-    element.click
+    click(OON_ORG_FIRST_OPTION)
+    recipient = strip_distance(text(OON_ORG_FIRST_OPTION))
     click(SAVE_REFERRED_TO)
     wait_for_spinner
     recipient
@@ -63,6 +69,11 @@ class Case < BasePage
 
   def service_type
     text(SERVICE_TYPE)
+  end
+
+  def strip_distance(text:)
+    provider_distance_index = text.rindex(/\(/) # finds the last open paren in the string
+    text[0..(provider_distance_index - 1)].strip
   end
 
   def referred_to

@@ -25,7 +25,7 @@ describe '[Cases]', :app_client, :cases do
       expect(case_detail_page.page_displayed?).to be_truthy
       initial_referred_to = case_detail_page.referred_to
 
-      new_oon_recipient = case_detail_page.add_random_oon_recipient
+      new_oon_recipient = case_detail_page.add_first_oon_recipient
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CASE_UPDATED)
 
