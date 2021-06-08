@@ -11,14 +11,13 @@ module Setup
         in_network_programs.first.id
       end
 
-      def program_with_fee_schedule(token:, group_id:)
+      def program_with_name(token:, group_id:, program_name:)
         programs_response = Core::Programs.get_all(token: token, group_id: group_id)
-        parsed_programs_response = JSON.parse(programs_response.body, object_class: OpenStruct).data
+        parsed_programs_response_data = JSON.parse(programs_response.body, object_class: OpenStruct).data
 
-        program_with_fee_schedule = parsed_programs_response do
-          program.attributes[:name].eq?('Reimbursement for Health-Related Private Transportation')
-        end
-        program_with_fee_schedule.first.id
+        parsed_programs_response_data.map do |program|
+          program.id if program.attributes[:name] == program_name
+        end.compact.first
       end
     end
   end

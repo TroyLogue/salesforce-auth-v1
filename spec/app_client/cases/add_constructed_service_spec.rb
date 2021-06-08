@@ -10,14 +10,13 @@ describe '[Payments]', :app_client, :payments do
       @auth_token = Auth.encoded_auth_token(email_address: Users::PAYMENTS_USER)
       @contact = Setup::Data.create_payments_client_with_consent
 
-      byebug
       @case = Setup::Data.create_service_case_for_payments(contact_id: @contact.contact_id)
       case_detail_page.authenticate_and_navigate_to(token: @auth_token,
                                                     path: "/dashboard/cases/open/#{@case.id}/contact/#{@contact.contact_id}")
       expect(case_detail_page.page_displayed?).to be_truthy
     end
 
-    it 'adds a service', :demo do
+    it 'adds a service', :pays_826 do
       case_detail_page.click_contracted_service_button
       expect(case_detail_page.contracted_service_form_displayed?).to be_truthy
 

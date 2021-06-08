@@ -34,7 +34,8 @@ module Setup
         network_id: Networks::PAYMENTS_NETWORK_ID,
         group_id: group_id,
         contact_id: contact_id,
-        program_id: Setup::Programs.in_network_program_id(token: token, group_id: group_id), # FIX ME
+        program_id: Setup::Programs.program_with_name(token: token, group_id: group_id,
+                                                      program_name: ProgramNames::PROGRAM_WITH_FEE_SCHEDULE),
         primary_worker_id: PrimaryWorkers::PAYMENTS_USER,
         service_type_code: ServiceTypeCodes::TRANSPORTATION
       )
