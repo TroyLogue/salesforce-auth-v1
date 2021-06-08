@@ -11,6 +11,7 @@ class Notifications < BasePage
   ACCESS_DENIED = 'Access to the requested resource has been forbidden.'
   ASSISTANCE_REQUEST_CLOSED = 'Assistance Request Successfully Closed'
   BLANK_EMAIL_MESSAGE = "EmailAddress can't be blank"
+  CASE_CLOSED = 'Case Successfully closed'
   CASE_CREATED = 'Case Created'
   CASE_REOPENED = 'Case Successfully Reopened'
   CLIENT_UPDATED = 'Client Successfully Updated'

@@ -3,7 +3,7 @@
 require_relative '../cases/pages/case'
 require_relative '../cases/pages/case_review'
 require_relative '../cases/pages/create_case'
-require_relative '../cases/pages/open_cases_dashboard'
+require_relative '../cases/pages/case_dashboard'
 require_relative '../clients/pages/clients_page'
 require_relative '../facesheet/pages/facesheet_cases_page'
 require_relative '../facesheet/pages/facesheet_header'
@@ -19,7 +19,7 @@ describe '[cases]', :app_client, :cases do
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:homepage) { HomePage.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
-  let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
+  let(:open_cases_dashboard) { CaseDashboard::Open.new(@driver) }
   let(:case_review) { CaseReview.new(@driver) }
 
   context('[as cc user]') do
