@@ -61,6 +61,8 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::USER_UPDATED)
 
+      #refreshing the page to ensure that the name values have updated
+      org_settings_user_form.refresh
       expect(org_settings_user_form.name_and_title).to include(first_name)
       expect(org_settings_user_form.name_and_title).to include(last_name)
       expect(org_settings_user_form.name_and_title).to include(work_title)
