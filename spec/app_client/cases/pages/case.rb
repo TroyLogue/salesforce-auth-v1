@@ -45,7 +45,7 @@ class Case < BasePage
     referred_to_dropdowns[-1].click
   end
 
-  def edit_referred_to
+  def open_edit_referred_to_modal
     click(EDIT_REFERRED_TO)
   end
 

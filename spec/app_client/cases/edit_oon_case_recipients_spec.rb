@@ -25,7 +25,7 @@ describe '[Cases]', :app_client, :cases do
       expect(case_detail_page.page_displayed?).to be_truthy
       initial_referred_to = case_detail_page.referred_to
 
-      case_detail_page.edit_referred_to
+      case_detail_page.open_edit_referred_to_modal
       new_oon_recipient = case_detail_page.add_first_oon_recipient
 
       new_custom_recipient = Faker::Alphanumeric.alphanumeric(number: 10)
