@@ -4,11 +4,18 @@ module ReferralDashboard
   module SharedComponents
     HEADER_COLUMNS = { css: '.ui-table-header-column' }.freeze
     LOCKED_MESSAGE = { css: '.unauthorized-message' }.freeze
+
     CARE_COORDINATOR_FILTER = { css: '#care-coordinator-filter.ui-filter' }.freeze
+    CARE_COORDINATOR_OPTIONS = { css: '#care-coordinator-filter .ui-filter-option .ui-label-roman' }.freeze
     CARE_COORDINATOR_INPUT = { css: '#care-coordinator-filter.ui-filter-search__input' }.freeze
     CARE_COORDINATOR_LOAD = { css: '.filter-options__container--loading' }.freeze
     CARE_COORDINATOR_FIRST = { css: '.ui-filter-option' }.freeze
+
+    SERVICE_TYPE_DROPDOWN = { id: 'service-type-filter' }.freeze
+    SERVICE_TYPE_OPTION_BY_ID = { css: 'label[for="%s"]' }.freeze
+
     EMPTY_TABLE = { css: '.empty-table' }.freeze
+    EMPTY_SENT_REFERRALS = { css: '.empty-table__message' }.freeze
 
     UNAUTHORIZED_MESSAGE = "Client is not being served by your organization. [20001]\nClient has not granted consent. [20000]"
 
@@ -61,12 +68,42 @@ module ReferralDashboard
       is_displayed?(EMPTY_TABLE)
     end
 
+    def no_referrals_message_displayed?
+      is_displayed?(EMPTY_SENT_REFERRALS) && text(EMPTY_SENT_REFERRALS) == self.class::NO_REFERRALS_TEXT
+    end
+
     def filter_by_care_coordinator(coordinator:)
       click(CARE_COORDINATOR_FILTER)
       clear_then_enter(coordinator, CARE_COORDINATOR_INPUT)
       is_not_displayed?(CARE_COORDINATOR_LOAD)
       click(CARE_COORDINATOR_FIRST)
       wait_for_spinner
+    end
+
+    def filter_by_random_care_coordinator
+      click(CARE_COORDINATOR_FILTER)
+      element = find_elements(CARE_COORDINATOR_OPTIONS).sample
+      care_cooordinator = element.text
+      element.click
+      care_cooordinator
+    end
+
+    def filtered_by_care_coordinator?(care_coordinator:)
+      # None Assigned maps to an empty value for care coordinator row
+      care_coordinator = '' if care_coordinator == 'None Assigned'
+
+      care_coords = find_elements(self.class::CARE_COORDINATORS_ROW_VALUES).map(&:text)
+      care_coords.all? { |cc| cc == care_coordinator }
+    end
+
+    def filter_by_service_type_id(id:)
+      click(SERVICE_TYPE_DROPDOWN)
+      click(SERVICE_TYPE_OPTION_BY_ID.transform_values { |v| v % id })
+    end
+
+    def filtered_by_service_type?(type:)
+      service_types = find_elements(self.class::SERVICE_TYPE_ROW_VALUES).map(&:text)
+      service_types.all? { |t| t == type }
     end
   end
 
@@ -76,9 +113,13 @@ module ReferralDashboard
     NEW_REFERRALS = { id: 'new-referrals-table' }.freeze
     ALL_CLIENT_NAMES = { css: 'tr[id^="new-referrals-table-row"] .ui-table-row-column:nth-child(3) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="new-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
+    CARE_COORDINATORS_ROW_VALUES = { css: 'tr[id^="new-referrals-table-row"] .ui-table-row-column:nth-child(5) > span' }.freeze
+    SERVICE_TYPE_ROW_VALUES = { css: 'tr[id^="new-referrals-table-row"] .ui-table-row-column:nth-child(4) > span' }.freeze
 
     CC_HEADERS = ['SENDER', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'STATUS', 'DATE RECEIVED'].freeze
     ORG_HEADERS = ['SENDER', 'CLIENT NAME', 'SERVICE TYPE', 'STATUS', 'DATE RECEIVED'].freeze
+
+    NO_REFERRALS_TEXT = 'There are no new referrals.'
 
     def page_displayed?
       wait_for_spinner
@@ -93,7 +134,7 @@ module ReferralDashboard
   class InReview < BasePage
     include SharedComponents
 
-    INREVIEW_REFERRALS = { css: '#referrals-in-review-table' }.freeze
+    IN_REVIEW_REFERRALS = { css: '#referrals-in-review-table' }.freeze
     ALL_CLIENT_NAMES = { css: 'tr[id^="referrals-in-review-table-row"] .ui-table-row-column:nth-child(2) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="referrals-in-review-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
 
@@ -102,10 +143,10 @@ module ReferralDashboard
 
     def page_displayed?
       wait_for_spinner
-      is_displayed?(INREVIEW_REFERRALS)
+      is_displayed?(IN_REVIEW_REFERRALS)
     end
 
-    def go_to_inreview_referrals_dashboard
+    def go_to_in_review_referrals_dashboard
       get('/dashboard/referrals/in-review')
     end
   end
@@ -116,6 +157,9 @@ module ReferralDashboard
     RECALLED_REFERRALS = { css: '#recalled-referrals-table' }.freeze
     ALL_CLIENT_NAMES = { css: 'tr[id^="recalled-referrals-table-row"] .ui-table-row-column:nth-child(3) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="recalled-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
+    RECALLED_DROPDOWN = { id: 'status-filter' }.freeze
+    RECALLED_OPTIONS = { css: '#status-filter .ui-filter-option .ui-label-roman' }.freeze
+    RECALLED_STATUS_ROW_VALUE = { css: 'tr[id^="recalled-referrals-table"] .ui-table-row-column:nth-child(1) > span' }.freeze
 
     HEADERS = ['RECALLED FROM', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'DATE RECALLED'].freeze
 
@@ -135,8 +179,10 @@ module ReferralDashboard
     REJECTED_REFERRALS = { css: '#rejected-referrals-table' }.freeze
     ALL_CLIENT_NAMES = { css: 'tr[id^="rejected-referrals-table-row"] .ui-table-row-column:nth-child(2) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="rejected-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
-
+    CARE_COORDINATORS_ROW_VALUES = { css: 'tr[id^="rejected-referrals-table-row"] .ui-table-row-column:nth-child(4) > span' }.freeze
     HEADERS = ['CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'REASON REJECTED', 'DATE REJECTED'].freeze
+
+    NO_REFERRALS_TEXT = 'There are no rejected referrals.'
 
     def page_displayed?
       wait_for_spinner
@@ -204,7 +250,6 @@ module ReferralDashboard
   end
 
   module Sent
-    EMPTY_SENT_REFERRALS = { css: '.empty-table__message' }.freeze
     SENT_REFERRALS = { css: '#sent-referrals-table' }.freeze
     ALL_CLIENT_NAMES = { css: 'tr[id^="sent-referrals-table-row"] .ui-table-row-column:nth-child(3) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="sent-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
@@ -260,10 +305,6 @@ module ReferralDashboard
 
         status_values = find_elements(STATUS_ROW_VALUES).map(&:text)
         status_values.all? { |state| state.downcase == status.downcase }
-      end
-
-      def no_referrals_message_displayed?
-        is_displayed?(EMPTY_SENT_REFERRALS) && text(EMPTY_SENT_REFERRALS) == NO_REFERRALS_TEXT
       end
     end
 
