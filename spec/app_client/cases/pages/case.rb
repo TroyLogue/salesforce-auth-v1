@@ -11,12 +11,11 @@ class Case < BasePage
   EDIT_REFERRED_TO = { css: '.service-case-details__edit-section #service-case-details__edit-button' }.freeze
   MILITARY_ASSESSMENT = { css: '#military-information-link' }.freeze
   NOTES = { css: '.detail-info__summary p > span' }.freeze
-  OON_ORG_CHOICE = { css: '.is-open .choices__item--selectable div[id^="choices-select-field-oon-group-"]' }.freeze
   # second oon org input; first oon provider - HARDCODED
   OON_ORG_FIRST_OPTION = { id: 'choices-select-field-oon-group-1-item-choice-3' }.freeze
   OPEN_STATUS = 'OPEN'
   PRIMARY_WORKER = { css: '#basic-table-primary-worker-value' }.freeze
-  REFERRED_TO = { css: '#basic-table-referred-to-value' }.freeze
+  REFERRED_TO = { css: '#basic-table-referred-to-value .service-case-referred-to__text' }.freeze
   REFERRED_TO_DROPDOWN = { css: '.case-oon-group-select .choices' }.freeze
   SAVE_REFERRED_TO = { css: '#form-footer-submit-btn' }.freeze
   SERVICE_TYPE = { css: '#basic-table-service-type-value' }.freeze
@@ -28,23 +27,16 @@ class Case < BasePage
   end
 
   def add_custom_recipient(custom_recipient:)
-    edit_referred_to
     add_another_out_of_network_recipient
     click_last_referred_to_dropdown
     enter_and_return(custom_recipient, CUSTOM_OON_INPUT)
-    click(SAVE_REFERRED_TO)
-    wait_for_spinner
   end
 
-  def add_random_oon_recipient
-    edit_referred_to
+  def add_first_oon_recipient
     add_another_out_of_network_recipient
     click_last_referred_to_dropdown
-    element = find_elements(OON_ORG_CHOICE).sample
-    recipient = strip_distance(text: element.text)
-    element.click
-    click(SAVE_REFERRED_TO)
-    wait_for_spinner
+    recipient = strip_distance(text: text(OON_ORG_FIRST_OPTION))
+    click(OON_ORG_FIRST_OPTION)
     recipient
   end
 
@@ -67,6 +59,11 @@ class Case < BasePage
 
   def go_to_closed_case_with_id(case_id:, contact_id:)
     get("/dashboard/cases/closed/#{case_id}/contact/#{contact_id}")
+  end
+
+  def save_referred_to
+    click(SAVE_REFERRED_TO)
+    wait_for_spinner
   end
 
   def status
