@@ -1,6 +1,10 @@
 # frozen_string_literal: true
+require_relative '../../facesheet/pages/facesheet_overview_page'
 
 class Case < BasePage
+  include Notes
+
+  ADD_A_NEW_NOTE = { css: '#add-case-note-button' }.freeze
   ASSESSMENT_LIST = { css: '.detail-info__relationship-files' }.freeze
   ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
   CASE_VIEW = { css: '.dashboard-content .case-detail-view' }.freeze
@@ -13,11 +17,20 @@ class Case < BasePage
   REFERRED_TO = { css: '#basic-table-referred-to-value' }.freeze
   SERVICE_TYPE = { css: '#basic-table-service-type-value' }.freeze
 
+  INTERACTION_TAB = { css: '#interactions-interaction-tab' }.freeze
+  SERVICES_TAB = { css: '#interactions-service-provided-tab' }.freeze
+  OTHER_TAB = { css: '#interactions-other-tab' }.freeze
+
   REOPEN_BTN = { css: '#reopen-case' }.freeze
   CLOSE_BTN = { css: '#close-case-btn' }.freeze
 
   def page_displayed?
     is_displayed?(CASE_VIEW)
+  end
+
+  def add_service_provided_note(note)
+    enter_service_provided_note(note)
+    post_note
   end
 
   def go_to_open_case_with_id(case_id:, contact_id:)
@@ -26,6 +39,16 @@ class Case < BasePage
 
   def go_to_closed_case_with_id(case_id:, contact_id:)
     get("/dashboard/cases/closed/#{case_id}/contact/#{contact_id}")
+  end
+
+  def notes_section_displayed?
+    is_displayed?(INTERACTION_TAB) &&
+      is_displayed?(SERVICES_TAB) &&
+      is_displayed?(OTHER_TAB)
+  end
+
+  def open_notes_section
+    click(ADD_A_NEW_NOTE)
   end
 
   def status

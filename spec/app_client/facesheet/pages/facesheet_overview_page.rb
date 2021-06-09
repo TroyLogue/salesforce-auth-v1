@@ -42,9 +42,9 @@ module Notes
   MESSAGE_TAB = { css: '#interactions-message-tab' }.freeze
   SERVICE_PROVIDED_TAB = { css: '#interactions-service-provided-tab' }.freeze
   OTHER_TAB = { css: '#interactions-other-tab' }.freeze
-  PHI_INFO = { css: '.info-panel__text' }.freeze
+  PHI_INFO = { css: '.interactions .info-panel__text' }.freeze
   TEXT_BOX = { css: '#interactionNote' }.freeze
-  POST_NOTE = { css: '#log-interaction-post-note-btn' }.freeze
+  POST_NOTE = { css: "[id$='-post-note-btn']" }.freeze
   SEND_MESSAGE_BUTTON = { css: '#new-note-post-note-btn' }.freeze
   ERROR_NO_CASE_SELECTED = { css: '.select-service-cases__error-message' }.freeze
 
@@ -124,7 +124,7 @@ module Notes
     click(SERVICE_PROVIDED_UNIT_DROPDOWN)
     click(SERVICE_PROVIDED_UNIT_DOLLAR)
 
-    raise StandardError, 'PHI warning not displayed' unless text(PHI_INFO) == PHI_NOTE
+    raise StandardError, "PHI warning not displayed, should be #{text(PHI_INFO)} but instead it's #{PHI_NOTE}" unless text(PHI_INFO) == PHI_NOTE
 
     enter(note[:content], TEXT_BOX)
   end
@@ -152,6 +152,10 @@ module Notes
     click(CASE_CHECK_BOX)
     click(POST_NOTE)
     is_not_displayed?(ERROR_NO_CASE_SELECTED)
+  end
+
+  def post_note
+    click(POST_NOTE)
   end
 end
 
