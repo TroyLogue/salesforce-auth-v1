@@ -5,7 +5,7 @@ require_relative '../cases/pages/case'
 describe '[Payments]', :app_client, :payments do
   let(:case_detail_page) { Case.new(@driver) }
 
-  context('[as Payments User') do
+  context('[as Payments User]') do
     before do
       @auth_token = Auth.encoded_auth_token(email_address: Users::PAYMENTS_USER)
       @contact = Setup::Data.create_payments_client_with_consent
