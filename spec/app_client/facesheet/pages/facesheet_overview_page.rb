@@ -124,7 +124,7 @@ module Notes
     click(SERVICE_PROVIDED_UNIT_DROPDOWN)
     click(SERVICE_PROVIDED_UNIT_DOLLAR)
 
-    raise StandardError, "PHI warning not displayed, should be #{text(PHI_INFO)} but instead it's #{PHI_NOTE}" unless text(PHI_INFO) == PHI_NOTE
+    raise StandardError, 'PHI warning not displayed' unless text(PHI_INFO) == PHI_NOTE
 
     enter(note[:content], TEXT_BOX)
   end
