@@ -47,6 +47,14 @@ class Case < BasePage
       is_displayed?(OTHER_TAB)
   end
 
+  def open_case_path(case_id:, contact_id:)
+    "/dashboard/cases/open/#{case_id}/contact/#{contact_id}"
+  end
+
+  def closed_case_path(case_id:, contact_id:)
+    "/dashboard/cases/closed/#{case_id}/contact/#{contact_id}"
+  end
+
   def open_notes_section
     click(ADD_A_NEW_NOTE)
   end

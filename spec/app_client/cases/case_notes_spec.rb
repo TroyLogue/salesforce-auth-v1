@@ -15,15 +15,14 @@ describe '[Cases]', :app_client, :cases do
 
       @case = Setup::Data.create_service_case_for_harvard(contact_id: @contact.contact_id)
 
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
-      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
-      expect(homepage.page_displayed?).to be_truthy
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      path = case_detail_page.open_case_path(case_id: @case.id, contact_id: @contact.contact_id)
+      case_detail_page.authenticate_and_navigate_to(token: auth_token, path: path)
+      expect(case_detail_page.page_displayed?).to be_truthy
+
     end
 
     it 'updates a case with a Service Provided type interaction', :uuqa_155 do
-      case_detail_page.go_to_open_case_with_id(case_id: @case.id, contact_id: @contact.contact_id)
-      expect(case_detail_page.page_displayed?).to be_truthy
-
       case_detail_page.open_notes_section
       expect(case_detail_page.notes_section_displayed?).to be_truthy
       service_provided_note = {
