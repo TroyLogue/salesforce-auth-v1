@@ -64,5 +64,7 @@ module CaseDashboard
   class Closed < BasePage
     include SharedComponents
 
+    def page_displayed?
+    end
   end
 end
