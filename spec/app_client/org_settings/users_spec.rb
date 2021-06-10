@@ -114,6 +114,7 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       # reference: https://uniteus.atlassian.net/wiki/spaces/QA/pages/2597945489/5+24+2021+-+5+28+2021#end-to-end-tests
       p "E2E DEBUG: removed_value is #{removed_value}, org_access_values are #{org_access_values}"
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
+      org_settings_user_form.wait_for_notification_to_disappear
       expect(org_settings_user_form.displayed_program_access_values[:org_role_values])
         .to match_array(org_access_values)
     end
