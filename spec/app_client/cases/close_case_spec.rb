@@ -27,12 +27,8 @@ describe '[Cases]', :app_client, :cases do
       expect(case_detail_page.page_displayed?).to be_truthy
 
       # should be required to enter a resolution, outcome, note, and program exit date
-      case_detail_page.close_case(
-        resolution: ,
-        outcome: ,
-        note: ,
-        program_exit_date:
-      )
+      closed_case_values = case_detail_page.close_case_with_random_values
+      p "#{closed_case_values}"
 
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::CASE_CLOSED)
