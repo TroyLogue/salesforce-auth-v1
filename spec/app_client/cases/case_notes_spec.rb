@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 require_relative '../cases/pages/case'
-require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[Cases]', :app_client, :cases do
   let(:case_detail_page) { Case.new(@driver) }
-  let(:homepage) { HomePage.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
   context('[as a Referrals Admin user]') do

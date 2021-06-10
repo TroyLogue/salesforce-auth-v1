@@ -17,10 +17,6 @@ class Case < BasePage
   REFERRED_TO = { css: '#basic-table-referred-to-value' }.freeze
   SERVICE_TYPE = { css: '#basic-table-service-type-value' }.freeze
 
-  INTERACTION_TAB = { css: '#interactions-interaction-tab' }.freeze
-  SERVICES_TAB = { css: '#interactions-service-provided-tab' }.freeze
-  OTHER_TAB = { css: '#interactions-other-tab' }.freeze
-
   REOPEN_BTN = { css: '#reopen-case' }.freeze
   CLOSE_BTN = { css: '#close-case-btn' }.freeze
 
@@ -41,18 +37,18 @@ class Case < BasePage
     get("/dashboard/cases/closed/#{case_id}/contact/#{contact_id}")
   end
 
-  def notes_section_displayed?
-    is_displayed?(INTERACTION_TAB) &&
-      is_displayed?(SERVICES_TAB) &&
-      is_displayed?(OTHER_TAB)
-  end
-
   def open_case_path(case_id:, contact_id:)
     "/dashboard/cases/open/#{case_id}/contact/#{contact_id}"
   end
 
   def closed_case_path(case_id:, contact_id:)
     "/dashboard/cases/closed/#{case_id}/contact/#{contact_id}"
+  end
+
+  def notes_section_displayed?
+    is_displayed?(INTERACTION_TAB) &&
+      is_displayed?(SERVICE_PROVIDED_TAB) &&
+      is_displayed?(OTHER_TAB)
   end
 
   def open_notes_section
