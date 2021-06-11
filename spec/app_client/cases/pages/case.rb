@@ -38,7 +38,7 @@ class Case < BasePage
       resolution: text(RESOLUTION),
       outcome: text(OUTCOME),
       note: text(OUTCOME_NOTES),
-      exit_date: text(PROGRAM_EXIT_DATE),
+      exit_date: text(PROGRAM_EXIT_DATE)
     }
   end
 
