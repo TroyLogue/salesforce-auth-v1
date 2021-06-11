@@ -2,7 +2,6 @@
 
 require_relative './pages/case'
 require_relative './pages/case_dashboard'
-require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[Cases]', :app_client, :cases do
@@ -23,7 +22,6 @@ describe '[Cases]', :app_client, :cases do
     end
 
     it 'closes a case', :uuqa_1807 do
-      # should be required to enter a resolution, outcome, note, and program exit date
       closed_case_values = case_detail_page.close_case_with_random_values
       expect(notifications.success_text).to include(Notifications::CASE_CLOSED)
       expect(closed_case_dashboard.page_displayed?).to be_truthy
