@@ -12,6 +12,16 @@ module CaseDashboard
     PRIMARY_WORKER_FIRST_OPTION = { css: '#primary-worker-filter .filter-options__container div:nth-of-type(2)' }.freeze
     PRIMARY_WORKER_SELECTED_OPTION = { css: "#{PRIMARY_WORKER_FIRST_OPTION[:css]} label" }.freeze
 
+    def search_and_select_first_care_coordinator(text)
+      click(CARE_COORDINATOR_DROPDOWN)
+      clear_then_enter(text, CARE_COORDINATOR_SEARCH)
+      is_displayed?(CARE_COORDINATOR_FIRST_OPTION)
+      selected_option_text = text(CARE_COORDINATOR_SELECTED_OPTION)
+      click(CARE_COORDINATOR_FIRST_OPTION)
+      click(CARE_COORDINATOR_DROPDOWN)
+      selected_option_text
+    end
+
     def search_and_select_first_primary_worker(text)
       click(PRIMARY_WORKER_DROPDOWN)
       clear_then_enter(text, PRIMARY_WORKER_SEARCH)
@@ -38,16 +48,6 @@ module CaseDashboard
 
     def go_to_open_cases_dashboard
       get('/dashboard/cases/open')
-    end
-
-    def search_and_select_first_care_coordinator(text)
-      click(CARE_COORDINATOR_DROPDOWN)
-      clear_then_enter(text, CARE_COORDINATOR_SEARCH)
-      is_displayed?(CARE_COORDINATOR_FIRST_OPTION)
-      selected_option_text = text(CARE_COORDINATOR_SELECTED_OPTION)
-      click(CARE_COORDINATOR_FIRST_OPTION)
-      click(CARE_COORDINATOR_DROPDOWN)
-      selected_option_text
     end
 
     def no_cases_message_displayed?
