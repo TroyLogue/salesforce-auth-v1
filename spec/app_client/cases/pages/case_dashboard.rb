@@ -65,6 +65,7 @@ module CaseDashboard
     include SharedComponents
 
     def page_displayed?
+
     end
   end
 end

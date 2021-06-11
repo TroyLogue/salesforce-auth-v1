@@ -28,10 +28,8 @@ describe '[Cases]', :app_client, :cases do
 
       # should be required to enter a resolution, outcome, note, and program exit date
       closed_case_values = case_detail_page.close_case_with_random_values
-      p "#{closed_case_values}"
 
-      notification_text = notifications.success_text
-      expect(notification_text).to include(Notifications::CASE_CLOSED)
+      expect(notifications.success_text).to include(Notifications::CASE_CLOSED)
 
       # compare values from closing case?
 

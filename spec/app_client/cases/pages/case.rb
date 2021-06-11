@@ -29,13 +29,13 @@ class Case < BasePage
 
   def close_case_with_random_values
     is_displayed?(CLOSE_BTN) && click(CLOSE_BTN)
-    # in modal
     resolution = select_random_resolution
     outcome = select_random_outcome
     note = enter_random_note
     exit_date = enter_random_exit_date
 
     click(CLOSE_CASE_SUBMIT_BTN)
+    wait_for_spinner
     { resolution: resolution, outcome: outcome, note: note, exit_date: exit_date }
   end
 
@@ -91,7 +91,7 @@ class Case < BasePage
   end
 
   def select_random_resolution
-    click(RESOLUTION_DROPDOWN)
+    is_displayed?(RESOLUTION_DROPDOWN) && click(RESOLUTION_DROPDOWN)
     random_resolution_element = find_elements(RESOLUTION_DROPDOWN_CHOICES).sample
     resolution = random_resolution_element.text
     random_resolution_element.click
@@ -99,7 +99,7 @@ class Case < BasePage
   end
 
   def select_random_outcome
-    click(OUTCOME_DROPDOWN)
+    is_displayed?(OUTCOME_DROPDOWN) && click(OUTCOME_DROPDOWN)
     random_outcome_element = find_elements(OUTCOME_DROPDOWN_CHOICES).sample
     outcome = random_outcome_element.text
     random_outcome_element.click
