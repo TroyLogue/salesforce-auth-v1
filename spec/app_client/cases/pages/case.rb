@@ -1,9 +1,6 @@
 # frozen_string_literal: true
-require_relative '../../facesheet/pages/facesheet_overview_page'
 
 class Case < BasePage
-  include Notes
-
   ADD_A_NEW_NOTE = { css: '#add-case-note-button' }.freeze
   ASSESSMENT_LIST = { css: '.detail-info__relationship-files' }.freeze
   ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
@@ -24,11 +21,6 @@ class Case < BasePage
     is_displayed?(CASE_VIEW)
   end
 
-  def add_service_provided_note(note)
-    enter_service_provided_note(note)
-    post_note
-  end
-
   def go_to_open_case_with_id(case_id:, contact_id:)
     get("/dashboard/cases/open/#{case_id}/contact/#{contact_id}")
   end
@@ -43,12 +35,6 @@ class Case < BasePage
 
   def closed_case_path(case_id:, contact_id:)
     "/dashboard/cases/closed/#{case_id}/contact/#{contact_id}"
-  end
-
-  def notes_section_displayed?
-    is_displayed?(INTERACTION_TAB) &&
-      is_displayed?(SERVICE_PROVIDED_TAB) &&
-      is_displayed?(OTHER_TAB)
   end
 
   def open_notes_section
