@@ -106,7 +106,8 @@ RSpec.configure do |config|
             str if File.exist?(str)
           end
         else
-          @driver = Selenium::WebDriver.for :firefox
+          capabilities = Selenium::WebDriver::Remote::Capabilities.firefox(accept_insecure_certs: true)
+          @driver = Selenium::WebDriver.for :firefox, desired_capabilities: capabilities
         end
       when 'safari'
         @driver = Selenium::WebDriver.for :safari
