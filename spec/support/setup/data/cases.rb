@@ -28,7 +28,7 @@ module Setup
         out_of_network_providers: [{ provider_id: nil, provider_type: "CUSTOM", custom_name: custom_name }],
         program_id: Setup::Programs.out_of_network_program_id(token: token, group_id: group_id),
         primary_worker_id: PrimaryWorkers::CC_HARVARD,
-        referred_to: "Out of Network name",
+        referred_to: custom_name,
         service_type_code: ServiceTypeCodes::EMPLOYMENT
       )
     end
