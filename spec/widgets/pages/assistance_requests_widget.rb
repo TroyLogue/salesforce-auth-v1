@@ -62,12 +62,8 @@ class AssistanceRequestWidget < BasePage
   DOWNLOAD_MESSAGE = 'Download Your Signed Consent Form'
   PDF_TEXT = 'pdf'
 
-  def get_widget_page
-    driver.get ENV['widgets_url']
-  end
-
-  def get_default_widget_page
-    driver.get ENV['widgets_default_url']
+  def get_widget_page(form_id:)
+    driver.get "#{ENV['WIDGETS_URL']}/#{form_id}"
   end
 
   def fill_default_form_fields(first_name:, last_name:, dob:, description:)

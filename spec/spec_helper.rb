@@ -13,15 +13,7 @@ require_relative './ehr/auth/pages/login_password_ehr' # With UU3-48209 we shoul
 # and do not need to require them individually
 Bundler.require(:default)
 
-# Setting and grabbing environment specific vars
-ENV['environment'] ||= 'app_client_staging'
-
-domain = ENV['environment'].split('_')[-1]
-application = ENV['environment'].gsub('_' + domain, '')
-
-Dotenv.load(".env.#{domain}")
-ENV['web_url'] = ENV[application + '_url']
-ENV['auth_url'] = ENV[application + '_auth_url']
+Dotenv.load
 
 # Gives specs access to the support setup modules that contain the methods
 # to create data needed for test cases
@@ -32,7 +24,7 @@ RSpec.configure do |config|
   Selenium::WebDriver.logger.level = :error
 
   config.before(:each) do |example|
-    case ENV['host']
+    case ENV['HOST']
     when 'browserstack'
       Bundler.require(:browserstack)
       caps = Selenium::WebDriver::Remote::Capabilities.new
@@ -54,10 +46,10 @@ RSpec.configure do |config|
       # caps['browserstack.video'] = 'false'
 
       # env vars are passed by rake tasks
-      caps['os'] = ENV['os']
-      caps['os_version'] = ENV['os_version']
-      caps['browser'] = ENV['browser']
-      caps['browser_version'] = ENV['browser_version']
+      caps['os'] = ENV['OS']
+      caps['os_version'] = ENV['OS_VERSION']
+      caps['browser'] = ENV['BROWSER']
+      caps['browser_version'] = ENV['BROWSER_VERSION']
 
       # remote driver for browserstack
       @driver = Selenium::WebDriver.for(
@@ -72,9 +64,9 @@ RSpec.configure do |config|
     else
       # default browser is chrome; others can passed as variables
 
-      case ENV['browser'] ||= 'chrome'
+      case ENV['BROWSER'] ||= 'chrome'
       when 'chrome'
-        if ENV['host'] == 'docker'
+        if ENV['HOST'] == 'docker'
           @driver = Selenium::WebDriver.for(:remote,
                                             url: 'http://chrome:4444/wd/hub',
                                             desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome)
@@ -96,7 +88,7 @@ RSpec.configure do |config|
 
         @driver = Selenium::WebDriver.for :chrome, options: options
       when 'firefox'
-        if ENV['host'] == 'docker'
+        if ENV['HOST'] == 'docker'
           @driver = Selenium::WebDriver.for(:remote,
                                             url: 'http://firefox:4444/wd/hub',
                                             desired_capabilities: Selenium::WebDriver::Remote::Capabilities.firefox)
@@ -106,7 +98,9 @@ RSpec.configure do |config|
             str if File.exist?(str)
           end
         else
-          @driver = Selenium::WebDriver.for :firefox
+          caps = Selenium::WebDriver::Remote::Capabilities.firefox(accept_insecure_certs: true)
+
+          @driver = Selenium::WebDriver.for :firefox, desired_capabilities: caps
         end
       when 'safari'
         @driver = Selenium::WebDriver.for :safari
@@ -128,6 +122,53 @@ RSpec.configure do |config|
     config.default_retry_count = 2
   end
 
+  case ENV['ENVIRONMENT']
+  when 'devqa'
+    ENV['APP_CLIENT_URL'] = 'https://app.uniteusdev.com'
+    ENV['EHR_URL'] = 'https://emr.uniteusdev.com'
+    ENV['APP_CLIENT_AUTH_URL'] = 'https://app.auth.uniteusdev.com'
+    ENV['EHR_AUTH_URL'] = 'https://emr.auth.uniteusdev.com'
+    ENV['API_URL'] = 'https://api.uniteusdev.com'
+    ENV['CORE_URL'] = 'https://core.uniteusdev.com'
+  when 'staging'
+    ENV['APP_CLIENT_URL'] = 'https://app.uniteusdev.com'
+    ENV['WIDGETS_URL'] = 'https://widgets.uniteusdev.com/assistance-request'
+    ENV['EHR_URL'] = 'https://emr.uniteusdev.com'
+    ENV['APP_CLIENT_AUTH_URL'] = 'https://app.auth.uniteusdev.com'
+    ENV['EHR_AUTH_URL'] = 'https://emr.auth.uniteusdev.com'
+    ENV['API_URL'] = 'https://api.uniteusdev.com'
+    ENV['CORE_URL'] = 'https://core.uniteusdev.com'
+    ENV['RESOURCE_DIRECTORY_URL'] = 'https://uniteus.resources.uniteusdev.com'
+    ENV['CONSENT_URL'] = 'https://consent.uniteusdev.com'
+  when 'training'
+    ENV['APP_CLIENT_URL'] = 'https://app.uniteustraining.com'
+    ENV['WIDGETS_URL'] = 'https://widgets.uniteustraining.com/assistance-request'
+    ENV['EHR_URL'] = 'https://emr.uniteustraining.com'
+    ENV['APP_CLIENT_AUTH_URL'] = 'https://app.auth.uniteustraining.com'
+    ENV['EHR_AUTH_URL'] = 'https://emr.auth.uniteustraining.com'
+    ENV['API_URL'] = 'https://api.uniteustraining.com'
+    ENV['CORE_URL'] = 'https://core.uniteustraining.com'
+    ENV['CONSENT_URL'] = 'https://consent.uniteustraining.com'
+  when 'prod'
+    ENV['APP_CLIENT_URL'] = 'https://app.uniteus.io'
+    ENV['WIDGETS_URL'] = 'https://widgets.uniteus.io/assistance-request'
+    ENV['EHR_URL'] = 'https://emr.uniteus.io'
+    ENV['APP_CLIENT_AUTH_URL'] = 'https://app.auth.uniteus.io'
+    ENV['EHR_AUTH_URL'] = 'https://emr.auth.uniteus.io'
+    ENV['API_URL'] = 'https://api.uniteus.io'
+    ENV['CORE_URL'] = 'https://core.uniteus.io'
+    ENV['RESOURCE_DIRECTORY_URL'] = 'https://uniteus.resources.uniteus.io'
+    ENV['CONSENT_URL'] = 'https://consent.uniteus.io'
+  else
+    raise "Missing required ENV['ENVIRONMENT']: devqa, staging, training, prod"
+  end
+
+  # Setting web and auth urls for app being tested
+  ENV['APPLICATION'] ||= 'APP_CLIENT'
+
+  ENV['WEB_URL'] = ENV["#{ENV['APPLICATION']}_URL"]
+  ENV['AUTH_URL'] = ENV["#{ENV['APPLICATION']}_AUTH_URL"]
+
   # From rspec-core: This option will default to `:apply_to_host_groups` in RSpec 4 (and will
   # have no way to turn it off -- the option exists only for backwards
   # compatibility in RSpec 3). It causes shared context metadata to be
@@ -138,8 +179,8 @@ RSpec.configure do |config|
   # reporting
   config.after(:each) do |example|
     begin
-      if ENV['host'] == 'browserstack'
-        caps = Selenium::WebDriver::Remote::Capabilities.send(ENV['browser'])
+      if ENV['HOST'] == 'browserstack'
+        caps = Selenium::WebDriver::Remote::Capabilities.send(ENV['BROWSER'])
         caps['browserstack.video'] = if example.exception.nil?
                                        # do not upload video if test passed
                                        'false'

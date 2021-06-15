@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 module Networks
-  domain = ENV['environment'].split('_')[-1]
-  case domain
+  case ENV['ENVIRONMENT']
   when 'prod'
   when 'training'
     # just for debugging - not actually Ivy in Training
@@ -10,6 +9,6 @@ module Networks
   when 'staging', 'devqa'
     NETWORK_ID = 'd8e7a7f0-d4f1-459b-bab4-15802b371cae'
   else
-    raise "Missing required ENV['environment']: prod, training, staging, devqa"
+    raise "Missing required ENV['ENVIRONMENT']: prod, training, staging, devqa"
   end
 end
