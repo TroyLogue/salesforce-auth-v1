@@ -58,8 +58,8 @@ class Notifications < BasePage
   end
 
   def close_banner
-    is_displayed?(SUCCESS_BANNER)
-    click_within(SUCCESS_BANNER, CLOSE_BANNER)
+    is_displayed?(SUCCESS_BANNER) &&
+      click_within(SUCCESS_BANNER, CLOSE_BANNER)
   end
 
   def error_notification_not_displayed?
