@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 require_relative '../root/pages/home_page'
-require_relative '../cases/pages/case_dashboard'
+require_relative '../cases/pages/open_cases_dashboard'
 require_relative '../root/pages/notifications'
 
 describe '[cases]', :app_client, :cases do
   let(:homepage) { HomePage.new(@driver) }
-  let(:open_cases_dashboard) { CaseDashboard::Open.new(@driver) }
+  let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
   context('[as non cc user]') do

@@ -2,7 +2,7 @@
 
 require_relative './../pages/create_referral'
 require_relative '../../cases/pages/case'
-require_relative '../../cases/pages/case_dashboard'
+require_relative '../../cases/pages/open_cases_dashboard'
 require_relative '../../facesheet/pages/facesheet_cases_page'
 require_relative '../../facesheet/pages/facesheet_header'
 require_relative '../../root/pages/home_page'
@@ -15,7 +15,7 @@ describe '[Referrals - External]', :app_client, :referrals do
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:final_review_page) { CreateReferral::FinalReview.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
-  let(:open_cases_dashboard) { CaseDashboard::Open.new(@driver) }
+  let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
 
   context('[as a Referral User and Out of Network Cases User]') do
     before(:each) do

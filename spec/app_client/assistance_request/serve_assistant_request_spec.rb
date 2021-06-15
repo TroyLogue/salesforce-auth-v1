@@ -6,7 +6,7 @@ require_relative 'pages/new_assistance_request_dashboard_page'
 require_relative 'pages/processed_assistance_request_dashboard_page'
 require_relative 'pages/processed_assistance_request_page'
 require_relative '../cases/pages/create_case'
-require_relative '../cases/pages/case_dashboard'
+require_relative '../cases/pages/open_cases_dashboard'
 require_relative '../root/pages/notifications'
 
 describe '[Serve Assistance Request]', :app_client, :assistance_request do
@@ -16,7 +16,7 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
   let(:processed_assistance_request_dashboard_page) { ProcessedAssistanceRequestDashboardPage.new(@driver) }
   let(:processed_assistance_request_page) { ProcessedAssistanceRequestPage.new(@driver) }
   let(:create_case) { CreateCase.new(@driver) }
-  let(:open_cases_dashboard) { CaseDashboard::Open.new(@driver) }
+  let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
   before do
