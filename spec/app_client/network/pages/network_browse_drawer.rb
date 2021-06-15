@@ -104,6 +104,7 @@ class NetworkBrowseDrawer < BasePage
   def edit_and_save_provider_phone_number(number:)
     click(EDIT_BTN)
     clear_then_enter(number, EDIT_PHONE_INPUT)
+    scroll_to(SAVE_BTN)
     click(SAVE_BTN)
   end
 end
