@@ -4,6 +4,7 @@ tmp/
 
 # account credentials
 lib/browserstack_credentials.rb
+.env
 .env.devqa
 .env.staging
 .env.training
