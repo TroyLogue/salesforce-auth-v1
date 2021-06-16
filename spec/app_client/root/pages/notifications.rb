@@ -35,6 +35,7 @@ class Notifications < BasePage
   REFERRAL_HELP = 'Referral Held Successfully'
   REFERRAL_REJECTED = 'Referral Rejected Successfully'
   REFERRAL_SENT = 'Referral Successfully Sent Out'
+  SERVICE_SUCCESSFULLY_LOGGED = 'Service Successfully Logged'
   SETTINGS_UPDATED = 'Successfully Updated Settings'
   SUPPORTING_ASSESSMENT_SAVED = 'Supporting Assessments Successfully Saved'
   INSECURE_PASSWORD = 'Password is not safe to use as it appears in a list of weak passwords. Please change your password to something more secure.'

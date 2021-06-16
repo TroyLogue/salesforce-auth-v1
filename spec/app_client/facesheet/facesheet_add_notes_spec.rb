@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../root/pages/home_page'
+require_relative '../root/pages/notes'
 require_relative '../root/pages/notifications'
 require_relative './pages/facesheet_header'
 require_relative './pages/facesheet_overview_page'
@@ -8,6 +9,7 @@ require_relative './pages/facesheet_overview_page'
 describe '[Facesheet]', :app_client, :facesheet do
   let(:facesheet_overview) { FacesheetOverview.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
+  let(:notes) { Notes.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
 
@@ -26,7 +28,7 @@ describe '[Facesheet]', :app_client, :facesheet do
 
     it 'Adds a Phone Interaction Note', :uuqa_157 do
       interaction_note = { type: 'Phone Call', duration: '15m', content: Faker::Lorem.sentence(word_count: 5) }
-      facesheet_overview.add_interaction(interaction_note)
+      notes.add_interaction(interaction_note)
       expect(notifications.success_text).to eq(Notifications::NOTE_ADDED)
 
       created_note = facesheet_overview.first_interaction_note_in_timeline
@@ -35,7 +37,7 @@ describe '[Facesheet]', :app_client, :facesheet do
 
     it 'Adds a Email Interaction Note', :uuqa_157 do
       interaction_note = { type: 'Email', duration: 'N/A', content: Faker::Lorem.sentence(word_count: 5) }
-      facesheet_overview.add_interaction(interaction_note)
+      notes.add_interaction(interaction_note)
       expect(notifications.success_text).to eq(Notifications::NOTE_ADDED)
 
       created_note = facesheet_overview.first_interaction_note_in_timeline
@@ -44,7 +46,7 @@ describe '[Facesheet]', :app_client, :facesheet do
 
     it 'Adds a In-Person Interaction Note', :uuqa_157 do
       interaction_note = { type: 'Meeting', duration: '> 2h 30m', content: Faker::Lorem.sentence(word_count: 5) }
-      facesheet_overview.add_interaction(interaction_note)
+      notes.add_interaction(interaction_note)
       expect(notifications.success_text).to eq(Notifications::NOTE_ADDED)
 
       created_note = facesheet_overview.first_interaction_note_in_timeline
@@ -67,15 +69,15 @@ describe '[Facesheet]', :app_client, :facesheet do
 
       it 'add notes to clients case', :uuqa_1592, :uuqa_1595, :uuqa_1597 do
         aggregate_failures 'option to add a note to a case is available' do
-          facesheet_overview.click_type_of_note(type: 'Interaction')
-          expect(facesheet_overview.add_note_to_case_displayed?).to be_truthy
+          notes.click_type_of_note(type: 'Interaction')
+          expect(notes.add_note_to_case_displayed?).to be_truthy
 
           # Service tab only displays on clients with open cases
-          facesheet_overview.click_type_of_note(type: 'Service')
-          expect(facesheet_overview.add_note_to_case_displayed?).to be_truthy
+          notes.click_type_of_note(type: 'Service')
+          expect(notes.add_note_to_case_displayed?).to be_truthy
 
-          facesheet_overview.click_type_of_note(type: 'Other')
-          expect(facesheet_overview.add_note_to_case_displayed?).to be_truthy
+          notes.click_type_of_note(type: 'Other')
+          expect(notes.add_note_to_case_displayed?).to be_truthy
         end
       end
     end
@@ -93,7 +95,7 @@ describe '[Facesheet]', :app_client, :facesheet do
         facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)
       }
       it 'Message a client', :uuqa_1596 do
-        facesheet_overview.send_message_to_client(method: email_address, note: Faker::Lorem.sentence(word_count: 5))
+        notes.send_message_to_client(method: email_address, note: Faker::Lorem.sentence(word_count: 5))
         expect(notifications.success_text).to eq(Notifications::MESSAGE_SENT)
       end
     end

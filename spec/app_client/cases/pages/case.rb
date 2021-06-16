@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Case < BasePage
+  ADD_A_NEW_NOTE = { css: '#add-case-note-button' }.freeze
   ADD_ANOTHER_OON_RECIPIENT = { css: '#add-another-oon-group-btn' }.freeze
   ASSESSMENT_LIST = { css: '.detail-info__relationship-files' }.freeze
   ASSESSMENT_LINK = { xpath: './/a[text()="%s"]' }.freeze
@@ -32,7 +33,7 @@ class Case < BasePage
   OUTCOME_DROPDOWN_CHOICES = { css: 'div[id^="choices-outcomeInput-item-choice-"]' }.freeze
   RESOLUTION_DROPDOWN = { xpath: '//label[text()="Is Resolved?"]/parent::div' }.freeze
   RESOLUTION_DROPDOWN_CHOICES = { css: 'div[id^="choices-resolvedInput-item-choice-"]' }.freeze
-  
+
   REOPEN_BTN = { css: '#reopen-case' }.freeze
   CLOSE_BTN = { css: '#close-case-btn' }.freeze
 
@@ -114,12 +115,16 @@ class Case < BasePage
     get("/dashboard/cases/closed/#{case_id}/contact/#{contact_id}")
   end
 
+  def open_case_path(case_id:, contact_id:)
+    "/dashboard/cases/open/#{case_id}/contact/#{contact_id}"
+  end
+
   def closed_case_path(case_id:, contact_id:)
     "/dashboard/cases/closed/#{case_id}/contact/#{contact_id}"
   end
 
-  def open_case_path(case_id:, contact_id:)
-    "/dashboard/cases/open/#{case_id}/contact/#{contact_id}"
+  def open_notes_section
+    click(ADD_A_NEW_NOTE)
   end
 
   def save_referred_to
