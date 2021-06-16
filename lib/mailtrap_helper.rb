@@ -11,7 +11,7 @@ module MailtrapHelper
   end
 
   def find_reset_link(str)
-    auth_url = ENV['auth_url'].gsub('/', '\/')
+    auth_url = ENV['AUTH_URL'].gsub('/', '\/')
     str.match(/#{auth_url}\/secret\/edit\?client_id=\w{10}&amp;reset_password_token=\S{20}/)[0]
   end
 
@@ -20,7 +20,7 @@ module MailtrapHelper
     str.match(/#{base_url}\/\w{7}/)[0]
   end
 
-  def get_messages(filter: '', mailbox_id: ENV['mailtrap_id'])
+  def get_messages(filter: '', mailbox_id: ENV['MAILTRAP_ID'])
     # Search returns only messages where subject line STARTS WITH filter text
     response = HTTP.get("https://mailtrap.io/api/v1/inboxes/#{mailbox_id}/messages?search=#{filter}",
                         :params => { :api_token => ENV['API_TOKEN'] })
@@ -36,7 +36,7 @@ module MailtrapHelper
     get_html_of_message(message_id: message_id)
   end
 
-  def get_html_of_message(message_id:, mailbox_id: ENV['mailtrap_id'])
+  def get_html_of_message(message_id:, mailbox_id: ENV['MAILTRAP_ID'])
     response = HTTP.get("https://mailtrap.io/api/v1/inboxes/#{mailbox_id}/messages/#{message_id}/body.html",
                         :params => { :api_token => ENV['API_TOKEN'] })
     if response.status.success?
