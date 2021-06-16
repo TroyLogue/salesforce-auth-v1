@@ -7,7 +7,6 @@ require_relative '../cases/pages/open_cases_dashboard'
 require_relative '../facesheet/pages/facesheet_cases_page'
 require_relative '../facesheet/pages/facesheet_header'
 require_relative '../facesheet/pages/facesheet_uploads_page'
-require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[cases]', :app_client, :cases do
@@ -16,7 +15,6 @@ describe '[cases]', :app_client, :cases do
   let(:facesheet_cases_page) { FacesheetCases.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_uploads_page) { FacesheetUploadsPage.new(@driver) }
-  let(:home_page) { HomePage.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
   let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
   let(:case_review) { CaseReview.new(@driver) }
@@ -30,14 +28,12 @@ describe '[cases]', :app_client, :cases do
       @local_file_path = create_consent_file(@file_name)
 
       @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
-      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
-      expect(home_page.page_displayed?).to be_truthy
+      cases_path = facesheet_header.path(contact_id: @contact.contact_id, tab: 'cases')
+      facesheet_header.authenticate_and_navigate_to(token: @auth_token, path: cases_path)
+      expect(facesheet_cases_page.page_displayed?).to be_truthy
     end
 
     it 'uploads a document while creating a case', :uuqa_1806 do
-      facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id, tab: 'Cases')
-      expect(facesheet_cases_page.page_displayed?).to be_truthy
-
       facesheet_cases_page.create_new_case
       expect(create_case.page_displayed?).to be_truthy
       expect(create_case.is_oon_program_auto_selected?).to be_truthy
