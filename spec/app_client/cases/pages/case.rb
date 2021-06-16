@@ -14,7 +14,9 @@ class Case < BasePage
   SERVICE_TYPE = { css: '#basic-table-service-type-value' }.freeze
 
   # Contracted Service
-  ADD_CONTRACTED_SERVICES_BUTTON = { css: '.add-circle-plus__text' }.freeze
+  ADD_CONTRACTED_SERVICES_BUTTON = {
+    css: '.add-fee-schedule-program-information__section .add-circle-plus__text'
+  }.freeze
   CONTRACTED_SERVICES_FORM = { css: '.payments-track-service' }.freeze
   SUBMIT_CONTRACTED_SERVICES = { css: '#fee-schedule-provided-service-post-note-btn' }.freeze
   UNIT_AMOUNT = { css: '#provided-service-unit-amount' }.freeze
@@ -24,13 +26,17 @@ class Case < BasePage
   ORIGIN_INPUT_ADDRESS_CITY = { css: 'input[name$="[0].address.city"]' }.freeze
   ADDRESS_STATE_INPUT = { css: 'select[name$="[0].address.state"]' }.freeze
   EXPAND_ORIGIN_STATE_LIST = { css: 'select[name$="[0].address.state"] + div' }.freeze
-  LIST_ORIGIN_STATE_CHOICES = { css: '.payments-track-service__metafields div:first-child div[id^="choices-undefined-state-item-choice"]' }.freeze
+  LIST_ORIGIN_STATE_CHOICES = {
+    css: '.payments-track-service__metafields div:first-child div[id^="choices-undefined-state-item-choice"]'
+  }.freeze
   ORIGIN_INPUT_ADDRESS_ZIP = { css: 'input[name$="[0].address.postal_code"]' }.freeze
   DESTINATION_INPUT_ADDRESS_LINE1 = { css: 'input[name$="[1].address.line_1"]' }.freeze
   DESTINATION_INPUT_ADDRESS_LINE2 = { css: 'input[name$="[1].address.line_2"]' }.freeze
   DESTINATION_INPUT_ADDRESS_CITY = { css: 'input[name$="[1].address.city"]' }.freeze
   EXPAND_DESTINATION_STATE_LIST = { css: 'select[name$="[1].address.state"] + div' }.freeze
-  LIST_DESTINATION_STATE_CHOICES = { css: '.payments-track-service__metafields div:nth-child(2) div[id^="choices-undefined-state-item-choice"]' }.freeze
+  LIST_DESTINATION_STATE_CHOICES = {
+    css: '.payments-track-service__metafields div:nth-child(2) div[id^="choices-undefined-state-item-choice"]'
+  }.freeze
   DESTINATION_INPUT_ADDRESS_ZIP = { css: 'input[name$="[1].address.postal_code"]' }.freeze
   TOLL_COST = { css: 'input[name$="value"]' }.freeze
   CONTRACTED_SERVICE_DETAIL_CARD = { css: '.fee-schedule-provided-service-card' }.freeze
