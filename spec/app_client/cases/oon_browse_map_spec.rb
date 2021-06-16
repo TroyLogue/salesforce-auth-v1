@@ -26,8 +26,6 @@ describe '[cases]', :app_client, :cases do
       expect(create_case.page_displayed?).to be_truthy
       expect(create_case.is_oon_program_auto_selected?).to be_truthy
 
-      description = Faker::Lorem.sentence(word_count: 5)
-
       # add an org via browse map, then remove
       create_case.select_service_type(Services::BENEFITS_DISABILITY_BENEFITS)
       create_case.browse_map
