@@ -20,10 +20,10 @@ describe '[cases]', :app_client, :cases do
       open_cases_dashboard.go_to_open_cases_dashboard
       expect(open_cases_dashboard.open_cases_table_displayed?).to be_truthy
 
-      primary_worker = open_cases_dashboard.search_and_select_first_primary_worker('e')
+      primary_worker = open_cases_dashboard.search_and_select_first_primary_worker(text: 'e')
 
       expect(notifications.error_notification_not_displayed?).to be_truthy
-      expect(open_cases_dashboard.no_cases_message_displayed? || open_cases_dashboard.cases_match_primary_worker?(primary_worker)).to be_truthy
+      expect(open_cases_dashboard.no_cases_message_displayed? || open_cases_dashboard.cases_match_primary_worker?(text: primary_worker)).to be_truthy
     end
   end
 
@@ -38,10 +38,10 @@ describe '[cases]', :app_client, :cases do
       open_cases_dashboard.go_to_open_cases_dashboard
       expect(open_cases_dashboard.open_cases_table_displayed?).to be_truthy
 
-      care_coordinator = open_cases_dashboard.search_and_select_first_care_coordinator('e')
+      care_coordinator = open_cases_dashboard.search_and_select_first_care_coordinator(text: 'e')
 
       expect(notifications.error_notification_not_displayed?).to be_truthy
-      expect(open_cases_dashboard.no_cases_message_displayed? || open_cases_dashboard.cases_match_care_coordinator?(care_coordinator)).to be_truthy
+      expect(open_cases_dashboard.no_cases_message_displayed? || open_cases_dashboard.cases_match_care_coordinator?(text: care_coordinator)).to be_truthy
     end
   end
 end
