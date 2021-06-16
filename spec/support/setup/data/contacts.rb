@@ -29,7 +29,7 @@ module Setup
 
     def self.create_payments_client_with_consent
       contact = Contact.new(token: Auth.jwt(email_address: Users::PAYMENTS_USER), group_id: Providers::PAYMENTS_ORG)
-      contact.create
+      contact.create_with_consent
       contact
     end
 
