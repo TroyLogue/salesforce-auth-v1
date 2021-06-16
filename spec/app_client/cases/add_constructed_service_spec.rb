@@ -9,9 +9,9 @@ describe '[Payments]', :app_client, :payments do
     before do
       auth_token = Auth.encoded_auth_token(email_address: Users::PAYMENTS_USER)
       contact = Setup::Data.create_payments_client_with_consent
-      serviceCase = Setup::Data.create_service_case_for_payments(contact_id: contact.contact_id)
+      kase = Setup::Data.create_service_case_for_payments(contact_id: contact.contact_id)
       case_detail_page.authenticate_and_navigate_to(token: auth_token,
-                                                    path: "/dashboard/cases/open/#{serviceCase.id}/contact/#{contact.contact_id}")
+                                                    path: "/dashboard/cases/open/#{kase.id}/contact/#{contact.contact_id}")
       expect(case_detail_page.page_displayed?).to be_truthy
     end
 
