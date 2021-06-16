@@ -43,11 +43,11 @@ class Case < BasePage
   end
 
   def click_contracted_service_button
-    click ADD_CONTRACTED_SERVICES_BUTTON
+    is_displayed?(ADD_CONTRACTED_SERVICES_BUTTON) && click(ADD_CONTRACTED_SERVICES_BUTTON)
   end
 
   def contracted_service_form_displayed?
-    is_displayed? CONTRACTED_SERVICES_FORM
+    is_displayed?(CONTRACTED_SERVICES_FORM)
   end
 
   def submit_contracted_services_form(values)
@@ -101,10 +101,10 @@ class Case < BasePage
     # Submits contracted services form and closes form
     click_submit_contracted_services_button
     is_not_displayed?(CONTRACTED_SERVICES_FORM)
-    create_detail_card
+    create_detail_card_displayed?
   end
 
-  def create_detail_card
+  def create_detail_card_displayed?
     is_displayed?(CONTRACTED_SERVICE_DETAIL_CARD)
   end
 
