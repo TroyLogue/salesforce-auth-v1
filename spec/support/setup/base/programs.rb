@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Setup
   class Programs
     class << self
@@ -15,9 +17,9 @@ module Setup
         programs_response = Core::Programs.get_all(token: token, group_id: group_id)
         parsed_programs_response_data = JSON.parse(programs_response.body, object_class: OpenStruct).data
 
-        parsed_programs_response_data.map do |program|
-          program.id if program.attributes[:name] == program_name
-        end.compact.first
+        parsed_programs_response_data.find do |program|
+          program.attributes[:name] == program_name
+        end &.id
       end
     end
   end
