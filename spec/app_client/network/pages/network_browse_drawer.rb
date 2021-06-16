@@ -1,47 +1,54 @@
+# frozen_string_literal: true
+
 require_relative '../../../shared_components/base_page'
 
 class NetworkBrowseDrawer < BasePage
-
   # navigation
-  OPENED_DRAWER = { css: '.ui-drawer--opened .network-group-details.group-details' }
-  CLOSE_BUTTON = { css: '.ui-drawer__close-btn--opened .ui-icon' }
+  OPENED_DRAWER = { css: '.ui-drawer--opened .network-group-details.group-details' }.freeze
+  CLOSE_BUTTON = { css: '.ui-drawer__close-btn--opened .ui-icon' }.freeze
 
-  SHARE_BUTTON = { css: '#network-groups-drawer-share-btn' }
+  SHARE_BUTTON = { css: '#network-groups-drawer-share-btn' }.freeze
+  EDIT_BTN = { css: '#network-groups-drawer-edit-btn' }.freeze
 
   # provider details
   # required fields:
-  PROVIDER_DETAILS_MAP = { css: '.group-details-content__map' }
-  PROVIDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable' }
-  PROVIDER_DETAILS_LOCATION_HEADER = { css: '.provider-content-v2__location-header' }
-  PROVIDER_DETAILS_ADDRESS = { css: '.ui-provider-card__address' }
-  PROVIDER_DETAILS_HOURS = { css: '.ui-provider-card__hours' }
-  PROVIDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs' }
+  PROVIDER_DETAILS_MAP = { css: '.group-details-content__map' }.freeze
+  PROVIDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable' }.freeze
+  PROVIDER_DETAILS_LOCATION_HEADER = { css: '.provider-content-v2__location-header' }.freeze
+  PROVIDER_DETAILS_ADDRESS = { css: '.ui-provider-card__address' }.freeze
+  PROVIDER_DETAILS_HOURS = { css: '.ui-provider-card__hours' }.freeze
+  PROVIDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs' }.freeze
 
   # optional fields:
-  PROVIDER_DETAILS_PHONE = { css: '.ui-provider-card__phone' }
-  PROVIDER_DETAILS_EMAIL = { css: '.ui-provider-card__email' }
-  PROVIDER_DETAILS_WEBSITE = { css: '.ui-provider-card__website' }
+  PROVIDER_DETAILS_PHONE = { css: '.ui-provider-card__phone' }.freeze
+  PROVIDER_DETAILS_EMAIL = { css: '.ui-provider-card__email' }.freeze
+  PROVIDER_DETAILS_WEBSITE = { css: '.ui-provider-card__website' }.freeze
 
-  TOGGLE_MORE_INFO = { css: '#more-or-less-toggle-btn' }
+  TOGGLE_MORE_INFO = { css: '#more-or-less-toggle-btn' }.freeze
 
   # program details
-  PROGRAM_DETAILS_SERVICES = { css: '.program-card-v2 .ui-service-types' }
+  PROGRAM_DETAILS_SERVICES = { css: '.program-card-v2 .ui-service-types' }.freeze
 
   # share form
-  SHARE_FORM = { css: '.expandable-container__content.open .share-form' }
-  SHARE_VIA_PHONE_OPTION = { css: '#sms-label' }
-  PHONE_INPUT = { css: '#share-phone-field' }
-  SHARE_VIA_EMAIL_OPTION = { css: '#email-label' }
-  EMAIL_INPUT = { css: '#share-email-field' }
-  SHARE_VIA_PRINT_OPTION = { css: '#print-label' }
-  PRINT_BUTTON = { css: '#share-print-button' }
-  CANCEL_BUTTON = { css: '#share-cancel-button' }
-  SEND_BUTTON = { css: '#share-send-button' }
+  SHARE_FORM = { css: '.expandable-container__content.open .share-form' }.freeze
+  SHARE_VIA_PHONE_OPTION = { css: '#sms-label' }.freeze
+  PHONE_INPUT = { css: '#share-phone-field' }.freeze
+  SHARE_VIA_EMAIL_OPTION = { css: '#email-label' }.freeze
+  EMAIL_INPUT = { css: '#share-email-field' }.freeze
+  SHARE_VIA_PRINT_OPTION = { css: '#print-label' }.freeze
+  PRINT_BUTTON = { css: '#share-print-button' }.freeze
+  CANCEL_BUTTON = { css: '#share-cancel-button' }.freeze
+  SEND_BUTTON = { css: '#share-send-button' }.freeze
+
+  # Edit form
+  EDIT_FORM = { css: '.oon-group-form' }.freeze
+  EDIT_PHONE_INPUT = { css: '#phone-number-main-field' }.freeze
+  SAVE_BTN = { css: '#oon-group-form-save-btn' }.freeze
 
   # test inputs:
   # cf. https://www.twilio.com/blog/2018/04/twilio-test-credentials-magic-numbers.html
-  INVALID_PHONE_NUMBER = '(999) 999-9999';
-  VALID_PHONE_NUMBER = '15005550006';
+  INVALID_PHONE_NUMBER = '(999) 999-9999'
+  VALID_PHONE_NUMBER = '15005550006'
 
   def click_share_button
     click(SHARE_BUTTON)
@@ -88,5 +95,16 @@ class NetworkBrowseDrawer < BasePage
     enter(phone, PHONE_INPUT)
     click(SEND_BUTTON)
     wait_for_spinner
+  end
+
+  def can_edit_provider?
+    is_displayed?(EDIT_BTN)
+  end
+
+  def edit_and_save_provider_phone_number(number:)
+    click(EDIT_BTN)
+    clear_then_enter(number, EDIT_PHONE_INPUT)
+    scroll_to(SAVE_BTN)
+    click(SAVE_BTN)
   end
 end

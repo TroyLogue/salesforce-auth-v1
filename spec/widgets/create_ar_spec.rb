@@ -19,7 +19,7 @@ describe '[Assistance Request Widget]', :widgets, :assistance_request do
   }
 
   it 'submits an assistance request with configured fields', :uuqa_1600 do
-    widget_page.get_widget_page
+    widget_page.get_widget_page(form_id: AssistanceRequestForms::AR_ALL_FIELDS_FORM)
     expect(widget_page.widget_page_displayed?).to be_truthy
 
     widget_page.fill_default_form_fields(first_name: @fname, last_name: @lname, dob: @dob, description: @description)
@@ -45,7 +45,7 @@ describe '[Assistance Request Widget]', :widgets, :assistance_request do
     school_name = 'NYU'
     school_location = 'NYC'
 
-    widget_page.get_widget_page
+    widget_page.get_widget_page(form_id: AssistanceRequestForms::AR_ALL_FIELDS_FORM)
     expect(widget_page.widget_page_displayed?).to be_truthy
 
     widget_page.fill_default_form_fields(first_name: @fname, last_name: @lname, dob: @dob, description: @description)
@@ -69,7 +69,7 @@ describe '[Assistance Request Widget]', :widgets, :assistance_request do
   end
 
   it 'submits an assistance request with only default fields', :uuqa_1601 do
-    widget_page.get_default_widget_page
+    widget_page.get_widget_page(form_id: AssistanceRequestForms::AR_DEFAULT_FORM)
     expect(widget_page.widget_page_displayed?).to be_truthy
 
     widget_page.fill_default_form_fields(first_name: @fname, last_name: @lname, dob: @dob, description: @description)

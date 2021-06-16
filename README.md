@@ -111,7 +111,7 @@ The full test result output including screenshots and video is available in Brow
 
 ## Local enviroment variables
 
-A template `.env.example` file is provided but in order to run against staging create a `.env.staging` file and replace the appropriate tokens with those shared in 1Password.
+A template `.env.example` file is provided but in order to run against staging create a `.env` file and replace the appropriate tokens with those shared in 1Password.
 
 # Running Tests Locally
 
@@ -128,7 +128,7 @@ Call `rake -T` to list all tasks. Feel free to add useful tasks.
 
 ## Using RSpec Commands
 
-When running tests via `rspec` the default `web_url` and `browser` values defined in the `spec_helper` will be used unless otherwise specified before the `rspec` command.
+When running tests via `rspec` the default `APPLICATION` and `BROWSER` values defined in the `spec_helper` will be used unless otherwise specified before the `rspec` command.
 
 ### Running Tests Headlessly
 

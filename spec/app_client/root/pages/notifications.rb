@@ -11,8 +11,10 @@ class Notifications < BasePage
   ACCESS_DENIED = 'Access to the requested resource has been forbidden.'
   ASSISTANCE_REQUEST_CLOSED = 'Assistance Request Successfully Closed'
   BLANK_EMAIL_MESSAGE = "EmailAddress can't be blank"
+  CASE_CLOSED = 'Case Successfully closed'
   CASE_CREATED = 'Case Created'
   CASE_REOPENED = 'Case Successfully Reopened'
+  CASE_UPDATED = 'Case Successfully Updated'
   CLIENT_UPDATED = 'Client Successfully Updated'
   CONSENT_REQUEST_SENT = 'Consent Request Sent'
   CONSENT_UPLOADED = 'Consent Uploaded'
@@ -59,8 +61,8 @@ class Notifications < BasePage
   end
 
   def close_banner
-    is_displayed?(SUCCESS_BANNER)
-    click_within(SUCCESS_BANNER, CLOSE_BANNER)
+    is_displayed?(SUCCESS_BANNER) &&
+      click_within(SUCCESS_BANNER, CLOSE_BANNER)
   end
 
   def error_notification_not_displayed?

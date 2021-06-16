@@ -24,7 +24,7 @@ class BasePage
     add_cookie(
       name: token[:name],
       value: token[:value],
-      domain: ".#{ENV['web_url'].partition('.').last.partition('/').first}"
+      domain: ".#{ENV['WEB_URL'].partition('.').last.partition('/').first}"
     )
     get(path)
   end
@@ -141,9 +141,9 @@ class BasePage
   end
 
   # debugging tip: to verify value set, run
-  # driver.execute_script("return document.getElementById(`#{selector_id}`).value")
+  # driver.execute_script("return document.querySelector(`#{selector_id}`).value")
   def enter_via_js(text, selector_id)
-    driver.execute_script("document.getElementById(`#{selector_id}`).setAttribute('value', `#{text}`)")
+    driver.execute_script("document.querySelector(`#{selector_id}`).setAttribute('value', `#{text}`)")
   end
 
   def enter_within(text, context, selector)
@@ -173,11 +173,11 @@ class BasePage
   end
 
   def get(path)
-    driver.get ENV['web_url'] + path
+    driver.get ENV['WEB_URL'] + path
   end
 
   def get_auth(path)
-    driver.get ENV['auth_url'] + path
+    driver.get ENV['AUTH_URL'] + path
   end
 
   def hover_over(selector)

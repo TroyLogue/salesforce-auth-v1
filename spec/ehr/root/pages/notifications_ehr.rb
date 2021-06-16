@@ -13,10 +13,9 @@ class NotificationsEhr < BasePage
   MESSAGE_SENT = 'Message successfully sent'
   ASSESSMENT_UPDATED = "ASSESSMENT SUCCESSFULLY EDITED"
 
-
   def close_notification
-    is_displayed?(SUCCESS_NOTIFICATION)
-    click_within(SUCCESS_NOTIFICATION, CLOSE_BTN)
+    is_displayed?(SUCCESS_NOTIFICATION) &&
+      click_within(SUCCESS_NOTIFICATION, CLOSE_BTN)
   end
 
   def error_notification_not_displayed?

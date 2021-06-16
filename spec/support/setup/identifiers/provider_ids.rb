@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 module Providers
-  domain = ENV['environment'].split('_')[-1]
-  case domain
+  case ENV['ENVIRONMENT']
   when 'prod'
   when 'training'
     # TODO - update const names
