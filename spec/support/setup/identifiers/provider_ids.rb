@@ -16,6 +16,6 @@ module Providers
     ORG_PRINCETON = '0c58634f-fd19-422d-8c1a-c1f1a915e3cc'
     CC_QA_ADMIN = '1caa174e-694d-4cad-ab61-c60d1e062721'
   else
-    raise "Missing required ENV['environment']: prod, training, staging, devqa"
+    raise "Missing required ENV['ENVIRONMENT']: prod, training, staging, devqa"
   end
 end
