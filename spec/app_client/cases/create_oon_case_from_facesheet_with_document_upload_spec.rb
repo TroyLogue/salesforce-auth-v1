@@ -33,7 +33,7 @@ describe '[cases]', :app_client, :cases do
       expect(facesheet_cases_page.page_displayed?).to be_truthy
     end
 
-    it 'uploads a document while creating a case', :uuqa_1806 do
+    it 'creates oon case from facesheet with document upload', :uuqa_1806 do
       facesheet_cases_page.create_new_case
       expect(create_case.page_displayed?).to be_truthy
       expect(create_case.is_oon_program_auto_selected?).to be_truthy
