@@ -71,6 +71,10 @@ class FacesheetHeader < BasePage
     wait_for_spinner
   end
 
+  def path(contact_id:, tab:'')
+    "/facesheet/#{contact_id}/#{tab}"
+  end
+
   def select_consent_option(option:)
     click(EXPAND_CONSENT_OPTIONS)
     click_element_from_list_by_text(LIST_CONSENT_OPTIONS, option)

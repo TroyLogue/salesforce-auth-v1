@@ -4,6 +4,7 @@ require_relative '../../../shared_components/base_page'
 
 class CreateCase < BasePage
   AUTO_SELECTED_PROGRAM = { css: '#program + div > div:not(button)' }.freeze
+  BROWSE_MAP = { css: '#browse-map-button' }.freeze
   CASE_DETAILS = { css: '.add-case-details' }.freeze
   CASE_INFORMATION_NEXT_BUTTON = { css: '#add-case-details-next-btn' }.freeze
   CREATE_CASE_FORM = { css: '.add-case-details' }.freeze
@@ -20,8 +21,10 @@ class CreateCase < BasePage
   PROGRAM_DROPDOWN = { css: '#program + .choices__list' }.freeze
   PROGRAM_FIRST_OPTION = { css: '#choices-program-item-choice-2' }.freeze
   REMOVE_TEXT = 'Remove item'
+  REMOVE_FIRST_SELECTED_OON_GROUP = { css: '#select-field-oon-group-0 + .choices__list > .choices__item button' }.freeze
   SERVICE_TYPE_DROPDOWN = { css: '#service-type + .choices__list' }.freeze
   SERVICE_TYPE_FIRST_OPTION = { css: '#choices-service-type-item-choice-2' }.freeze
+  SERVICE_TYPE_REMOVE_ITEM = { css: '#service-type + div button' }.freeze
   SELECTED_OON_ORG = { css: '#select-field-oon-group-0 + div > div:not(button)' }.freeze
   SELECT_PRIMARY_WORKER = { css: '#primary-worker + div > div:not(button)' }.freeze
   SELECTED_SERVICE_TYPE = { css: '#service-type + div > div:not(button)' }.freeze
@@ -40,6 +43,10 @@ class CreateCase < BasePage
   def advance_to_review_step
     click(CASE_INFORMATION_NEXT_BUTTON)
     click(SUPPORTING_INFORMATION_NEXT_BUTTON) if is_displayed?(SUPPORTING_INFORMATION_PAGE)
+  end
+
+  def clear_selected_service_type
+    click(SERVICE_TYPE_REMOVE_ITEM)
   end
 
   def click_next_button
@@ -125,6 +132,14 @@ class CreateCase < BasePage
     OON_PROGRAM == text(AUTO_SELECTED_PROGRAM).sub!(REMOVE_TEXT, '').strip!
   end
 
+  def browse_map
+    click(BROWSE_MAP)
+  end
+
+  def remove_first_selected_group
+    click(REMOVE_FIRST_SELECTED_OON_GROUP)
+  end
+
   def select_primary_worker(primary_worker_id)
     primary_worker = { css: "div[data-value='#{primary_worker_id}']" }
     click(PRIMARY_WORKER_DROPDOWN)
@@ -141,6 +156,17 @@ class CreateCase < BasePage
     service_type = { css: "div[data-value='#{service_type_id}']" }
     click(SERVICE_TYPE_DROPDOWN)
     click(service_type)
+  end
+
+  def selected_oon_org
+    # Removing distance and "Remove Item" to return just the provider name
+    provider_text = text(SELECTED_OON_ORG)
+    provider_distance_index = text(SELECTED_OON_ORG).rindex(/\(/) # finds the last open paren in the string
+    if provider_distance_index
+      provider_text[0..(provider_distance_index - 1)].strip # returns provider_text up to the distance
+    else # provider distance does not display for custom OON orgs, but still need to strip remove text
+      provider_text.sub!(REMOVE_TEXT, '').strip!
+    end
   end
 
   private
@@ -178,17 +204,6 @@ class CreateCase < BasePage
   def select_first_service_type
     click(SERVICE_TYPE_DROPDOWN)
     click(SERVICE_TYPE_FIRST_OPTION)
-  end
-
-  def selected_oon_org
-    # Removing distance and "Remove Item" to return just the provider name
-    provider_text = text(SELECTED_OON_ORG)
-    provider_distance_index = text(SELECTED_OON_ORG).rindex(/\(/) # finds the last open paren in the string
-    if provider_distance_index
-      provider_text[0..(provider_distance_index - 1)].strip # returns provider_text up to the distance
-    else # provider distance does not display for custom OON orgs, but still need to strip remove text
-      provider_text.sub!(REMOVE_TEXT, '').strip!
-    end
   end
 
   def selected_primary_worker

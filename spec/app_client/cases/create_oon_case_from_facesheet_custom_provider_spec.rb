@@ -4,16 +4,13 @@ require_relative '../cases/pages/case'
 require_relative '../cases/pages/case_review'
 require_relative '../cases/pages/create_case'
 require_relative '../cases/pages/open_cases_dashboard'
-require_relative '../clients/pages/clients_page'
 require_relative '../facesheet/pages/facesheet_cases_page'
 require_relative '../facesheet/pages/facesheet_header'
-require_relative '../referrals/pages/referral'
 require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[cases]', :app_client, :cases do
   let(:case_detail_page) { Case.new(@driver) }
-  let(:client_page) { ClientsPage.new(@driver) }
   let(:create_case) { CreateCase.new(@driver) }
   let(:facesheet_cases_page) { FacesheetCases.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
@@ -27,23 +24,22 @@ describe '[cases]', :app_client, :cases do
       @contact = Setup::Data.create_harvard_client_with_consent
 
       @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
-      homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
-      expect(homepage.page_displayed?).to be_truthy
+      cases_path = facesheet_header.path(contact_id: @contact.contact_id, tab: 'cases')
+      facesheet_header.authenticate_and_navigate_to(token: @auth_token, path: cases_path)
+      expect(facesheet_cases_page.page_displayed?).to be_truthy
     end
 
-    # TODO deprecate when Core Consolidation cases component is complete
-    # the create OON case steps are duplicated by uuqa_1806
-    it 'creates case via facesheet using OON org select input', :uuqa_1443 do
-      facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id, tab: 'Cases')
-      expect(facesheet_cases_page.page_displayed?).to be_truthy
-
+    it 'creates case via facesheet with custom OON provider input', :uuqa_645 do
       facesheet_cases_page.create_new_case
       expect(create_case.page_displayed?).to be_truthy
       expect(create_case.is_oon_program_auto_selected?).to be_truthy
 
       description = Faker::Lorem.sentence(word_count: 5)
-      submitted_case_selections = create_case.create_oon_case_selecting_first_options(description: description)
-
+      provider = Faker::Lorem.sentence(word_count: 2)
+      submitted_case_selections = create_case.create_oon_case_with_first_options_and_custom_provider(
+        description: description,
+        provider: provider
+      )
       expect(case_review.page_displayed?).to be_truthy
 
       case_review_selections = {
