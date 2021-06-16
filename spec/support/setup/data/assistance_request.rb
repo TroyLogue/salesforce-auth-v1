@@ -9,7 +9,7 @@ module Setup
   module Data
     def self.submit_assistance_request_to_columbia_org
       assistance_request = Setup::AssistanceRequest.new
-      assistance_request.create(access_token: COLUMBIA_AR_WIDGET_FORM_ID, service_type_id: Services::BENEFITS_DISABILITY_BENEFITS)
+      assistance_request.create(access_token: AssistanceRequestForms::AR_ALL_FIELDS_FORM, service_type_id: Services::BENEFITS_DISABILITY_BENEFITS)
       assistance_request
     end
 
