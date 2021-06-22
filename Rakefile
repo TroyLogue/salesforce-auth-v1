@@ -70,6 +70,7 @@ namespace :jenkins do
     ENV['OS_VERSION'] = '7'
     ENV['BROWSER'] = 'ie'
     ENV['BROWSER_VERSION'] = '10.0'
+    ENV['BROWSERSTACK_BUILD_NAME'] = 'Consent_Staging'
     exit run_in_parallel(tag: 'consent_app')
   end
 end

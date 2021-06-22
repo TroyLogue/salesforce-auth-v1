@@ -50,8 +50,8 @@ RSpec.configure do |config|
       caps['os_version'] = ENV['OS_VERSION']
       caps['browser'] = ENV['BROWSER']
       caps['browser_version'] = ENV['BROWSER_VERSION']
+      caps['build'] = ENV['BROWSERSTACK_BUILD_NAME']
       caps['javascriptEnabled'] = 'true'
-
       # remote driver for browserstack
       @driver = Selenium::WebDriver.for(
         :remote,
@@ -183,12 +183,19 @@ RSpec.configure do |config|
       if ENV['HOST'] == 'browserstack'
         caps = Selenium::WebDriver::Remote::Capabilities.send(ENV['BROWSER'])
         caps['browserstack.video'] = if example.exception.nil?
-                                       # do not upload video if test passed
+                                       # update browserstack session status
                                        @driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed"}}')
+
+                                       # do not upload video if test passed
                                        'false'
                                      else
-                                       # true is the default value but stating explicitly for readability
+                                       # metadata tag :screenrecord is not supported by rspec_junit_formattter, instead printing browserstack url to stdout tag
+                                       example.metadata[:stdout] = "https://automate.browserstack.com/dashboard/v2/builds/#{ENV['BROWSERSTACK_BUILD_NAME']}/sessions/#{@driver.session_id}"
+
+                                       # update browserstack session status
                                        @driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed"}}')
+
+                                       # true is the default value but stating explicitly for readability
                                        'true'
                                      end
       else
