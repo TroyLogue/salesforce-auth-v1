@@ -50,6 +50,7 @@ RSpec.configure do |config|
       caps['os_version'] = ENV['OS_VERSION']
       caps['browser'] = ENV['BROWSER']
       caps['browser_version'] = ENV['BROWSER_VERSION']
+      caps['javascriptEnabled'] = 'true'
 
       # remote driver for browserstack
       @driver = Selenium::WebDriver.for(
@@ -183,9 +184,11 @@ RSpec.configure do |config|
         caps = Selenium::WebDriver::Remote::Capabilities.send(ENV['BROWSER'])
         caps['browserstack.video'] = if example.exception.nil?
                                        # do not upload video if test passed
+                                       @driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed"}}')
                                        'false'
                                      else
                                        # true is the default value but stating explicitly for readability
+                                       @driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed"}}')
                                        'true'
                                      end
       else
