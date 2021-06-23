@@ -39,7 +39,23 @@ class Case < BasePage
   }.freeze
   DESTINATION_INPUT_ADDRESS_ZIP = { css: 'input[name$="[1].address.postal_code"]' }.freeze
   TOLL_COST = { css: 'input[name$="value"]' }.freeze
+
+  # Contracted Service Detail Card Selector
   CONTRACTED_SERVICE_DETAIL_CARD = { css: '.fee-schedule-provided-service-card' }.freeze
+  CARD_UNIT_AMOUNT = { css: 'span[data-test-element=unit-amount-value]' }.freeze
+  # CARD_PERIOD_OF_SERVICE = { css: 'span[data-test-element=service-period-select-value]' }.freeze
+  CARD_SERVICE_DATE = { css: 'span[data-test-element=service-start-date-value]' }.freeze
+  CARD_TOLL_COST = { css: 'span[data-test-element=metafield-value-2]' }.freeze
+  CARD_ORIGIN_ADDRESS_L1 = { css: 'span[data-test-element=metafield-address-line-1-value-0]' }.freeze
+  CARD_ORIGIN_ADDRESS_L2 = { css: 'span[data-test-element=metafield-address-line-2-value-0]' }.freeze
+  CARD_ORIGIN_CITY = { css: 'span[data-test-element=metafield-city-value-0]' }.freeze
+  CARD_ORIGIN_STATE = { css: 'span[data-test-element=metafield-state-value-0]' }.freeze
+  CARD_ORIGIN_ZIP = { css: 'span[data-test-element=metafield-zip-value-0]' }.freeze
+  CARD_DESTINATION_ADDRESS_L1 = { css: 'span[data-test-element=metafield-address-line-1-value-1]' }.freeze
+  CARD_DESTINATION_ADDRESS_L2 = { css: 'span[data-test-element=metafield-address-line-2-value-1]' }.freeze
+  CARD_DESTINATION_CITY = { css: 'span[data-test-element=metafield-city-value-1]' }.freeze
+  CARD_DESTINATION_STATE = { css: 'span[data-test-element=metafield-state-value-1]' }.freeze
+  CARD_DESTINATION_ZIP = { css: 'span[data-test-element=metafield-zip-value-1]' }.freeze
 
   REOPEN_BTN = { css: '#reopen-case' }.freeze
   CLOSE_BTN = { css: '#close-case-btn' }.freeze
@@ -108,10 +124,35 @@ class Case < BasePage
     click_submit_contracted_services_button
     is_not_displayed?(CONTRACTED_SERVICES_FORM)
     create_detail_card_displayed?
+    confirm_detail_card_values(values)
   end
 
   def create_detail_card_displayed?
     is_displayed?(CONTRACTED_SERVICE_DETAIL_CARD)
+  end
+
+  def confirm_detail_card_values(form_values)
+    contracted_service_card_values = {
+      unit_amount: CARD_UNIT_AMOUNT,
+      starts_at: CARD_SERVICE_DATE,
+      origin_address: {
+        origin_address_line1: CARD_ORIGIN_ADDRESS_L1,
+        origin_address_line2: CARD_ORIGIN_ADDRESS_L2,
+        origin_city: CARD_ORIGIN_CITY,
+        origin_zip: CARD_ORIGIN_STATE,
+        origin_state: CARD_ORIGIN_ZIP
+      },
+      destination_address: {
+        destination_address_line1: CARD_DESTINATION_ADDRESS_L1,
+        destination_address_line2: CARD_DESTINATION_ADDRESS_L2,
+        destination_city: CARD_DESTINATION_CITY,
+        destination_zip: CARD_DESTINATION_ZIP,
+        destination_state: CARD_DESTINATION_STATE
+      },
+      toll_cost: CARD_TOLL_COST
+    }
+
+    contracted_service_card_values.eql?(form_values)
   end
 
   def click_submit_contracted_services_button
