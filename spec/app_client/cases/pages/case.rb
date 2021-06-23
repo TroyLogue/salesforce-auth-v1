@@ -43,7 +43,6 @@ class Case < BasePage
   # Contracted Service Detail Card Selector
   CONTRACTED_SERVICE_DETAIL_CARD = { css: '.fee-schedule-provided-service-card' }.freeze
   CARD_UNIT_AMOUNT = { css: 'span[data-test-element=unit-amount-value]' }.freeze
-  # CARD_PERIOD_OF_SERVICE = { css: 'span[data-test-element=service-period-select-value]' }.freeze
   CARD_SERVICE_DATE = { css: 'span[data-test-element=service-start-date-value]' }.freeze
   CARD_TOLL_COST = { css: 'span[data-test-element=metafield-value-2]' }.freeze
   CARD_ORIGIN_ADDRESS_L1 = { css: 'span[data-test-element=metafield-address-line-1-value-0]' }.freeze
