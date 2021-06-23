@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 module Providers
-  domain = ENV['environment'].split('_')[-1]
-  case domain
+  case ENV['ENVIRONMENT']
   when 'prod'
   when 'training'
     # TODO: - update const names
@@ -18,6 +17,6 @@ module Providers
     CC_QA_ADMIN = '1caa174e-694d-4cad-ab61-c60d1e062721'
     PAYMENTS_ORG = 'b13c2706-3ee6-4261-8a79-0ec39b71a51f'
   else
-    raise "Missing required ENV['environment']: prod, training, staging, devqa"
+    raise "Missing required ENV['ENVIRONMENT']: prod, training, staging, devqa"
   end
 end

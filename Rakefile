@@ -5,51 +5,72 @@ def run_in_parallel(tag:, processes: 1)
 end
 
 namespace :jenkins do
-  desc 'specs tagged app_client on chrome headless'
-  task :app_client do
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'app_client_staging'
-    exit run_in_parallel(tag: 'app_client')
-  end
-
   # UU3-48322 DEBUG errors running tests in multiple processes:
   # To troubleshoot, use any tag(s) that efficiently reproduce the errors being debugged.
   # The end goal is to update the app_client task with 2 processes and to delete this task.
   task :app_client_parallel do
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'app_client_staging'
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'APP_CLIENT'
     exit run_in_parallel(tag: 'app_client', processes: 2)
   end
 
+  desc 'specs tagged app_client on chrome headless'
+  task :app_client_staging do
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'APP_CLIENT'
+    exit run_in_parallel(tag: 'app_client')
+  end
+
+  task :app_client_training do
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'training'
+    ENV['APPLICATION'] = 'APP_CLIENT'
+    exit run_in_parallel(tag: 'uuqa_1608')
+  end
+
+  task :app_client_prod do
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'prod'
+    ENV['APPLICATION'] = 'APP_CLIENT'
+    exit run_in_parallel(tag: 'uuqa_9')
+  end
+
   desc 'specs tagged ehr on chrome headless'
-  task :ehr do
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'ehr_staging'
+  task :ehr_staging do
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'EHR'
     exit run_in_parallel(tag: 'ehr')
   end
 
   desc 'specs tagged resource_directory on chrome headless'
-  task :resource_directory do
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'resource_directory_staging'
+  task :resource_directory_staging do
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'RESOURCE_DIRECTORY'
     exit run_in_parallel(tag: 'resource_directory')
   end
 
   desc 'specs tagged widgets on chrome headless'
-  task :widgets do
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'widgets_staging'
+  task :widgets_staging do
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'WIDGETS'
     exit run_in_parallel(tag: 'widgets')
   end
 
   desc 'specs tagged consent on IE10'
-  task :consent do
-    ENV['host'] = 'browserstack'
-    ENV['environment'] = 'consent_staging'
-    ENV['os'] = 'Windows'
-    ENV['os_version'] = '7'
-    ENV['browser'] = 'ie'
-    ENV['browser_version'] = '10.0'
+  task :consent_staging do
+    ENV['HOST'] = 'browserstack'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'CONSENT'
+    ENV['OS'] = 'Windows'
+    ENV['OS_VERSION'] = '7'
+    ENV['BROWSER'] = 'ie'
+    ENV['BROWSER_VERSION'] = '10.0'
+    ENV['BROWSERSTACK_BUILD_NAME'] = 'Consent_Staging'
     exit run_in_parallel(tag: 'consent_app')
   end
 end
@@ -83,8 +104,9 @@ namespace :local do
   # rake local:app_client_staging[chrome]
   desc 'Run app-client tests on staging by browser'
   task :app_client_staging, [:browser] do |t, args|
-    ENV['browser'] = args[:browser]
-    ENV['environment'] = 'app_client_staging'
+    ENV['BROWSER'] = args[:browser]
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'APP_CLIENT'
     exit run_in_parallel(tag: 'app_client')
   end
 
@@ -92,16 +114,18 @@ namespace :local do
   # rake local:ehr_staging
   desc 'Run ehr tests on staging in chrome headless'
   task :ehr_staging, :browser do |t, args|
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'ehr_staging'
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'EHR'
     exit run_in_parallel(tag: 'ehr')
   end
 
   # rake local:ehr_staging_tag[uuqa_1548]
   desc 'Run ehr tests on staging by tag'
   task :ehr_staging_tag, [:tag] do |t, args|
-    ENV['browser'] = 'chrome_headless'
-    ENV['environment'] = 'ehr_staging'
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'EHR'
     exit run_in_parallel(tag: (args[:tag]).to_s)
   end
 
@@ -110,8 +134,8 @@ namespace :local do
   # rake local:devqa[chrome,uuqa_292]
   desc 'Run tests on Dev QA bucket by browser and tag(s)'
   task :devqa, :browser, :tag do |t, args|
-    ENV['browser'] = args[:browser]
-    ENV['environment'] = 'devqa'
+    ENV['BROWSER'] = args[:browser]
+    ENV['ENVIRONMENT'] = 'devqa'
     exit run_in_parallel(tag: (args[:tag]).to_s)
   end
 
@@ -119,8 +143,9 @@ namespace :local do
   # rake local:resource_directory_staging[chrome]
   desc 'Run resource directory tests on staging by browser'
   task :resource_directory_staging, [:browser] do |t, args|
-    ENV['browser'] = args[:browser]
-    ENV['environment'] = 'resource_directory_staging'
+    ENV['BROWSER'] = args[:browser]
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPPLICATION'] = 'RESOURCE_DIRECTORY'
     exit run_in_parallel(tag: 'resource_directory')
   end
 
@@ -128,8 +153,9 @@ namespace :local do
   # The purpose of this task is to compare chrome vs chrome_headless results
   # and any other troubleshooting toward stabilizing the app_client_parallel task in the jenkins namespace.
   task :app_client_parallel do
-    ENV['browser'] = 'chrome'
-    ENV['environment'] = 'app_client_staging'
+    ENV['BROWSER'] = 'chrome'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPPLICATION'] = 'APP_CLIENT'
     exit run_in_parallel(tag: 'referrals', processes: 2)
   end
 end
@@ -141,12 +167,13 @@ namespace :browserstack do
   # rake browserstack:app_client_staging_by_browser_and_tag['OS X','Catalina','chrome','80.0',uuqa_292]
   desc 'Run tests by tag on app-client base url'
   task :app_client_staging_by_browser_and_tag, :os, :os_version, :browser, :browser_version, :tag do |t, args|
-    ENV['host'] = 'browserstack'
-    ENV['environment'] = 'app_client_staging'
-    ENV['os'] = args[:os]
-    ENV['os_version'] = args[:os_version]
-    ENV['browser'] = args[:browser]
-    ENV['browser_version'] = args[:browser_version]
+    ENV['HOST'] = 'browserstack'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'APP_CLIENT'
+    ENV['OS'] = args[:os]
+    ENV['OS_VERSION'] = args[:os_version]
+    ENV['BROWSER'] = args[:browser]
+    ENV['BROWSER_VERSIONS'] = args[:browser_version]
     exit run_in_parallel(tag: (args[:tag]).to_s)
   end
 
@@ -154,12 +181,13 @@ namespace :browserstack do
   # rake browserstack:app_client_staging_chrome['80.0']
   desc 'Run all app_client tests on Chrome'
   task :app_client_staging_chrome, :environment, :os, :browser do |t, args|
-    ENV['host'] = 'browserstack'
-    ENV['environment'] = 'app_client_staging'
-    ENV['os'] = 'Windows'
-    ENV['os_version'] = '10'
-    ENV['browser'] = 'chrome'
-    ENV['browser_version'] = args[:browser_version]
+    ENV['HOST'] = 'browserstack'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'APP_CLIENT'
+    ENV['OS'] = 'Windows'
+    ENV['OS_VERSION'] = '10'
+    ENV['BROWSER'] = 'chrome'
+    ENV['BROWSER_VERSION'] = args[:browser_version]
     exit run_in_parallel(tag: 'app_client')
   end
 
@@ -168,12 +196,13 @@ namespace :browserstack do
   # rake browserstack:app_client_staging['OS X','Catalina','safari','13.0']
   desc 'Run tests tagged app_client by OS, browser, and browser version on app-client staging'
   task :app_client_staging, :os, :os_version, :browser, :browser_version do |t, args|
-    ENV['host'] = 'browserstack'
-    ENV['environment'] = 'app_client_staging'
-    ENV['os'] = args[:os]
-    ENV['os_version'] = args[:os_version]
-    ENV['browser'] = args[:browser]
-    ENV['browser_version'] = args[:browser_version]
+    ENV['HOST'] = 'browserstack'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'APP_CLIENT'
+    ENV['OS'] = args[:os]
+    ENV['OS_VERSION'] = args[:os_version]
+    ENV['BROWSER'] = args[:browser]
+    ENV['BROWSER_VERSION'] = args[:browser_version]
     exit run_in_parallel(tag: 'app_client')
   end
 
@@ -182,12 +211,13 @@ namespace :browserstack do
   # rake browserstack:app_client_staging_ie11['uuqa_292 --tag uuqa_293']
   desc 'Run app-client staging tests on IE 11 by tag(s)'
   task :app_client_staging_ie11, :tag do |t, args|
-    ENV['host'] = 'browserstack'
-    ENV['environment'] = 'app_client_staging'
-    ENV['os'] = 'Windows'
-    ENV['os_version'] = '7'
-    ENV['browser'] = 'ie'
-    ENV['browser_version'] = '11.0'
+    ENV['HOST'] = 'browserstack'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'APP_CLIENT'
+    ENV['OS'] = 'Windows'
+    ENV['OS_VERSION'] = '7'
+    ENV['BROWSER'] = 'ie'
+    ENV['BROWSER_VERSION'] = '11.0'
     exit run_in_parallel(tag: (args[:tag]).to_s)
   end
 
@@ -195,12 +225,13 @@ namespace :browserstack do
   # rake browserstack:ehr_staging_ie10['uuqa_123 --tag uuqa_124']
   desc 'Run EHR staging tests on IE 10 by tag(s)'
   task :ehr_staging_ie10, :tag do |t, args|
-    ENV['host'] = 'browserstack'
-    ENV['environment'] = 'ehr_staging'
-    ENV['os'] = 'Windows'
-    ENV['os_version'] = '7'
-    ENV['browser'] = 'ie'
-    ENV['browser_version'] = '10.0'
+    ENV['HOST'] = 'browserstack'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'EHR'
+    ENV['OS'] = 'Windows'
+    ENV['OS_VERSION'] = '7'
+    ENV['BROWSER'] = 'ie'
+    ENV['BROWSER_VERSION'] = '10.0'
     exit run_in_parallel(tag: (args[:tag]).to_s)
   end
 
@@ -208,12 +239,13 @@ namespace :browserstack do
   # rake browserstack:ehr_staging_ie10
   desc 'Run all EHR staging tests on IE 10'
   task :ehr_staging_ie10_all do |t, args|
-    ENV['host'] = 'browserstack'
-    ENV['environment'] = 'ehr_staging'
-    ENV['os'] = 'Windows'
-    ENV['os_version'] = '7'
-    ENV['browser'] = 'ie'
-    ENV['browser_version'] = '10.0'
+    ENV['HOST'] = 'browserstack'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'EHR'
+    ENV['OS'] = 'Windows'
+    ENV['OS_VERSION'] = '7'
+    ENV['BROWSER'] = 'ie'
+    ENV['BROWSER_VERSION'] = '10.0'
     exit run_in_parallel(tag: 'ehr')
   end
 end

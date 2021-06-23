@@ -15,6 +15,24 @@ module Setup
       )
     end
 
+    def self.create_oon_case_for_harvard(contact_id:)
+      token = Auth.jwt(email_address: Users::CC_USER)
+      group_id = Providers::CC_HARVARD
+      custom_name = Faker::String.random(length: 12)
+
+      Setup::Cases.create(
+        token: token,
+        network_id: Networks::NETWORK_ID,
+        group_id: group_id,
+        contact_id: contact_id,
+        out_of_network_providers: [{ provider_id: nil, provider_type: "CUSTOM", custom_name: custom_name }],
+        program_id: Setup::Programs.out_of_network_program_id(token: token, group_id: group_id),
+        primary_worker_id: PrimaryWorkers::CC_HARVARD,
+        referred_to: custom_name,
+        service_type_code: ServiceTypeCodes::EMPLOYMENT
+      )
+    end
+
     def self.close_service_case_for_harvard(contact_id:, case_id:, resolved: true)
       Setup::Cases.close(
         token: Auth.jwt(email_address: Users::CC_USER),

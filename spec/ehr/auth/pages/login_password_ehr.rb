@@ -5,18 +5,18 @@ require_relative '../../../shared_components/base_page'
 class LoginPasswordEhr < BasePage
   FORGOT_PASSWORD_LINK = { css: '#forgot-password-link' }.freeze
   INVALID_ALERT = { css: 'div.flash_alert-container:nth-child(7) > p.flash_alert' }.freeze
-  INVALID_TEXT = 'Invalid Email or password.'.freeze
+  INVALID_TEXT = 'Invalid Email or password.'
   LAUNCH_DROPDOWN = { css: '#launch-page-select' }.freeze
   DEFAULT_LAUNCH = { xpath: '//*[@id="launch-page-select"]/option[1]' }.freeze
   DASHBOARD_LAUNCH = { xpath: '//*[@id="launch-page-select"]/option[2]' }.freeze
   NOT_YOU_LINK = { css: '#not-you-link' }.freeze
-  PASSWORD_INPUT = { css: '#app_5_user_password' }.freeze
+  PASSWORD_INPUT = { css: 'input[id$=user_password]' }.freeze
   PATIENT_CONTEXT_INPUT = { css: '#patient-context-input' }.freeze
   SUBMIT_BUTTON = { css: 'input[value="Sign in"]' }.freeze
   USER_EMAIL = { css: '#user-email' }.freeze
 
-  # string to pass to enter_via_js which uses getElementById
-  PASSWORD_INPUT_ID = 'app_5_user_password'
+  # string to pass to enter_via_js which uses querySelector
+  PASSWORD_INPUT_ID = 'input[id$=user_password]'
 
   def click_forgot_password
     click_via_js(FORGOT_PASSWORD_LINK)

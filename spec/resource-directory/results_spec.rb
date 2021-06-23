@@ -4,7 +4,7 @@ describe '[Resource Directory]', :resource_directory do
   let(:base_page) { BasePage.new(@driver) }
   let(:resource_directory) { ResourceDirectory.new(@driver) }
 
-  # pass in resource_directory_(staging/training/etc) as ENV['environment']
+  # pass in resource_directory as ENV['APPLICATION']
   # when you run this so it accesses the correct base url
   before {
     base_page.get ''

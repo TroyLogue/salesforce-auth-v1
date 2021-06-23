@@ -16,11 +16,11 @@ class Auth
 
     private
     def are_environment_vars_set?
-      unless ENV['app_client_client_id'] && ENV['app_client_url'] && ENV['app_client_auth_url'] && ENV['DEFAULT_PASSWORD']
+      unless ENV['APP_CLIENT_CLIENT_ID'] && ENV['APP_CLIENT_URL'] && ENV['APP_CLIENT_AUTH_URL'] && ENV['DEFAULT_PASSWORD']
         raise("An environment variable is not set \n
-              app_client_client_id: #{ENV['app_client_client_id']} \n
-              app_client_url: #{ENV['app_client_url']} \n
-              app_client_auth_url: #{ENV['app_client_auth_url']} \n
+              app_client_client_id: #{ENV['APP_CLIENT_CLIENT_ID']} \n
+              app_client_url: #{ENV['APP_CLIENT_URL']} \n
+              app_client_auth_url: #{ENV['APP_CLIENT_AUTH_URL']} \n
               default_password: #{ENV['DEFAULT_PASSWORD']} \n")
       end
     end
@@ -30,19 +30,22 @@ class Auth
     end
 
     def load_auth_and_csrf_tokens
-      callback_path = "/oauth2/auth?client_id=#{ENV['app_client_client_id']}&redirect_uri=#{ENV['app_client_url']}/callback&scope=app:read%20app:write&response_type=code"
+      callback_path = "/oauth2/auth?client_id=#{ENV['APP_CLIENT_CLIENT_ID']}&redirect_uri=#{ENV['APP_CLIENT_URL']}/callback&scope=app:read%20app:write&response_type=code"
 
-      initial_login = HTTParty.get("#{ENV['app_client_auth_url']}#{callback_path}")
+      initial_login = HTTParty.get("#{ENV['APP_CLIENT_AUTH_URL']}#{callback_path}")
       csrf_token = Nokogiri::HTML(initial_login.body).css('meta[name="csrf-token"]')[0]['content']
       auth_cookie = initial_login.headers['set-cookie'].split(';')[0]
 
       { csrf: csrf_token, auth: auth_cookie }
     end
 
-    def get_auth_cookie(email_address:, password: , tokens:)
+    def get_auth_cookie(email_address:, password:, tokens:)
       # for now, set app_2 or app_1 based on environment variable
-      domain = ENV['environment'].split('_')[-1]
-      app_param = (domain == 'staging') ? 'app_2' : 'app_1'
+      if ['staging', 'devqa'].include? ENV['ENVIRONMENT']
+        app_param = 'app_2'
+      else
+        app_param = 'app_1'
+      end
 
       parameters = {
         'authenticity_token': tokens[:csrf],
@@ -52,21 +55,21 @@ class Auth
       }
 
       response = HTTParty.post(
-        "#{ENV['auth_url']}/login",
+        "#{ENV['APP_CLIENT_AUTH_URL']}/login",
         query: parameters,
         headers: { 'cookie': tokens[:auth] },
         follow_redirects: false
       )
-      raise("Response returned: #{response.code}") unless response.code == 302
+      raise("Response returned: #{response.code} \nCheck app_client_client_id is correct: #{ENV['APP_CLIENT_CLIENT_ID']}") unless response.code == 302
 
       { auth: response.headers['set-cookie'] }
     end
 
     def set_auth_code(auth_cookie:)
-      callback_path = "/oauth2/auth?client_id=#{ENV['app_client_client_id']}&redirect_uri=#{ENV['app_client_url']}/callback/&scope=app:read%20app:write&response_type=code"
+      callback_path = "/oauth2/auth?client_id=#{ENV['APP_CLIENT_CLIENT_ID']}&redirect_uri=#{ENV['APP_CLIENT_URL']}/callback/&scope=app:read%20app:write&response_type=code"
 
       response = HTTParty.get(
-        "#{ENV['app_client_auth_url']}#{callback_path}",
+        "#{ENV['APP_CLIENT_AUTH_URL']}#{callback_path}",
         headers: { 'cookie': auth_cookie[:auth] },
         follow_redirects: false
       )
@@ -78,13 +81,13 @@ class Auth
 
     def get_access_token(code:)
       body = {
-        'client_id': ENV['app_client_client_id'],
-        'redirect_uri': "#{ENV['app_client_url']}/callback/",
+        'client_id': ENV['APP_CLIENT_CLIENT_ID'],
+        'redirect_uri': "#{ENV['APP_CLIENT_URL']}/callback/",
         'grant_type': 'authorization_code',
         'code': code[:code]
       }
 
-      response = HTTParty.post("#{ENV['app_client_auth_url']}/oauth2/token", body: body)
+      response = HTTParty.post("#{ENV['APP_CLIENT_AUTH_URL']}/oauth2/token", body: body)
       raise("Response returned: #{response.code}") unless response.code == 200
 
       response.body

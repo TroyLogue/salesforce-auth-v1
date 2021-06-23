@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module Users
-  domain = ENV['environment'].split('_')[-1]
-  case domain
+  case ENV['ENVIRONMENT']
   when 'prod'
+    CC_USER = 'deployment-03-cc@qa.test'
   when 'training'
-    CC_USER = 'harvard@auto.com'
+    CC_USER = 'deployment-cc@qa.test'
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
   when 'staging', 'devqa'
     CC_USER = 'harvard@auto.com'
@@ -38,6 +38,6 @@ module Users
 
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
   else
-    raise "Missing required ENV['environment']: prod, training, staging, devqa"
+    raise "Missing required ENV['ENVIRONMENT']: prod, training, staging, devqa"
   end
 end

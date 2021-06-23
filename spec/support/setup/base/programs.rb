@@ -21,6 +21,16 @@ module Setup
           program.attributes[:name] == program_name
         end &.id
       end
+
+      def out_of_network_program_id(token:, group_id:)
+        programs_response = Core::Programs.get_all(token: token, group_id: group_id)
+        parsed_programs_response = JSON.parse(programs_response.body, object_class: OpenStruct).data
+
+        out_of_network_programs = parsed_programs_response.select do |program|
+          program.attributes[:name].include?('Referred Out of Network')
+        end
+        out_of_network_programs.first.id
+      end
     end
   end
 end

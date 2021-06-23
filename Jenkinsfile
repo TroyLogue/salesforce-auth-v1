@@ -88,40 +88,28 @@ def build() {
         '''
     }
 
-    // Grabbing tokens saved in Jenkin Credentials and mapping those values
-    // in our local .env.staging file. This is to avoid potentital formatting issues
-    // such as inline-comments and spaces between '=' as well as to
-    // not overwrite other stored env vars such as URLs
-    withCredentials([file(credentialsId: 'jwt_tokens_staging', variable: 'jwt_tokens_file')]) {
+    // Grabbing the appropriate env file
+    CREDENTIALS_ID = getCredentialsId("${env.JOB_BASE_NAME}".split('_').last())
+    echo "${CREDENTIALS_ID}"
+    
+    withCredentials([file(credentialsId: "${CREDENTIALS_ID}", variable: 'env_file')]) {
         sh '''
-        cp .env.example .env.staging
-        echo "Grabbing JWT Tokens"
-        set +x
-        while read token ; do \
-            key=$(echo $token | cut -d '=' -f1 | tr -d ' '); \
-            value=$(echo $token | cut -d '=' -f2 | tr -d ' '); \
-            sed -i -e "s/{$key}/$value/" .env.staging; \
-        done < $jwt_tokens_file
-        set -x
+        echo "Copying env file"
+        cp $env_file .env
         '''
     }
-     withCredentials([file(credentialsId: 'browserstack_credentials', variable: 'browserstack_credentials_file')]) {
+    // Replacing Browser Stack Values
+    withCredentials([file(credentialsId: 'browserstack_credentials', variable: 'browserstack_credentials_file')]) {
         sh '''
         echo "Grabbing Browserstack Credentials"
-        set +x
-        while read token ; do \
-            key=$(echo $token | cut -d '=' -f1 | tr -d ' '); \
-            value=$(echo $token | cut -d '=' -f2 | tr -d ' '); \
-            sed -i -e "s/{$key}/$value/" .env.staging; \
-        done < $browserstack_credentials_file
-        set -x
+        cat $browserstack_credentials_file >> .env
         '''
     }
 }
 
 def test() {
     def result = null
-    def taskName = "${env.JOB_NAME}".split('/').last()
+    def taskName = "${env.JOB_BASE_NAME}"
 
     result = sh(script: "bundle exec rake jenkins:${taskName}", returnStatus: true)
     junit 'tmp/*.xml'
@@ -140,4 +128,19 @@ def test() {
 
 def getGitBranchName() {
     return scm.branches[0].name
+}
+
+
+String getCredentialsId(String env) {
+    if (env == "staging") {
+        ".env.staging"
+    } else if(env == "training"){
+        ".env.training"
+    } else if (env == "prod"){
+        ".env.prod"
+    } else if(env == "devqa"){
+        ".env.devqa"
+    } else{
+        error('Stopping early, Missing required env: devqa, staging, training, prod in job name')
+    }
 }
