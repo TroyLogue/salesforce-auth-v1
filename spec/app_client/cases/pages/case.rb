@@ -169,6 +169,8 @@ class Case < BasePage
     # Submits contracted services form and closes form
     click_submit_contracted_services_button
     is_not_displayed?(CONTRACTED_SERVICES_FORM)
+
+    # Confirms detail card is displayed and verifies values
     create_detail_card_displayed?
     confirm_detail_card_values(values)
   end
