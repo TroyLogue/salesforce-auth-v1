@@ -20,7 +20,8 @@ describe '[Referrals]', :app_client, :referrals do
       expect(home_page.page_displayed?).to be_truthy
     end
 
-    it 'user can add and remove document on a new referral', :uuqa_134, :uuqa_136 do
+    # CPR-103 known issue - undo skip when resolved
+    xit 'user can add and remove document on a new referral', :uuqa_134, :uuqa_136 do
       new_referral.go_to_new_referral_with_id(referral_id: @referral.id)
       @document = Faker::Alphanumeric.alpha(number: 8) + '.txt'
 
