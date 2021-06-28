@@ -53,8 +53,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       address = Faker::Internet.email
       consent_modal.request_consent_by_email(address)
 
-      notification_text = notifications.success_text
-      expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)
+      expect(notifications.success_text).to include(Notifications::CONSENT_REQUEST_SENT)
     end
 
     it 'requests consent by text', :uuqa_755 do
@@ -63,8 +62,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
       consent_modal.request_consent_by_text(ConsentModal::VALID_PHONE_NUMBER)
 
-      notification_text = notifications.success_text
-      expect(notification_text).to include(Notifications::CONSENT_REQUEST_SENT)
+      expect(notifications.success_text).to include(Notifications::CONSENT_REQUEST_SENT)
     end
   end
 

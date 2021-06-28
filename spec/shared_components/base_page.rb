@@ -314,6 +314,14 @@ class BasePage
     wait_for { driver.title }
   end
 
+  def text_present?(selector)
+    find(selector)
+    wait_for(1) { !driver.find_element(selector).text.nil? }
+  rescue Selenium::WebDriver::Error::TimeOutError
+    print 'E2E ERROR: TimeOutError: text was nil'
+    false
+  end
+
   def value(selector)
     find(selector).attribute('value')
   end

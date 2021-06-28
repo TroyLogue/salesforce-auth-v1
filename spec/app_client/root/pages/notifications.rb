@@ -56,7 +56,7 @@ class Notifications < BasePage
   end
 
   def success_text
-    find(SUCCESS_BANNER)
+    text_present?(SUCCESS_BANNER)
     text(NOTIFICATION_BANNER)
   end
 
