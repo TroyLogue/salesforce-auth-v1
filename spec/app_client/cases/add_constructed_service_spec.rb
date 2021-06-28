@@ -17,7 +17,7 @@ describe '[Payments]', :app_client, :payments do
     end
 
     it 'adds a service', :pays_826 do
-      starts_at = Date.today.strftime('%m/%d/%Y')
+      starts_at = Faker::Date.between(from: Date.today, to: Date.today).strftime('%m/%d/%Y')
       unit_amount = Faker::Number.number(digits: 2)
       toll_cost = Faker::Number.number(digits: 2)
       origin_address = {
