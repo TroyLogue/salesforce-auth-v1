@@ -27,6 +27,12 @@ module Setup
       contact
     end
 
+    def self.create_payments_client_with_consent
+      contact = Contact.new(token: Auth.jwt(email_address: Users::PAYMENTS_USER), group_id: Providers::PAYMENTS_ORG)
+      contact.create_with_consent
+      contact
+    end
+
     def self.create_princeton_client
       contact = Contact.new(token: Auth.jwt(email_address: Users::ORG_PRINCETON), group_id: Providers::ORG_PRINCETON)
       contact.create

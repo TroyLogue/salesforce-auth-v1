@@ -4,7 +4,7 @@ module Providers
   case ENV['ENVIRONMENT']
   when 'prod'
   when 'training'
-    # TODO - update const names
+    # TODO: - update const names
     # QA Deployment CC in training
     CC_HARVARD = '2018360f-ff91-47fc-9b24-904e43fdb7f0'
     # QA Deployment Org 01
@@ -15,6 +15,7 @@ module Providers
     ORG_COLUMBIA = '79ab235d-2ca3-4a46-a76e-fc9c655667af'
     ORG_PRINCETON = '0c58634f-fd19-422d-8c1a-c1f1a915e3cc'
     CC_QA_ADMIN = '1caa174e-694d-4cad-ab61-c60d1e062721'
+    PAYMENTS_ORG = 'b13c2706-3ee6-4261-8a79-0ec39b71a51f'
   else
     raise "Missing required ENV['ENVIRONMENT']: prod, training, staging, devqa"
   end

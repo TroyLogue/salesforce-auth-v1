@@ -43,6 +43,22 @@ module Setup
       )
     end
 
+    def self.create_service_case_for_payments(contact_id:)
+      token = Auth.jwt(email_address: Users::PAYMENTS_USER)
+      group_id = Providers::PAYMENTS_ORG
+
+      Setup::Cases.create(
+        token: token,
+        network_id: Networks::PAYMENTS_NETWORK_ID,
+        group_id: group_id,
+        contact_id: contact_id,
+        program_id: Setup::Programs.program_with_name(token: token, group_id: group_id,
+                                                      program_name: ProgramNames::PROGRAM_WITH_FEE_SCHEDULE),
+        primary_worker_id: PrimaryWorkers::PAYMENTS_USER,
+        service_type_code: ServiceTypeCodes::TRANSPORTATION
+      )
+    end
+
     def self.create_service_case_for_yale(contact_id:)
       token = Auth.jwt(email_address: Users::ORG_YALE)
       group_id = Providers::ORG_YALE

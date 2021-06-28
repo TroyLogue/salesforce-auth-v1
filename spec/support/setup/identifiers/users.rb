@@ -30,6 +30,7 @@ module Users
     ORG_YALE = 'yale@auto.com'
     ORG_COLUMBIA = 'columbia@auto.com'
     ORG_NEWYORK = 'newyork@auto.com'
+    PAYMENTS_USER = 'sam@speedywheels.test'
     RESET_PW_USER = 'reset_pw_org@auto.com'
     SETTINGS_USER = 'qa.perms@auto.com'
     SCREENINGS_USER_MULTI_NETWORK = 'screenings@emr.com'

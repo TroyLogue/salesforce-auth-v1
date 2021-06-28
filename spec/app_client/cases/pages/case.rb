@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'date'
 
 class Case < BasePage
   ADD_A_NEW_NOTE = { css: '#add-case-note-button' }.freeze
@@ -25,7 +26,49 @@ class Case < BasePage
   SAVE_REFERRED_TO = { css: '#form-footer-submit-btn' }.freeze
   SERVICE_TYPE = { css: '#basic-table-service-type-value' }.freeze
 
-  #Closing Case modal
+  # Contracted Service
+  ADD_CONTRACTED_SERVICES_BUTTON = {
+    css: '.add-fee-schedule-program-information__section .add-circle-plus__text'
+  }.freeze
+  CONTRACTED_SERVICES_FORM = { css: '.payments-track-service' }.freeze
+  SUBMIT_CONTRACTED_SERVICES = { css: '#fee-schedule-provided-service-post-note-btn' }.freeze
+  UNIT_AMOUNT = { css: '#provided-service-unit-amount' }.freeze
+  STARTS_AT = { css: '#provided-service-date' }.freeze
+  ORIGIN_INPUT_ADDRESS_LINE1 = { css: 'input[name$="[0].address.line_1"]' }.freeze
+  ORIGIN_INPUT_ADDRESS_LINE2 = { css: 'input[name$="[0].address.line_2"]' }.freeze
+  ORIGIN_INPUT_ADDRESS_CITY = { css: 'input[name$="[0].address.city"]' }.freeze
+  ADDRESS_STATE_INPUT = { css: 'select[name$="[0].address.state"]' }.freeze
+  EXPAND_ORIGIN_STATE_LIST = { css: 'select[name$="[0].address.state"] + div' }.freeze
+  LIST_ORIGIN_STATE_CHOICES = {
+    css: '.payments-track-service__metafields div:first-child div[id^="choices-undefined-state-item-choice"]'
+  }.freeze
+  ORIGIN_INPUT_ADDRESS_ZIP = { css: 'input[name$="[0].address.postal_code"]' }.freeze
+  DESTINATION_INPUT_ADDRESS_LINE1 = { css: 'input[name$="[1].address.line_1"]' }.freeze
+  DESTINATION_INPUT_ADDRESS_LINE2 = { css: 'input[name$="[1].address.line_2"]' }.freeze
+  DESTINATION_INPUT_ADDRESS_CITY = { css: 'input[name$="[1].address.city"]' }.freeze
+  EXPAND_DESTINATION_STATE_LIST = { css: 'select[name$="[1].address.state"] + div' }.freeze
+  LIST_DESTINATION_STATE_CHOICES = {
+    css: '.payments-track-service__metafields div:nth-child(2) div[id^="choices-undefined-state-item-choice"]'
+  }.freeze
+  DESTINATION_INPUT_ADDRESS_ZIP = { css: 'input[name$="[1].address.postal_code"]' }.freeze
+  TOLL_COST = { css: 'input[name$="value"]' }.freeze
+
+  # Contracted Service Detail Card Selector
+  CONTRACTED_SERVICE_DETAIL_CARD = { css: '.fee-schedule-provided-service-card' }.freeze
+  CARD_UNIT_AMOUNT = { css: 'span[data-test-element=unit-amount-value]' }.freeze
+  CARD_SERVICE_DATE = { css: 'span[data-test-element=service-start-date-value]' }.freeze
+  CARD_TOLL_COST = { css: 'span[data-test-element=metafield-value-2]' }.freeze
+  CARD_ORIGIN_ADDRESS_L1 = { css: 'div[data-test-element=metafield-address-line-1-value-0]' }.freeze
+  CARD_ORIGIN_ADDRESS_L2 = { css: 'div[data-test-element=metafield-address-line-2-value-0]' }.freeze
+  CARD_ORIGIN_CITY = { css: 'span[data-test-element=metafield-city-value-0]' }.freeze
+  CARD_ORIGIN_STATE = { css: 'span[data-test-element=metafield-state-value-0]' }.freeze
+  CARD_ORIGIN_ZIP = { css: 'span[data-test-element=metafield-zip-value-0]' }.freeze
+  CARD_DESTINATION_ADDRESS_L1 = { css: 'div[data-test-element=metafield-address-line-1-value-1]' }.freeze
+  CARD_DESTINATION_ADDRESS_L2 = { css: 'div[data-test-element=metafield-address-line-2-value-1]' }.freeze
+  CARD_DESTINATION_CITY = { css: 'span[data-test-element=metafield-city-value-1]' }.freeze
+  CARD_DESTINATION_STATE = { css: 'span[data-test-element=metafield-state-value-1]' }.freeze
+  CARD_DESTINATION_ZIP = { css: 'span[data-test-element=metafield-zip-value-1]' }.freeze
+  # Closing Case modal
   CLOSE_CASE_SUBMIT_BTN = { css: '#close-case-submit-btn' }.freeze
   EXIT_DATE_INPUT = { css: '#exitDateInput' }.freeze
   NOTE_INPUT = { css: '#noteInput' }.freeze
@@ -66,6 +109,97 @@ class Case < BasePage
 
   def page_displayed?
     is_displayed?(CASE_VIEW)
+  end
+
+  def click_contracted_service_button
+    is_displayed?(ADD_CONTRACTED_SERVICES_BUTTON) && click(ADD_CONTRACTED_SERVICES_BUTTON)
+  end
+
+  def contracted_service_form_displayed?
+    is_displayed?(CONTRACTED_SERVICES_FORM)
+  end
+
+  def submit_contracted_services_form(values)
+    enter(values[:unit_amount], UNIT_AMOUNT) if check_displayed?(UNIT_AMOUNT)
+    enter(values[:starts_at], STARTS_AT) if check_displayed?(STARTS_AT)
+
+    # Fills out origin address
+    if check_displayed?(ORIGIN_INPUT_ADDRESS_LINE1)
+      enter(values[:origin_address][:origin_address_line1],
+            ORIGIN_INPUT_ADDRESS_LINE1)
+    end
+    if check_displayed?(ORIGIN_INPUT_ADDRESS_LINE2)
+      enter(values[:origin_address][:origin_address_line2],
+            ORIGIN_INPUT_ADDRESS_LINE2)
+    end
+    if check_displayed?(ORIGIN_INPUT_ADDRESS_CITY)
+      enter(values[:origin_address][:origin_city],
+            ORIGIN_INPUT_ADDRESS_CITY)
+    end
+    click(EXPAND_ORIGIN_STATE_LIST)
+    click_element_from_list_by_text(LIST_ORIGIN_STATE_CHOICES,
+                                    values[:origin_address][:origin_state])
+    if check_displayed?(ORIGIN_INPUT_ADDRESS_ZIP)
+      enter(values[:origin_address][:origin_zip],
+            ORIGIN_INPUT_ADDRESS_ZIP)
+    end
+
+    # Fills out destination address
+    if check_displayed?(DESTINATION_INPUT_ADDRESS_LINE1)
+      enter(values[:destination_address][:destination_address_line1],
+            DESTINATION_INPUT_ADDRESS_LINE1)
+    end
+    if check_displayed?(DESTINATION_INPUT_ADDRESS_LINE2)
+      enter(values[:destination_address][:destination_address_line2],
+            DESTINATION_INPUT_ADDRESS_LINE2)
+    end
+    if check_displayed?(DESTINATION_INPUT_ADDRESS_CITY)
+      enter(values[:destination_address][:destination_city],
+            DESTINATION_INPUT_ADDRESS_CITY)
+    end
+    click(EXPAND_DESTINATION_STATE_LIST)
+    click_element_from_list_by_text(LIST_DESTINATION_STATE_CHOICES,
+                                    values[:destination_address][:destination_state])
+    if check_displayed?(DESTINATION_INPUT_ADDRESS_ZIP)
+      enter(values[:destination_address][:destination_zip],
+            DESTINATION_INPUT_ADDRESS_ZIP)
+    end
+
+    enter(values[:toll_cost], TOLL_COST) if check_displayed?(TOLL_COST)
+
+    # Submits contracted services form and closes form
+    click_submit_contracted_services_button
+    is_not_displayed?(CONTRACTED_SERVICES_FORM)
+  end
+
+  def detail_card_values
+    unit_amount = text(CARD_UNIT_AMOUNT).match /(\d+)/
+    toll_cost = text(CARD_TOLL_COST).match /^\$[\s\d]+\.(\d+)/
+
+    is_displayed?(CONTRACTED_SERVICE_DETAIL_CARD) &&
+      {
+        unit_amount: unit_amount[1].to_i,
+        starts_at: Date.parse(text(CARD_SERVICE_DATE)).strftime("%m/%d/%Y"),
+        origin_address: {
+          origin_address_line1: text(CARD_ORIGIN_ADDRESS_L1),
+          origin_address_line2: text(CARD_ORIGIN_ADDRESS_L2),
+          origin_city: text(CARD_ORIGIN_CITY),
+          origin_zip: text(CARD_ORIGIN_ZIP),
+          origin_state: STATE_ABBR_TO_NAME[text(CARD_ORIGIN_STATE)]
+        },
+        destination_address: {
+          destination_address_line1: text(CARD_DESTINATION_ADDRESS_L1),
+          destination_address_line2: text(CARD_DESTINATION_ADDRESS_L2),
+          destination_city: text(CARD_DESTINATION_CITY),
+          destination_zip: text(CARD_DESTINATION_ZIP),
+          destination_state: STATE_ABBR_TO_NAME[text(CARD_DESTINATION_STATE)]
+        },
+        toll_cost: toll_cost[1].to_i
+      }
+  end
+
+  def click_submit_contracted_services_button
+    click SUBMIT_CONTRACTED_SERVICES
   end
 
   def closed_case_values
