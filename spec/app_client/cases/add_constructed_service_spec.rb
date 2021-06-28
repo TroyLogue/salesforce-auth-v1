@@ -24,14 +24,14 @@ describe '[Payments]', :app_client, :payments do
         origin_address_line1: Faker::Address.street_address,
         origin_address_line2: Faker::Address.secondary_address,
         origin_city: Faker::Address.city,
-        origin_zip: Faker::Address.zip_code,
+        origin_zip: '10015',
         origin_state: Faker::Address.state
       }
       destination_address = {
         destination_address_line1: Faker::Address.street_address,
         destination_address_line2: Faker::Address.secondary_address,
         destination_city: Faker::Address.city,
-        destination_zip: Faker::Address.zip_code,
+        destination_zip: '10013',
         destination_state: Faker::Address.state
       }
       contracted_service_form_values = {
@@ -46,6 +46,7 @@ describe '[Payments]', :app_client, :payments do
       expect(case_detail_page.contracted_service_form_displayed?).to be_truthy
 
       case_detail_page.submit_contracted_services_form(contracted_service_form_values)
+      expect(case_detail_page.detail_card_values).to eq(contracted_service_form_values)
     end
   end
 end

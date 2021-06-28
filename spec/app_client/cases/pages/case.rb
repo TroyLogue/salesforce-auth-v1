@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'date'
 
 class Case < BasePage
   ADD_A_NEW_NOTE = { css: '#add-case-note-button' }.freeze
@@ -57,17 +58,17 @@ class Case < BasePage
   CARD_UNIT_AMOUNT = { css: 'span[data-test-element=unit-amount-value]' }.freeze
   CARD_SERVICE_DATE = { css: 'span[data-test-element=service-start-date-value]' }.freeze
   CARD_TOLL_COST = { css: 'span[data-test-element=metafield-value-2]' }.freeze
-  CARD_ORIGIN_ADDRESS_L1 = { css: 'span[data-test-element=metafield-address-line-1-value-0]' }.freeze
-  CARD_ORIGIN_ADDRESS_L2 = { css: 'span[data-test-element=metafield-address-line-2-value-0]' }.freeze
+  CARD_ORIGIN_ADDRESS_L1 = { css: 'div[data-test-element=metafield-address-line-1-value-0]' }.freeze
+  CARD_ORIGIN_ADDRESS_L2 = { css: 'div[data-test-element=metafield-address-line-2-value-0]' }.freeze
   CARD_ORIGIN_CITY = { css: 'span[data-test-element=metafield-city-value-0]' }.freeze
   CARD_ORIGIN_STATE = { css: 'span[data-test-element=metafield-state-value-0]' }.freeze
   CARD_ORIGIN_ZIP = { css: 'span[data-test-element=metafield-zip-value-0]' }.freeze
-  CARD_DESTINATION_ADDRESS_L1 = { css: 'span[data-test-element=metafield-address-line-1-value-1]' }.freeze
-  CARD_DESTINATION_ADDRESS_L2 = { css: 'span[data-test-element=metafield-address-line-2-value-1]' }.freeze
+  CARD_DESTINATION_ADDRESS_L1 = { css: 'div[data-test-element=metafield-address-line-1-value-1]' }.freeze
+  CARD_DESTINATION_ADDRESS_L2 = { css: 'div[data-test-element=metafield-address-line-2-value-1]' }.freeze
   CARD_DESTINATION_CITY = { css: 'span[data-test-element=metafield-city-value-1]' }.freeze
   CARD_DESTINATION_STATE = { css: 'span[data-test-element=metafield-state-value-1]' }.freeze
   CARD_DESTINATION_ZIP = { css: 'span[data-test-element=metafield-zip-value-1]' }.freeze
-  #Closing Case modal
+  # Closing Case modal
   CLOSE_CASE_SUBMIT_BTN = { css: '#close-case-submit-btn' }.freeze
   EXIT_DATE_INPUT = { css: '#exitDateInput' }.freeze
   NOTE_INPUT = { css: '#noteInput' }.freeze
@@ -119,88 +120,82 @@ class Case < BasePage
   end
 
   def submit_contracted_services_form(values)
-    enter(values[:unit_amount], UNIT_AMOUNT) if UNIT_AMOUNT
-    enter(values[:starts_at], STARTS_AT) if STARTS_AT
+    enter(values[:unit_amount], UNIT_AMOUNT) if check_displayed?(UNIT_AMOUNT)
+    enter(values[:starts_at], STARTS_AT) if check_displayed?(STARTS_AT)
 
     # Fills out origin address
-    if ORIGIN_INPUT_ADDRESS_LINE1
+    if check_displayed?(ORIGIN_INPUT_ADDRESS_LINE1)
       enter(values[:origin_address][:origin_address_line1],
             ORIGIN_INPUT_ADDRESS_LINE1)
     end
-    if ORIGIN_INPUT_ADDRESS_LINE2
+    if check_displayed?(ORIGIN_INPUT_ADDRESS_LINE2)
       enter(values[:origin_address][:origin_address_line2],
             ORIGIN_INPUT_ADDRESS_LINE2)
     end
-    if ORIGIN_INPUT_ADDRESS_CITY
+    if check_displayed?(ORIGIN_INPUT_ADDRESS_CITY)
       enter(values[:origin_address][:origin_city],
             ORIGIN_INPUT_ADDRESS_CITY)
     end
     click(EXPAND_ORIGIN_STATE_LIST)
     click_element_from_list_by_text(LIST_ORIGIN_STATE_CHOICES,
                                     values[:origin_address][:origin_state])
-    if ORIGIN_INPUT_ADDRESS_ZIP
+    if check_displayed?(ORIGIN_INPUT_ADDRESS_ZIP)
       enter(values[:origin_address][:origin_zip],
             ORIGIN_INPUT_ADDRESS_ZIP)
     end
 
     # Fills out destination address
-    if DESTINATION_INPUT_ADDRESS_LINE1
+    if check_displayed?(DESTINATION_INPUT_ADDRESS_LINE1)
       enter(values[:destination_address][:destination_address_line1],
             DESTINATION_INPUT_ADDRESS_LINE1)
     end
-    if DESTINATION_INPUT_ADDRESS_LINE2
+    if check_displayed?(DESTINATION_INPUT_ADDRESS_LINE2)
       enter(values[:destination_address][:destination_address_line2],
             DESTINATION_INPUT_ADDRESS_LINE2)
     end
-    if DESTINATION_INPUT_ADDRESS_CITY
+    if check_displayed?(DESTINATION_INPUT_ADDRESS_CITY)
       enter(values[:destination_address][:destination_city],
             DESTINATION_INPUT_ADDRESS_CITY)
     end
     click(EXPAND_DESTINATION_STATE_LIST)
     click_element_from_list_by_text(LIST_DESTINATION_STATE_CHOICES,
                                     values[:destination_address][:destination_state])
-    if DESTINATION_INPUT_ADDRESS_ZIP
+    if check_displayed?(DESTINATION_INPUT_ADDRESS_ZIP)
       enter(values[:destination_address][:destination_zip],
             DESTINATION_INPUT_ADDRESS_ZIP)
     end
 
-    enter(values[:toll_cost], TOLL_COST) if TOLL_COST
+    enter(values[:toll_cost], TOLL_COST) if check_displayed?(TOLL_COST)
 
     # Submits contracted services form and closes form
     click_submit_contracted_services_button
     is_not_displayed?(CONTRACTED_SERVICES_FORM)
-
-    # Confirms detail card is displayed and verifies values
-    create_detail_card_displayed?
-    confirm_detail_card_values(values)
   end
 
-  def create_detail_card_displayed?
-    is_displayed?(CONTRACTED_SERVICE_DETAIL_CARD)
-  end
+  def detail_card_values
+    unit_amount = text(CARD_UNIT_AMOUNT).match /(\d+)/
+    toll_cost = text(CARD_TOLL_COST).match /^\$[\s\d]+\.(\d+)/
 
-  def confirm_detail_card_values(form_values)
-    contracted_service_card_values = {
-      unit_amount: CARD_UNIT_AMOUNT,
-      starts_at: CARD_SERVICE_DATE,
-      origin_address: {
-        origin_address_line1: CARD_ORIGIN_ADDRESS_L1,
-        origin_address_line2: CARD_ORIGIN_ADDRESS_L2,
-        origin_city: CARD_ORIGIN_CITY,
-        origin_zip: CARD_ORIGIN_STATE,
-        origin_state: CARD_ORIGIN_ZIP
-      },
-      destination_address: {
-        destination_address_line1: CARD_DESTINATION_ADDRESS_L1,
-        destination_address_line2: CARD_DESTINATION_ADDRESS_L2,
-        destination_city: CARD_DESTINATION_CITY,
-        destination_zip: CARD_DESTINATION_ZIP,
-        destination_state: CARD_DESTINATION_STATE
-      },
-      toll_cost: CARD_TOLL_COST
-    }
-
-    contracted_service_card_values.eql?(form_values)
+    is_displayed?(CONTRACTED_SERVICE_DETAIL_CARD) &&
+      {
+        unit_amount: unit_amount[1].to_i,
+        starts_at: Date.parse(text(CARD_SERVICE_DATE)).strftime("%m/%d/%Y"),
+        origin_address: {
+          origin_address_line1: text(CARD_ORIGIN_ADDRESS_L1),
+          origin_address_line2: text(CARD_ORIGIN_ADDRESS_L2),
+          origin_city: text(CARD_ORIGIN_CITY),
+          origin_zip: text(CARD_ORIGIN_ZIP),
+          origin_state: STATE_ABBR_TO_NAME[text(CARD_ORIGIN_STATE)]
+        },
+        destination_address: {
+          destination_address_line1: text(CARD_DESTINATION_ADDRESS_L1),
+          destination_address_line2: text(CARD_DESTINATION_ADDRESS_L2),
+          destination_city: text(CARD_DESTINATION_CITY),
+          destination_zip: text(CARD_DESTINATION_ZIP),
+          destination_state: STATE_ABBR_TO_NAME[text(CARD_DESTINATION_STATE)]
+        },
+        toll_cost: toll_cost[1].to_i
+      }
   end
 
   def click_submit_contracted_services_button
