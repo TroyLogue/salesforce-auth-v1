@@ -172,9 +172,13 @@ class Case < BasePage
     is_not_displayed?(CONTRACTED_SERVICES_FORM)
   end
 
+  def select_digits(selector)
+    text(selector).match /(\d+)/
+  end
+
   def detail_card_values
-    unit_amount = text(CARD_UNIT_AMOUNT).match /(\d+)/
-    toll_cost = text(CARD_TOLL_COST).match /^\$[\s\d]+\.(\d+)/
+    unit_amount = select_digits(CARD_UNIT_AMOUNT)
+    toll_cost = select_digits(CARD_TOLL_COST)
 
     is_displayed?(CONTRACTED_SERVICE_DETAIL_CARD) &&
       {
