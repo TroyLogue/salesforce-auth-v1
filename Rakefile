@@ -5,22 +5,12 @@ def run_in_parallel(tag:, processes: 1)
 end
 
 namespace :jenkins do
-  # UU3-48322 DEBUG errors running tests in multiple processes:
-  # To troubleshoot, use any tag(s) that efficiently reproduce the errors being debugged.
-  # The end goal is to update the app_client task with 2 processes and to delete this task.
-  task :app_client_parallel do
-    ENV['BROWSER'] = 'chrome_headless'
-    ENV['ENVIRONMENT'] = 'staging'
-    ENV['APPLICATION'] = 'APP_CLIENT'
-    exit run_in_parallel(tag: 'app_client', processes: 2)
-  end
-
   desc 'specs tagged app_client on chrome headless'
   task :app_client_staging do
     ENV['BROWSER'] = 'chrome_headless'
     ENV['ENVIRONMENT'] = 'staging'
     ENV['APPLICATION'] = 'APP_CLIENT'
-    exit run_in_parallel(tag: 'app_client')
+    exit run_in_parallel(tag: 'app_client', processes: 2)
   end
 
   task :app_client_training do
