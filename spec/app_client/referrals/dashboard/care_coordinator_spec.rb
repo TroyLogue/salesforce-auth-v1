@@ -36,7 +36,7 @@ describe '[Referrals]', :app_client, :referrals do
 
       new_referral_dashboard.go_to_new_referrals_dashboard
       new_referral_dashboard.filter_by_care_coordinator(coordinator: 'Ab')
-      expect(new_referral_dashboard.is_empty_table_displayed? || new_referral_dashboard.is_displayed?).to be_truthy
+      expect(new_referral_dashboard.is_empty_table_displayed? || new_referral_dashboard.page_displayed?).to be_truthy
     end
   end
 end
