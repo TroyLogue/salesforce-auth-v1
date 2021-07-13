@@ -31,7 +31,10 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
     # Changes from ES-60 cause delays in user indexing when using Search And Match
     # This test case can be re-evaluated once ES-110 has be investigated
     # The workaround is to search our newly created client in the search bar
-    it 'Create a consented NextGate client', :uuqa_901, :uuqa_903, :es_110 do
+
+    # Additionally DO-1367 is causing newly created clients to not appear on search,
+    # skipping until ticket is resolved
+    xit 'Create a consented NextGate client', :uuqa_901, :uuqa_903, :es_110, :do_1367 do
       # Start creation process by searching for non-existant client
       create_menu.start_new_client
       expect(search_client_page.page_displayed?).to be_truthy
@@ -73,7 +76,10 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
     # Changes from ES-60 cause delays in user indexing when using Search And Match
     # This test case can be re-evaluated once ES-110 has be investigated
     # The workaround is to search our newly created client in the search bar
-    it 'Create a consented client', :uuqa_1300, :es_110 do
+
+    # Additionally DO-1367 is causing newly created clients to not appear on search,
+    # skipping until ticket is resolved
+    xit 'Create a consented client', :uuqa_1300, :es_110, :do_1367 do
       # Start creation process by searching for non-existant client
       create_menu.start_new_client
       expect(search_client_page.page_displayed?).to be_truthy
