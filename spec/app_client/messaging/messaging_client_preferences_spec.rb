@@ -10,7 +10,7 @@ describe '[Messaging - Facesheet - Preferences]', :app_client, :messaging do
 
   context('[as org user]') do
     before {
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_02_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 

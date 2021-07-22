@@ -18,7 +18,7 @@ describe '[Referrals]', :app_client, :referrals do
       @contact = Setup::Data.create_yale_client_with_consent
       @contact.add_address # So that orgs display as opposed to a CC
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 

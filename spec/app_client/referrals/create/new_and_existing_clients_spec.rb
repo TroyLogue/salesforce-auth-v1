@@ -24,7 +24,7 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as a Referral User]') do
     before {
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }
@@ -55,7 +55,7 @@ describe '[Referrals]', :app_client, :referrals do
       expect(add_referral_page.page_displayed?).to be_truthy
     end
 
-    it 'user can create a referral for a new client', :uuqa_1735 do
+    it 'user can create a referral for a new client', :uuqa_1735, :smoke do
       fname = Faker::Name.first_name
       lname = Faker::Name.last_name
       dob = Faker::Time.backward(days: 1000).strftime('%m/%d/%Y')

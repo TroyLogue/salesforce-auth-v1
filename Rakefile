@@ -13,11 +13,18 @@ namespace :jenkins do
     exit run_in_parallel(tag: 'app_client', processes: 2)
   end
 
+  task :core_848_staging do
+    ENV['BROWSER'] = 'chrome_headless'
+    ENV['ENVIRONMENT'] = 'staging'
+    ENV['APPLICATION'] = 'APP_CLIENT'
+    exit run_in_parallel(tag: 'app_client', processes: 2)
+  end
+
   task :app_client_training do
     ENV['BROWSER'] = 'chrome_headless'
     ENV['ENVIRONMENT'] = 'training'
     ENV['APPLICATION'] = 'APP_CLIENT'
-    exit run_in_parallel(tag: 'uuqa_1608')
+    exit run_in_parallel(tag: 'front_end_deployment')
   end
 
   task :app_client_prod do

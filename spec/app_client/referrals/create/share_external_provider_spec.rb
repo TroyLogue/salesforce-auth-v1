@@ -17,7 +17,7 @@ describe '[Referrals - External]', :app_client, :referrals do
       # since we're not creating or updating data on the client we can use a random, existing contact
       @contact = Setup::Data.random_existing_harvard_client
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
     end

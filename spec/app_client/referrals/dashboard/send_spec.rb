@@ -20,7 +20,7 @@ describe '[Referrals]', :app_client, :referrals do
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
 
       # login in as org user where referral was sent
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_03_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
     end
@@ -66,7 +66,7 @@ describe '[Referrals]', :app_client, :referrals do
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
 
       # login in as cc user who sent referral
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
     end
@@ -157,7 +157,7 @@ describe '[Referrals]', :app_client, :referrals do
       @draft_referral = Setup::Data.draft_referral_in_harvard(contact_id: @contact.contact_id)
 
       # auth as user who drafted referral
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
     end

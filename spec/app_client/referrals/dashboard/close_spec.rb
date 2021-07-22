@@ -22,7 +22,7 @@ describe '[Referrals]', :app_client, :referrals do
       # Create Referral
       @referral = Setup::Data.send_referral_from_yale_to_princeton(contact_id: @contact.contact_id)
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -65,7 +65,7 @@ describe '[Referrals]', :app_client, :referrals do
       recall_note = 'Recalling Referral'
       Setup::Data.recall_referral_in_harvard(note: recall_note)
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -105,7 +105,7 @@ describe '[Referrals]', :app_client, :referrals do
       reject_note = Faker::Lorem.sentence(word_count: 5)
       Setup::Data.reject_referral_in_harvard(note: reject_note)
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -131,7 +131,7 @@ describe '[Referrals]', :app_client, :referrals do
       # Create Referral
       @referral = Setup::Data.send_referral_from_yale_to_harvard(contact_id: @contact.contact_id)
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -168,7 +168,7 @@ describe '[Referrals]', :app_client, :referrals do
       hold_note = Faker::Lorem.sentence(word_count: 5)
       Setup::Data.hold_referral_in_harvard(note: hold_note)
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -200,7 +200,7 @@ describe '[Referrals]', :app_client, :referrals do
       # create referral
       @referral = Setup::Data.send_referral_from_yale_to_harvard(contact_id: @contact.contact_id)
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 

@@ -10,7 +10,7 @@ describe '[User Settings - Update Notification Preferences]', :user_settings, :a
   # this test case was added when Ivy League users got errors while trying to load notification preferences
   context('[As a user with network notification preferences]') do
     before do
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       user_settings_notification_prefs_page.authenticate_and_navigate_to(token: @auth_token,
                                                                          path: UserSettings::NotificationPrefsPage::PATH)
     end

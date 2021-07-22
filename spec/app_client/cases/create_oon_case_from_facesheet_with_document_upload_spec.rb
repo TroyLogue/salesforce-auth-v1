@@ -27,7 +27,7 @@ describe '[cases]', :app_client, :cases do
       @file_name = Faker::Alphanumeric.alpha(number: 8) + '.txt'
       @local_file_path = create_consent_file(@file_name)
 
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       cases_path = facesheet_header.path(contact_id: @contact.contact_id, tab: 'cases')
       facesheet_header.authenticate_and_navigate_to(token: @auth_token, path: cases_path)
       expect(facesheet_cases_page.page_displayed?).to be_truthy

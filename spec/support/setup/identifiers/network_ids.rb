@@ -4,11 +4,10 @@ module Networks
   case ENV['ENVIRONMENT']
   when 'prod'
   when 'training'
-    # just for debugging - not actually Ivy in Training
-    NETWORK_ID = '0c96386c-ed27-4c9b-bb90-6544701865eb'
+    GENERAL_P2P_NETWORK = '6355ea84-680f-4cc9-b6ed-310af11ca42d' # End to End Tests - General P2P - [Technology Team Only][DO NOT USE]
   when 'staging', 'devqa'
-    NETWORK_ID = 'd8e7a7f0-d4f1-459b-bab4-15802b371cae'
-    PAYMENTS_NETWORK_ID = 'd14074c5-91ec-4c94-a77e-aa6035251447'
+    GENERAL_P2P_NETWORK = 'd8e7a7f0-d4f1-459b-bab4-15802b371cae' # Ivy League Network
+    PAYMENTS_NETWORK = 'd14074c5-91ec-4c94-a77e-aa6035251447' # Healthy Opportunities
   else
     raise "Missing required ENV['ENVIRONMENT']: prod, training, staging, devqa"
   end

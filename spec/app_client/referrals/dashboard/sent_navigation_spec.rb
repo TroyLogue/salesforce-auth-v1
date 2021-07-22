@@ -9,7 +9,7 @@ describe '[Referrals][Dashboard]', :app_client, :referrals do
 
   context('[a Referral Admin User]') do
     before do
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_01_USER)
       sent_all_referral_dashboard.authenticate_and_navigate_to(token: auth_token, path: '/dashboard/referrals/sent/all')
       expect(sent_all_referral_dashboard.page_displayed?).to be_truthy
       expect(sent_all_referral_dashboard.headers_displayed?).to be_truthy

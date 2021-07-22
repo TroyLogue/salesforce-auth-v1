@@ -18,7 +18,7 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       @assessment_form_values = [QUESTION_ONE_TEXT, QUESTION_TWO_TEXT]
 
       # Generate pending referral for CC user:
-      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_01_USER)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
 
@@ -44,7 +44,7 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
       user_menu.log_out
 
       # Log in as CC user to view referral
-      @cc_auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @cc_auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       homepage.authenticate_and_navigate_to(token: @cc_auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }

@@ -14,7 +14,7 @@ describe '[Cases]', :app_client, :cases do
       @contact = Setup::Data.create_harvard_client_with_consent
       @case = Setup::Data.create_service_case_for_harvard(contact_id: @contact.contact_id)
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       path = case_detail_page.open_case_path(case_id: @case.id, contact_id: @contact.contact_id)
       case_detail_page.authenticate_and_navigate_to(token: auth_token, path: path)
       expect(case_detail_page.page_displayed?).to be_truthy

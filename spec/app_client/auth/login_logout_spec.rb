@@ -13,7 +13,7 @@ describe '[Auth - Login - Logout]', :app_client, :auth, :login do
   let(:user_menu) { RightNav::UserMenu.new(@driver) }
 
   it 'Logs in with a valid email, then logs out', :uuqa_5, :uuqa_1608 do
-    log_in_as(email_address: Users::CC_USER)
+    log_in_as(email_address: Users::CC_01_USER)
     expect(home_page.page_displayed?).to be_truthy
     user_menu.log_out
     expect(login_email.page_displayed?).to be_truthy
@@ -21,7 +21,7 @@ describe '[Auth - Login - Logout]', :app_client, :auth, :login do
 
   it 'Prevents login with incorrect password', :uuqa_9 do
     wrong_password = Faker::Alphanumeric.alphanumeric(number: 10)
-    log_in_as(email_address: Users::CC_USER, password: wrong_password)
+    log_in_as(email_address: Users::CC_01_USER, password: wrong_password)
     expect(login_password.page_displayed?).to be_truthy
     expect(login_password.invalid_alert_displayed?).to be_truthy
   end

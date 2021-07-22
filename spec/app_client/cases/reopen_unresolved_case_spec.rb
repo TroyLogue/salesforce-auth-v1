@@ -19,7 +19,7 @@ describe '[Cases]', :app_client, :cases do
         contact_id: @contact.contact_id, case_id: @case.id, resolved: false
       )
 
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     end

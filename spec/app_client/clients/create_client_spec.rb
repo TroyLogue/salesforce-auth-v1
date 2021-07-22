@@ -65,7 +65,7 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
 
   context('[as cc user]') do
     before do
-      @auth_token = Auth.encoded_auth_token(email_address: Users::NEW_SEARCH_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_02_USER)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
       @fname = Faker::Name.first_name

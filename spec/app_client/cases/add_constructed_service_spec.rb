@@ -7,7 +7,7 @@ describe '[Payments]', :app_client, :payments do
 
   context('[as Payments User]') do
     before do
-      auth_token = Auth.encoded_auth_token(email_address: Users::PAYMENTS_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PAYMENTS_USER)
       contact = Setup::Data.create_payments_client_with_consent
       kase = Setup::Data.create_service_case_for_payments(contact_id: contact.contact_id)
       case_detail_page.authenticate_and_navigate_to(token: auth_token,

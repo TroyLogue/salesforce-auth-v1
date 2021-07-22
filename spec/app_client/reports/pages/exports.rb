@@ -68,7 +68,7 @@ class Exports < BasePage
     click_element_from_list_by_text(EXPORT_DATE_RANGE_CHOICE, DAYS_7)
   end
 
-  def fill_export_form_cc_user(source:)
+  def fill_export_form_CC_01_USER(source:)
     select_export_source_cc(source: source)
     select_random_export_type
     select_random_comparison_field

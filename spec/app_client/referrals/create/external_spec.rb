@@ -21,7 +21,7 @@ describe '[Referrals - External]', :app_client, :referrals do
     before(:each) do
       @contact = Setup::Data.create_yale_client_with_consent
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
     end

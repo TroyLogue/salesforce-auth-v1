@@ -9,7 +9,7 @@ describe '[Reports - Create Export]', :reports, :app_client do
 
   context('[as cc user]') do
     before do
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       exports.authenticate_and_navigate_to(token: @auth_token, path: Exports::INDEX_PATH)
       expect(exports.page_displayed?).to be_truthy
     end
@@ -17,7 +17,7 @@ describe '[Reports - Create Export]', :reports, :app_client do
     context('with network export source,') do
       it 'creates an export', :uuqa_152 do
         exports.click_new_export
-        exports.fill_export_form_cc_user(source: Exports::NETWORK)
+        exports.fill_export_form_CC_01_USER(source: Exports::NETWORK)
         exports.submit_export_form
         expect(notifications.success_text).to eq(Notifications::EXPORT_CREATED)
         expect(exports.has_pending?).to be_truthy
@@ -27,7 +27,7 @@ describe '[Reports - Create Export]', :reports, :app_client do
     context('with organization export source,') do
       it 'creates an export', :uuqa_152 do
         exports.click_new_export
-        exports.fill_export_form_cc_user(source: Exports::ORGANIZATION)
+        exports.fill_export_form_CC_01_USER(source: Exports::ORGANIZATION)
         exports.submit_export_form
         expect(notifications.success_text).to eq(Notifications::EXPORT_CREATED)
         expect(exports.has_pending?).to be_truthy
@@ -37,7 +37,7 @@ describe '[Reports - Create Export]', :reports, :app_client do
 
   context('[as org user]') do
     before do
-      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_02_USER)
       exports.authenticate_and_navigate_to(token: @auth_token, path: Exports::INDEX_PATH)
       expect(exports.page_displayed?).to be_truthy
     end

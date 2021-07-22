@@ -16,7 +16,7 @@ describe '[Referrals][Dashboard]', :app_client, :referrals do
 
   context('[a Referral Admin CC user]') do
     before do
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -30,7 +30,7 @@ describe '[Referrals][Dashboard]', :app_client, :referrals do
 
       new_referral_dashboard.filter_by_random_care_coordinator
       service_type = 'Disability Benefits'
-      new_referral_dashboard.filter_by_service_type_id(id: Services::BENEFITS_DISABILITY_BENEFITS)
+      new_referral_dashboard.filter_by_service_type_id(id: Services::BENEFITS_BENEFITS_ELIGIBILITY_SCREENING)
 
       expect(notifications.error_notification_not_displayed?).to be_truthy
       expect(new_referral_dashboard.no_referrals_message_displayed? ||

@@ -5,7 +5,7 @@ describe '[Dashboard - Client - Filter]', :clients, :app_client do
 
   context('[as cc user]') do
     before {
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       clients_page.authenticate_and_navigate_to(token: @auth_token, path: ClientsPage::ALL_CLIENTS_PATH)
       expect(clients_page.page_displayed?).to be_truthy
     }

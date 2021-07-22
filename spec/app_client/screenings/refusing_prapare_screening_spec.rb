@@ -19,7 +19,7 @@ describe '[Screenings - Refuse PRAPARE Screening]', :screenings, :app_client do
 
   context('[As a user with screening role]') do
     before do
-      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_WITH_SCREENING_ROLE)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_03_WITH_SCREENING_ROLE)
       home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 

@@ -11,7 +11,7 @@ describe '[Facesheet]', :app_client, :facesheet do
 
   context('[as org user]') do
     before do
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_02_USER)
       clients_page.authenticate_and_navigate_to(token: auth_token, path: ClientsPage::ALL_CLIENTS_PATH)
       expect(clients_page.page_displayed?).to be_truthy
       clients_page.go_to_facesheet_second_authorized_client

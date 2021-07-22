@@ -23,13 +23,13 @@ describe '[cases]', :app_client, :cases do
     before do
       @contact = Setup::Data.create_harvard_client_with_consent
 
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       cases_path = facesheet_header.path(contact_id: @contact.contact_id, tab: 'cases')
       facesheet_header.authenticate_and_navigate_to(token: @auth_token, path: cases_path)
       expect(facesheet_cases_page.page_displayed?).to be_truthy
     end
 
-    it 'creates case via facesheet with custom OON provider input', :uuqa_645 do
+    it 'creates case via facesheet with custom OON provider input', :uuqa_645, :smoke do
       facesheet_cases_page.create_new_case
       expect(create_case.page_displayed?).to be_truthy
       expect(create_case.is_oon_program_auto_selected?).to be_truthy

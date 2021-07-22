@@ -20,8 +20,8 @@ describe '[Referrals]', :app_client, :referrals do
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
     end
 
-    it 'user can accept a new referral and case is opened', :uuqa_1012 do
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+    it 'user can accept a new referral and case is opened', :uuqa_1012, :smoke do
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_03_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -53,7 +53,7 @@ describe '[Referrals]', :app_client, :referrals do
       hold_note = Faker::Lorem.sentence(word_count: 5)
       Setup::Data.hold_referral_in_princeton(note: hold_note)
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_03_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 

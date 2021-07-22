@@ -19,7 +19,7 @@ describe '[Network - Organizations]', :network, :app_client do
 
   context('[as a Supervisor]') do
     before do
-      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_NEWYORK)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_03_NETWORK_DIRECTORY)
       home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 

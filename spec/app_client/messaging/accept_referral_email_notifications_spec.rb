@@ -14,6 +14,8 @@ describe '[Messaging - Email Notifications]', :app_client, :messaging do
       Setup::Data.accept_referral_in_princeton
     }
 
+    # Message body is hard coded to match Services::DRUG_ALCOHOL_TESTING that is set during data setup for the referral.
+    # Test case can be removed once we have equivalent coverage in CORE
     it 'client receives an email that does not include the service type name', :uuqa_1467 do
       # Check mailtrap
       message = get_first_message(filter: '[STAGING] Your referral has been accepted')
@@ -35,9 +37,11 @@ describe '[Messaging - Email Notifications]', :app_client, :messaging do
       Setup::Data.accept_referral_in_princeton
     }
 
+    # Message filter and message body is hard coded to match Services::BENEFITS_BENEFITS_ELIGIBILITY_SCREENING
+    # that is set during data setup for the referral. Test case can be removed once we have equivalent coverage in CORE
     it 'client receives an email that includes the service type name', :uuqa_1467 do
-      message = get_first_message(filter: '[STAGING] Your Disability Benefits referral has been accepted')
-      expect(body(message)).to include('Your Disability Benefits referral has been accepted and you should expect to be contacted.')
+      message = get_first_message(filter: '[STAGING] Your Benefits Eligibility Screening referral has been accepted')
+      expect(body(message)).to include('Your Benefits Eligibility Screening referral has been accepted and you should expect to be contacted.')
     end
   end
 end

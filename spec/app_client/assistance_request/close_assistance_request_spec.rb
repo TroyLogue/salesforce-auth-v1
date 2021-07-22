@@ -16,7 +16,7 @@ describe '[Assistance request]', :app_client, :assistance_request do
   before {
     # Submit assistance request before each test
     @assistance_request = Setup::Data.submit_assistance_request_to_columbia_org
-    @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+    @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_02_USER)
   }
 
   context '[As ORG user]' do

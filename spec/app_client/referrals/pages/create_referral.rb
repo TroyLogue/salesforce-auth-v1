@@ -18,7 +18,7 @@ module CreateReferral
     CREATE_CASE_BUTTON = { css: '#create-case-btn' }.freeze
 
     PRIMARY_WORKER_DROPDOWN = { css: '.ui-expandable__container--expanded #primary-worker + .choices__list' }.freeze
-    PRIMARY_WORKER_FIRST_OPTION = { css: '.ui-expandable__container--expanded #choices-primary-worker-item-choice-3' }.freeze
+    PRIMARY_WORKER_FIRST_OPTION = { css: '.ui-expandable__container--expanded #choices-primary-worker-item-choice-2' }.freeze
     SAVE_BUTTON = { css: '#save-case-assessments-btn' }.freeze
     SELECTED_PRIMARY_WORKER = { css: '.ui-expandable__container--expanded #primary-worker + div > div:not(button)' }.freeze
 

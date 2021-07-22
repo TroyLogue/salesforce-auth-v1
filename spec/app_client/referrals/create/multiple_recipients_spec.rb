@@ -18,7 +18,7 @@ describe '[Referrals]', :app_client, :referrals do
     before do
       @contact = Setup::Data.create_harvard_client_with_consent
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
     end

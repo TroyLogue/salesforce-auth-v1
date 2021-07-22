@@ -23,7 +23,7 @@ describe '[Assessments - Cases]', :assessments, :app_client do
         case_id: @case.id
       )
 
-      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_01_USER)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }

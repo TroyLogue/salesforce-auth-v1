@@ -16,7 +16,7 @@ describe '[Dashboard - Client - Search]', :clients, :app_client do
       # Get a random existing contact
       @contact = Setup::Data.random_existing_harvard_client
 
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
     }

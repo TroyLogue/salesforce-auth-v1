@@ -25,7 +25,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
 
   context('[as org user] With a new contact') do
     before {
-      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_03_USER)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
 

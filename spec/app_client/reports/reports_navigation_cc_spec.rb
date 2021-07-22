@@ -11,7 +11,7 @@ describe '[Reports Navigation CC]', :navigation, :reports, :uuqa_340 do
 
   context('[As a cc user]') do
     before do
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 

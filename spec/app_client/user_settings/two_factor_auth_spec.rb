@@ -16,7 +16,7 @@ describe '[User Settings - 2FA]', :app_client, :user_settings do
 
   context('as licensed user') do
     before do
-      log_in_as(email_address: Users::CC_USER)
+      log_in_as(email_address: Users::CC_01_USER)
       expect(home_page.page_displayed?).to be_truthy
     end
 

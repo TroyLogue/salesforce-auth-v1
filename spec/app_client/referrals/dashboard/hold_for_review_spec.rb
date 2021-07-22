@@ -21,7 +21,7 @@ describe '[Referrals]', :app_client, :referrals do
 
   context('[as a Referral user]') do
     it 'user can hold a new referral for review', :uuqa_909 do
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_03_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -51,7 +51,7 @@ describe '[Referrals]', :app_client, :referrals do
       Setup::Data.reject_referral_in_princeton(note: reject_note)
 
       # Log in as user who originally sent referral
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 
@@ -83,7 +83,7 @@ describe '[Referrals]', :app_client, :referrals do
       Setup::Data.recall_referral_in_harvard(note: recall_note)
 
       # Log in as user who originally sent referral
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
 

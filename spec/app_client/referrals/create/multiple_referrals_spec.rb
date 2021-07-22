@@ -17,12 +17,12 @@ describe '[Referrals]', :app_client, :referrals do
     before do
       @contact = Setup::Data.create_harvard_client_with_consent
 
-      auth_token = Auth.encoded_auth_token(email_address: Users::CC_USER)
+      auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
     end
 
-    it 'can create a new referral and out of network case in same workflow', :uuqa_1771 do
+    it 'can create a new referral and out of network case in same workflow', :uuqa_1771, :smoke do
       facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)
       facesheet_header.refer_client
       expect(add_referral_page.page_displayed?).to be_truthy

@@ -10,7 +10,7 @@ describe '[Facesheet]', :app_client, :facesheet do
   context('[as org user]') do
     before {
       # Auth Session
-      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_PRINCETON)
+      @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_03_USER)
 
       # Create Contact
       @contact = Setup::Data.create_harvard_client_with_consent

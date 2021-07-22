@@ -20,7 +20,7 @@ describe '[Facesheet]', :app_client, :facesheet do
     }
 
     before {
-      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+      auth_token = Auth.encoded_auth_token(email_address: Users::ORG_02_USER)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
       facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)
@@ -61,7 +61,7 @@ describe '[Facesheet]', :app_client, :facesheet do
         @contact = Setup::Data.create_yale_client_with_consent
         @case = Setup::Data.create_service_case_for_yale(contact_id: @contact.contact_id)
 
-        auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+        auth_token = Auth.encoded_auth_token(email_address: Users::ORG_01_USER)
         home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
         expect(home_page.page_displayed?).to be_truthy
         facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)
@@ -89,7 +89,7 @@ describe '[Facesheet]', :app_client, :facesheet do
         @contact = Setup::Data.create_yale_client_with_consent
         @contact.add_email_address(email_address: email_address, notifications: true)
 
-        auth_token = Auth.encoded_auth_token(email_address: Users::ORG_YALE)
+        auth_token = Auth.encoded_auth_token(email_address: Users::ORG_01_USER)
         home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
         expect(home_page.page_displayed?).to be_truthy
         facesheet_header.go_to_facesheet_with_contact_id(id: @contact.contact_id)

@@ -22,7 +22,7 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
   before do
     # Submit assistance request
     @assistance_request = Setup::Data.submit_assistance_request_to_columbia_org
-    @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_COLUMBIA)
+    @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_02_USER)
 
     homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
     expect(homepage.page_displayed?).to be_truthy
@@ -37,11 +37,11 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     create_case.create_case_form_displayed?
     create_case.create_new_case(
       program_id: Setup::Programs.in_network_program_id(
-        token: Auth.jwt(email_address: Users::ORG_COLUMBIA),
-        group_id: Providers::ORG_COLUMBIA
+        token: Auth.jwt(email_address: Users::ORG_02_USER),
+        group_id: Providers::GENERAL_ORG_02
       ),
       service_type_id: Services::BENEFITS_BENEFITS_ELIGIBILITY_SCREENING,
-      primary_worker_id: PrimaryWorkers::ORG_COLUMBIA
+      primary_worker_id: PrimaryWorkers::ORG_02_USER
     )
 
     notification_text = notifications.success_text
