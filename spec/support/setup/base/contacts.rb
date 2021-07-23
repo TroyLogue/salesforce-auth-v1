@@ -44,7 +44,8 @@ module Setup
     def create_with_military
       @military_affiliation_key = 'caregiver'
       military = Payloads::Military::Create.new(affiliation: military_affiliation_key)
-      request_body = Payloads::Contacts::Create.new({ first_name: @fname, last_name: @lname, date_of_birth: @dob, military: military.to_h })
+      request_body = Payloads::Contacts::Create.new({ first_name: @fname, last_name: @lname, date_of_birth: @dob,
+                                                      military: military.to_h })
       contact_response = Requests::Contacts.create(token: @token, group_id: @group_id, contact: request_body)
 
       expect(contact_response.status.to_s).to eq('201 Created')
@@ -81,7 +82,9 @@ module Setup
         # with ES-60 we migrated only contacts created since ~ Jan 2021;
         # in developing this method we saw reliable search results when scoped to one month
         prev_month_timestamp = (DateTime.now - 30).to_time.to_i
-        contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find{ |x| x.created_at > prev_month_timestamp }
+        contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find do |x|
+          x.created_at > prev_month_timestamp
+        end
 
         retry_count += 1
         contact
@@ -92,7 +95,7 @@ module Setup
       @fname = contact.first_name
       @lname = contact.last_name
       @dob = contact.date_of_birth
-      @dob_formatted = Time.at(@dob, in: '+05:00').strftime('%m/%d/%Y')
+      @dob_formatted = Time.at(@dob, in: '-05:00').strftime('%m/%d/%Y')
     end
 
     def add_consent
@@ -151,7 +154,7 @@ module Setup
 
     def add_email_address(email_address:, primary: false, notifications: false)
       @email_address = Payloads::Emails::Create.new(
-        acceptable_communication_types: notifications ? ['message', 'notification'] : [],
+        acceptable_communication_types: notifications ? %w[message notification] : [],
         is_primary: primary,
         email_address: email_address
       ).to_h
