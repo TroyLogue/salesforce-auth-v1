@@ -3,6 +3,10 @@
 module Providers
   case ENV['ENVIRONMENT']
   when 'prod'
+    GENERAL_CC_01 = 'fdcc392f-395c-4b53-8857-86b672cea1e7' # End to End Tests - General P2P - CC [Technology Team Only][DO NOT USE]
+    GENERAL_ORG_01 = '8eca6473-4715-4688-86c4-2b979c56a202' # End to End Tests - General P2P - Org 01 [Technology Team Only][DO NOT USE]
+    GENERAL_ORG_02 = '2a0cd77f-48cd-40e2-b1bb-8cc320ae00bf' # End to End Tests - General P2P - Org 02 [Technology Team Only][DO NOT USE]
+    GENERAL_ORG_03 = 'f1ce0e44-f306-41e7-9d2a-23c806286922' # End to End Tests - General P2P - Org 03 [Technology Team Only][DO NOT USE]
   when 'training'
     GENERAL_CC_01 = 'c97e0df3-2008-4b07-ae48-378867c98951' # End to End Tests - General P2P - CC [Technology Team Only][DO NOT USE]
     GENERAL_ORG_01 = '48caf668-d049-4319-8d17-fe306ca48ebc' # End to End Tests - General P2P - Org 01 [Technology Team Only][DO NOT USE]

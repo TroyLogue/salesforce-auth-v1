@@ -3,6 +3,12 @@
 module Users
   case ENV['ENVIRONMENT']
   when 'prod'
+    # End to End Tests - General P2P - [Technology Team Only][DO NOT USE]
+    CC_01_USER = 'general-p2p-cc-01@qa.test'
+    ORG_01_USER = 'general-p2p-org-01@qa.test'
+    ORG_02_USER = 'general-p2p-org-02@qa.test'
+    ORG_03_USER = 'general-p2p-org-03@qa.test'
+    DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
   when 'training'
     # End to End Tests - General P2P - [Technology Team Only][DO NOT USE]
     CC_01_USER = 'general-p2p-cc-01@qa.test'

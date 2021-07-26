@@ -3,6 +3,7 @@
 module Services
   case ENV['ENVIRONMENT']
   when 'prod'
+    BENEFITS_BENEFITS_ELIGIBILITY_SCREENING = '21481f3c-9e92-4339-8ed1-a4028dc5fffd'
   when 'training'
     BENEFITS_BENEFITS_ELIGIBILITY_SCREENING = 'bc481389-ea72-47fd-a354-c8673eea8866'
   when 'staging', 'devqa'

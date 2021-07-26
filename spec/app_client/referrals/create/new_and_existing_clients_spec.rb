@@ -55,7 +55,7 @@ describe '[Referrals]', :app_client, :referrals do
       expect(add_referral_page.page_displayed?).to be_truthy
     end
 
-    it 'user can create a referral for a new client', :uuqa_1735, :smoke do
+    it 'user can create a referral for a new client', :uuqa_1735 do
       fname = Faker::Name.first_name
       lname = Faker::Name.last_name
       dob = Faker::Time.backward(days: 1000).strftime('%m/%d/%Y')

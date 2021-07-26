@@ -21,7 +21,7 @@ describe '[cases]', :app_client, :cases do
 
   context('[as cc user]') do
     before do
-      @contact = Setup::Data.create_harvard_client_with_consent
+      @contact = Setup::Data.random_existing_harvard_client
 
       @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       cases_path = facesheet_header.path(contact_id: @contact.contact_id, tab: 'cases')

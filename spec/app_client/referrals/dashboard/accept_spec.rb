@@ -15,7 +15,7 @@ describe '[Referrals]', :app_client, :referrals do
   context('[as org user]') do
     before do
       # Create Contact
-      @contact = Setup::Data.create_harvard_client_with_consent
+      @contact = Setup::Data.random_existing_harvard_client
       # Create Referral
       @referral = Setup::Data.send_referral_from_harvard_to_princeton(contact_id: @contact.contact_id)
     end

@@ -3,6 +3,7 @@
 module Networks
   case ENV['ENVIRONMENT']
   when 'prod'
+    GENERAL_P2P_NETWORK = '43a19ee5-653d-4efe-989e-a219c7665bdb' # End to End Tests - General P2P - [Technology Team Only][DO NOT USE]
   when 'training'
     GENERAL_P2P_NETWORK = '6355ea84-680f-4cc9-b6ed-310af11ca42d' # End to End Tests - General P2P - [Technology Team Only][DO NOT USE]
   when 'staging', 'devqa'

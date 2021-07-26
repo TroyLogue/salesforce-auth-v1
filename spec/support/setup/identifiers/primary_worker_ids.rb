@@ -3,6 +3,9 @@
 module PrimaryWorkers
   case ENV['ENVIRONMENT']
   when 'prod'
+    CC_01_USER = 'd82a1ca9-7e7f-4107-a9ca-01bd08f595b8' # general-p2p-cc-01@qa.test
+    ORG_01_USER = 'dcb41c1b-3d3a-4fbf-a604-43069591e885' # general-p2p-org-01@qa.test
+    ORG_02_USER = 'c83ac119-81d3-4ef6-b75e-9ffc39380537' # general-p2p-org-02@qa.test
   when 'training'
     CC_01_USER = '34843b80-3209-4141-85c4-4836cfb7432d' # general-p2p-cc-01@qa.test
     ORG_01_USER = 'a08426b6-d98f-486a-b438-6667fc409911' # general-p2p-org-01@qa.test

@@ -64,30 +64,43 @@ module Setup
       expect(contact_response.status.to_s).to eq('200 OK')
     end
 
-    # when searching for clients, some query letters return 0 results;
-    # we are searching clients using an array that has proven to be reliable
     def random_existing_client
-      default_retry_count = 2
-      retry_count = 0
-      contact = nil
-
-      while contact.nil? && retry_count <= default_retry_count
-        contact_indexes_response = Requests::Contacts.get_client_indexes(
-          token: token, group_id: group_id,
-          page: 1, query_letter: Faker::Alphanumeric.alphanumeric(number: 1, min_alpha: 1)
+      case ENV['ENVIRONMENT']
+      when 'prod', 'training'
+        # In non-testing environments, there is a smaller pool of clients to search from.
+        # Removing query and time constraints gives us access to the largest pool of existing clients.
+        contact_indexes_response = Requests::Contacts.client_index_without_query(
+          token: token, group_id: group_id, page: 1
         )
         expect(contact_indexes_response.status.to_s).to eq('200 OK')
+        contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.sample
+      when 'staging', 'devqa'
+        # Searching clients with a random query_letter so no one client is used for all test cases
+        # while on testing environments.
+        # But when searching for clients, some query letters return 0 results;
+        # we are searching clients using an array that has proven to be reliable
+        default_retry_count = 2
+        retry_count = 0
+        contact = nil
+        while contact.nil? && retry_count <= default_retry_count
+          contact_indexes_response = Requests::Contacts.get_client_indexes(
+            token: token, group_id: group_id,
+            page: 1, query_letter: Faker::Alphanumeric.alphanumeric(number: 1, min_alpha: 1)
+          )
+          expect(contact_indexes_response.status.to_s).to eq('200 OK')
+          # Searching for a consented client created within the past month
+          # with ES-60 we migrated only contacts created since ~ Jan 2021 in testing environments;
+          # in developing this method we saw reliable search results when scoped to one month
+          prev_month_timestamp = (DateTime.now - 30).to_time.to_i
+          contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find do |x|
+            x.created_at > prev_month_timestamp && x.consent.status == 'accepted'
+          end
 
-        # Searching for a client created within the past month
-        # with ES-60 we migrated only contacts created since ~ Jan 2021;
-        # in developing this method we saw reliable search results when scoped to one month
-        prev_month_timestamp = (DateTime.now - 30).to_time.to_i
-        contact = JSON.parse(contact_indexes_response, object_class: OpenStruct).data.find do |x|
-          x.created_at > prev_month_timestamp
+          retry_count += 1
+          contact
         end
-
-        retry_count += 1
-        contact
+      else
+        raise "Missing required ENV['ENVIRONMENT']: prod, training, staging, devqa"
       end
 
       # Updating values

@@ -24,7 +24,7 @@ namespace :jenkins do
     ENV['BROWSER'] = 'chrome_headless'
     ENV['ENVIRONMENT'] = 'prod'
     ENV['APPLICATION'] = 'APP_CLIENT'
-    exit run_in_parallel(tag: 'uuqa_9')
+    exit run_in_parallel(tag: 'smoke')
   end
 
   desc 'specs tagged ehr on chrome headless'
