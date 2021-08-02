@@ -55,7 +55,7 @@ describe '[Assistance request]', :app_client, :assistance_request do
       expect(homepage.page_displayed?).to be_truthy
     }
 
-    it 'Validate assistance request is closed today', :uuqa_1671 do
+    it 'Validate assistance request is closed today', :uuqa_1617 do
       closed_assistance_request_dashboard_page.go_to_closed_ar_dashboard_page
       closed_assistance_request_dashboard_page.closed_ar_dashboard_page_displayed?
       closed_assistance_request_dashboard_page.clients_ar_closed?(@assistance_request.full_name)
