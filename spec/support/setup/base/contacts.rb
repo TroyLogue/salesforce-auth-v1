@@ -79,7 +79,10 @@ module Setup
         # while on testing environments.
         # But when searching for clients, some query letters return 0 results;
         # we are searching clients using an array that has proven to be reliable
-        default_retry_count = 2
+        #
+        # note - if still seeing nil results from random_existing_client,
+        # consider applying the prod/training implementation for staging/devqa
+        default_retry_count = 5
         retry_count = 0
         contact = nil
         while contact.nil? && retry_count <= default_retry_count
