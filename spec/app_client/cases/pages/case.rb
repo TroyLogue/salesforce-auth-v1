@@ -104,7 +104,8 @@ class Case < BasePage
   end
 
   def open_edit_referred_to_modal
-    click(EDIT_REFERRED_TO)
+    click(EDIT_REFERRED_TO) &&
+      is_displayed?(ADD_ANOTHER_OON_RECIPIENT)
   end
 
   def page_displayed?

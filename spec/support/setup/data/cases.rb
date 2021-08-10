@@ -18,7 +18,7 @@ module Setup
     def self.create_oon_case_for_harvard(contact_id:)
       token = Auth.jwt(email_address: Users::CC_01_USER)
       group_id = Providers::GENERAL_CC_01
-      custom_name = Faker::String.random(length: 12)
+      custom_name = Faker::Lorem.word
 
       Setup::Cases.create(
         token: token,
