@@ -12,29 +12,29 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
 
   ASSESSMENT_NO_RULES = 'UI-Tests No Rules'
 
-  #assessment data
+  # assessment data
   SINGLE_LINE_TEXT = Faker::Lorem.sentence(word_count: 5)
   MULTI_LINE_TEXT = Faker::Lorem.paragraph(sentence_count: 5)
   EMAIL_ADDRESS = Faker::Internet.email
   RANDOM_NUMBER = rand(1..100)
   ONE_MONTH_AGO = Date.today.prev_month
   # date one month ago in MM/DD/YYYY format:
-  DATE = ONE_MONTH_AGO.strftime("%m/%d/%Y")
+  DATE = ONE_MONTH_AGO.strftime('%m/%d/%Y')
   # strip leading zeroes from date to check display
-  DISPLAY_DATE = ONE_MONTH_AGO.strftime("%-m/%-d/%Y")
+  DISPLAY_DATE = ONE_MONTH_AGO.strftime('%-m/%-d/%Y')
 
   context('[as org user] With a new contact') do
-    before {
+    before do
       @auth_token = Auth.encoded_auth_token(email_address: Users::ORG_03_USER)
       homepage.authenticate_and_navigate_to(token: @auth_token, path: '/')
       expect(homepage.page_displayed?).to be_truthy
 
-      #creating contact
+      # creating contact
       @contact = Setup::Data.create_princeton_client
-    }
+    end
 
-    it 'can view and edit an assessment from facesheet view', :uuqa_101 do
-      #go to forms tab of facesheet
+    it 'can view and edit an assessment from facesheet view', :uuqa_99, :uuqa_101 do
+      # go to forms tab of facesheet
       facesheet_header.go_to_facesheet_with_contact_id(
         id: @contact.contact_id,
         tab: 'forms'
@@ -42,7 +42,7 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(facesheet_header.facesheet_name).to eql(@contact.searchable_name)
       expect(facesheet_forms.page_displayed?).to be_truthy
 
-      #find unstarted assessment
+      # find unstarted assessment
       facesheet_forms.open_assessment_by_name(ASSESSMENT_NO_RULES)
       expect(assessment.page_displayed?).to be_truthy
       expect(assessment.header_text).to include(ASSESSMENT_NO_RULES)
@@ -54,10 +54,11 @@ describe '[Assessments - Facesheet]', :assessments, :app_client do
       expect(assessment.edit_view_displayed?).to be_truthy
 
       # fill out assessment
-      assessment.fill_out_form(single_line_text: SINGLE_LINE_TEXT, multi_line_text: MULTI_LINE_TEXT, email: EMAIL_ADDRESS, number: RANDOM_NUMBER, date: DATE)
+      assessment.fill_out_form(single_line_text: SINGLE_LINE_TEXT, multi_line_text: MULTI_LINE_TEXT,
+                               email: EMAIL_ADDRESS, number: RANDOM_NUMBER, date: DATE)
       assessment.save
 
-      #verify edit view is closed
+      # verify edit view is closed
       expect(assessment.page_displayed?).to be_truthy
 
       # verify information on assessment
