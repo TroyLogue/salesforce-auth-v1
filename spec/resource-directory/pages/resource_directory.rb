@@ -3,15 +3,15 @@ require_relative '../../shared_components/base_page'
 class ResourceDirectory < BasePage
   FILTER_CONTAINER = { css: '.filter-container' }
   FIRST_PROVIDER_NAME_CONTAINER = { css: '.list-item .h3.name' }
-  RESULTS_CONTAINER = { css: '.list-listener-container' }
+  RESULTS_CONTAINER = { css: '.list-pagination-container' }
   RESULTS_LOADING = { css: '.list-item.loading' }
   PROVIDER_RESULT = { xpath: './/h3[text()="%s"]' }
   MAP_CONTAINER = { css: '.map-container' }
 
   def page_displayed?
     is_displayed?(FILTER_CONTAINER) &&
-    is_displayed?(RESULTS_CONTAINER) &&
-    is_displayed?(MAP_CONTAINER)
+      is_displayed?(RESULTS_CONTAINER) &&
+      is_displayed?(MAP_CONTAINER)
   end
 
   def find_result_by_name(name)
