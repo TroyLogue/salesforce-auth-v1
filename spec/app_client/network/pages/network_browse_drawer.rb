@@ -14,8 +14,8 @@ class NetworkBrowseDrawer < BasePage
   # required fields:
   PROVIDER_DETAILS_MAP = { css: '.group-details-content__map' }.freeze
   PROVIDER_DETAILS_DESCRIPTION = { css: '#detail-description-expandable' }.freeze
-  PROVIDER_DETAILS_LOCATION_HEADER = { css: '.provider-content-v2__location-header' }.freeze
-  PROVIDER_DETAILS_ADDRESS = { css: '.ui-provider-card__address' }.freeze
+  PROVIDER_DETAILS_LOCATION_HEADER = { css: '.ui-locations-header' }.freeze
+  PROVIDER_DETAILS_ADDRESS = { css: '.ui-location__address-name' }.freeze
   PROVIDER_DETAILS_HOURS = { css: '.ui-provider-card__hours' }.freeze
   PROVIDER_DETAILS_PROGRAMS = { css: '.group-details-content__programs' }.freeze
 
@@ -27,7 +27,7 @@ class NetworkBrowseDrawer < BasePage
   TOGGLE_MORE_INFO = { css: '#more-or-less-toggle-btn' }.freeze
 
   # program details
-  PROGRAM_DETAILS_SERVICES = { css: '.program-card-v2 .ui-service-types' }.freeze
+  PROGRAM_DETAILS_SERVICES = { css: '.program-description__service-types' }.freeze
 
   # share form
   SHARE_FORM = { css: '.expandable-container__content.open .share-form' }.freeze
@@ -68,7 +68,6 @@ class NetworkBrowseDrawer < BasePage
     is_displayed?(PROVIDER_DETAILS_DESCRIPTION) &&
     is_displayed?(PROVIDER_DETAILS_LOCATION_HEADER) &&
     is_displayed?(PROVIDER_DETAILS_ADDRESS) &&
-    is_displayed?(PROVIDER_DETAILS_HOURS) &&
     is_displayed?(PROVIDER_DETAILS_PROGRAMS) &&
     is_displayed?(PROGRAM_DETAILS_SERVICES)
   end
