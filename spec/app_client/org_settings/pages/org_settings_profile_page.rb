@@ -35,10 +35,10 @@ module OrgSettings
     TEXT_WEBSITE = { css: '#website-url-link' }.freeze
 
     EDIT_HOURS = { css: '#edit-hours-btn' }.freeze
-    INPUT_HOURS = { css: '.hours-of-operation-day-fields__opens-at .choices__item.choices__item--selectable' }.freeze
+    INPUT_HOURS_FIRST = { css: '.hours-of-operation-day-fields__opens-at .choices__item.choices__item--selectable' }.freeze
     LIST_HOURS = { css: 'div[id^="choices-group-hours-of-operation-fields-day-field-0-opens-at-item-choice"]' }.freeze
     SAVE_HOURS = { css: '#edit-hours-modal-save-btn' }.freeze
-    TEXT_HOURS = { css: '.ui-hours-of-operation-day__hours' }.freeze
+    TEXT_HOURS_MONDAY = { css: "div[id^=monday-hours]"}.freeze
 
     EDIT_PENCIL_ICON = { css: '.ui-icon' }.freeze
     ORG_PROFILE_DESCRIPTION = { css: '.org-profile-description' }.freeze
@@ -96,14 +96,14 @@ module OrgSettings
       click(EDIT_HOURS)
       sleep_for(1) # glide in animation
       is_displayed?(DIALOG_MODAL)
-      click(INPUT_HOURS)
+      click(INPUT_HOURS_FIRST)
       click_element_from_list_by_text(LIST_HOURS, time)
       click(SAVE_HOURS)
       is_field_saved?
     end
 
     def get_time
-      text(TEXT_HOURS)
+      text(TEXT_HOURS_MONDAY)
     end
 
     private
