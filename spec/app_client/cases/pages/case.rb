@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'date'
 
 class Case < BasePage
@@ -80,32 +81,23 @@ class Case < BasePage
   REOPEN_BTN = { css: '#reopen-case' }.freeze
   CLOSE_BTN = { css: '#close-case-btn' }.freeze
 
-  def add_another_out_of_network_recipient
-    click(ADD_ANOTHER_OON_RECIPIENT)
-  end
-
   def add_custom_recipient(custom_recipient:)
-    add_another_out_of_network_recipient
-    click_last_referred_to_dropdown
+    click(ADD_ANOTHER_OON_RECIPIENT)
+    find_elements(REFERRED_TO_DROPDOWN)[-1].click # last dropdown is added by prevous click
     enter_and_return(custom_recipient, CUSTOM_OON_INPUT)
   end
 
   def add_first_oon_recipient
-    add_another_out_of_network_recipient
-    click_last_referred_to_dropdown
+    click(ADD_ANOTHER_OON_RECIPIENT)
+    find_elements(REFERRED_TO_DROPDOWN)[-1].click # last dropdown is added by prevous click
     recipient = strip_distance(text: text(OON_ORG_FIRST_OPTION))
     click(OON_ORG_FIRST_OPTION)
     recipient
   end
 
-  def click_last_referred_to_dropdown
-    referred_to_dropdowns = find_elements(REFERRED_TO_DROPDOWN)
-    referred_to_dropdowns[-1].click
-  end
-
   def open_edit_referred_to_modal
-    click(EDIT_REFERRED_TO) &&
-      is_displayed?(ADD_ANOTHER_OON_RECIPIENT)
+    click(EDIT_REFERRED_TO)
+    wait_for_spinner
   end
 
   def page_displayed?
@@ -174,7 +166,7 @@ class Case < BasePage
   end
 
   def select_digits(selector)
-    text(selector).match /(\d+)/
+    text(selector).match(/(\d+)/)
   end
 
   def detail_card_values
@@ -184,7 +176,7 @@ class Case < BasePage
     is_displayed?(CONTRACTED_SERVICE_DETAIL_CARD) &&
       {
         unit_amount: unit_amount[1].to_i,
-        starts_at: Date.parse(text(CARD_SERVICE_DATE)).strftime("%m/%d/%Y"),
+        starts_at: Date.parse(text(CARD_SERVICE_DATE)).strftime('%m/%d/%Y'),
         origin_address: {
           origin_address_line1: text(CARD_ORIGIN_ADDRESS_L1),
           origin_address_line2: text(CARD_ORIGIN_ADDRESS_L2),
@@ -240,10 +232,10 @@ class Case < BasePage
     # date must be today's date or earlier:
     # use a random date within the past year
     date = Faker::Date.backward(days: 365)
-    formatted_date = date.strftime("%m%d%Y")
+    formatted_date = date.strftime('%m%d%Y')
     clear_then_enter(formatted_date, EXIT_DATE_INPUT)
     # return the date in correct format for case detail view:
-    date.strftime("%-m/%-d/%Y")
+    date.strftime('%-m/%-d/%Y')
   end
 
   def go_to_open_case_with_id(case_id:, contact_id:)
