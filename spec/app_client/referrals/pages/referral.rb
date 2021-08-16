@@ -64,7 +64,7 @@ class Referral < BasePage
   ASSIGN_CARE_COORDINATOR_LINK = { css: '#assign-care-coordinator-link' }.freeze
   ASSIGN_CARE_COORDINATOR_MODAL = { css: '#care-coordinator-modal.dialog.open.normal .dialog-paper' }.freeze
   ASSIGN_CARE_COORDINATOR_DROPDOWN = { css: '.care-coordinator-select .choices' }.freeze
-  ASSIGN_CARE_COORDINATOR_FIRST = { css: 'div[id^="choices-care-coordinator"]' }.freeze
+  ASSIGN_CARE_COORDINATOR_CHOICES = { css: 'div[id^="choices-care-coordinator"]' }.freeze
   ASSIGN_CARE_COORDINATOR_SELECTED = { css: '#care-coordinator-selector + div > div:not(button)' }.freeze
   ASSIGN_CARE_COORDINATOR_BUTTON = { css: '#edit-care-coordinator-assign-btn' }.freeze
   CURRENT_CARE_COORDINATOR = { css: '.edit-care-coordinator > span' }.freeze
@@ -357,10 +357,23 @@ class Referral < BasePage
   def assign_first_care_coordinator
     click(ASSIGN_CARE_COORDINATOR_LINK)
     is_displayed?(ASSIGN_CARE_COORDINATOR_MODAL)
-    click(ASSIGN_CARE_COORDINATOR_DROPDOWN)
-    click(ASSIGN_CARE_COORDINATOR_FIRST)
-    # Return name of care coordinator to use later, removing unwanted text
-    coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
+
+    # 'None' is an option among the care coordinator choices; we need to make sure it's not submitted
+    # CORE-1120 improvement ticket to move None out of alphabetic order
+    default_retry_count = 5
+    retry_count = 0
+    coordinator = 'None'
+    while coordinator == 'None' && retry_count <= default_retry_count
+      click(ASSIGN_CARE_COORDINATOR_DROPDOWN)
+      click_random(ASSIGN_CARE_COORDINATOR_CHOICES)
+      # Return name of care coordinator to use later, removing unwanted text
+      coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
+      retry_count += 1
+      coordinator
+    end
+
+    raise StandardError, 'Invalid test condition: Coordinator is None' if coordinator == 'None'
+
     click(ASSIGN_CARE_COORDINATOR_BUTTON)
     wait_for_spinner
     coordinator
