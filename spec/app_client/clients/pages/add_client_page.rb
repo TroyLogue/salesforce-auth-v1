@@ -1,5 +1,7 @@
 require_relative '../../../shared_components/base_page'
 
+require 'date'
+
 class AddClient < BasePage
   ADD_CONTACT_FORM = { css: '.add-contact-information-form' }
   ADD_CONTACT_FROM_REFERRAL = { css: '.add-contact-from-referral' }
@@ -39,8 +41,12 @@ class AddClient < BasePage
       print "Last Name value saved '#{params[:lname]}' do not equal value displayed '#{value(LASTNAME_INPUT)}'"
       return false
     end
-    if params.key?(:dob) && value(DOB_INPUT) != params[:dob]
-      print "Dob value saved '#{params[:dob]}' do not equal value displayed '#{value(DOB_INPUT)}'"
+    # the api returns dob in the server's timezone, where the ui displays dob in the employee's timezone
+    # we do not set the employee timezone, so we compare within a 1-day range
+    if params.key?(:dob) && !Date.strptime(value(DOB_INPUT), '%m/%d/%Y').between?(
+      Date.strptime(params[:dob], '%m/%d/%Y') - 1, Date.strptime(params[:dob], '%m/%d/%Y') + 1
+    )
+      print "Dob value saved '#{params[:dob]}' is not within one day of displayed value '#{value(DOB_INPUT)}'"
       return false
     end
     if params.key?(:addresses) && single_lined_address != params[:addresses]
@@ -73,15 +79,15 @@ class AddClient < BasePage
 
   def single_lined_address
     value(ADDRESS_LINE1_INPUT) + ' ' +
-    value(ADDRESS_LINE2_INPUT) + ' ' +
-    text(ADDRESS_STATE_INPUT).sub!('Remove item','').strip! + ' ' +
-    value(ADDRESS_ZIPCODE_INPUT)
+      value(ADDRESS_LINE2_INPUT) + ' ' +
+      text(ADDRESS_STATE_INPUT).sub!('Remove item', '').strip! + ' ' +
+      value(ADDRESS_ZIPCODE_INPUT)
   end
 
   def single_lined_insurance
     value(INSURANCE_MBID_INPUT) + ' ' +
-    value(INSURANCE_MID_INPUT) + ' ' +
-    text(INSURANCE_STATE_INPUT).sub!('Remove item','').strip!
+      value(INSURANCE_MID_INPUT) + ' ' +
+      text(INSURANCE_STATE_INPUT).sub!('Remove item', '').strip!
   end
 
   def save_client
