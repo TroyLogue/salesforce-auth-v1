@@ -37,6 +37,9 @@ module ReferralDashboard
       non_matching.empty? or raise("Non-matching headers: #{non_matching}")
     end
 
+    # CORE-1128 this method returns an array of rows when multiple matcches are found
+    # not to be used with `expect` `include` statements as that will not work with an array
+    # CORE-1127 improvement requested to include ids in index rows
     def row_values_for_client(client:)
       # List of client names
       clients = find_elements(self.class::ALL_CLIENT_NAMES).map(&:text)
@@ -47,7 +50,9 @@ module ReferralDashboard
       # Return an array of strings
       client_values = []
       indexes.each do |index|
-        client_values << find_elements(self.class::CLIENT_ROW.transform_values { |v| v % (index + 1) }).map(&:text).join(', ')
+        client_values << find_elements(self.class::CLIENT_ROW.transform_values do |v|
+                                         v % (index + 1)
+                                       end).map(&:text).join(', ')
       end
       # Returning an array of strings if multiple results, otherwise a single string
       client_values.count > 1 ? client_values : client_values[0]
@@ -138,7 +143,8 @@ module ReferralDashboard
     ALL_CLIENT_NAMES = { css: 'tr[id^="referrals-in-review-table-row"] .ui-table-row-column:nth-child(2) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="referrals-in-review-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
 
-    CC_HEADERS = ['CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'DATE RECEIVED', 'INTERACTIONS', 'LAST UPDATED'].freeze
+    CC_HEADERS = ['CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'DATE RECEIVED', 'INTERACTIONS',
+                  'LAST UPDATED'].freeze
     ORG_HEADERS = ['CLIENT NAME', 'SERVICE TYPE', 'DATE RECEIVED', 'INTERACTIONS', 'LAST UPDATED'].freeze
 
     def page_displayed?
@@ -201,7 +207,8 @@ module ReferralDashboard
     ALL_CLIENT_NAMES = { css: 'tr[id^="open-channel-referrals-table-row"] .ui-table-row-column:nth-child(4) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="open-channel-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
 
-    HEADERS = ['SENDER', 'RECIPIENT', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'STATUS', 'LAST UPDATED'].freeze
+    HEADERS = ['SENDER', 'RECIPIENT', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'STATUS',
+               'LAST UPDATED'].freeze
 
     def page_displayed?
       wait_for_spinner
@@ -237,7 +244,8 @@ module ReferralDashboard
     ALL_CLIENT_NAMES = { css: 'tr[id^="closed-referrals-table-row"] .ui-table-row-column:nth-child(4) > span' }.freeze
     CLIENT_ROW = { css: 'tr[id^="closed-referrals-table-row"]:nth-child(%s) .ui-table-row-column > span' }.freeze
 
-    HEADERS = ['SENDER', 'RECIPIENT', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'OUTCOME', 'DATE CLOSED'].freeze
+    HEADERS = ['SENDER', 'RECIPIENT', 'CLIENT NAME', 'SERVICE TYPE', 'CARE COORDINATOR', 'OUTCOME',
+               'DATE CLOSED'].freeze
 
     def page_displayed?
       wait_for_spinner
@@ -273,7 +281,8 @@ module ReferralDashboard
       include SharedComponents
       include Sent
       HEADERS = ['RECIPIENT', 'CLIENT NAME', 'SENT BY', 'SERVICE TYPE', 'STATUS', 'LAST UPDATED'].freeze
-      STATUSES = ['Accepted', 'Auto Recalled', 'Closed', 'Declined Consent', 'In Review', 'Needs Action', 'Pending Consent', 'Recalled', 'Rejected'].freeze
+      STATUSES = ['Accepted', 'Auto Recalled', 'Closed', 'Declined Consent', 'In Review', 'Needs Action',
+                  'Pending Consent', 'Recalled', 'Rejected'].freeze
 
       def go_to_sent_all_referrals_dashboard
         get('/dashboard/referrals/sent/all')

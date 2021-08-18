@@ -22,19 +22,9 @@ describe '[Referrals]', :app_client, :referrals do
 
     it 'user can accept a new referral and case is opened', :uuqa_1012, :smoke do
       auth_token = Auth.encoded_auth_token(email_address: Users::ORG_03_USER)
-      home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
-      expect(home_page.page_displayed?).to be_truthy
-
-      status = 'Needs Action'
-
-      # Newly created referral should display in new referral dashboard
-      new_referral_dashboard.go_to_new_referrals_dashboard
-      expect(new_referral_dashboard.page_displayed?).to be_truthy
-      expect(new_referral_dashboard.org_headers_displayed?).to be_truthy
-      expect(new_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}"))
-        .to include(@referral.sent_org, status, @referral.service_type)
-
-      referral.go_to_new_referral_with_id(referral_id: @referral.id)
+      path = referral.path_of_new_referral_with_id(referral_id: @referral.id)
+      referral.authenticate_and_navigate_to(token: auth_token, path: path)
+      expect(referral.page_displayed?).to be_truthy
 
       # Accept referral into a program
       referral.accept_action
