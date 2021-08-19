@@ -184,6 +184,10 @@ class BasePage
     driver.action.move_to(find(selector)).perform
   end
 
+  def is_checked?(selector)
+    find(selector).selected?
+  end
+
   def is_displayed?(selector, timeout = 30)
     wait_for(timeout) { driver.find_element(selector).displayed? } ? true : print("E2E ERROR: Selector #{selector} was not present")
   rescue Selenium::WebDriver::Error::NoSuchElementError

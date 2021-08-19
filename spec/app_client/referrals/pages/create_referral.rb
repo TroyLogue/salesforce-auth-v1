@@ -2,6 +2,9 @@ module CreateReferral
   class AddReferral < BasePage
     THIRD_STEP = { css: '.MuiStep-root:nth-of-type(5) > button .MuiStepLabel-active' }.freeze
     REFERRAL_FORM = { css: '.referral-service-form-expanded' }.freeze
+    REFERRAL_FORM_EXPANDED = { css: '.service-type-list .ui-expandable__body.ui-expandable__body--expanded' }.freeze
+    REFERRAL_FORM_COLLAPSED = { css: '.service-type-list .ui-expandable__body.ui-expandable__body--collapsed' }.freeze
+
     INFO_TEXT = { css: '.info-panel__text' }.freeze
 
     REFER_OTHER_NETWORK_CHECKBOX = { css: '.refer-to-another-network-checkbox-0 label' }.freeze
@@ -167,6 +170,14 @@ module CreateReferral
 
     def selected_primary_worker
       text(SELECTED_PRIMARY_WORKER).sub(REMOVE_TEXT, '').strip
+    end
+
+    def service_form_collapsed_count
+      count(REFERRAL_FORM_COLLAPSED)
+    end
+
+    def service_form_expanded_count
+      count(REFERRAL_FORM_EXPANDED)
     end
 
     def warning_info_text
