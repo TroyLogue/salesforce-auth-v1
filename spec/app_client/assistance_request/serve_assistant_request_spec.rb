@@ -7,6 +7,8 @@ require_relative 'pages/processed_assistance_request_dashboard_page'
 require_relative 'pages/processed_assistance_request_page'
 require_relative '../cases/pages/create_case'
 require_relative '../cases/pages/open_cases_dashboard'
+require_relative '../clients/pages/add_client_page'
+require_relative '../clients/pages/confirm_client_page'
 require_relative '../root/pages/notifications'
 
 describe '[Serve Assistance Request]', :app_client, :assistance_request do
@@ -15,6 +17,8 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
   let(:new_assistance_request_dashboard_page) { NewAssistanceRequestDashboardPage.new(@driver) }
   let(:processed_assistance_request_dashboard_page) { ProcessedAssistanceRequestDashboardPage.new(@driver) }
   let(:processed_assistance_request_page) { ProcessedAssistanceRequestPage.new(@driver) }
+  let(:confirm_client_page) { ConfirmClient.new(@driver) }
+  let(:add_client_page) { AddClient.new(@driver) }
   let(:create_case) { CreateCase.new(@driver) }
   let(:open_cases_dashboard) { OpenCasesDashboard.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
@@ -34,6 +38,12 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     new_assistance_request_dashboard_page.clients_new_ar_created?(@assistance_request.full_name)
     new_assistance_request_page.go_to_new_ar_with_id(ar_id: @assistance_request.ar_id)
     new_assistance_request_page.select_serve_ar_action
+    if confirm_client_page.check_page_displayed?
+      confirm_client_page.click_create_new_client
+      expect(add_client_page.page_displayed?).to be_truthy
+      expect(add_client_page.is_info_prefilled?(fname: fname, lname: lname, dob: dob)).to be_truthy
+      add_client_page.save_client
+    end
     create_case.create_case_form_displayed?
     create_case.create_new_case(
       program_id: Setup::Programs.in_network_program_id(
@@ -44,18 +54,17 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
       primary_worker_id: PrimaryWorkers::ORG_02_USER
     )
 
-    notification_text = notifications.success_text
-    expect(notification_text).to include(Notifications::CASE_CREATED)
+    expect(notifications.success_text).to include(Notifications::CASE_CREATED)
     expect(open_cases_dashboard.open_cases_table_displayed?).to be_truthy
-
 
     # combining processed AR with Serve AR since serving AR == processed AR
     processed_assistance_request_dashboard_page.go_to_processed_ar_dashboard_page
     processed_assistance_request_dashboard_page.processed_ar_dashboard_page_displayed?
     processed_assistance_request_dashboard_page.clients_ar_processed?(@assistance_request.full_name)
     processed_assistance_request_page.go_to_processed_ar_with_id(ar_id: @assistance_request.ar_id)
+    expect(processed_assistance_request_page.page_displayed?).to be_truthy
     expect(processed_assistance_request_page.outcome_note_text).to eq(@assistance_request.description)
-    todays_date = Date.today.strftime("%-m/%-d/%Y")
+    todays_date = Date.today.strftime('%-m/%-d/%Y')
     expect(processed_assistance_request_page.get_date_closed_text).to include(todays_date, ':')
     expect(processed_assistance_request_page.status_detail_text).to eq(ProcessedAssistanceRequestPage::PROCESSED_STATUS_TEXT)
   end
