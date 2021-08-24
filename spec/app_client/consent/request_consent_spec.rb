@@ -12,17 +12,14 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
   context('[as cc user] On an incoming Pending Consent referral,') do
     before do
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
-      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
-      expect(home_page.page_displayed?).to be_truthy
-
       # create contact
       @contact = Setup::Data.create_yale_client
 
       # create referral
       @referral = Setup::Data.send_referral_from_yale_to_harvard(contact_id: @contact.contact_id)
 
-      home_page.go_to_pending_consent
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
+      pending_consent_page.authenticate_and_navigate_to(token: @auth_token, path: '/dashboard/new/pending-consent')
       expect(pending_consent_page.page_displayed?).to be_truthy
     end
 
@@ -75,10 +72,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       @referral = Setup::Data.send_referral_from_harvard_to_yale(contact_id: @contact.contact_id)
 
       @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
-      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
-      expect(home_page.page_displayed?).to be_truthy
-
-      home_page.go_to_sent_pending_consent
+      pending_consent_page.authenticate_and_navigate_to(token: @auth_token, path: '/dashboard/new/pending-consent')
       expect(pending_consent_page.page_displayed?).to be_truthy
     end
 
@@ -100,17 +94,14 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
   context('[as a Referrals Admin user] On an incoming referral pending consent') do
     before do
-      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
-      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/')
-      expect(home_page.page_displayed?).to be_truthy
-
       # create contact
       @contact = Setup::Data.create_yale_client
 
       # create referral
       @referral = Setup::Data.send_referral_from_yale_to_harvard(contact_id: @contact.contact_id)
 
-      home_page.go_to_pending_consent
+      @auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
+      pending_consent_page.authenticate_and_navigate_to(token: @auth_token, path: '/dashboard/new/pending-consent')
       expect(pending_consent_page.page_displayed?).to be_truthy
     end
 
