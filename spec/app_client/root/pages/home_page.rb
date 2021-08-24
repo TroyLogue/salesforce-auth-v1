@@ -20,7 +20,7 @@ class HomePage < BasePage
   SENT_PENDING_CONSENT_BTN = { css: '#referred-out-pending-consent-tab' }
 
   def go_to_pending_consent
-    click(PENDING_CONSENT_BTN)
+    click(PENDING_CONSENT_BTN) if is_displayed?(PENDING_CONSENT_BTN)
   end
 
   def go_to_sent_pending_consent
