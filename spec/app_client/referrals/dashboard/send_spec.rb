@@ -138,11 +138,13 @@ describe '[Referrals]', :app_client, :referrals do
       expect(sent_referral_dashboard.headers_displayed?).to be_truthy
 
       # We expect rows returned to equal number of recipients
-      client_referrals = sent_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}")
-      expect(client_referrals.count).to eq num_of_recipients
+      client = "#{@contact.fname} #{@contact.lname}"
+      expect(sent_referral_dashboard.row_count_for_client(client: client)).to eq num_of_recipients
 
       # Listing recipients that did not receive a referral
-      unsent_recipients = recipients.reject { |r| client_referrals.join(' ').include?(r) }
+      unsent_recipients = recipients.reject do |r|
+        sent_referral_dashboard.row_values_for_client(client: client).include?(r)
+      end
 
       # If every recipient recieved a referral then we expect the unsent recipient list to be empty
       expect(unsent_recipients).to be_empty, "Referral was not sent to #{unsent_recipients}"

@@ -37,10 +37,7 @@ module ReferralDashboard
       non_matching.empty? or raise("Non-matching headers: #{non_matching}")
     end
 
-    # CORE-1128 this method returns an array of rows when multiple matcches are found
-    # not to be used with `expect` `include` statements as that will not work with an array
-    # CORE-1127 improvement requested to include ids in index rows
-    def row_values_for_client(client:)
+    private def rows_for_client(client:)
       # List of client names
       clients = find_elements(self.class::ALL_CLIENT_NAMES).map(&:text)
       # Return indexes that match client name
@@ -54,8 +51,17 @@ module ReferralDashboard
                                          v % (index + 1)
                                        end).map(&:text).join(', ')
       end
-      # Returning an array of strings if multiple results, otherwise a single string
-      client_values.count > 1 ? client_values : client_values[0]
+      client_values
+    end
+
+    def row_count_for_client(client:)
+      rows_for_client(client: client).count
+    end
+
+    # CORE-1127 improvement requested to include ids in index rows
+    def row_values_for_client(client:)
+      client_values = rows_for_client(client: client)
+      client_values.count > 1 ? client_values.join(', ') : client_values[0]
     end
 
     def click_on_row_by_client_name(client:)
