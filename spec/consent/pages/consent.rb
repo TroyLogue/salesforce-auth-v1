@@ -13,7 +13,7 @@ class Consent < BasePage
   SIGNATURE_PAD = { css: '#signature-pad' }
 
   def get_consent_page(token:)
-  # make sure environment='consent_staging' is passed for correct base_url
+  # make sure ENV['APPLICATION'] = CONSENT is passed for correct base_url
     get "/?#{token}"
   end
 

@@ -4,7 +4,7 @@ require 'bundler'
 require 'fileutils'
 require 'rubygems'
 require 'date'
-# adding login pages for EHR as well:
+# adding login pages for EHR:
 require_relative './ehr/auth/pages/login_email_ehr' # UU3-48209 Currently all tests login through the UI and so these files are needed throughout the repo.
 require_relative './ehr/auth/pages/login_password_ehr' # With UU3-48209 we should not require login_email and login_password in the spec_helper, and only require them in specs testing login.
 
@@ -165,7 +165,12 @@ RSpec.configure do |config|
   end
 
   # Setting web and auth urls for app being tested
-  ENV['APPLICATION'] ||= 'APP_CLIENT'
+  valid_application_values = ['APP_CLIENT', 'EHR', 'CONSENT', 'RESOURCE_DIRECTORY']
+  if !ENV['APPLICATION']
+    p "Setting ENV['APPLICATION'] to APP_CLIENT by default. If your spec doesn't live in the app_client directory, pass in APPLICATION at runtime. Options: #{valid_application_values.join(', ')}"
+    ENV['APPLICATION'] = 'APP_CLIENT'
+  end
+  raise "Invalid ENV['APPLICATION']. Must be one of: #{valid_application_values}" unless valid_application_values.include?(ENV['APPLICATION'])
 
   ENV['WEB_URL'] = ENV["#{ENV['APPLICATION']}_URL"]
   ENV['AUTH_URL'] = ENV["#{ENV['APPLICATION']}_AUTH_URL"]
