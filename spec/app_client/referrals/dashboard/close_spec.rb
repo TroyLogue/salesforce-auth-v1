@@ -212,7 +212,9 @@ describe '[Referrals]', :app_client, :referrals do
       close_note = Faker::Lorem.sentence(word_count: 5)
       referral.submit_close_referral_modal(note: close_note)
 
-      # Closed referral displays in closed referrals dasboard table
+      # it takes a brief moment for the newly closed referral to show up in the index
+      closed_referral_dashboard.refresh
+      # Closed referral displays in closed referrals dashboard table
       expect(closed_referral_dashboard.page_displayed?).to be_truthy
       expect(closed_referral_dashboard.headers_displayed?).to be_truthy
       expect(closed_referral_dashboard.row_values_for_client(client: "#{@contact.fname} #{@contact.lname}"))
