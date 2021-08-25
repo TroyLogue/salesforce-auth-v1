@@ -165,10 +165,12 @@ RSpec.configure do |config|
   end
 
   # Setting web and auth urls for app being tested
+  valid_application_values = ['APP_CLIENT', 'EHR', 'CONSENT', 'RESOURCE_DIRECTORY']
   if !ENV['APPLICATION']
-    p "Setting ENV['APPLICATION'] to APP_CLIENT by default. If your spec doesn't live in the app_client directory, pass in APPLICATION at runtime. Options: APP_CLIENT, EHR, CONSENT, RESOURCE_DIRECTORY"
+    p "Setting ENV['APPLICATION'] to APP_CLIENT by default. If your spec doesn't live in the app_client directory, pass in APPLICATION at runtime. Options: #{valid_application_values.join(', ')}"
     ENV['APPLICATION'] = 'APP_CLIENT'
   end
+  raise "Invalid ENV['APPLICATION']. Must be one of: #{valid_application_values}" unless valid_application_values.include?(ENV['APPLICATION'])
 
   ENV['WEB_URL'] = ENV["#{ENV['APPLICATION']}_URL"]
   ENV['AUTH_URL'] = ENV["#{ENV['APPLICATION']}_AUTH_URL"]
