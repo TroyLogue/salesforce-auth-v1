@@ -8,15 +8,18 @@ class Insights < BasePage
   SELECT_VIEW_FIRST_OPTION = { css: '#choices-tableau-view-item-choice-2' }.freeze
   TABLE_VIEW_DOWNLOAD_FORM = { css: '#tableau-download-form' }.freeze
   DOWNLOAD_TYPE = { css: 'div.ui-select-field:nth-child(2)' }.freeze
-  DOWNLOAD_TYPE_FIRST_OPTION = { css: '#choices-tableau-download-type-item-choice-4' }.freeze
+  DOWNLOAD_TYPE_CSV = { css: '#choices-tableau-download-type-item-choice-4' }.freeze
+  DOWNLOAD_TYPE_IMAGE = { css: '#choices-tableau-download-type-item-choice-3' }.freeze
+  DOWNLOAD_TYPE_PDF = { css: '#choices-tableau-download-type-item-choice-2' }.freeze
   DOWNLOAD_COUNT = { css: 'span.insights__download-length' }.freeze
+  TABLEAU_IFRAME = [css: '#tableau-viz > iframe'].freeze
 
   def Insight_nav_displayed?
     is_displayed?(INSIGHT_NAV)
   end
 
   def get_current_download_count
-    @download_count_before = text(DOWNLOAD_COUNT).scan(/\d/).join('').to_i
+    @download_count_before = text(DOWNLOAD_COUNT).scan(/\d/).join('')
   end
 
   def get_download_count_after
@@ -31,10 +34,14 @@ class Insights < BasePage
     is_displayed?(TABLE_VIEW_DOWNLOAD_FORM)
   end
 
+  def tableau_iframe_exists?
+    find_iframe_title == "data visualization"
+  end
+
   def click_download
     click(DOWNLOAD_BUTTON)
     # it takes time to download
-    sleep 5
+    sleep_for(5)
   end
 
   def insight_center_displayed?
@@ -51,9 +58,19 @@ class Insights < BasePage
     click(SELECT_VIEW_FIRST_OPTION)
   end
 
-  def select_file_type_first_option
+  def select_file_type_csv
     click(DOWNLOAD_TYPE)
-    click(DOWNLOAD_TYPE_FIRST_OPTION)
+    click(DOWNLOAD_TYPE_CSV)
+  end
+
+  def select_file_type_image
+    click(DOWNLOAD_TYPE)
+    click(DOWNLOAD_TYPE_IMAGE)
+  end
+
+  def select_file_type_pdf
+    click(DOWNLOAD_TYPE)
+    click(DOWNLOAD_TYPE_PDF)
   end
 
 end
