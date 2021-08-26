@@ -16,7 +16,7 @@ class Insights < BasePage
   TABLEAU_IFRAME = { css: '#tableau-viz > iframe' }.freeze
   FIRST_FILE_DOWNLOAD_TABLE = { css: 'table > tbody > tr:nth-child(1) > td:nth-child(1)' }.freeze
 
-  def Insight_nav_displayed?
+  def insight_nav_displayed?
     is_displayed?(INSIGHT_NAV)
   end
 
