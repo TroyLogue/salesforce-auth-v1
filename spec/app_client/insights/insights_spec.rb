@@ -9,7 +9,7 @@ describe '[Users - ]', :app_client, :users do
   let(:insights_page) { Insights.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
 
-  it 'download report and verify Tableau iFrame', :uuqa_509 do
+  it 'downloads report and verifies Tableau iFrame', :uuqa_509 do
     log_in_as(email_address: Users::INSIGHTS_USER)
     expect(home_page.page_displayed?).to be_truthy
     expect(insights_page.Insight_nav_displayed?).to be_truthy
