@@ -21,21 +21,20 @@ describe '[Users - ]', :app_client, :users do
     insights_page.select_file_type_csv
     insights_page.click_download
     insights_page.get_download_count_after
-
+    expect(insights_page.download_success?).to be_truthy
     # image report
     insights_page.get_current_download_count
     insights_page.select_activity_first_option
     insights_page.select_file_type_image
     insights_page.click_download
     insights_page.get_download_count_after
-
+    expect(insights_page.download_success?).to be_truthy
     # PDF report
     insights_page.get_current_download_count
     insights_page.select_activity_first_option
     insights_page.select_file_type_pdf
     insights_page.click_download
     insights_page.get_download_count_after
-
     expect(insights_page.download_success?).to be_truthy
     expect(insights_page.tableau_iframe_exists?).to be_truthy
   end
