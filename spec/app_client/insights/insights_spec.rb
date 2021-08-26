@@ -3,7 +3,7 @@ require_relative './pages/insights'
 require_relative '../auth/helpers/login'
 require_relative '../root/pages/home_page'
 
-describe '[Users - ]', :app_client, :users do
+describe '[Insights - ]', :insights, :users do
   include Login
 
   let(:insights_page) { Insights.new(@driver) }
