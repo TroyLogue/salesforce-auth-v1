@@ -29,7 +29,6 @@ class Insights < BasePage
 
   def table_view_download_form_displayed?
     is_displayed?(TABLE_VIEW_DOWNLOAD_FORM)
-    puts "worked ---- debug"
   end
 
   def click_download
