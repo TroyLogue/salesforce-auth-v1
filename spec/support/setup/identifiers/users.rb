@@ -30,6 +30,7 @@ module Users
     # org without military focus and without health insurance focus
     NON_MILITARY_NON_INSURANCE_ORG = 'princeton@auto.com'
     USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test'
+    INSIGHTS_USER = 'insights-automated@bi.test'
 
     # QA Network
     CC_02_USER = 'qa.perms@auto.com'
