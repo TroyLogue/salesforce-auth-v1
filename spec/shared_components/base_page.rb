@@ -155,7 +155,7 @@ class BasePage
   end
 
   # this will work for any iframe and returns title attribute value
-  def find_iframe_title
+  def get_iframe_title
     wait_for { driver.find_element(:css, "iframe").attribute("title") }
   end
 
@@ -272,10 +272,6 @@ class BasePage
   # for debugging race conditions and element visibility
   def print_page_source
     puts("UUQA DEBUG Page Source is #{driver.page_source}")
-  end
-
-  def page_include?(text)
-    driver.page_source.include? text
   end
 
   def refresh

@@ -36,7 +36,7 @@ class Insights < BasePage
   end
 
   def tableau_iframe_exists?
-    find_iframe_title == "data visualization"
+    get_iframe_title == "data visualization"
   end
 
   def click_download
