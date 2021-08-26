@@ -12,7 +12,8 @@ class Insights < BasePage
   DOWNLOAD_TYPE_IMAGE = { css: '#choices-tableau-download-type-item-choice-3' }.freeze
   DOWNLOAD_TYPE_PDF = { css: '#choices-tableau-download-type-item-choice-2' }.freeze
   DOWNLOAD_COUNT = { css: 'span.insights__download-length' }.freeze
-  TABLEAU_IFRAME = [css: '#tableau-viz > iframe'].freeze
+  TABLEAU_IFRAME = { css: '#tableau-viz > iframe' }.freeze
+  FIRST_FILE_DOWNLOAD_TABLE = { css: 'table > tbody > tr:nth-child(1) > td:nth-child(1)' }.freeze
 
   def Insight_nav_displayed?
     is_displayed?(INSIGHT_NAV)
@@ -71,6 +72,10 @@ class Insights < BasePage
   def select_file_type_pdf
     click(DOWNLOAD_TYPE)
     click(DOWNLOAD_TYPE_PDF)
+  end
+
+  def first_file_contains(extension)
+    text(FIRST_FILE_DOWNLOAD_TABLE).include? extension
   end
 
 end
