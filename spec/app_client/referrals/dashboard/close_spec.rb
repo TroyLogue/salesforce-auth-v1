@@ -203,7 +203,6 @@ describe '[Referrals]', :app_client, :referrals do
       auth_token = Auth.encoded_auth_token(email_address: Users::CC_01_USER)
       pending_consent_page.authenticate_and_navigate_to(token: auth_token, path: '/dashboard/new/pending-consent')
       expect(pending_consent_page.page_displayed?).to be_truthy
-
       pending_consent_page.open_first_close_referral_modal
 
       close_note = Faker::Lorem.sentence(word_count: 5)
