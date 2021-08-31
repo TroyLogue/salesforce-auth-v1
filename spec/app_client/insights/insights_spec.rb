@@ -5,7 +5,6 @@ require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[Insights - ]', :insights do
-  include Login
 
   let(:insights) { Insights.new(@driver) }
   let(:home_page) { HomePage.new(@driver) }
