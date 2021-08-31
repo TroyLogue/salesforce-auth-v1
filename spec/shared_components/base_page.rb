@@ -155,7 +155,7 @@ class BasePage
   end
 
   # this will work for any iframe and returns title attribute value
-  def get_iframe_title
+  def iframe_title
     wait_for { driver.find_element(:css, "iframe").attribute("title") }
   end
 
