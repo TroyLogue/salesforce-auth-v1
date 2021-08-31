@@ -38,13 +38,13 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     new_assistance_request_dashboard_page.clients_new_ar_created?(@assistance_request.full_name)
     new_assistance_request_page.go_to_new_ar_with_id(ar_id: @assistance_request.ar_id)
     new_assistance_request_page.select_serve_ar_action
-    if confirm_client_page.check_page_displayed?
+    if confirm_client_page.page_displayed?
       confirm_client_page.click_create_new_client
       expect(add_client_page.page_displayed?).to be_truthy
       expect(add_client_page.is_info_prefilled?(fname: fname, lname: lname, dob: dob)).to be_truthy
       add_client_page.save_client
     end
-    create_case.create_case_form_displayed?
+    expect(create_case.create_case_form_displayed?).to be_truthy
     create_case.create_new_case(
       program_id: Setup::Programs.in_network_program_id(
         token: Auth.jwt(email_address: Users::ORG_02_USER),
