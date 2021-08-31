@@ -5,7 +5,6 @@ class Insights < BasePage
   DOWNLOAD_BUTTON = { css: 'button.tableau-download-form__submit' }.freeze
   SELECT_VIEW = { css: 'div.ui-select-field:nth-child(1)' }.freeze
   SELECT_VIEW_FIRST_OPTION = { css: '#choices-tableau-view-item-choice-2' }.freeze
-  TABLE_VIEW_DOWNLOAD_FORM = { css: '#tableau-download-form' }.freeze
   DOWNLOAD_TYPE = { css: 'div.ui-select-field:nth-child(2)' }.freeze
   DOWNLOAD_TYPE_CSV = { css: '#choices-tableau-download-type-item-choice-4' }.freeze
   DOWNLOAD_TYPE_IMAGE = { css: '#choices-tableau-download-type-item-choice-3' }.freeze
@@ -20,10 +19,6 @@ class Insights < BasePage
 
   def get_download_count_after
     text(DOWNLOAD_COUNT).scan(/\d/).join('').to_i
-  end
-
-  def table_view_download_form_displayed?
-    is_displayed?(TABLE_VIEW_DOWNLOAD_FORM)
   end
 
   def tableau_iframe_exists?
