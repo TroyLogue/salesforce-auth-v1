@@ -2,7 +2,6 @@
 require_relative '../../../shared_components/base_page'
 
 class Insights < BasePage
-  INSIGHT_ANALYTICS_PAGE = { css: '#insights' }.freeze
   DOWNLOAD_BUTTON = { css: 'button.tableau-download-form__submit' }.freeze
   SELECT_VIEW = { css: 'div.ui-select-field:nth-child(1)' }.freeze
   SELECT_VIEW_FIRST_OPTION = { css: '#choices-tableau-view-item-choice-2' }.freeze
@@ -12,7 +11,6 @@ class Insights < BasePage
   DOWNLOAD_TYPE_IMAGE = { css: '#choices-tableau-download-type-item-choice-3' }.freeze
   DOWNLOAD_TYPE_PDF = { css: '#choices-tableau-download-type-item-choice-2' }.freeze
   DOWNLOAD_COUNT = { css: 'span.insights__download-length' }.freeze
-  TABLEAU_IFRAME = { css: '#tableau-viz > iframe' }.freeze
   FIRST_FILE_DOWNLOAD_TABLE = { css: 'table > tbody > tr:nth-child(1) > td:nth-child(1)' }.freeze
   FIRST_DOWNLOAD_LINK = { css: 'tr:nth-child(1) > td:nth-child(3)' }
 
@@ -29,18 +27,14 @@ class Insights < BasePage
   end
 
   def tableau_iframe_exists?
+    is_displayed?(DOWNLOAD_TYPE)
+    is_displayed?(DOWNLOAD_TYPE)
     get_iframe_title == "data visualization"
   end
 
   def click_download
     click(DOWNLOAD_BUTTON)
-    # it takes time to download
-    sleep_for(5)
-  end
-
-  def insight_center_displayed?
-    is_displayed?(INSIGHT_ANALYTICS_PAGE) &&
-      is_displayed?(DOWNLOAD_BUTTON)
+    wait_for_download_spinner
   end
 
   def click_first_download_link

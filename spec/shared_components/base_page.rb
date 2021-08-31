@@ -348,4 +348,8 @@ class BasePage
   def wait_for_spinner(spinner = { css: '.spinner-container' })
     wait_for { find_elements(spinner).length < 1 }
   end
+
+  def wait_for_download_spinner(spinner = { css: '.spin-icon.spinning' })
+    wait_for { find_elements(spinner).length < 1 }
+  end
 end
