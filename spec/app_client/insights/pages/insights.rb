@@ -17,10 +17,6 @@ class Insights < BasePage
     text(DOWNLOAD_COUNT).scan(/\d/).join('').to_i
   end
 
-  def get_download_count_after
-    text(DOWNLOAD_COUNT).scan(/\d/).join('').to_i
-  end
-
   def tableau_iframe_exists?
     is_displayed?(SELECT_VIEW) &&
       is_displayed?(DOWNLOAD_TYPE)

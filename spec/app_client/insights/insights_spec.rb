@@ -28,8 +28,8 @@ describe '[Insights - ]', :insights do
       insights.select_activity_first_option
       insights.select_file_type_csv
       insights.click_download
-      insights.get_download_count_after
-      expect(insights.get_download_count_after).to be > download_count_before
+      insights.get_current_download_count
+      expect(insights.get_current_download_count).to be > download_count_before
       insights.first_file_contains(".csv")
     end
 
@@ -38,8 +38,8 @@ describe '[Insights - ]', :insights do
       insights.select_activity_first_option
       insights.select_file_type_image
       insights.click_download
-      insights.get_download_count_after
-      expect(insights.get_download_count_after).to be > download_count_before
+      insights.get_current_download_count
+      expect(insights.get_current_download_count).to be > download_count_before
       insights.first_file_contains(".png")
     end
 
@@ -48,8 +48,8 @@ describe '[Insights - ]', :insights do
       insights.select_activity_first_option
       insights.select_file_type_pdf
       insights.click_download
-      insights.get_download_count_after
-      expect(insights.get_download_count_after).to be > download_count_before
+      insights.get_current_download_count
+      expect(insights.get_current_download_count).to be > download_count_before
       insights.first_file_contains(".pdf")
     end
 
