@@ -13,7 +13,7 @@ class Insights < BasePage
   FIRST_FILE_DOWNLOAD_TABLE = { css: 'table > tbody > tr:nth-child(1) > td:nth-child(1)' }.freeze
   FIRST_DOWNLOAD_LINK = { css: 'tr:nth-child(1) > td:nth-child(3)' }
 
-  def get_current_download_count
+  def current_download_count
     text(DOWNLOAD_COUNT).scan(/\d/).join('').to_i
   end
 

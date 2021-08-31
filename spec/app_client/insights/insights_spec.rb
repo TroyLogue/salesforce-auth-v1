@@ -24,32 +24,32 @@ describe '[Insights - ]', :insights do
     end
 
     it 'verify insights save report as CSV', :uuqa_501 do
-      download_count_before = insights.get_current_download_count
+      download_count_before = insights.current_download_count
       insights.select_activity_first_option
       insights.select_file_type_csv
       insights.click_download
-      insights.get_current_download_count
-      expect(insights.get_current_download_count).to be > download_count_before
+      insights.current_download_count
+      expect(insights.current_download_count).to be > download_count_before
       insights.first_file_contains(".csv")
     end
 
     it 'verify insights save report as png', :uuqa_503 do
-      download_count_before = insights.get_current_download_count
+      download_count_before = insights.current_download_count
       insights.select_activity_first_option
       insights.select_file_type_image
       insights.click_download
-      insights.get_current_download_count
-      expect(insights.get_current_download_count).to be > download_count_before
+      insights.current_download_count
+      expect(insights.current_download_count).to be > download_count_before
       insights.first_file_contains(".png")
     end
 
     it 'verify insights save report as PDF', :uuqa_502 do
-      download_count_before = insights.get_current_download_count
+      download_count_before = insights.current_download_count
       insights.select_activity_first_option
       insights.select_file_type_pdf
       insights.click_download
-      insights.get_current_download_count
-      expect(insights.get_current_download_count).to be > download_count_before
+      insights.current_download_count
+      expect(insights.current_download_count).to be > download_count_before
       insights.first_file_contains(".pdf")
     end
 
