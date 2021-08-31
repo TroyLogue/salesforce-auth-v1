@@ -2,7 +2,6 @@
 require_relative '../../../shared_components/base_page'
 
 class Insights < BasePage
-  INSIGHT_NAV = { css: '#nav-insights' }.freeze
   INSIGHT_ANALYTICS_PAGE = { css: '#insights' }.freeze
   DOWNLOAD_BUTTON = { css: 'button.tableau-download-form__submit' }.freeze
   SELECT_VIEW = { css: 'div.ui-select-field:nth-child(1)' }.freeze
@@ -15,21 +14,14 @@ class Insights < BasePage
   DOWNLOAD_COUNT = { css: 'span.insights__download-length' }.freeze
   TABLEAU_IFRAME = { css: '#tableau-viz > iframe' }.freeze
   FIRST_FILE_DOWNLOAD_TABLE = { css: 'table > tbody > tr:nth-child(1) > td:nth-child(1)' }.freeze
-
-  def insight_nav_displayed?
-    is_displayed?(INSIGHT_NAV)
-  end
+  FIRST_DOWNLOAD_LINK = { css: 'tr:nth-child(1) > td:nth-child(3)' }
 
   def get_current_download_count
-    @download_count_before = text(DOWNLOAD_COUNT).scan(/\d/).join('')
+    text(DOWNLOAD_COUNT).scan(/\d/).join('').to_i
   end
 
   def get_download_count_after
-    @download_count_after = text(DOWNLOAD_COUNT).scan(/\d/).join('')
-  end
-
-  def download_success?
-    @download_count_after.to_i > @download_count_before.to_i
+    text(DOWNLOAD_COUNT).scan(/\d/).join('').to_i
   end
 
   def table_view_download_form_displayed?
@@ -51,8 +43,10 @@ class Insights < BasePage
       is_displayed?(DOWNLOAD_BUTTON)
   end
 
-  def click_insight_nav
-    click(INSIGHT_NAV)
+  def click_first_download_link
+    is_displayed?(FIRST_DOWNLOAD_LINK)
+    scroll_to(FIRST_DOWNLOAD_LINK)
+    click(FIRST_DOWNLOAD_LINK)
   end
 
   def select_activity_first_option
