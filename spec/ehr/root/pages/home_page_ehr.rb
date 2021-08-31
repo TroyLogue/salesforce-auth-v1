@@ -1,6 +1,6 @@
 require_relative '../../../shared_components/base_page'
 
-class HomePage < BasePage
+class HomePageEhr < BasePage
   ASSESSMENTS_SECTION = { css: '.assessment-forms' }
   CASES_SECTION = { css: '.cases' }
   CREATE_REFERRAL_BUTTON = { css: '#nav-referral' }

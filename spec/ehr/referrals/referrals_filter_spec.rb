@@ -2,7 +2,7 @@
 
 require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/collection_filters_drawer'
-require_relative '../root/pages/home_page'
+require_relative '../root/pages/home_page_ehr'
 require_relative '../root/pages/notifications_ehr'
 require_relative './pages/referrals_table'
 
@@ -10,7 +10,7 @@ describe '[Referrals]', :ehr, :referrals do
   include LoginEhr
 
   let(:collection_filters_drawer) { CollectionFiltersDrawer.new(@driver) }
-  let(:homepage) { HomePage.new(@driver) }
+  let(:homepage) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:notifications_ehr) { NotificationsEhr.new(@driver) }

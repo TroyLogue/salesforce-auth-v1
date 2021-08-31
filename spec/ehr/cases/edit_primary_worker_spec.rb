@@ -2,7 +2,7 @@
 
 require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/collection_filters_drawer'
-require_relative '../root/pages/home_page'
+require_relative '../root/pages/home_page_ehr'
 require_relative './pages/case_detail_page'
 
 describe '[Cases]', :ehr, :cases do
@@ -10,7 +10,7 @@ describe '[Cases]', :ehr, :cases do
 
   let(:base_page) { BasePage.new(@driver) }
   let(:case_detail_page) { CaseDetailPage.new(@driver) }
-  let(:home_page) { HomePage.new(@driver) }
+  let(:home_page) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
 

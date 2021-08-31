@@ -1,5 +1,5 @@
 require_relative '../auth/helpers/login_ehr'
-require_relative '../root/pages/home_page'
+require_relative '../root/pages/home_page_ehr'
 require_relative './pages/assessment'
 require_relative './pages/assessments_table'
 require_relative '../root/pages/notifications_ehr'
@@ -9,7 +9,7 @@ describe '[Assessments]', :ehr, :assessments do
 
   let(:assessment) { Assessment.new(@driver) }
   let(:assessments_table) { AssessmentsTable.new(@driver) }
-  let(:homepage) { HomePage.new(@driver) }
+  let(:homepage) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:notifications) { NotificationsEhr.new(@driver) }

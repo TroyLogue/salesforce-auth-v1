@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require_relative '../auth/helpers/login_ehr'
-require_relative '../root/pages/home_page'
+require_relative '../root/pages/home_page_ehr'
 require_relative '../root/pages/notifications_ehr'
 require_relative './pages/screening'
 
 describe '[Screenings]', :ehr, :screenings do
   include LoginEhr
 
-  let(:homepage) { HomePage.new(@driver) }
+  let(:homepage) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:notifications) { NotificationsEhr.new(@driver) }

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../auth/helpers/login_ehr'
-require_relative '../root/pages/home_page'
+require_relative '../root/pages/home_page_ehr'
 require_relative './pages/new_referral'
 require_relative './pages/referral_assessment'
 require_relative '../root/pages/notifications_ehr'
@@ -9,7 +9,7 @@ require_relative '../root/pages/notifications_ehr'
 describe '[Referrals]', :ehr, :ehr_referrals do
   include LoginEhr
 
-  let(:homepage) { HomePage.new(@driver) }
+  let(:homepage) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:new_referral) { NewReferral.new(@driver) }

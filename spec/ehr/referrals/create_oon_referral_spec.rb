@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../auth/helpers/login_ehr'
-require_relative '../root/pages/home_page'
+require_relative '../root/pages/home_page_ehr'
 require_relative './pages/new_referral'
 require_relative './pages/referral_assessment'
 require_relative '../network/pages/provider_drawer'
@@ -13,7 +13,7 @@ describe '[Referrals Out of Network]', :ehr, :ehr_referrals do
 
   let(:case_detail) { CaseDetailPage.new(@driver) }
   let(:cases_table) { CasesTable.new(@driver) }
-  let(:homepage) { HomePage.new(@driver) }
+  let(:homepage) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:new_referral) { NewReferral.new(@driver) }
