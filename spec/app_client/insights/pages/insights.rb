@@ -14,6 +14,7 @@ class Insights < BasePage
   FIRST_DOWNLOAD_LINK = { css: 'tr:nth-child(1) > td:nth-child(3)' }
 
   def current_download_count
+    is_displayed?(DOWNLOAD_COUNT)
     text(DOWNLOAD_COUNT).scan(/\d/).join('').to_i
   end
 
