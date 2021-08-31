@@ -22,8 +22,8 @@ class Insights < BasePage
   end
 
   def tableau_iframe_exists?
-    is_displayed?(DOWNLOAD_TYPE)
-    is_displayed?(DOWNLOAD_TYPE)
+    is_displayed?(SELECT_VIEW) &&
+      is_displayed?(DOWNLOAD_TYPE)
     get_iframe_title == "data visualization"
   end
 
