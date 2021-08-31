@@ -27,6 +27,7 @@ class Insights < BasePage
   def click_download
     click(DOWNLOAD_BUTTON)
     wait_for_download_spinner
+    is_displayed?(DOWNLOAD_BUTTON)
   end
 
   def click_first_download_link
