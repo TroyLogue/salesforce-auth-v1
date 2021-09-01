@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 require_relative './pages/insights'
 require_relative '../auth/helpers/login'
-require_relative '../root/pages/home_page'
 require_relative '../root/pages/notifications'
 
 describe '[Insights - ]', :insights do
 
   let(:insights) { Insights.new(@driver) }
-  let(:home_page) { HomePage.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
   context('[as a insights user]') do
     before do
       @auth_token = Auth.encoded_auth_token(email_address: Users::INSIGHTS_USER)
-      home_page.authenticate_and_navigate_to(token: @auth_token, path: '/insights')
-      expect(home_page.page_displayed?).to be_truthy
+      insights.authenticate_and_navigate_to(token: @auth_token, path: '/insights')
+      expect(insights.page_displayed?).to be_truthy
     end
 
     it 'verify insights download report', :uuqa_509 do
