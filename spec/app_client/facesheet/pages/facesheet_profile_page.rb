@@ -542,7 +542,7 @@ class FacesheetProfilePage < BasePage
     INPUT_COVERAGE_START = {css: '#insurance-coverage-start' }.freeze
     INPUT_COVERAGE_END = { css: '#insurance-coverage-end' }.freeze
     # buttons
-    ADD_INSURANCE_ICON = { css: 'div[aria-label="add"]' }.freeze
+    ADD_INSURANCE_ICON = { css: '#add-insurance-button' }.freeze
     # TODO UU3-50414 edit button add an aria-label
     EDIT_INSURANCE_ICON = { css: '#edit-modal' }.freeze
     DELETE_INSURANCE_ICON = { css: 'div[aria-label="delete"]' }.freeze

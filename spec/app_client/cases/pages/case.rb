@@ -28,9 +28,7 @@ class Case < BasePage
   SERVICE_TYPE = { css: '#basic-table-service-type-value' }.freeze
 
   # Contracted Service
-  ADD_CONTRACTED_SERVICES_BUTTON = {
-    css: '.add-fee-schedule-program-information__section .add-circle-plus__text'
-  }.freeze
+  ADD_CONTRACTED_SERVICES_BUTTON = { css: '#add-fee-schedule-service-provided-button' }.freeze
   CONTRACTED_SERVICES_FORM = { css: '.payments-track-service' }.freeze
   SUBMIT_CONTRACTED_SERVICES = { css: '#fee-schedule-provided-service-post-note-btn' }.freeze
   UNIT_AMOUNT = { css: '#provided-service-unit-amount' }.freeze
