@@ -29,7 +29,7 @@ describe '[Referrals][Dashboard]', :app_client, :referrals do
       expect(new_referral_dashboard.cc_headers_displayed?).to be_truthy
 
       care_coordinator = new_referral_dashboard.filter_by_random_care_coordinator
-      service_type = 'Disability Benefits'
+      service_type = 'Benefits Eligibility Screening'
       new_referral_dashboard.filter_by_service_type_id(id: Services::BENEFITS_BENEFITS_ELIGIBILITY_SCREENING)
 
       expect(notifications.error_notification_not_displayed?).to be_truthy
