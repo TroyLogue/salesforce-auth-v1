@@ -154,6 +154,11 @@ class BasePage
     wait_for { driver.find_element(selector) }
   end
 
+  # this will work for any iframe and returns title attribute value
+  def iframe_title
+    wait_for { driver.find_element(:css, "iframe").attribute("title") }
+  end
+
   def find_elements(selector)
     wait_for { driver.find_elements(selector) }
   end
@@ -341,6 +346,10 @@ class BasePage
   end
 
   def wait_for_spinner(spinner = { css: '.spinner-container' })
+    wait_for { find_elements(spinner).length < 1 }
+  end
+
+  def wait_for_download_spinner(spinner = { css: '.spin-icon.spinning' })
     wait_for { find_elements(spinner).length < 1 }
   end
 end
