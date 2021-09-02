@@ -31,8 +31,8 @@ describe '[Assistance Requests]', :app_client, :assistance_request do
 
     intake_page.page_displayed?
 
-    # Validating pre-filled full_name matches with full_name from API AR submit
-    expect(intake_page.get_clients_full_name.capitalize).to eq(@assistance_request.full_name)
+    # Validating pre-filled full_name matches with full_name from API AR submit (case insensitive)
+    expect(intake_page.get_clients_full_name.downcase).to eq(@assistance_request.full_name.downcase)
   end
 
   after {
