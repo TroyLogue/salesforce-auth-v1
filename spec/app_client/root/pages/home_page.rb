@@ -29,7 +29,6 @@ class HomePage < BasePage
 
   def page_displayed?
     is_displayed?(NEW_REFERRAL_BTN) &&
-    is_displayed?(TIMELINE) &&
-    is_not_displayed?(TIMELINE_LOADING)
+    is_displayed?(TIMELINE)
   end
 end
