@@ -35,6 +35,7 @@ class Notifications < BasePage
   REFERRAL_HELP = 'Referral Held Successfully'
   REFERRAL_REJECTED = 'Referral Rejected Successfully'
   REFERRAL_SENT = 'Referral Successfully Sent Out'
+  SAVED_DOCUMENT = 'Saved Document'
   SERVICE_SUCCESSFULLY_LOGGED = 'Service Successfully Logged'
   SETTINGS_UPDATED = 'Successfully Updated Settings'
   SUPPORTING_ASSESSMENT_SAVED = 'Supporting Assessments Successfully Saved'
@@ -42,8 +43,17 @@ class Notifications < BasePage
   USER_UPDATED = 'User Successfully Updated'
   EXPORT_CREATED = 'Your export will be ready for download here. At peak times this can take a few hours.'
 
+  def close_banner
+    is_displayed?(SUCCESS_BANNER) &&
+      click_within(SUCCESS_BANNER, CLOSE_BANNER)
+  end
+
   def error_banner_displayed?
     check_displayed?(ERROR_BANNER)
+  end
+
+  def error_notification_not_displayed?
+    is_not_displayed?(ERROR_BANNER)
   end
 
   def error_text
@@ -55,17 +65,12 @@ class Notifications < BasePage
     check_displayed?(SUCCESS_BANNER)
   end
 
+  def success_notification_not_displayed?
+    is_not_displayed?(SUCCESS_BANNER)
+  end
+
   def success_text
     text_present?(SUCCESS_BANNER)
     text(NOTIFICATION_BANNER)
-  end
-
-  def close_banner
-    is_displayed?(SUCCESS_BANNER) &&
-      click_within(SUCCESS_BANNER, CLOSE_BANNER)
-  end
-
-  def error_notification_not_displayed?
-    is_not_displayed?(ERROR_BANNER)
   end
 end

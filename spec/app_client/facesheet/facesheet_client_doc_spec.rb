@@ -22,6 +22,8 @@ describe '[Facesheet]', :app_client, :facesheet do
 
       facesheet_uploads_page.upload_document(file_name: @file)
       expect(notifications.success_text).to eq(Notifications::DOCUMENTS_SAVED)
+      notifications.close_banner
+      expect(notifications.success_notification_not_displayed?).to be_truthy
       expect(facesheet_uploads_page.document_uploaded?(file_name: @file)).to be_truthy
     end
 
@@ -32,7 +34,8 @@ describe '[Facesheet]', :app_client, :facesheet do
 
     it 'Remove client document in uploads', :uuqa_342 do
       facesheet_uploads_page.remove_document(file_name: @file)
-      expect(facesheet_uploads_page.is_document_removed?(@file)).to be_truthy
+      expect(notifications.success_text).to eq(Notifications::SAVED_DOCUMENT)
+      expect(facesheet_uploads_page.check_document_displayed?(file_name: @file)).to be_falsy
     end
 
     after do
