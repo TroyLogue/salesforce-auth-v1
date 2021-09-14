@@ -61,7 +61,7 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       notification_text = notifications.success_text
       expect(notification_text).to include(Notifications::USER_UPDATED)
 
-      #refreshing the page to ensure that the name values have updated
+      # refreshing the page to ensure that the name values have updated
       org_settings_user_form.refresh
       expect(org_settings_user_form.name_and_title).to include(first_name)
       expect(org_settings_user_form.name_and_title).to include(last_name)
@@ -70,6 +70,7 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
 
     it 'can view prepopulated program access fields', :uuqa_1668 do
       org_settings_user_table.go_to_first_user
+      expect(org_settings_user_form.page_displayed?).to be_truthy
       program_access_values = org_settings_user_form.displayed_program_access_values
 
       org_settings_user_form.go_to_edit_program_access
