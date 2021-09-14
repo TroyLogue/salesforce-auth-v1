@@ -281,7 +281,8 @@ module CreateReferral
 
     def drawer_displayed?
       is_displayed?(OPENED_DRAWER) &&
-        is_displayed?(CLOSE_BUTTON)
+        is_displayed?(CLOSE_BUTTON) &&
+        is_displayed?(SHARE_SEND_BUTTON)
     end
 
     def drawer_closed?
