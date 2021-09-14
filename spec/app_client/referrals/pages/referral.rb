@@ -233,13 +233,18 @@ class Referral < BasePage
 
   # CLOSE
   def submit_close_referral_modal(note:)
-    is_displayed?(CLOSE_REFERRAL_MODAL)
+    is_displayed?(CLOSE_REFERRAL_MODAL) && is_displayed?(CLOSE_REFERRAL_BTN)
+
     # Selecting resolved option by default
     click(CLOSE_RESOLVED_DROPDOWN)
     click(CLOSE_RESOLVED_OPTION)
+    wait_for_element_to_disappear(CLOSE_RESOLVED_OPTION) if check_displayed?(CLOSE_RESOLVED_OPTION)
+
     # Selecing first outcome option by default
     click(CLOSE_OUTCOME_DROPDOWN)
     click(CLOSE_OUTCOME_OPTION)
+    wait_for_element_to_disappear(CLOSE_OUTCOME_OPTION) if check_displayed?(CLOSE_OUTCOME_OPTION)
+
     enter(note, CLOSE_REFERRAL_NOTE)
     click(CLOSE_REFERRAL_BTN)
     wait_for_spinner
