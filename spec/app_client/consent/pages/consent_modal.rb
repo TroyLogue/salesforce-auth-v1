@@ -95,12 +95,13 @@ class ConsentModal < BasePage
     wait_for_spinner
   end
 
-  def scroll_down_consent(selector) # needs debugging on firefox
+  # needs debugging on firefox
+  def scroll_down_consent(selector)
     consent_box = find(selector)
 
     # can't use js commands on this iframe - it throws a security error
     # increased initial scroll downs from 5 to 30 to work w chrome
-    for i in 0..30 # chrome is giving a hard time with scrolling
+    30.times do # chrome is giving a hard time with scrolling
       consent_box.send_keys :page_down
     end
 
@@ -109,5 +110,6 @@ class ConsentModal < BasePage
 
   def close_consent_modal
     click(CONSENT_CLOSE_BTN)
+    wait_for_element_to_disappear(CONSENT_MODAL)
   end
 end
