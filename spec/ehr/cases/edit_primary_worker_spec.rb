@@ -23,8 +23,7 @@ describe '[Cases]', :ehr, :cases do
       expect(home_page.page_displayed?).to be_truthy
 
       # go to detail page of case created above; requires session_support_id to build EHR URL
-      session_support_id = home_page.ehr_session_support_id
-      base_page.get("/#{session_support_id}/contact/#{@case.contact.id}/cases/#{@case.id}")
+      base_page.get("/#{session_support_id}/2/patient/#{@case.contact.id}/cases/#{@case.id}")
     end
 
     it 'edits primary worker', :uuqa_1621 do

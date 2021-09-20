@@ -1,11 +1,11 @@
 require_relative '../../../shared_components/base_page'
 
 class HomePageEhr < BasePage
-  ASSESSMENTS_SECTION = { css: '.assessment-forms' }
-  CASES_SECTION = { css: '.cases' }
-  CREATE_REFERRAL_BUTTON = { css: '#nav-referral' }
-  NAVBAR = { css: '.navigation' }
-  SCREENINGS_SECTION = { css: '.screenings' }
+  ASSESSMENTS_BUTTON = { css: '#header3-btn' }
+  CASES_BUTTON = { css: '#header2-btn' }
+  CREATE_REFERRAL_BUTTON = { xpath: '//button[text()="Create Referral"]' }
+  NAVBAR = { css: '.bg-blue-dark.flex.fixed.w-screen.inset-x-0.top-0.h-16.items-center.pl-3.pr-3.z-30' }
+  SCREENINGS_BUTTON = { css: '#header4-btn' }
 
 
   def default_view_displayed?
@@ -13,9 +13,9 @@ class HomePageEhr < BasePage
     # and there is a delay in returning to the homepage
     is_displayed?(NAVBAR, 60) &&
       is_displayed?(CREATE_REFERRAL_BUTTON) &&
-      is_displayed?(CASES_SECTION) &&
-      is_displayed?(ASSESSMENTS_SECTION) &&
-      is_displayed?(SCREENINGS_SECTION)
+      is_displayed?(CASES_BUTTON) &&
+      is_displayed?(ASSESSMENTS_BUTTON) &&
+      is_displayed?(SCREENINGS_BUTTON)
   end
 
   def get_screening_detail(contact_id:, screening_id:)
@@ -33,7 +33,7 @@ class HomePageEhr < BasePage
 
   # must be on the home page in patient context
   def contact_id
-    current_url.split("#{ENV['WEB_URL']}/").last.split('/').last
+    current_url.split("#{ENV['WEB_URL']}/").last.split('/')[-1]
   end
 
   # When using EHR in a browser, the base URL is followed by an ID which is dynamically generated
