@@ -3,7 +3,7 @@ require_relative '../../../shared_components/base_page'
 class HomePageEhr < BasePage
   ASSESSMENTS_BUTTON = { css: '#header3-btn' }
   CASES_BUTTON = { css: '#header2-btn' }
-  CREATE_REFERRAL_BUTTON = { xpath: '//button[text()="Create Referral"]' }
+  CREATE_REFERRAL_BUTTON = { xpath: '//span[text()="Create Referral"]' }
   NAVBAR = { css: '.bg-blue-dark.flex.fixed.w-screen.inset-x-0.top-0.h-16.items-center.pl-3.pr-3.z-30' }
   SCREENINGS_BUTTON = { css: '#header4-btn' }
 

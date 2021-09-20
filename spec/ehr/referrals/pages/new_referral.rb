@@ -8,8 +8,8 @@ class NewReferral < BasePage
   AUTO_RECALL_CHECKBOX = { xpath: '//*[@id="root"]/div/div[2]/div[2]/div/div/div[1]/div[2]/div/div/form/div[4]/div/div/div[1]' }
   BAR_LOADER = { css: '.bar-loader' }
   DESCRIPTION_FIELD = { css: '#referral-notes' }
-  FILTER_BTN = { css: '#common-card-title-filter-button' }
-  NEW_REFERRAL_CONTAINER = { css: '.new-referral' }
+  FIND_PROGRAMS_CONTAINER = { css: '.program-select-filter' }
+  MORE_FILTERS_BTN = { css: '#more-filters-btn' }
   NO_CHOICES_ITEMS = { css: '.has-no-choices' }
   OUT_OF_NETWORK_TAB = { css: '#oon-toggle-out-btn' }
   PRIMARY_WORKER_DROPDOWN = { css: '.referral-primary-worker .choices' }
@@ -21,8 +21,8 @@ class NewReferral < BasePage
   PROVIDER_CARD_NAME = { css: '.ui-provider-card__name' }
   PROVIDER_CARD_ADD_BTN = { css: '.ui-add-remove-buttons__add' }
   PROVIDER_CARD_REMOVE_BTN = { css: '.ui-add-remove-buttons__remove' }
-  SERVICE_TYPE_FILTER = { css: '.service-type-select__select-field .choices' }
-  SERVICE_TYPE_OPTION = { css: '.choices__item--selectable' }
+  SERVICE_TYPE_FILTER = { css: '#service-types-all-filter' }
+  SERVICE_TYPE_OPTION = { css: '#service-types-all-filter .ui-filter-option.level-1' }
   SERVICE_TYPE_FIRST_OPTION = { css: '#choices-service-type-item-choice-2' }
   SUBMIT_BTN = { css: '#create-referral-submit-btn' }
 
@@ -36,7 +36,6 @@ class NewReferral < BasePage
   # send 'oon: true' to create an Out of Network referral
   def create_referral_from_table(service_type:, description:, provider_count: 1, oon: false)
     select_service_type_by_text(service_type)
-    select_out_of_network if oon
     provider_count.times do
       add_random_provider_from_table unless provider_preselected?
     end
@@ -57,8 +56,8 @@ class NewReferral < BasePage
   end
 
   def page_displayed?
-    is_displayed?(NEW_REFERRAL_CONTAINER)
-      is_displayed?(FILTER_BTN)
+    is_displayed?(FIND_PROGRAMS_CONTAINER)
+      is_displayed?(MORE_FILTERS_BTN)
       is_displayed?(SERVICE_TYPE_FILTER)
   end
 
@@ -127,11 +126,6 @@ class NewReferral < BasePage
     # if there is only one provider result, they will be pre selected
     # also confirm that the add button is already checked
     count(PROVIDER_CARD) == 1 && count(PROVIDER_CARD_ADD_BTN) == 0
-  end
-
-  def select_out_of_network
-    click(OUT_OF_NETWORK_TAB)
-    wait_for_matches
   end
 
   def select_providers_from_table_by_name(providers)
