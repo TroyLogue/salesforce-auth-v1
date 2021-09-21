@@ -4,12 +4,14 @@ require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/collection_filters_drawer'
 require_relative '../root/pages/home_page_ehr'
 require_relative './pages/case_detail_page'
+require_relative './pages/cases_table'
 
 describe '[Cases]', :ehr, :cases do
   include LoginEhr
 
   let(:base_page) { BasePage.new(@driver) }
   let(:case_detail_page) { CaseDetailPage.new(@driver) }
+  let(:cases_table) { CasesTable.new(@driver) }
   let(:home_page) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
@@ -24,8 +26,9 @@ describe '[Cases]', :ehr, :cases do
 
       # click first case - just until EHR-525 is fixed
       home_page.go_to_cases_tab
-      home_page.click_first_case
-      #
+      expect(cases_table.page_displayed?).to be_truthy
+      cases_table.click_first_case
+
       # go to detail page of case created above; requires session_support_id to build EHR URL
 #      base_page.get("/#{session_support_id}/2/patient/#{@case.contact.id}/cases/#{@case.id}")
     end

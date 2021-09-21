@@ -3,30 +3,32 @@
 require_relative '../../../shared_components/base_page'
 
 class CaseDetailPage < BasePage
-  HEADER = { css: '.case-details__header' }.freeze
+  HEADER = { css: '.casedetails .details-header' }.freeze
 
-  CASE_INFO = { css: '.case-info-expandable--general-info' }.freeze
-  CASE_INFO_CHOICES_ITEM = { css: '.case-info-expandable--general-info .choices__list > .choices__item' }.freeze
-  CASE_INFO_PRIMARY_WORKER = { css: '#case-primary-worker span' }.freeze
-  PRIMARY_WORKER_EDIT_BUTTON = { id: 'case-primary-worker-edit-btn' }.freeze
-  PRIMARY_WORKER_DROPDOWN = { css: '#case-primary-worker-field + .choices__list' }.freeze
+  #TODO update selector for CASE_INFO section
+  CASE_INFO = { css: '.casedetails' }.freeze
+  CASE_INFO_PRIMARY_WORKER = { css: '#primary-worker-input div>span' }.freeze
   NO_CHOICES_ITEMS = { css: '.has-no-choices' }.freeze
-  PRIMARY_WORKER_SAVE_BUTTON = { id: 'case-primary-worker-save-btn' }.freeze
+  PRIMARY_WORKER_EDIT_BUTTON = { id: 'primary-worker-input-edit-btn' }.freeze
+  PRIMARY_WORKER_DROPDOWN = { css: '#primary-worker-input + .choices__list' }.freeze
+  PRIMARY_WORKER_OPTION = { css: '#primary-worker-input .choices__list > .choices__item' }.freeze
+  PRIMARY_WORKER_SAVE_BUTTON = { id: 'primary-worker-input-save-btn' }.freeze
 
   CARE_TEAM = { css: '.case-info-expandable--care-team' }.freeze
   CARE_TEAM_CONTENT = { css: '.case-info-expandable--care-team .row' }.freeze
   CARE_TEAM_PRIMARY_WORKER = { css: '.case-info-expandable--care-team .row > div:nth-child(4) > span' }.freeze
 
-  DESCRIPTION = { id: 'case-description' }.freeze
+  DESCRIPTION = { css: '.top-desc' }.freeze
+  ADD_NOTE_BTN = { css: '#add-note-btn' }.freeze
   NOTE_TEXTAREA = { id: 'ui-note-form-note-field' }.freeze
   TIMELINE = { css: '.timeline' }.freeze
 
   def page_displayed?
     is_displayed?(HEADER) &&
       is_displayed?(CASE_INFO) &&
-      is_displayed?(CARE_TEAM) &&
+#      is_displayed?(CARE_TEAM) &&
       is_displayed?(DESCRIPTION) &&
-      is_displayed?(NOTE_TEXTAREA) &&
+      is_displayed?(ADD_NOTE_BTN) &&
       is_displayed?(TIMELINE)
   end
 
