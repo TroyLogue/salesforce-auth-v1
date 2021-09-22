@@ -3,22 +3,28 @@
 require_relative '../../../shared_components/base_page'
 
 class ReferralsTable < BasePage
-  HEADER = { css: '.header-title__text' }.freeze
-  FILTER_BUTTON = { id: 'header-title-filter-button' }.freeze
-
-  TABLE_MESSAGE = { css: '.ui-expandable__body  > .message' }.freeze
-  LOADING_REFERRALS_MESSAGE_TEXT = 'Loading Referrals'
-  NO_REFERRALS_MESSAGE_TEXT = 'No referrals to display'
-
-  TABLE_ROW = { css: '.referrals-table .ui-table-row' }.freeze
+  HEADER = { css: '.patient-table-header' }
+  LOADING_REFERRALS_MESSAGE_TEXT = 'Loading...'
+  MORE_FILTERS_BTN = { xpath: '//span[text()="Filters"]' }
+  NO_REFERRALS_MESSAGE_TEXT = 'No referrals here.'
+  OUTGOING_REFERRALS_TEXT = { xpath: '//span[text()="Outgoing Referrals"]' }
+  SENT_BY_FILTER = { id: 'sent-by-filter' }
+  STATUS_FILTER = { css: '#status-filter' }
+  TABLE_BODY = { css: '.table-component' }
+  TABLE_MESSAGE = { css: '.table-component td.text-center' }
+  TABLE_ROW = { xpath: '//table/tbody/tr' }
 
   def table_displayed?
     is_displayed?(HEADER) &&
-      is_displayed?(FILTER_BUTTON)
+      is_displayed?(OUTGOING_REFERRALS_TEXT) &&
+      is_displayed?(STATUS_FILTER) &&
+      is_displayed?(SENT_BY_FILTER) &&
+      is_displayed?(MORE_FILTERS_BTN) &&
+      is_displayed?(TABLE_BODY)
   end
 
   def click_filter_button
-    click(FILTER_BUTTON)
+    click(MORE_FILTERS_BTN)
   end
 
   def loading_referrals_complete?

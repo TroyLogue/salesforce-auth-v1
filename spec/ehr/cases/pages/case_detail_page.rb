@@ -5,7 +5,6 @@ require_relative '../../../shared_components/base_page'
 class CaseDetailPage < BasePage
   HEADER = { css: '.casedetails .details-header' }.freeze
 
-  #TODO update selector for CASE_INFO section
   CASE_INFO = { css: '.casedetails' }.freeze
   CASE_INFO_PRIMARY_WORKER = { css: '#primary-worker-input div>span' }.freeze
   NO_CHOICES_ITEMS = { css: '.has-no-choices' }.freeze
