@@ -29,7 +29,8 @@ class ConsentModal < BasePage
   VALID_PHONE_NUMBER = '2129999999'
 
   def page_displayed?
-    is_displayed?(CONSENT_MODAL)
+    is_displayed?(CONSENT_MODAL) &&
+      is_displayed?(CONSENT_CLOSE_BTN)
   end
 
   def phone_value
