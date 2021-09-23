@@ -18,6 +18,10 @@ class FindPrograms < BasePage
       is_displayed?(SERVICE_TYPE_FILTER)
   end
 
+  def click_next
+    click(NEXT_BUTTON)
+  end
+
   def select_service_type_by_text(service_type)
     is_displayed?(SERVICE_TYPE_FILTER)
     click(SERVICE_TYPE_FILTER)
