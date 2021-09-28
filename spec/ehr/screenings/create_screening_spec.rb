@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../auth/helpers/login_ehr'
+require_relative '../root/pages/home_page_ehr'
 require_relative '../referrals/pages/new_referral'
 require_relative './pages/new_screening'
 require_relative './pages/screening'
@@ -9,6 +10,7 @@ require_relative './pages/screenings_table'
 describe '[Screenings]', :ehr, :screenings do
   include LoginEhr
 
+  let(:homepage) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:new_referral) { NewReferral.new(@driver) }
@@ -20,6 +22,8 @@ describe '[Screenings]', :ehr, :screenings do
     before do
       # screenings only available w patient context (default view)
       log_in_default_as(LoginEhr::SCREENINGS_USER)
+      expect(homepage.default_view_displayed?).to be_truthy
+      homepage.go_to_screenings_tab
       expect(screenings_table.page_displayed?).to be_truthy
     end
 
@@ -51,6 +55,8 @@ describe '[Screenings]', :ehr, :screenings do
     before do
       # screenings only available w patient context (default view)
       log_in_default_as(LoginEhr::SCREENINGS_USER_MULTI_NETWORK)
+      expect(homepage.default_view_displayed?).to be_truthy
+      homepage.go_to_screenings_tab
       expect(screenings_table.page_displayed?).to be_truthy
     end
 

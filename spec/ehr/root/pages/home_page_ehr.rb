@@ -31,6 +31,10 @@ class HomePageEhr < BasePage
     click(CASES_TAB)
   end
 
+  def go_to_screenings_tab
+    click(SCREENINGS_BUTTON)
+  end
+
   def go_to_create_referral
     click(CREATE_REFERRAL_BUTTON)
   end

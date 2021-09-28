@@ -21,7 +21,9 @@ class NewReferral < BasePage
   PROVIDER_CARD_NAME = { css: '.ui-provider-card__name' }
   PROVIDER_CARD_ADD_BTN = { css: '.ui-add-remove-buttons__add' }
   PROVIDER_CARD_REMOVE_BTN = { css: '.ui-add-remove-buttons__remove' }
-  SERVICE_TYPE_FILTER = { css: '#service-types-all-filter' }
+  SERVICE_TYPES_ALL_FILTER = { css: '#service-types-all-filter' }
+  SERVICE_TYPES_FILTER = { css: '#service-types-filter' }
+  SERVICE_TYPES_SELECTED_OPTIONS = { css: '#service-types-filter .selected-options' }
   SERVICE_TYPE_OPTION = { css: '#service-types-all-filter .ui-filter-option.level-1' }
   SERVICE_TYPE_FIRST_OPTION = { css: '#choices-service-type-item-choice-2' }
   SUBMIT_BTN = { css: '#create-referral-submit-btn' }
@@ -56,9 +58,9 @@ class NewReferral < BasePage
   end
 
   def page_displayed?
-    is_displayed?(FIND_PROGRAMS_CONTAINER)
-      is_displayed?(MORE_FILTERS_BTN)
-      is_displayed?(SERVICE_TYPE_FILTER)
+    is_displayed?(FIND_PROGRAMS_CONTAINER) &&
+      is_displayed?(MORE_FILTERS_BTN) &&
+      (is_displayed?(SERVICE_TYPES_FILTER) || is_displayed?(SERVICE_TYPES_ALL_FILTER))
   end
 
   def select_auto_recall
@@ -66,21 +68,22 @@ class NewReferral < BasePage
   end
 
   def select_service_type_by_text(service_type)
-    is_displayed?(SERVICE_TYPE_FILTER)
-    click(SERVICE_TYPE_FILTER)
+    is_displayed?(SERVICE_TYPES_ALL_FILTER)
+    click(SERVICE_TYPES_ALL_FILTER)
     click_element_from_list_by_text(SERVICE_TYPE_OPTION, service_type)
     wait_for_matches
   end
 
   def select_first_service_type
-    is_displayed?(SERVICE_TYPE_FILTER)
-    click(SERVICE_TYPE_FILTER)
+    is_displayed?(SERVICE_TYPES_ALL_FILTER)
+    click(SERVICE_TYPES_ALL_FILTER)
     click(SERVICE_TYPE_FIRST_OPTION)
     wait_for_matches
   end
 
   def selected_service_type
-    text(SERVICE_TYPE_FILTER)
+    click(SERVICE_TYPES_FILTER)
+    text(SERVICE_TYPES_SELECTED_OPTIONS)
   end
 
   def add_another_referral

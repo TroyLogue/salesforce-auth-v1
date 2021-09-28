@@ -7,10 +7,9 @@ class Screening < BasePage
   EDIT_BTN = { css: '#screening-edit-btn' }
   IDENTIFIED_SERVICE_CARD = { css: '.screening-risk-display .ui-base-card' }
   IDENTIFIED_SERVICE_CARD_HEADER = { css: '.screening-risk-display .ui-base-card .ui-base-card-header__title' }
-  NEEDS_SECTION = { css: '.screening-detail__needs' }
+  NEEDS_DISPLAY = { css: '.screening-risk-display' }
   NO_NEEDS_DISPLAY = { css: '.screening-risk-display__no-needs' }
   NO_NEEDS_IDENTIFIED_MESSAGE = "No needs were identified for your client."
-  SCREENING_DETAIL_DIV = { css: '.screening-detail' }
   SUBMIT_BTN = { css: '#submit-btn' }
 
   def create_referral_from_identified_need
@@ -45,8 +44,7 @@ class Screening < BasePage
   end
 
   def page_displayed?
-    is_displayed?(SCREENING_DETAIL_DIV) &&
-      is_displayed?(NEEDS_SECTION) &&
+    ( is_displayed?(NEEDS_DISPLAY) || is_displayed?(NO_NEEDS_DISPLAY) ) &&
       is_not_displayed?(SUBMIT_BTN)
   end
 end
