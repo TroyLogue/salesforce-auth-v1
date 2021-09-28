@@ -23,6 +23,10 @@ class HomePageEhr < BasePage
     get "/#{session_id}/contact/#{contact_id}/screenings/#{screening_id}"
   end
 
+  def go_to_assessments_tab
+    click(ASSESSMENTS_BUTTON)
+  end
+
   def go_to_cases_tab
     click(CASES_TAB)
   end
