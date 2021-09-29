@@ -23,14 +23,15 @@ describe '[Cases]', :ehr, :cases do
 
       log_in_dashboard_as(LoginEhr::CC_HARVARD)
       expect(home_page.page_displayed?).to be_truthy
+      session_support_id = home_page.ehr_session_support_id
 
       # click first case - just until EHR-525 is fixed
-      home_page.go_to_cases_tab
-      expect(cases_table.page_displayed?).to be_truthy
-      cases_table.click_first_case
+#      home_page.go_to_cases_tab
+#      expect(cases_table.page_displayed?).to be_truthy
+#      cases_table.click_first_case
 
       # go to detail page of case created above; requires session_support_id to build EHR URL
-#      base_page.get("/#{session_support_id}/2/patient/#{@case.contact.id}/cases/#{@case.id}")
+      base_page.get("/#{session_support_id}/2/patient/#{@case.contact.id}/cases/#{@case.id}")
     end
 
     it 'edits primary worker', :uuqa_1621 do
