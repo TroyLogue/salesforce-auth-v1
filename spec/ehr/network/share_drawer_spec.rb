@@ -31,7 +31,7 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
     end
 
     it 'can share a provider via SMS', :uuqa_400 do
-      network.add_first_provider
+      network.add_first_program
       network.click_share
 
       expect(share_drawer.page_displayed?).to be_truthy
@@ -49,7 +49,7 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
 
     it 'can share a provider via email', :uuqa_401 do
       # use second provider
-      network.add_providers_by_index([1])
+      network.add_programs_by_index([1])
 
       network.click_share
       expect(share_drawer.page_displayed?).to be_truthy

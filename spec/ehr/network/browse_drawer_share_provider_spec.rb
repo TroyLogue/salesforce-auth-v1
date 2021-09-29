@@ -21,13 +21,13 @@ describe '[Network] Share from Browse Drawer', :ehr, :network do
       expect(network.page_displayed?).to be_truthy
     }
 
-    it 'can share a provider by email', :uuqa_482 do
-      first_provider_name = network.first_provider_name
+    it 'can share a program by email', :uuqa_482 do
+      first_program_name = network.first_program_name
 
-      network.click_first_provider_card
+      network.click_first_program_card
 
       expect(provider_drawer.page_displayed?).to be_truthy
-      expect(provider_drawer.provider_name).to include(first_provider_name)
+      expect(provider_drawer.provider_name).to include(first_program_name)
 
       # share to email address (valid email)
       provider_drawer.click_share
