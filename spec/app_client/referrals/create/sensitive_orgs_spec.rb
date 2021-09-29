@@ -22,9 +22,11 @@ describe '[Referrals]', :app_client, :referrals do
 
       left_nav.go_to_clients
       expect(clients_page.page_displayed?).to be_truthy
-      clients_page.go_to_facesheet_second_authorized_client
-      facesheet_header.refer_client
 
+      clients_page.go_to_facesheet_second_authorized_client
+      expect(facesheet_header.page_displayed?).to be_truthy
+
+      facesheet_header.refer_client
       expect(add_referral_page.page_displayed?).to be_truthy
       expect(add_referral_page.warning_info_text).to eq(
         CreateReferral::AddReferral::WARNING_REGULAR + ' ' + CreateReferral::AddReferral::WARNING_SENSITIVE
@@ -40,9 +42,11 @@ describe '[Referrals]', :app_client, :referrals do
 
       left_nav.go_to_clients
       expect(clients_page.page_displayed?).to be_truthy
-      clients_page.go_to_facesheet_second_authorized_client
-      facesheet_header.refer_client
 
+      clients_page.go_to_facesheet_second_authorized_client
+      expect(facesheet_header.page_displayed?).to be_truthy
+
+      facesheet_header.refer_client
       expect(add_referral_page.page_displayed?).to be_truthy
       expect(add_referral_page.warning_info_text).to eq(CreateReferral::AddReferral::WARNING_REGULAR)
     end

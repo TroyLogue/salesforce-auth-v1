@@ -150,6 +150,8 @@ describe '[Facesheet][Profile]', :app_client, :facesheet, :messaging do
       left_nav.go_to_clients
       expect(clients_page.page_displayed?).to be_truthy
       clients_page.go_to_facesheet_second_authorized_client
+      expect(facesheet_header.page_displayed?).to be_truthy
+
       facesheet_header.go_to_profile
     end
 

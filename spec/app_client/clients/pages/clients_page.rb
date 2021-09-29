@@ -31,12 +31,10 @@ class ClientsPage < BasePage
 
   def go_to_facesheet_second_authorized_client
     authorized_clients[1].click
-    wait_for_spinner
   end
 
   def go_to_facesheet_random_authorized_client
     authorized_clients.sample.click
-    wait_for_spinner
   end
 
   private

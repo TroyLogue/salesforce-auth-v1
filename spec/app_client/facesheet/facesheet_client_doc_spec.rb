@@ -14,7 +14,9 @@ describe '[Facesheet]', :app_client, :facesheet do
       auth_token = Auth.encoded_auth_token(email_address: Users::ORG_02_USER)
       clients_page.authenticate_and_navigate_to(token: auth_token, path: ClientsPage::ALL_CLIENTS_PATH)
       expect(clients_page.page_displayed?).to be_truthy
+
       clients_page.go_to_facesheet_second_authorized_client
+      expect(facesheet_header.page_displayed?).to be_truthy
 
       # Uploading as part of set up
       facesheet_header.go_to_uploads
