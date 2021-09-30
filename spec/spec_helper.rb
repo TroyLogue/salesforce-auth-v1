@@ -126,7 +126,7 @@ RSpec.configure do |config|
   case ENV['ENVIRONMENT']
   when 'devqa'
     ENV['APP_CLIENT_URL'] = 'https://app.uniteusdev.com'
-    ENV['EHR_URL'] = 'https://emr.uniteusdev.com'
+    ENV['EHR_URL'] = 'https://devqa.uniteusdev.com/ehr-core-phase-3'
     ENV['APP_CLIENT_AUTH_URL'] = 'https://app.auth.uniteusdev.com'
     ENV['EHR_AUTH_URL'] = 'https://emr.auth.uniteusdev.com'
     ENV['API_URL'] = 'https://api.uniteusdev.com'
