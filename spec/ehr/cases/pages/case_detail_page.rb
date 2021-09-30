@@ -6,7 +6,6 @@ class CaseDetailPage < BasePage
   HEADER = { css: '.casedetails .details-header' }.freeze
 
   CASE_INFO = { css: '.casedetails' }.freeze
-  CASE_INFO_PRIMARY_WORKER = { css: '#primary-worker-input div>span' }.freeze
   CARE_COORDINATOR_EDIT_BTN = { css: '#care-coordinator a' }.freeze
   CARE_COORDINATOR = { css: '#care-coordinator div+span' }.freeze
   PRIMARY_WORKER = { css: '#primary-worker-input div+span' }.freeze
@@ -28,10 +27,6 @@ class CaseDetailPage < BasePage
       is_displayed?(ADD_NOTE_BTN)
     #leave out timeline for consolidation for now
 #      is_displayed?(TIMELINE)
-  end
-
-  def case_info_primary_worker
-    text(CASE_INFO_PRIMARY_WORKER)
   end
 
   def primary_worker
