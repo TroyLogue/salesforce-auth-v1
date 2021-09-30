@@ -3,7 +3,6 @@
 require_relative '../../../shared_components/base_page'
 
 class PendingConsentPage < BasePage
-  CONSENT_MODAL = { css: '#consent-dialog.dialog.open' }.freeze
   FILTERS_BAR = { css: '.filter-bar' }.freeze
   TABLE_BODY = { css: '#sent-referrals-table .ui-table-body' }.freeze
   PENDING_CONSENT_REFERRAL_FIRST = { css: '.ui-table-body tr:nth-of-type(1)' }.freeze
@@ -13,18 +12,9 @@ class PendingConsentPage < BasePage
   VERTICAL_DOTS_MENU_FIRST = { css: '#-pending-consent-referrals-table-row-0 #vertical-dots-menu' }.freeze
   VERTICAL_DOTS_MENU = { css: '#vertical-dots-menu' }.freeze
 
-  def consent_modal_displayed?
-    is_displayed?(CONSENT_MODAL)
-  end
-
-  def consent_modal_not_displayed?
-    is_not_displayed?(CONSENT_MODAL)
-  end
-
   def open_first_consent_modal
     click(VERTICAL_DOTS_MENU)
     click(REQUEST_OR_UPLOAD_CONSENT_BUTTON)
-    is_displayed?(CONSENT_MODAL)
   end
 
   def open_first_close_referral_modal

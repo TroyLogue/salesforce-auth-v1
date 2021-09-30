@@ -26,11 +26,11 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     it 'adds consent by document upload', :uuqa_753 do
       @original_first_referral_text = pending_consent_page.text_of_first_referral
       pending_consent_page.open_first_consent_modal
-      expect(pending_consent_page.consent_modal_displayed?).to be_truthy
+      expect(consent_modal.page_displayed?).to be_truthy
 
       consent_modal.add_consent_by_document_upload
 
-      expect(pending_consent_page.consent_modal_not_displayed?).to be_truthy
+      expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
       # confirm the referral we added consent to
       # is removed from the pending consent page on refresh
@@ -45,7 +45,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
     it 'requests consent by email', :uuqa_754 do
       pending_consent_page.open_first_consent_modal
-      expect(pending_consent_page.consent_modal_displayed?).to be_truthy
+      expect(consent_modal.page_displayed?).to be_truthy
 
       address = Faker::Internet.email
       consent_modal.request_consent_by_email(address)
@@ -55,7 +55,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
 
     it 'requests consent by text', :uuqa_755 do
       pending_consent_page.open_first_consent_modal
-      expect(pending_consent_page.consent_modal_displayed?).to be_truthy
+      expect(consent_modal.page_displayed?).to be_truthy
 
       consent_modal.request_consent_by_text(ConsentModal::VALID_PHONE_NUMBER)
 
@@ -79,10 +79,10 @@ describe '[Consent - Request Consent]', :consent, :app_client do
     it 'adds consent by document upload', :uuqa_758 do
       @original_first_referral_text = pending_consent_page.text_of_first_referral
       pending_consent_page.open_first_consent_modal
-      expect(pending_consent_page.consent_modal_displayed?).to be_truthy
+      expect(consent_modal.page_displayed?).to be_truthy
 
       consent_modal.add_consent_by_document_upload
-      expect(pending_consent_page.consent_modal_not_displayed?).to be_truthy
+      expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
       # Need to refresh page so that another call is made to update values
       # CORE-807 to address
@@ -119,7 +119,7 @@ describe '[Consent - Request Consent]', :consent, :app_client do
       base_page.refresh
 
       pending_consent_page.open_first_consent_modal
-      expect(pending_consent_page.consent_modal_displayed?).to be_truthy
+      expect(consent_modal.page_displayed?).to be_truthy
 
       consent_modal.select_consent_by_text
       expect(consent_modal.phone_value).to eq(base_page.number_to_phone_format(phone_number))

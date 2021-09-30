@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../../../lib/state_name_abbr'
 require_relative '../root/pages/home_page'
 require_relative './pages/facesheet_header'
@@ -5,7 +7,7 @@ require_relative './pages/facesheet_profile_page'
 require_relative '../root/pages/left_nav'
 require_relative '../clients/pages/clients_page'
 
-describe '[Facesheet][Profile]', :app_client, :facesheet do
+describe '[Facesheet][Profile]', :app_client, :facesheet, :messaging do
   let(:home_page) { HomePage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_profile) { FacesheetProfilePage.new(@driver) }
@@ -29,10 +31,11 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
 
     # Phone Number, Address, Email and Contact Preferences share the same component
     # can be removed by api-integration tests: UU3-48770
-    it 'updates phone number', :uuqa_1510 do
+    it 'updates phone number', :uuqa_1510, :uuqa_290 do
       @phone_number = Faker::Number.number(digits: 10)
       facesheet_profile.add_mobile_phone_number_with_enabled_notifications(phone: @phone_number)
       expect(facesheet_profile.current_phone_number).to eql(facesheet_profile.number_to_phone_format(@phone_number))
+      expect(facesheet_profile.are_phone_notifications_enabled?).to be_truthy
     end
 
     it 'updates address', :uuqa_1510 do
@@ -46,10 +49,11 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
       )
     end
 
-    it 'updates email address', :uuqa_1510 do
+    it 'updates email address', :uuqa_1510, :uuqa_290 do
       @email = Faker::Internet.email
       facesheet_profile.add_email_with_enabled_notifications(email: @email)
       expect(facesheet_profile.current_email).to eql(@email)
+      expect(facesheet_profile.are_email_notifications_enabled?).to be_truthy
     end
 
     it 'updates contact preferences', :uuqa_1510 do
@@ -121,8 +125,8 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
       @plan = facesheet_profile.class::MEDICARE_PLAN
       @member_id = Medicare.generate_id
       facesheet_profile.add_insurance(plan_type: @plan_type,
-                                              insurance_plan: @plan,
-                                              member_id: @member_id)
+                                      insurance_plan: @plan,
+                                      member_id: @member_id)
       expect(facesheet_profile.list_insurances).to include(@plan_type, @plan, @member_id)
     end
 
@@ -137,7 +141,7 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
     let(:left_nav) { LeftNav.new(@driver) }
     let(:clients_page) { ClientsPage.new(@driver) }
 
-    before {
+    before do
       auth_token = Auth.encoded_auth_token(email_address: Users::NON_MILITARY_NON_INSURANCE_ORG)
       home_page.authenticate_and_navigate_to(token: auth_token, path: '/')
       expect(home_page.page_displayed?).to be_truthy
@@ -146,8 +150,10 @@ describe '[Facesheet][Profile]', :app_client, :facesheet do
       left_nav.go_to_clients
       expect(clients_page.page_displayed?).to be_truthy
       clients_page.go_to_facesheet_second_authorized_client
+      expect(facesheet_header.page_displayed?).to be_truthy
+
       facesheet_header.go_to_profile
-    }
+    end
 
     it 'insurance profile section does not display', :uuqa_1560 do
       expect(facesheet_profile.is_insurance_displayed?).to be_falsey

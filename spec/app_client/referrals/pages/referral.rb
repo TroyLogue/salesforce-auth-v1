@@ -233,13 +233,23 @@ class Referral < BasePage
 
   # CLOSE
   def submit_close_referral_modal(note:)
-    is_displayed?(CLOSE_REFERRAL_MODAL)
+    is_displayed?(CLOSE_REFERRAL_MODAL) && is_displayed?(CLOSE_REFERRAL_BTN)
+
+    # wait for glide-in animation
+    # explicit waits don't avoid element click intercepted errors
+    # added challenge to consider with front-end rewrite https://uniteus.atlassian.net/wiki/spaces/QA/pages/2278490206/Front-end+Rewrite+Historical+Testing+Challenges#animation
+    sleep(1)
+
     # Selecting resolved option by default
     click(CLOSE_RESOLVED_DROPDOWN)
     click(CLOSE_RESOLVED_OPTION)
+    wait_for_element_to_disappear(CLOSE_RESOLVED_OPTION) if check_displayed?(CLOSE_RESOLVED_OPTION)
+
     # Selecing first outcome option by default
     click(CLOSE_OUTCOME_DROPDOWN)
     click(CLOSE_OUTCOME_OPTION)
+    wait_for_element_to_disappear(CLOSE_OUTCOME_OPTION) if check_displayed?(CLOSE_OUTCOME_OPTION)
+
     enter(note, CLOSE_REFERRAL_NOTE)
     click(CLOSE_REFERRAL_BTN)
     wait_for_spinner
@@ -248,6 +258,7 @@ class Referral < BasePage
   def close_referral_action(note:)
     click(TAKE_ACTION_DROP_DOWN)
     click(TAKE_ACTION_CLOSE_OPTION)
+
     submit_close_referral_modal(note: note)
   end
 

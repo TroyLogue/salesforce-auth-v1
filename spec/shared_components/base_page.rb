@@ -341,6 +341,10 @@ class BasePage
     Selenium::WebDriver::Wait.new(timeout: seconds).until { yield }
   end
 
+  def wait_for_element_to_disappear(selector)
+    wait_for { find_elements(selector).length < 1 }
+  end
+
   def wait_for_notification_to_disappear(notification = { css: '#notifications .notification' })
     wait_for { find_elements(notification).length < 1 }
   end

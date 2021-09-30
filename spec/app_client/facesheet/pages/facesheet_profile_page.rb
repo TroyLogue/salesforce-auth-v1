@@ -51,7 +51,7 @@ class FacesheetProfilePage < BasePage
     CURRENT_PHONE = { css: '.phone-number-display > p > a' }.freeze
     CURRENT_PHONE_NOTIFICATION = { css: '.phone-number-display .communication-additional-info' }.freeze
     EDIT_PHONE = { css: '#edit-phone-number-btn' }.freeze
-    PHONE_MODAL = { css: '#edit-phone-number-modal.dialog.open.large' }.freeze
+    PHONE_MODAL = { css: '#edit-phone-number-modal.dialog.open.large .overlay' }.freeze
     ADD_PHONE = { css: '#add-phone-link' }.freeze
     INPUT_PHONE = { css: 'input[id^="phoneNumber"]' }.freeze
     EXPAND_TYPE_CHOICES = { css: 'div[aria-activedescendant^="choices-phoneType"]' }.freeze
@@ -112,7 +112,7 @@ class FacesheetProfilePage < BasePage
     ADDRESS_CONTENT = { css: '.address__content' }.freeze
     CURRENT_ADDRESS = { css: '.address' }.freeze
     EDIT_ADDRESS = { css: '#edit-address-btn' }.freeze
-    ADDRESS_MODAL = { css: '#edit-address-modal.dialog.open.large' }.freeze
+    ADDRESS_MODAL = { css: '#edit-address-modal.dialog.open.large .overlay' }.freeze
     LINK_ADD_ADDRESS = { css: '#add-address-link' }.freeze
     BTN_DELETE_ADDRESS = { css: 'a[title="Remove address"]' }.freeze
     BTN_DELETE_ADDRESS_CONFIRM = { css: '.address-remove-buttons__confirm-confirmation' }.freeze
@@ -170,7 +170,7 @@ class FacesheetProfilePage < BasePage
     CURRENT_EMAIL = { css: '.email > p > a' }.freeze
     CURRENT_EMAIL_NOTIFICATION = { css: '.email .communication-additional-info' }.freeze
     EDIT_EMAIL = { css: '#edit-email-btn' }.freeze
-    EMAIL_MODAL = { css: '#edit-email-modal.dialog.open.normal' }.freeze
+    EMAIL_MODAL = { css: '#edit-email-modal.dialog.open.normal .overlay' }.freeze
     ADD_EMAIL = { css: '#add-email-link' }.freeze
     INPUT_EMAIL = { css: 'input[name="emails[0].email_address"]' }.freeze
     EMAIL_CHECKBOX_MESSAGE = { css: '.inline-email-address div > input[id$="message"] + label' }.freeze
@@ -229,7 +229,7 @@ class FacesheetProfilePage < BasePage
   module ContactPreferrences
     CURRENT_PREFERENCES = { css: '.contact-preferences .profile-value' }.freeze
     EDIT_CONTACT_PREFERENCES = { css: '#edit-contact-preferences-btn' }.freeze
-    PREFERENCES_MODAL = { css: '#edit-contact-preferences-modal.dialog.open.normal' }.freeze
+    PREFERENCES_MODAL = { css: '#edit-contact-preferences-modal.dialog.open.normal .overlay' }.freeze
     EXPAND_METHOD_CHOICES = { css: 'div[aria-activedescendant^="choices-preferred-method-of-contact-field-item-choice"]' }.freeze
     LIST_METHOD_CHOICES = { css: 'div[id^="choices-preferred-method-of-contact-field-item-choice"]' }.freeze
     EXPAND_TIME_CHOICES = { css: 'div[aria-activedescendant^="choices-best-time-to-contact-field-item-choice"]' }.freeze
@@ -270,7 +270,7 @@ class FacesheetProfilePage < BasePage
   module Name
     CURRENT_NAME = { css: '.personal-data .common-display-profile:nth-child(2) .col-sm-4 > p:nth-child(2)' }.freeze
     EDIT_NAME = { css: '#edit-personal-btn' }.freeze
-    NAME_MODAL = { css: '#edit-personal-modal.dialog.open.large' }.freeze
+    NAME_MODAL = { css: '#edit-personal-modal.dialog.open.large .overlay' }.freeze
     EXPAND_TITLE_CHOICES = { css: '#title + div' }.freeze
     LIST_TITLE_CHOICES = { css: 'div[id^="choices-title"]' }.freeze
     INPUT_FIRSTNAME = { css: '#first-name' }.freeze
@@ -319,7 +319,7 @@ class FacesheetProfilePage < BasePage
   module DOB
     CURRENT_DOB = { css: '.personal-data .common-display-profile:nth-child(3) .profile-value' }.freeze
     EDIT_DOB = { css: '#edit-dob-btn' }.freeze
-    DOB_MODAL = { css: '#edit-dob-modal.dialog.open.normal' }.freeze
+    DOB_MODAL = { css: '#edit-dob-modal.dialog.open.normal .overlay' }.freeze
     INPUT_DOB = { css: 'input[name$="date_of_birth"]' }.freeze
     BTN_SAVE_DOB = { css: '#edit-dob-save-btn' }.freeze
 
@@ -342,7 +342,7 @@ class FacesheetProfilePage < BasePage
   module Citizenship
     CURRENT_CITIZENSHIP = { css: '.personal-data .common-display-profile:nth-child(4) .profile-value' }.freeze
     EDIT_CITIZENSHIP = { css: '#edit-citizen-btn' }.freeze
-    CITIZENSHIP_MODAL = { css: '#edit-citizen-modal.dialog.open.large' }.freeze
+    CITIZENSHIP_MODAL = { css: '#edit-citizen-modal.dialog.open.large .overlay' }.freeze
     EXPAND_CITIZENSHIP_CHOICES = { css: '#citizenship + div' }.freeze
     LIST_CITIZENSHIP_CHOICES = { css: 'div[id^="choices-citizenship"]' }.freeze
     BTN_SAVE_CITIZENSHIP = { css: '#edit-citizen-save-btn' }.freeze
@@ -373,7 +373,7 @@ class FacesheetProfilePage < BasePage
   module SSN
     CURRENT_SSN = { css: '.personal-data .common-display-profile:nth-child(5) .profile-value' }.freeze
     EDIT_SSN = { css: '#edit-ssn-btn' }.freeze
-    SSN_MODAL = { css: '#edit-ssn-modal.dialog.open.normal' }.freeze
+    SSN_MODAL = { css: '#edit-ssn-modal.dialog.open.normal .overlay' }.freeze
     INPUT_SSN = { css: 'input[name$="ssn"]' }.freeze
     BTN_SAVE_SSN = { css: '#edit-ssn-save-btn' }.freeze
 
@@ -397,7 +397,7 @@ class FacesheetProfilePage < BasePage
   module Identify
     CURRENT_IDENTITY = { css: '.personal-data .common-display-profile:nth-child(6) .col-sm-4 > p:nth-child(2)' }.freeze
     EDIT_IDENTIFY = { css: '#edit-identity-btn' }.freeze
-    IDENTITY_MODAL = { css: '#edit-identity-modal .dialog-paper' }.freeze
+    IDENTITY_MODAL = { css: '#edit-identity-modal.dialog.open.large .overlay' }.freeze
     EXPAND_GENDER_CHOICES = { css: '#identity-gender-select + div' }.freeze
     LIST_GENDER_CHOICES = { css: 'div[id^="choices-identity-gender"]' }.freeze
     EXPAND_RACE_CHOICES = { css: '#identity-race-select + div' }.freeze
@@ -450,7 +450,7 @@ class FacesheetProfilePage < BasePage
   module HouseHold
     CURRENT_HOUSEHOLD_COUNT = { css: '.household-count-display > p:nth-child(2)' }.freeze
     EDIT_HOUSEHOLD = { css: '#edit-household-count-btn' }.freeze
-    HOUSEHOLD_MODAL = { css: '#edit-household-count-modal.dialog.open.normal' }.freeze
+    HOUSEHOLD_MODAL = { css: '#edit-household-count-modal.dialog.open.normal .overlay' }.freeze
     INPUT_COUNT = { css: 'input[name="household_count.total"]' }.freeze
     INPUT_ADULTS = { css: 'input[name="household_count.adults"]' }.freeze
     INPUT_CHILDREN = { css: 'input[name="household_count.children"]' }.freeze
@@ -458,14 +458,14 @@ class FacesheetProfilePage < BasePage
 
     CURRENT_MARITAL_STATUS = { css: '.household-information .common-display-profile:nth-child(3) .profile-value' }.freeze
     EDIT_MARITAL_STATUS = { css: '#edit-marital-btn' }.freeze
-    MARITAL_STATUS_MODAL = { css: '#edit-marital-modal.dialog.open.normal' }.freeze
+    MARITAL_STATUS_MODAL = { css: '#edit-marital-modal.dialog.open.normal .overlay' }.freeze
     EXPAND_MARITAL_CHOICES = { css: '#contact-maritial-status + div' }.freeze
     LIST_MARTIAL_CHOICES = { css: 'div[id^="choices-contact-maritial-status"]' }.freeze
     BTN_SAVE_MARITAL_STATUS = { css: '#edit-marital-save-btn' }.freeze
 
     CURRENT_INCOME = { css: '.dollar-amount' }.freeze
     EDIT_INCOME = { css: '#edit-household-monthly-income' }.freeze
-    INCOME_MODAL = { css: '#edit-household-monthly-income-modal.dialog.open.large' }.freeze
+    INCOME_MODAL = { css: '#edit-household-monthly-income-modal.dialog.open.large .overlay' }.freeze
     INPUT_INCOME = { css: '#household-monthly-income-input-field' }.freeze
     BTN_SAVE_INCOME = { css: '#edit-monthly-income-save-btn' }.freeze
 
@@ -531,7 +531,7 @@ class FacesheetProfilePage < BasePage
     CURRENT_COVERAGE_START = { xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage Start')]]//p" }.freeze
     CURRENT_COVERAGE_END = { xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage End')]]//p" }.freeze
     # edit modal
-    INSURANCE_MODAL = { css: '#add-insurance-modal.dialog.open.normal' }.freeze
+    INSURANCE_MODAL = { css: '#add-insurance-modal.dialog.open.normal .overlay' }.freeze
     INSURANCE_PLAN_DROPDOWN_OPEN = { css: '.payments-insurance-fields__plan .choices.is-open' }.freeze
     EXPAND_PLAN_TYPE = { css: '#insurance-plan-type + .choices__list' }.freeze
     LIST_PLAN_TYPE_CHOICES = { css: 'div[id^="choices-insurance-plan-type"]' }.freeze
@@ -586,7 +586,7 @@ class FacesheetProfilePage < BasePage
     CURRENT_MILITARY_INFO = { css: '.military-information-display .display-line-value' }.freeze
     LINK_ADD_MILITARY_INFO = { css: '.military-information-add-info' }.freeze
     EDIT_MILITARY_INFO = { css: '#edit-military-btn' }.freeze
-    MILITARY_MODAL = { css: '#military-info-modal.dialog.open.normal' }.freeze
+    MILITARY_MODAL = { css: '#military-info-modal.dialog.open.normal .overlay' }.freeze
     EXPAND_MILITARY_CHOICES = { css: '#affiliation + div' }.freeze
     LIST_MILITARY_CHOICES = { css: 'div[id^="choices-affiliation"]' }.freeze
     BTN_SAVE_MILITARY = { css: '#edit-military-save-btn' }.freeze

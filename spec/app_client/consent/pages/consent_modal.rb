@@ -5,6 +5,12 @@ require_relative '../../../shared_components/base_page'
 class ConsentModal < BasePage
   CONSENT_MODAL = { css: '#consent-dialog.dialog.open.jumbo' }.freeze
   CONSENT_CLOSE_BTN = { css: '#consent-dialog.dialog.open.jumbo a[role="button"]' }.freeze
+
+  # defining options to verify modal loaded
+  # the digital options group does not have a unique selector defined on it
+  ATTESTATION_OPTIONS = { css: '.consent-type-choices-group.attestation-consent' }.freeze
+  PAPER_VERBAL_OPTIONS = { css: '.consent-type-choices-group.paper-and-verbal-consent' }.freeze
+
   EMAIL_RADIO_BTN = { css: '#email_address-label' }.freeze
   EMAIL_INPUT_FIELD = { css: '#email-address' }.freeze
   EMAIL_SUBMIT_BTN = { css: '#consent-submit-email-btn' }.freeze
@@ -29,7 +35,14 @@ class ConsentModal < BasePage
   VALID_PHONE_NUMBER = '2129999999'
 
   def page_displayed?
-    is_displayed?(CONSENT_MODAL)
+    is_displayed?(CONSENT_MODAL) &&
+      is_displayed?(CONSENT_CLOSE_BTN) &&
+      is_displayed?(ATTESTATION_OPTIONS) &&
+      is_displayed?(PAPER_VERBAL_OPTIONS)
+  end
+
+  def consent_modal_not_displayed?
+    is_not_displayed?(CONSENT_MODAL)
   end
 
   def phone_value
@@ -57,7 +70,7 @@ class ConsentModal < BasePage
   end
 
   def add_on_screen_consent
-    click(ON_SCREEN_CONSENT_RADIO_BTN)
+    click_via_js(ON_SCREEN_CONSENT_RADIO_BTN)
     click(GO_TO_FORM)
     is_not_displayed?(LOADING_SPINNER)
 
@@ -77,30 +90,34 @@ class ConsentModal < BasePage
   end
 
   def request_consent_by_email(address)
-    click(EMAIL_RADIO_BTN)
+    click_via_js(EMAIL_RADIO_BTN) # TODO: add note
+    is_displayed?(EMAIL_INPUT_FIELD)
     click(EMAIL_INPUT_FIELD)
     clear_then_enter(address, EMAIL_INPUT_FIELD)
     click(EMAIL_SUBMIT_BTN)
+    wait_for_spinner
   end
 
   def select_consent_by_text
-    click(PHONE_NUMBER_RADIO_BTN)
+    click_via_js(PHONE_NUMBER_RADIO_BTN)
   end
 
   def request_consent_by_text(phone_number)
-    click(PHONE_NUMBER_RADIO_BTN)
+    click_via_js(PHONE_NUMBER_RADIO_BTN)
+    is_displayed?(PHONE_NUMBER_INPUT_FIELD)
     10.times { delete_char(PHONE_NUMBER_INPUT_FIELD) }
     enter(phone_number, PHONE_NUMBER_INPUT_FIELD)
     click(PHONE_NUMBER_SUBMIT_BTN)
     wait_for_spinner
   end
 
-  def scroll_down_consent(selector) # needs debugging on firefox
+  # needs debugging on firefox
+  def scroll_down_consent(selector)
     consent_box = find(selector)
 
     # can't use js commands on this iframe - it throws a security error
     # increased initial scroll downs from 5 to 30 to work w chrome
-    for i in 0..30 # chrome is giving a hard time with scrolling
+    30.times do # chrome is giving a hard time with scrolling
       consent_box.send_keys :page_down
     end
 
@@ -109,5 +126,6 @@ class ConsentModal < BasePage
 
   def close_consent_modal
     click(CONSENT_CLOSE_BTN)
+    wait_for_element_to_disappear(CONSENT_MODAL)
   end
 end

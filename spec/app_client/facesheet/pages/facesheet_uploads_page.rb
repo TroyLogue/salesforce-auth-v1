@@ -64,6 +64,10 @@ class FacesheetUploadsPage < BasePage
     click(REMOVE_BUTTON)
   end
 
+  def check_document_displayed?(file_name: name)
+    check_displayed?(DOCUMENT_NAME.transform_values { |v| v % file_name })
+  end
+
   def is_document_removed?(file_name)
     is_not_displayed?(DOCUMENT_NAME.transform_values { |v| v % file_name })
   end
