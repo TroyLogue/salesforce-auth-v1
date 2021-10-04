@@ -125,7 +125,6 @@ class ConsentModal < BasePage
   end
 
   def close_consent_modal
-    click(CONSENT_CLOSE_BTN)
-    wait_for_element_to_disappear(CONSENT_MODAL)
+    click_via_js(CONSENT_CLOSE_BTN)
   end
 end

@@ -32,32 +32,38 @@ describe '[Facesheet][Header]', :app_client, :facesheet do
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.phone_value).to eql(consent_modal.number_to_phone_format(@phone_number))
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         # TO-DO, add an email to contact using api to see that this field is pre-filled
         facesheet_header.select_consent_option(option: facesheet_header.class::SEND_EMAIL)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.email_value).to eql('')
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         facesheet_header.select_consent_option(option: facesheet_header.class::REQUEST_ONSCREEN)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.go_to_form_button_displayed?).to be_truthy
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         facesheet_header.select_consent_option(option: facesheet_header.class::UPLOAD_PAPER)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.submit_button_displayed?).to be_truthy
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         facesheet_header.select_consent_option(option: facesheet_header.class::UPLOAD_AUDIO)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.submit_button_displayed?).to be_truthy
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         facesheet_header.select_consent_option(option: facesheet_header.class::PROVIDE_ATTESTATION)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.go_to_form_button_displayed?).to be_truthy
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
       end
 
       # Requesting consent by email, using faker email for now
@@ -71,32 +77,38 @@ describe '[Facesheet][Header]', :app_client, :facesheet do
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.phone_value).to eql(consent_modal.number_to_phone_format(@phone_number))
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         # TO-DO, add an email to contact using api to see that this field is pre-filled
         facesheet_header.select_consent_option(option: facesheet_header.class::SEND_EMAIL)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.email_value).to eql('')
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         facesheet_header.select_consent_option(option: facesheet_header.class::REQUEST_ONSCREEN)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.go_to_form_button_displayed?).to be_truthy
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         facesheet_header.select_consent_option(option: facesheet_header.class::UPLOAD_PAPER)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.submit_button_displayed?).to be_truthy
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         facesheet_header.select_consent_option(option: facesheet_header.class::UPLOAD_AUDIO)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.submit_button_displayed?).to be_truthy
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
 
         facesheet_header.select_consent_option(option: facesheet_header.class::PROVIDE_ATTESTATION)
         expect(consent_modal.page_displayed?).to be_truthy
         expect(consent_modal.go_to_form_button_displayed?).to be_truthy
         consent_modal.close_consent_modal
+        expect(consent_modal.consent_modal_not_displayed?).to be_truthy
       end
 
       # Adding consent to client
