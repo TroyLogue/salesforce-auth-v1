@@ -38,11 +38,10 @@ class Exports < BasePage
   end
 
   def select_export_source_cc(source:)
-    click(EXPORT_FIELD.transform_values { |v| v % 'Export Source(s)' })
-    is_displayed?(EXPORT_SOURCE_SELECT_LIST_OPEN)
+    click_via_js(EXPORT_FIELD.transform_values { |v| v % 'Export Source(s)' })
 
     #TODO CPR-89 made the change to have the default set to the cc. Waiting to hear from product to determine whether the default is needed or not
-    click(REMOVE_DEFAULT_CHOICE_SELECTED)
+    click_via_js(REMOVE_DEFAULT_CHOICE_SELECTED)
     if source == NETWORK
       click(EXPORT_SOURCE_CHOICE_NETWORK)
     elsif source == ORGANIZATION
