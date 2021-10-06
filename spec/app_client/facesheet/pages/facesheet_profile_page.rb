@@ -150,7 +150,7 @@ class FacesheetProfilePage < BasePage
       click(EDIT_ADDRESS)
       is_displayed?(ADDRESS_MODAL)
       # Filling out address
-      click(LINK_ADD_ADDRESS)
+      click_via_js(LINK_ADD_ADDRESS)
       click(EXPAND_ADDRESS_TYPE_CHOICES)
       click_element_from_list_by_text(LIST_ADDRESS_TYPE_CHOICES, type)
       enter(address_line1, INPUT_ADDRESS_LINE1)
@@ -160,7 +160,7 @@ class FacesheetProfilePage < BasePage
       click_element_from_list_by_text(LIST_STATE_CHOICES, state)
       enter(zip, INPUT_ADDRESS_ZIP)
       # Saving address
-      click(BTN_SAVE_ADDRESS)
+      click_via_js(BTN_SAVE_ADDRESS)
       wait_for_spinner
     end
   end
