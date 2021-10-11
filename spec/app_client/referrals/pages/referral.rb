@@ -64,7 +64,7 @@ class Referral < BasePage
   ASSIGN_CARE_COORDINATOR_LINK = { css: '#assign-care-coordinator-link' }.freeze
   ASSIGN_CARE_COORDINATOR_MODAL = { css: '#care-coordinator-modal.dialog.open.normal .dialog-paper' }.freeze
   ASSIGN_CARE_COORDINATOR_DROPDOWN = { css: '.care-coordinator-select .choices' }.freeze
-  ASSIGN_CARE_COORDINATOR_CHOICES = { css: 'div[id^="choices-care-coordinator"]' }.freeze
+  ASSIGN_CARE_COORDINATOR_CHOICES = { css: '.is-active div[id^="choices-care-coordinator"]' }.freeze
   ASSIGN_CARE_COORDINATOR_SELECTED = { css: '#care-coordinator-selector + div > div:not(button)' }.freeze
   ASSIGN_CARE_COORDINATOR_BUTTON = { css: '#edit-care-coordinator-assign-btn' }.freeze
   CURRENT_CARE_COORDINATOR = { css: '.edit-care-coordinator > span' }.freeze
