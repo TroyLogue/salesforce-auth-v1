@@ -3,11 +3,10 @@
 require_relative '../../../shared_components/base_page'
 
 class NotificationsEhr < BasePage
-  NOTIFICATION = { css: '.notifications' }.freeze
-  NOTIFICATION_TEXT_DIV = { css: '.notification__text' }.freeze
-  ERROR_NOTIFICATION = { css: '.notifications .notification.error.fade-enter-done' }.freeze
-  SUCCESS_NOTIFICATION = { css: '.notifications .notification.success.fade-enter-done' }.freeze
-  CLOSE_BTN = { css: 'notification__close-btn' }.freeze
+  NOTIFICATION_BODY = { css: '.Toastify__toast-body' }.freeze
+  ERROR_NOTIFICATION = { css: '.Toastify__toast--error' }.freeze
+  SUCCESS_NOTIFICATION = { css: '.Toastify__toast--success' }.freeze
+  CLOSE_BTN = { css: '.Toastify__close-button' }.freeze
 
   # Messages:
   MESSAGE_SENT = 'Message successfully sent'
@@ -23,12 +22,12 @@ class NotificationsEhr < BasePage
   end
 
   def error_text
-    find(ERROR_NOTIFICATION)
-    text(NOTIFICATION_TEXT_DIV)
+    is_displayed?(ERROR_NOTIFICATION) &&
+      text(NOTIFICATION_BODY)
   end
 
   def success_text
-    find(SUCCESS_NOTIFICATION)
-    text(NOTIFICATION_TEXT_DIV)
+    is_displayed?(SUCCESS_NOTIFICATION) &&
+      text(NOTIFICATION_BODY)
   end
 end

@@ -48,7 +48,7 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
     end
 
     it 'can share a provider via email', :uuqa_401 do
-      # use second provider
+      # use second program
       network.add_programs_by_index([1])
 
       network.click_share
@@ -78,8 +78,8 @@ describe '[Network] Share Providers', :ehr, :network, :share_drawer do
     end
 
     it 'can share a provider via print', :uuqa_402 do
-      # add first and second providers:
-      network.add_providers_by_index([0, 1])
+      # add first and second programs:
+      network.add_programs_by_index([0, 1])
 
       network.click_share
 

@@ -33,7 +33,7 @@ class Network < BasePage
   end
 
   def click_share
-    click(SHARE_BTN)
+    click_via_js(SHARE_BTN)
   end
 
   def drawer_open?
