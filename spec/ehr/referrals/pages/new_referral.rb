@@ -53,7 +53,7 @@ class NewReferral < BasePage
     enter(description, DESCRIPTION_FIELD)
   end
 
-  def open_random_provider_drawer
+  def open_random_program_drawer
     click_random(PROVIDER_CARD)
   end
 
@@ -121,7 +121,7 @@ class NewReferral < BasePage
     is_not_displayed?(NO_CHOICES_ITEMS)
   end
 
-  def open_provider_drawer_by_name(provider)
+  def open_program_drawer_by_name(provider)
     click_element_by_text(PROVIDER_CARD_NAME, provider)
   end
 

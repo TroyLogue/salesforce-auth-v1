@@ -10,6 +10,7 @@ class Network < BasePage
   PROGRAM_CARD_ADD_BTN = { css: '.network-program-card div a' }
   PROGRAM_NAME = { css: '.program-name' }
   PROVIDER_NAME = { css: '.text-sm.text-blue-dark' }
+  SELECTED_PROGRAMS_COUNT = { css: '.selected-programs-count' }
   SERVICE_TYPE_FILTER = { css: '#service-types-all-filter' }
   SERVICE_TYPE_OPTION = { css: '.ui-filter-option.level-1' }
   SEARCH_FILTER = { css: '.search-field' }
@@ -66,6 +67,7 @@ class Network < BasePage
   def page_displayed?
     is_displayed?(SERVICE_TYPE_FILTER) &&
       is_displayed?(SEARCH_FILTER)
+      is_not_displayed?(LOADER)
   end
 
   def search_by_text(text:)
@@ -82,6 +84,10 @@ class Network < BasePage
   def select_service_type(service_type)
     click(SERVICE_TYPE_FILTER)
     click_element_from_list_by_text(SERVICE_TYPE_OPTION, service_type)
+  end
+
+  def selected_programs_count_text
+    text(SELECTED_PROGRAMS_COUNT)
   end
 
   private

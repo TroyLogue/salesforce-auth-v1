@@ -4,7 +4,7 @@ require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/home_page_ehr'
 require_relative './pages/new_referral'
 require_relative './pages/referral_assessment'
-require_relative '../network/pages/provider_drawer'
+require_relative '../network/pages/program_drawer'
 
 describe '[Referrals]', :ehr, :ehr_referrals do
   include LoginEhr
@@ -13,7 +13,7 @@ describe '[Referrals]', :ehr, :ehr_referrals do
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:new_referral) { NewReferral.new(@driver) }
-  let(:provider_drawer) { ProviderDrawer.new(@driver) }
+  let(:program_drawer) { ProgramDrawer.new(@driver) }
   let(:referral_assessment) { ReferralAssessment.new(@driver) }
 
   context('[default view] User can create a referral') do
@@ -46,10 +46,10 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       description = Faker::Lorem.sentence(word_count: 5)
 
       new_referral.select_service_type_by_text(@service_type)
-      new_referral.open_random_provider_drawer
-      expect(provider_drawer.referral_page_displayed?).to be_truthy
-      provider_drawer.add_provider
-      provider_drawer.close_drawer
+      new_referral.open_random_program_drawer
+      expect(program_drawer.referral_page_displayed?).to be_truthy
+      program_drawer.add_provider
+      program_drawer.close_drawer
 
       new_referral.enter_description(description)
       new_referral.submit

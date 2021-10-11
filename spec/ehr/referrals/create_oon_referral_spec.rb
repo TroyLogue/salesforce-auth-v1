@@ -4,7 +4,7 @@ require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/home_page_ehr'
 require_relative './pages/new_referral'
 require_relative './pages/referral_assessment'
-require_relative '../network/pages/provider_drawer'
+require_relative '../network/pages/program_drawer'
 require_relative '../cases/pages/case_detail_page'
 require_relative '../cases/pages/cases_table'
 
@@ -17,7 +17,7 @@ describe '[Referrals Out of Network]', :ehr, :ehr_referrals do
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:new_referral) { NewReferral.new(@driver) }
-  let(:provider_drawer) { ProviderDrawer.new(@driver) }
+  let(:program_drawer) { ProgramDrawer.new(@driver) }
   let(:referral_assessment) { ReferralAssessment.new(@driver) }
 
   context('[default view] from Create Referral button') do
