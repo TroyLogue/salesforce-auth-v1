@@ -8,6 +8,10 @@ class NotificationsEhr < BasePage
   SUCCESS_NOTIFICATION = { css: '.Toastify__toast--success' }.freeze
   CLOSE_BTN = { css: '.Toastify__close-button' }.freeze
 
+  #TODO remove, once https://uniteus.atlassian.net/browse/CPR-303 is complete
+  ASSESSMENT_SUCCESS_NOTIFICATION = { css: '.notification.success' }.freeze
+  ASSESSMENT_NOTIFICATION_BODY = { css: '.notification__text-header' }.freeze
+
   # Messages:
   MESSAGE_SENT = 'Message successfully sent'
   ASSESSMENT_UPDATED = "ASSESSMENT SUCCESSFULLY EDITED"
@@ -29,5 +33,11 @@ class NotificationsEhr < BasePage
   def success_text
     is_displayed?(SUCCESS_NOTIFICATION) &&
       text(NOTIFICATION_BODY)
+  end
+
+  #TODO remove, once https://uniteus.atlassian.net/browse/CPR-303 is complete
+  def assessment_success_text
+    is_displayed?(ASSESSMENT_SUCCESS_NOTIFICATION) &&
+      text(ASSESSMENT_NOTIFICATION_BODY)
   end
 end
