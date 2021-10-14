@@ -6,6 +6,7 @@ class CaseDetailPage < BasePage
   HEADER = { css: '.casedetails .details-header' }.freeze
 
   CASE_INFO = { css: '.casedetails' }.freeze
+  # TODO update Care Coordinator selectors once https://uniteus.atlassian.net/browse/CPR-305 is fixed
   CARE_COORDINATOR_EDIT_BTN = { css: '#care-coordinator a' }.freeze
   CARE_COORDINATOR = { css: '#care-coordinator div+span' }.freeze
   PRIMARY_WORKER = { css: '#primary-worker-input div+span' }.freeze

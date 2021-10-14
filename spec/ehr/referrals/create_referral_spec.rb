@@ -2,8 +2,9 @@
 
 require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/home_page_ehr'
-require_relative './pages/new_referral'
 require_relative './pages/referral_assessment'
+require_relative './pages/find_programs'
+require_relative './pages/add_description'
 require_relative '../network/pages/program_drawer'
 
 describe '[Referrals]', :ehr, :ehr_referrals do
@@ -12,9 +13,10 @@ describe '[Referrals]', :ehr, :ehr_referrals do
   let(:homepage) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
-  let(:new_referral) { NewReferral.new(@driver) }
   let(:program_drawer) { ProgramDrawer.new(@driver) }
+  let(:find_programs) { FindPrograms.new(@driver) }
   let(:referral_assessment) { ReferralAssessment.new(@driver) }
+  let(:add_description) { AddDescription.new(@driver) }
 
   context('[default view] User can create a referral') do
     before do
@@ -24,14 +26,20 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       expect(homepage.default_view_displayed?).to be_truthy
 
       homepage.go_to_create_referral
-      expect(new_referral.page_displayed?).to be_truthy
+      expect(find_programs.page_displayed?).to be_truthy
     end
 
     it 'adding two providers via table', :uuqa_1614 do
       # select two random providers from table
       description = Faker::Lorem.sentence(word_count: 5)
 
-      new_referral.create_referral_from_table(
+      find_programs.add_programs_from_table(
+        program_count: 2
+      )
+
+
+
+      find_programs.create_referral_from_table(
         service_type: @service_type,
         description: description,
         provider_count: 2
