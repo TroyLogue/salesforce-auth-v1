@@ -361,7 +361,7 @@ class FacesheetProfilePage < BasePage
       click(EDIT_CITIZENSHIP)
       is_displayed?(CITIZENSHIP_MODAL)
       # Select citizenship
-      click(EXPAND_CITIZENSHIP_CHOICES)
+      click_via_js(EXPAND_CITIZENSHIP_CHOICES)
       click_element_from_list_by_text(LIST_CITIZENSHIP_CHOICES, citizenship)
       # Since there is no spinner, waiting for the modal to disappear
       click(BTN_SAVE_CITIZENSHIP)
