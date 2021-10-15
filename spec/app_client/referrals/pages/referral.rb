@@ -224,6 +224,7 @@ class Referral < BasePage
     click(TAKE_ACTION_DROP_DOWN)
     click(TAKE_ACTION_HOLD_OPTION)
     is_displayed?(HOLD_REFERRAL_MODAL)
+    is_displayed?(HOLD_REFERRAL_REASON_DROPDOWN)
     click(HOLD_REFERRAL_REASON_DROPDOWN)
     click(HOLD_REFERRAL_REASON_OPTION)
     enter(note, HOLD_REFERRAL_NOTE)
