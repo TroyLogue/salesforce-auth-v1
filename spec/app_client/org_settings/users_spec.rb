@@ -87,8 +87,14 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
 
       program_value_added = org_settings_user_form.add_program
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
-      expect(org_settings_user_form.displayed_program_access_values[:program_choice_values])
-        .to match_array(programs_access_values << program_value_added)
+
+      actual_values = org_settings_user_form.displayed_program_access_values[:program_choice_values]
+      expected_values = programs_access_values << program_value_added
+      unless actual_values.to_set == expected_values.to_set
+        raise StandardError,
+              "E2E error: got #{actual_values}, expected #{expected_values} : rare flakes have occurred
+              due to lags in UI updates have occurred; may need to refresh page pending front-end redesign"
+      end
     end
 
     it 'can add an employee org role', :uuqa_1706 do
@@ -99,8 +105,14 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
 
       new_value = org_settings_user_form.add_org_role
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
-      expect(org_settings_user_form.displayed_program_access_values[:org_role_values])
-        .to match_array(org_access_values << new_value)
+
+      actual_values = org_settings_user_form.displayed_program_access_values[:org_role_values]
+      expected_values = org_access_values << new_value
+      unless actual_values.to_set == expected_values.to_set
+        raise StandardError,
+              "E2E error: got #{actual_values}, expected #{expected_values} : rare flakes have occurred
+              due to lags in UI updates have occurred; may need to refresh page pending front-end redesign"
+      end
     end
 
     it 'can remove an employee org role', :uuqa_1707 do
@@ -111,16 +123,15 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
 
       removed_value = org_settings_user_form.remove_org_role
       org_access_values.delete(removed_value)
-      # adding debugging to rule out functional bug vs. race condition in banner
-      # reference: https://uniteus.atlassian.net/wiki/spaces/QA/pages/2597945489/5+24+2021+-+5+28+2021#end-to-end-tests
-      p "E2E DEBUG: removed_value is #{removed_value}, org_access_values are #{org_access_values}"
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
 
-      # waiting for notification to disappear before checking values
-      # if test still flakes, add a page refresh here before comparing values
-      org_settings_user_form.wait_for_notification_to_disappear
-      expect(org_settings_user_form.displayed_program_access_values[:org_role_values])
-        .to match_array(org_access_values)
+      actual_values = org_settings_user_form.displayed_program_access_values[:org_role_values]
+      expected_values = org_access_values
+      unless actual_values.to_set == expected_values.to_set
+        raise StandardError,
+              "E2E error: got #{actual_values}, expected #{expected_values} : rare flakes have occurred
+              due to lags in UI updates have occurred; may need to refresh page pending front-end redesign"
+      end
     end
 
     it 'can save employee status', :uuqa_1767 do
