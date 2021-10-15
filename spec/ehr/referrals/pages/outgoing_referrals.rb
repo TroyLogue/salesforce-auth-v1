@@ -2,7 +2,7 @@
 
 require_relative '../../../shared_components/base_page'
 
-class ReferralsTable < BasePage
+class OutgoingReferrals < BasePage
   HEADER = { css: '.patient-table-header' }
   LOADING_REFERRALS_MESSAGE_TEXT = 'Loading...'
   MORE_FILTERS_BTN = { xpath: '//span[text()="Filters"]' }
@@ -22,7 +22,7 @@ class ReferralsTable < BasePage
   TABLE_MESSAGE = { css: '.table-component td.text-center' }
   TABLE_ROW = { xpath: '//table/tbody/tr' }
 
-  def table_displayed?
+  def page_displayed?
     is_displayed?(HEADER) &&
       is_displayed?(OUTGOING_REFERRALS_TEXT) &&
       is_displayed?(STATUS_FILTER) &&
