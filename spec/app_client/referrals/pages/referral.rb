@@ -369,10 +369,12 @@ class Referral < BasePage
   def assign_first_care_coordinator
     click(ASSIGN_CARE_COORDINATOR_LINK)
     is_displayed?(ASSIGN_CARE_COORDINATOR_MODAL)
+    # ensure dropdown is displayed before trying to click to avoid StaleElementReference
+    is_displayed?(ASSIGN_CARE_COORDINATOR_DROPDOWN)
 
     # 'None' is an option among the care coordinator choices; we need to make sure it's not submitted
     # CORE-1120 improvement ticket to move None out of alphabetic order
-    default_retry_count = 5
+    default_retry_count = 10
     retry_count = 0
     coordinator = 'None'
     while coordinator == 'None' && retry_count <= default_retry_count
@@ -380,6 +382,10 @@ class Referral < BasePage
       click_random(ASSIGN_CARE_COORDINATOR_CHOICES)
       # Return name of care coordinator to use later, removing unwanted text
       coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
+      # logging the coordinator value in case retry_count reaches max with None selected;
+      # given the unlikelihood of that happening, we will want proof in case of the StandardError being raised
+      # this logging can be removed when CORE-1120 is addressed
+      p "E2E DEBUG: care coordinator at retry count #{retry_count} is #{coordinator}"
       retry_count += 1
       coordinator
     end
