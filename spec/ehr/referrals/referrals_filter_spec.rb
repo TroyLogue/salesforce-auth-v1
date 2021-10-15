@@ -25,8 +25,28 @@ describe '[Referrals]', :ehr, :referrals do
       expect(collection_filters_drawer.drawer_displayed?).to be_truthy
     end
 
+    it 'filters by care coordinator', :uuqa_1618 do
+      collection_filters_drawer.select_random_care_coordinator_option
+      expect(referrals_table.loading_referrals_complete?).to be_truthy
+
+      expect(notifications_ehr.error_notification_not_displayed?).to be_truthy
+      expect(referrals_table.no_referrals_message_displayed? || referrals_table.referrals_displayed?).to be_truthy
+    end
+
+    it 'finds care coordinators via search', :uuqa_1619 do
+      collection_filters_drawer.search_for_care_coordinator(keys: 'e')
+      expect(collection_filters_drawer.matches_found?).to be_truthy
+    end
+  end
+
+  context('[dashboard view] with filters from table') do
+    before do
+      log_in_dashboard_as(LoginEhr::CC_HARVARD)
+      expect(homepage.page_displayed?).to be_truthy
+    end
+
     it 'filters by referral sender', :uuqa_1618 do
-      collection_filters_drawer.select_random_sent_by_option
+      referrals_table.select_random_sent_by_option
       expect(referrals_table.loading_referrals_complete?).to be_truthy
 
       expect(notifications_ehr.error_notification_not_displayed?).to be_truthy
@@ -34,8 +54,8 @@ describe '[Referrals]', :ehr, :referrals do
     end
 
     it 'finds senders via search', :uuqa_1619 do
-      collection_filters_drawer.search_for_sender(keys: 'e')
-      expect(collection_filters_drawer.matches_found?).to be_truthy
+      referrals_table.search_for_sender(keys: 'e')
+      expect(referrals_table.matches_found?).to be_truthy
     end
   end
 end

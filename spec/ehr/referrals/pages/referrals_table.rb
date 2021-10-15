@@ -8,8 +8,16 @@ class ReferralsTable < BasePage
   MORE_FILTERS_BTN = { xpath: '//span[text()="Filters"]' }
   NO_REFERRALS_MESSAGE_TEXT = 'No referrals here.'
   OUTGOING_REFERRALS_TEXT = { xpath: '//span[text()="Outgoing Referrals"]' }
+
   SENT_BY_FILTER = { id: 'sent-by-filter' }
+  BUTTON = { css: 'button' }.freeze
+  SENT_BY_BUTTON_TEXT = 'Sent By'
+  SENT_BY_NO_MATCHES = { css: '.no-matches' }.freeze
+  SENT_BY_SEARCH_INPUT = { css: '.ui-filter-search__input' }.freeze
+
   STATUS_FILTER = { css: '#status-filter' }
+  OPEN_DROPDOWN_FILTER_OPTION = { css: '.dropdown.open .ui-filter-option' }.freeze
+
   TABLE_BODY = { css: '.table-component' }
   TABLE_MESSAGE = { css: '.table-component td.text-center' }
   TABLE_ROW = { xpath: '//table/tbody/tr' }
@@ -46,5 +54,30 @@ class ReferralsTable < BasePage
 
   def referrals_displayed?
     is_displayed?(TABLE_ROW, 1)
+  end
+
+  def search_for_sender(keys:)
+    click_sent_by_dropdown
+
+    click(SENT_BY_SEARCH_INPUT)
+    enter(keys, SENT_BY_SEARCH_INPUT)
+  end
+
+  def matches_found?
+    is_displayed?(OPEN_DROPDOWN_FILTER_OPTION) &&
+      is_not_displayed?(SENT_BY_NO_MATCHES)
+  end
+
+  def select_random_sent_by_option
+    click_sent_by_dropdown
+
+    random_option = find_elements(OPEN_DROPDOWN_FILTER_OPTION).sample
+    random_option.click
+  end
+
+  private
+
+  def click_sent_by_dropdown
+    click_element_by_text(BUTTON, SENT_BY_BUTTON_TEXT)
   end
 end
