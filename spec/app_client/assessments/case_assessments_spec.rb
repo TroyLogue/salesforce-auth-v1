@@ -31,7 +31,7 @@ describe '[Assessments - Cases]', :assessments, :app_client do
     it 'can view Military Information and an assessment', :uuqa_328, :uuqa_334 do
       case_detail_page.go_to_open_case_with_id(case_id: @case.id, contact_id: @contact.contact_id)
       expect(case_detail_page.page_displayed?).to be_truthy
-
+      case_detail_page.wait_for_intake_assessments
       # check assessments on case detail page
       expect(case_detail_page.assessment_list).to include(@assessment)
       expect(case_detail_page.military_assessment_displayed?).to be_truthy
