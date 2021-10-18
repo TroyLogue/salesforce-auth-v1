@@ -332,6 +332,7 @@ class Referral < BasePage
   end
 
   def military_assessment_displayed?
+    wait_for { find_elements(ASSESSMENT_LIST).length > 1 }
     is_displayed?(MILITARY_ASSESSMENT)
   end
 
