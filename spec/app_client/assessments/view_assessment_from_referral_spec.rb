@@ -52,7 +52,6 @@ describe '[Assessments - Referrals]', :assessments, :app_client do
     it 'can view Military Information and an assessment', :uuqa_326, :uuqa_332 do
       referral.go_to_new_referral_with_id(referral_id: @referral.id)
       expect(referral.page_displayed?).to be_truthy
-      referral.wait_for_intake_assessments
       expect(referral.military_assessment_displayed?).to be_truthy
       expect(referral.assessment_list).to include(@assessment)
 
