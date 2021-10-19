@@ -97,6 +97,11 @@ class BasePage
     raise StandardError, "E2E ERROR: Option '#{text}' was not found in list of Selector #{selector}" unless found
   end
 
+  def click_parent(child_element)
+    parent = child_element.find_element({xpath: "./.." })
+    parent.click
+  end
+
   def click_random(selector)
     random_option = find_elements(selector).sample
     raise StandardError, "E2E ERROR: No elements of Selector '#{selector}' were found" unless random_option
@@ -285,6 +290,13 @@ class BasePage
   def scroll_to(selector)
     element = find(selector)
     driver.execute_script('arguments[0].scrollIntoView(true);', element)
+  end
+
+  def scroll_to_random_element_and_click(selector)
+    random_element = find_elements(selector).sample
+    driver.execute_script('arguments[0].scrollIntoView(false)', random_element)
+    byebug
+    random_element.click
   end
 
   def scroll_to_bottom_of_page

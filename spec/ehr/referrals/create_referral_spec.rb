@@ -4,7 +4,9 @@ require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/home_page_ehr'
 require_relative './pages/referral_assessment'
 require_relative './pages/find_programs'
+require_relative './pages/select_service_types'
 require_relative './pages/add_description'
+require_relative './pages/referral_review'
 require_relative '../network/pages/program_drawer'
 
 describe '[Referrals]', :ehr, :ehr_referrals do
@@ -15,8 +17,10 @@ describe '[Referrals]', :ehr, :ehr_referrals do
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:program_drawer) { ProgramDrawer.new(@driver) }
   let(:find_programs) { FindPrograms.new(@driver) }
+  let(:select_service_types) { SelectServiceTypes.new(@driver) }
   let(:referral_assessment) { ReferralAssessment.new(@driver) }
   let(:add_description) { AddDescription.new(@driver) }
+  let(:referral_review) { ReferralReview.new(@driver) }
 
   context('[default view] User can create a referral') do
     before do
@@ -33,19 +37,19 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       # select two random providers from table
       description = Faker::Lorem.sentence(word_count: 5)
 
-      find_programs.add_programs_from_table(
-        program_count: 2
-      )
+      find_programs.select_service_type_by_text(@service_type)
+      find_programs.add_programs_from_table(program_count: 2)
+      find_programs.click_next
+      expect(select_service_types.page_displayed?).to be_truthy
+      select_service_types.click_next
+      expect(add_description.page_displayed?).to be_truthy
+      add_description.enter_description(description: description)
+      add_description.click_next
+      referral_assessment.go_to_next_page if referral_assessment.page_displayed?
 
-
-
-      find_programs.create_referral_from_table(
-        service_type: @service_type,
-        description: description,
-        provider_count: 2
-      )
-      referral_assessment.create_referral if referral_assessment.page_displayed?
-
+      expect(referral_review.page_displayed?).to be_truthy
+      # TODO review page
+      # TODO submit referral
       # after sending referral, verify redirect to home page
       expect(homepage.default_view_displayed?).to be_truthy
     end
@@ -53,19 +57,28 @@ describe '[Referrals]', :ehr, :ehr_referrals do
     it 'adding a provider using provider drawer', :uuqa_1615 do
       description = Faker::Lorem.sentence(word_count: 5)
 
-      new_referral.select_service_type_by_text(@service_type)
-      new_referral.open_random_program_drawer
-      expect(program_drawer.referral_page_displayed?).to be_truthy
-      program_drawer.add_provider
+      find_programs.select_service_type_by_text(@service_type)
+      find_programs.open_random_program_drawer
+      expect(program_drawer.page_displayed?).to be_truthy
+      program_drawer.add_program
       program_drawer.close_drawer
+      find_programs.click_next
+      expect(select_service_types.page_displayed?).to be_truthy
+      select_service_types.click_next
+      # TODO service types page
+      #
+      expect(add_description.page_displayed?).to be_truthy
+      add_description.enter_description(description)
 
-      new_referral.enter_description(description)
-      new_referral.submit
+      referral_assessment.go_to_next_page if referral_assessment.page_displayed?
 
-      referral_assessment.create_referral if referral_assessment.page_displayed?
+      # TODO referral review
+      # TODO submit referral
 
       # after sending referral, verify redirect to home page
       expect(homepage.default_view_displayed?).to be_truthy
+
+      # validate success notification
     end
   end
 end

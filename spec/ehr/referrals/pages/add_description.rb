@@ -25,6 +25,10 @@ class AddDescription < BasePage
       is_displayed?(DESCRIPTION_INPUT)
   end
 
+  def enter_description(description:)
+    enter(DESCRIPTION_INPUT, description)
+  end
+
   def program_name
     text(PROGRAM_NAME)
   end

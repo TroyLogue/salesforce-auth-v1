@@ -2,7 +2,7 @@
 
 require_relative '../auth/helpers/login_ehr'
 require_relative '../root/pages/home_page_ehr'
-require_relative './pages/new_referral'
+require_relative './pages/find_programs'
 require_relative './pages/referral_assessment'
 require_relative '../root/pages/notifications_ehr'
 
@@ -12,7 +12,7 @@ describe '[Referrals]', :ehr, :ehr_referrals do
   let(:homepage) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
-  let(:new_referral) { NewReferral.new(@driver) }
+  let(:find_programs) { NewReferral.new(@driver) }
   let(:referral_assessment) { ReferralAssessment.new(@driver) }
   let(:notifications) { NotificationsEhr.new(@driver) }
 
@@ -22,7 +22,7 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       expect(homepage.default_view_displayed?).to be_truthy
 
       homepage.go_to_create_referral
-      expect(new_referral.page_displayed?).to be_truthy
+      expect(find_programs.page_displayed?).to be_truthy
     end
 
     it 'Create a multi-referral', :uuqa_1670 do
@@ -30,11 +30,9 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       description_1 = Faker::Lorem.sentence(word_count: 5)
       description_2 = Faker::Lorem.sentence(word_count: 5)
 
-      new_referral.fill_out_referral(description: description_1)
-      new_referral.add_another_referral
-      new_referral.fill_out_referral(description: description_2)
+      find_programs.add_programs_from_table(program_count: 2)
 
-      new_referral.submit
+      # service types
 
       referral_assessment.create_referral if referral_assessment.page_displayed?
 
