@@ -33,7 +33,7 @@ class AddDescription < BasePage
       description_field = referral_card.find_element(DESCRIPTION_INPUT)
       description_field.send_keys description
       if (primary_worker_dropdown = referral_card.find_elements(PRIMARY_WORKER_SELECT_FIELD)[0])
-        click(primary_worker_dropdown)
+        primary_worker_dropdown.click
         click_random(PRIMARY_WORKER_OPTION)
       end
     end
