@@ -30,9 +30,9 @@ class AddDescription < BasePage
   def fill_out_description_card_for_each_referral(description:)
     referral_cards = find_elements(REFERRAL_CARD)
     referral_cards.each do |referral_card|
-      enter_within(description, referral_card, DESCRIPTION_INPUT)
-      primary_worker_dropdown = referral_card.find_element(PRIMARY_WORKER_SELECT_FIELD)
-      if primary_worker_dropdown
+      description_field = referral_card.find_element(DESCRIPTION_INPUT)
+      description_field.send_keys description
+      if (primary_worker_dropdown = referral_card.find_elements(PRIMARY_WORKER_SELECT_FIELD)[0])
         click(primary_worker_dropdown)
         click_random(PRIMARY_WORKER_OPTION)
       end
