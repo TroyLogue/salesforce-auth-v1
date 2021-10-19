@@ -295,7 +295,6 @@ class BasePage
   def scroll_to_random_element_and_click(selector)
     random_element = find_elements(selector).sample
     driver.execute_script('arguments[0].scrollIntoView(false)', random_element)
-    byebug
     random_element.click
   end
 

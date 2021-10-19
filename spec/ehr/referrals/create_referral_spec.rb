@@ -41,9 +41,10 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       find_programs.add_programs_from_table(program_count: 2)
       find_programs.click_next
       expect(select_service_types.page_displayed?).to be_truthy
+      select_service_types.select_random_service_type_for_each_referral
       select_service_types.click_next
       expect(add_description.page_displayed?).to be_truthy
-      add_description.enter_description(description: description)
+      add_description.fill_out_description_card_for_each_referral(description: description)
       add_description.click_next
       referral_assessment.go_to_next_page if referral_assessment.page_displayed?
 
