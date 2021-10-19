@@ -33,29 +33,31 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       expect(find_programs.page_displayed?).to be_truthy
     end
 
-    it 'adding two providers via table', :uuqa_1614 do
-      # select two random providers from table
+    it 'adding two programs via table', :uuqa_1614 do
+      # select two random programs from table
       description = Faker::Lorem.sentence(word_count: 5)
 
       find_programs.select_service_type_by_text(@service_type)
       find_programs.add_programs_from_table(program_count: 2)
       find_programs.click_next
       expect(select_service_types.page_displayed?).to be_truthy
+
       select_service_types.select_random_service_type_for_each_referral
       select_service_types.click_next
       expect(add_description.page_displayed?).to be_truthy
+
       add_description.fill_out_description_card_for_each_referral(description: description)
       add_description.click_next
       referral_assessment.go_to_next_page if referral_assessment.page_displayed?
-
       expect(referral_review.page_displayed?).to be_truthy
-      # TODO review page
-      # TODO submit referral
-      # after sending referral, verify redirect to home page
+
+      referral_review.complete_referral
       expect(homepage.default_view_displayed?).to be_truthy
     end
 
-    it 'adding a provider using provider drawer', :uuqa_1615 do
+    # don't need to create whole referral, just confirm that the program
+    # is added using the button from the drawer
+    it 'adding a program using program drawer', :uuqa_1615 do
       description = Faker::Lorem.sentence(word_count: 5)
 
       find_programs.select_service_type_by_text(@service_type)
@@ -65,21 +67,8 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       program_drawer.close_drawer
       find_programs.click_next
       expect(select_service_types.page_displayed?).to be_truthy
-      select_service_types.click_next
-      # TODO service types page
-      #
-      expect(add_description.page_displayed?).to be_truthy
-      add_description.enter_description(description)
 
-      referral_assessment.go_to_next_page if referral_assessment.page_displayed?
-
-      # TODO referral review
-      # TODO submit referral
-
-      # after sending referral, verify redirect to home page
-      expect(homepage.default_view_displayed?).to be_truthy
-
-      # validate success notification
+      # validate that the service types page contains the program name
     end
   end
 end
