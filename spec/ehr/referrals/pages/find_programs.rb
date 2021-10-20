@@ -11,13 +11,15 @@ class FindPrograms < BasePage
   PROGRAM_CARD = { css: '.network-program-card' }
   PROGRAM_CARD_ADD_BTN = { css: '.select-button:not(.disabled)' }
   SERVICE_TYPE_FILTER = { css: '#service-types-all-filter' }
+  SERVICE_TYPE_FILTER_SELECTED = { css: '#service-types-filter' }
+  SELECTED_SERVICE_TYPES = { css: '#service-types-filter .selected-options' }
   SERVICE_TYPE_OPTION = { css: '#service-types-all-filter .ui-filter-option.level-1' }
   SERVICE_TYPES_DROPDOWN_OPEN = { css: '#service-types-filter button.open' }
 
   def page_displayed?
     is_displayed?(FIND_PROGRAMS_CONTAINER) &&
       is_displayed?(MORE_FILTERS_BTN) &&
-      is_displayed?(SERVICE_TYPE_FILTER)
+      (is_displayed?(SERVICE_TYPE_FILTER) || is_displayed?(SERVICE_TYPE_FILTER_SELECTED))
   end
 
   def add_programs_from_table(program_count:)
@@ -55,7 +57,8 @@ class FindPrograms < BasePage
   end
 
   def selected_service_type
-    text(SERVICE_TYPE_FILTER)
+    click(SERVICE_TYPE_FILTER_SELECTED)
+    text(SELECTED_SERVICE_TYPES)
   end
 
   private

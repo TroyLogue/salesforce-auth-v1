@@ -27,7 +27,7 @@ describe '[Screenings]', :ehr, :screenings do
       expect(screenings_table.page_displayed?).to be_truthy
     end
 
-    it 'creates a screening with referral needs', :uuqa_580 do
+    it 'creates a screening with referral needs', :uuqa_580, :test do
       screenings_table.create_screening
       expect(new_screening.page_displayed?).to be_truthy
 
@@ -60,7 +60,7 @@ describe '[Screenings]', :ehr, :screenings do
       expect(screenings_table.page_displayed?).to be_truthy
     end
 
-    it 'creates a screening with referral needs', :uuqa_1728 do
+    it 'creates a screening with referral needs', :uuqa_1728, :test do
       screenings_table.create_screening
       expect(new_screening.page_displayed?).to be_truthy
 
