@@ -23,7 +23,6 @@ class CaseDetailPage < BasePage
   def page_displayed?
     is_displayed?(HEADER) &&
       is_displayed?(CASE_INFO) &&
-#      is_displayed?(CARE_TEAM) &&
       is_displayed?(DESCRIPTION) &&
       is_displayed?(ADD_NOTE_BTN)
     #leave out timeline for consolidation for now
