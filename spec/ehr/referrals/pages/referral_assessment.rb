@@ -14,7 +14,7 @@ class ReferralAssessment < BasePage
     text(ASSESSMENT_TITLE).include?(name)
   end
 
-  def go_to_next_page
+  def click_next
     click(NEXT_BTN)
   end
 

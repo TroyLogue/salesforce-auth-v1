@@ -36,7 +36,6 @@ describe '[Network]', :ehr, :network do
         service_type = "Disability Benefits"
         network.select_service_type(service_type)
         network.wait_for_results_to_load
-#        expect(network.search_result_text).to include(service_type)
 
         # open filter drawer
         network.open_filter_drawer

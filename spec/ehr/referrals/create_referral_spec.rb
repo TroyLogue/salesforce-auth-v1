@@ -48,7 +48,7 @@ describe '[Referrals]', :ehr, :ehr_referrals do
 
       add_description.fill_out_description_card_for_each_referral(description: description)
       add_description.click_next
-      referral_assessment.go_to_next_page if referral_assessment.page_displayed?
+      referral_assessment.click_next if referral_assessment.page_displayed?
       expect(referral_review.page_displayed?).to be_truthy
 
       referral_review.complete_referral
