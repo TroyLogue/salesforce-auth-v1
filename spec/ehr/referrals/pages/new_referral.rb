@@ -121,10 +121,6 @@ class NewReferral < BasePage
     is_not_displayed?(NO_CHOICES_ITEMS)
   end
 
-  def open_program_drawer_by_name(provider)
-    click_element_by_text(PROVIDER_CARD_NAME, provider)
-  end
-
   def provider_preselected?
     # if there is only one provider result, they will be pre selected
     # also confirm that the add button is already checked
