@@ -12,15 +12,15 @@ require_relative '../network/pages/program_drawer'
 describe '[Referrals]', :ehr, :ehr_referrals do
   include LoginEhr
 
+  let(:add_description) { AddDescription.new(@driver) }
+  let(:find_programs) { FindPrograms.new(@driver) }
   let(:homepage) { HomePageEhr.new(@driver) }
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
   let(:login_password_ehr) { LoginPasswordEhr.new(@driver) }
   let(:program_drawer) { ProgramDrawer.new(@driver) }
-  let(:find_programs) { FindPrograms.new(@driver) }
-  let(:select_service_types) { SelectServiceTypes.new(@driver) }
   let(:referral_assessment) { ReferralAssessment.new(@driver) }
-  let(:add_description) { AddDescription.new(@driver) }
   let(:referral_review) { ReferralReview.new(@driver) }
+  let(:select_service_types) { SelectServiceTypes.new(@driver) }
 
   context('[default view] User can create a referral') do
     before do

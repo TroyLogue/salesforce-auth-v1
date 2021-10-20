@@ -28,6 +28,10 @@ class FindPrograms < BasePage
     end
   end
 
+  def add_oon_program_from_table
+
+  end
+
   def click_next
     click_via_js(NEXT_BUTTON)
   end
