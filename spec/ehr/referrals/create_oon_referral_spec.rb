@@ -39,29 +39,23 @@ describe '[Referrals Out of Network]', :ehr, :ehr_referrals do
 
     it 'can create an OON referral, selecting provider from table', :uuqa_397 do
       description = Faker::Lorem.sentence(word_count: 5)
-
       find_programs.add_oon_program_from_table
       find_programs.click_next
       expect(select_service_types.page_displayed?).to be_truthy
-
       select_service_types.select_random_service_type_for_each_referral
       select_service_types.click_next
       expect(add_description.page_displayed?).to be_truthy
-
       add_description.fill_out_description_card_for_each_referral(description: description)
       add_description.click_next
       referral_assessment.go_to_next_page if referral_assessment.page_displayed?
       expect(referral_review.page_displayed?).to be_truthy
-
       referral_review.complete_referral
       expect(homepage.default_view_displayed?).to be_truthy
-
-      # TODO verify Share popup displays!!
-
+      expect(homepage.case_created_popup_displayed?).to be_truthy
+      homepage.close_case_created_popup
       cases_table.click_first_case
       expect(case_detail.page_displayed?).to be_truthy
       expect(case_detail.description_text).to include(description)
-      expect(case_detail.case_info_primary_worker).to include(primary_worker)
     end
   end
 end

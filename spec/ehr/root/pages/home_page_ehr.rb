@@ -8,6 +8,28 @@ class HomePageEhr < BasePage
   NAVBAR = { css: '.bg-blue-dark.flex.fixed.w-screen.inset-x-0.top-0.h-16.items-center.pl-3.pr-3.z-30' }
   SCREENINGS_BUTTON = { css: '#header4-btn' }
 
+  # Case Created Popup
+  CLOSE_POPUP_BTN = { css: 'button[data-qa=close-btn]' }
+  CASES_CREATED_HEADER = { xpath: '//h1[text()="Cases Created"]' }
+  PROVIDER_CHECKBOX = { css: '.consent-wrapper input[type=checkbox]' }
+  SHARE_FORM = { id: 'network-browse-share-form' }
+  SHARE_CANCEL_BTN = { id: 'share-cancel-button' }
+  SHARE_SEND_BTN = { id: 'share-send-button' }
+
+
+  def case_created_popup_displayed?
+    is_displayed?(CASES_CREATED_HEADER) &&
+      is_displayed?(PROVIDER_CHECKBOX) &&
+      is_displayed?(SHARE_FORM) &&
+      is_displayed?(SHARE_CANCEL_BTN) &&
+      is_displayed?(SHARE_SEND_BTN) &&
+      is_displayed?(CLOSE_POPUP_BTN)
+  end
+
+  def close_case_created_popup
+    click(CLOSE_POPUP_BTN)
+  end
+
   def default_view_displayed?
     # extending timeout for test cases that create multiple referrals i.e. uuqa_1771
     # and there is a delay in returning to the homepage
