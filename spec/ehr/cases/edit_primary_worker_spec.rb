@@ -34,7 +34,7 @@ describe '[Cases]', :ehr, :cases do
 #      base_page.get("/#{session_support_id}/2/patient/#{@case.contact.id}/cases/#{@case.id}")
     end
 
-    it 'edits primary worker', :uuqa_1621, :test do
+    it 'edits primary worker', :uuqa_1621 do
       expect(case_detail_page.page_displayed?).to be_truthy
 
       # put back once EHR-525 is fixed

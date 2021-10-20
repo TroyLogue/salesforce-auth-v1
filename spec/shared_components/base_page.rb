@@ -173,6 +173,11 @@ class BasePage
     find_elements(selector).select { |e| e.text == text }.first
   end
 
+  # returns an element
+  def find_element_containing_text(selector, text)
+    find_elements(selector).select { |e| e.text.include? text }.first
+  end
+
   # returns a boolean
   def find_element_with_text(selector, text)
     find(selector).text.include?(text)
@@ -292,10 +297,9 @@ class BasePage
     driver.execute_script('arguments[0].scrollIntoView(true);', element)
   end
 
-  def scroll_to_random_element_and_click(selector)
-    random_element = find_elements(selector).sample
-    driver.execute_script('arguments[0].scrollIntoView(false)', random_element)
-    random_element.click
+  def scroll_to_element_and_click(element)
+    driver.execute_script('arguments[0].scrollIntoView(false)', element)
+    element.click
   end
 
   def scroll_to_bottom_of_page

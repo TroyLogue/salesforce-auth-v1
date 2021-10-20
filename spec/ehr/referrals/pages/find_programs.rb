@@ -8,6 +8,7 @@ class FindPrograms < BasePage
   MORE_FILTERS_BTN = { css: '#more-filters-btn' }
   # TODO fix this css id - should be next btn not recall btn
   NEXT_BUTTON = { css: '#recall-btn' }
+  OON_TEXT = "Off-Platform Only"
   PROGRAM_CARD = { css: '.network-program-card' }
   PROGRAM_CARD_ADD_BTN = { css: '.select-button:not(.disabled)' }
   SERVICE_TYPE_FILTER = { css: '#service-types-all-filter' }
@@ -29,7 +30,9 @@ class FindPrograms < BasePage
   end
 
   def add_oon_program_from_table
-
+    first_oon_program_card = find_element_containing_text(PROGRAM_CARD, OON_TEXT)
+    add_btn = first_oon_program_card.find_element(PROGRAM_CARD_ADD_BTN)
+    scroll_to_element_and_click(add_btn)
   end
 
   def click_next
@@ -68,7 +71,8 @@ class FindPrograms < BasePage
   private
 
   def add_random_program_from_table
-    scroll_to_random_element_and_click(PROGRAM_CARD_ADD_BTN)
+    random_add_btn = find_elements(PROGRAM_CARD_ADD_BTN).sample
+    scroll_to_element_and_click(random_add_btn)
   rescue StandardError => e
     info_message = "No more provider results for the selected service type."
     raise StandardError, "#{e.message}: #{info_message}"
