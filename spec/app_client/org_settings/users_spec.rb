@@ -83,55 +83,48 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       org_settings_user_table.go_to_user_with_id(user_id: employee_id)
       expect(org_settings_user_form.page_displayed?).to be_truthy
 
-      programs_access_values = org_settings_user_form.displayed_program_access_values[:program_choice_values]
+      original_program_values = org_settings_user_form.displayed_program_choice_values
 
-      program_value_added = org_settings_user_form.add_program
+      program_added = org_settings_user_form.add_program
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
 
-      actual_values = org_settings_user_form.displayed_program_access_values[:program_choice_values]
-      expected_values = programs_access_values << program_value_added
-      unless actual_values.to_set == expected_values.to_set
-        raise StandardError,
-              "E2E error: got #{actual_values}, expected #{expected_values} : rare flakes have occurred
-              due to lags in UI updates have occurred; may need to refresh page pending front-end redesign"
-      end
+      expected_values = original_program_values + [program_added]
+      actual_values = org_settings_user_form.check_updated_ui_values(
+        :displayed_program_choice_values, original_values: original_program_values
+      )
+      expect(actual_values).to match_array_with_ui_lag_msg(expected_values)
     end
 
     it 'can add an employee org role', :uuqa_1706 do
       org_settings_user_table.go_to_user_with_id(user_id: employee_id)
       expect(org_settings_user_form.page_displayed?).to be_truthy
 
-      org_access_values = org_settings_user_form.displayed_program_access_values[:org_role_values]
+      original_org_role_values = org_settings_user_form.displayed_org_role_access_values
 
-      new_value = org_settings_user_form.add_org_role
+      org_role_added = org_settings_user_form.add_org_role
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
 
-      actual_values = org_settings_user_form.displayed_program_access_values[:org_role_values]
-      expected_values = org_access_values << new_value
-      unless actual_values.to_set == expected_values.to_set
-        raise StandardError,
-              "E2E error: got #{actual_values}, expected #{expected_values} : rare flakes have occurred
-              due to lags in UI updates have occurred; may need to refresh page pending front-end redesign"
-      end
+      expected_values = original_org_role_values + [org_role_added]
+      actual_values = org_settings_user_form.check_updated_ui_values(
+        :displayed_org_role_access_values, original_values: original_org_role_values
+      )
+      expect(actual_values).to match_array_with_ui_lag_msg(expected_values)
     end
 
     it 'can remove an employee org role', :uuqa_1707 do
       org_settings_user_table.go_to_user_with_id(user_id: employee_id)
       expect(org_settings_user_form.page_displayed?).to be_truthy
 
-      org_access_values = org_settings_user_form.displayed_program_access_values[:org_role_values]
+      original_org_role_values = org_settings_user_form.displayed_org_role_access_values
 
-      removed_value = org_settings_user_form.remove_org_role
-      org_access_values.delete(removed_value)
+      org_role_removed = org_settings_user_form.remove_org_role
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
 
-      actual_values = org_settings_user_form.displayed_program_access_values[:org_role_values]
-      expected_values = org_access_values
-      unless actual_values.to_set == expected_values.to_set
-        raise StandardError,
-              "E2E error: got #{actual_values}, expected #{expected_values} : rare flakes have occurred
-              due to lags in UI updates have occurred; may need to refresh page pending front-end redesign"
-      end
+      expected_values = original_org_role_values - [org_role_removed]
+      actual_values = org_settings_user_form.check_updated_ui_values(
+        :displayed_org_role_access_values, original_values: original_org_role_values
+      )
+      expect(actual_values).to match_array_with_ui_lag_msg(expected_values)
     end
 
     it 'can save employee status', :uuqa_1767 do

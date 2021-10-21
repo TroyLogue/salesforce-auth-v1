@@ -173,17 +173,25 @@ module OrgSettings
 
     def displayed_program_access_values
       # returns program access values displayed onder user page
-      arr = find_elements(PROGRAM_ACCESS_CHOICES).map{ |e| e.attribute('innerText').split(', ') }
+      arr = find_elements(PROGRAM_ACCESS_CHOICES).map { |e| e.attribute('innerText').split(', ') }
       {
         program_choice_values: arr[0],
-        # TODO - remove empty string default value after implementing UU3-52069
-        program_role_value: arr[1].first || "",
-        org_role_values:arr[2]
+        # TODO: - remove empty string default value after implementing UU3-52069
+        program_role_value: arr[1].first || '',
+        org_role_values: arr[2]
       }
     end
 
+    def displayed_org_role_access_values
+      find_elements(PROGRAM_ACCESS_CHOICES).map { |e| e.attribute('innerText').split(', ') }[2]
+    end
+
+    def displayed_program_choice_values
+      find_elements(PROGRAM_ACCESS_CHOICES).map { |e| e.attribute('innerText').split(', ') }[0]
+    end
+
     def get_selectable_input_text(element)
-      find_elements(element).map {|s| s.text.gsub('Remove item', '').strip}
+      find_elements(element).map { |s| s.text.gsub('Remove item', '').strip }
     end
 
     def program_choice_values
