@@ -4,7 +4,7 @@ require_relative '../../../shared_components/base_page'
 
 class FilterDrawer < BasePage
   OPENED_DRAWER = { css: '.ui-drawer--opened' }
-  CLOSE_DRAWER_BTN = { css: '.ui-drawer__close-btn > a > .ui-icon' }
+  CLOSE_DRAWER_BTN = { css: '.ui-drawer__close-btn--opened > a > .ui-icon' }
   TITLE = { css: '.filters-title__text' }
   CLEAR_ALL_BTN = { css: '#clear-all-btn' }
 
@@ -15,7 +15,7 @@ class FilterDrawer < BasePage
   ADDRESS_TYPE_OPTIONS = { css: '.ui-geo-filter__address-type-select .choices__item' }
   ADDRESS_SELECT = { css: '.ui-geo-filter__address-select .choices' }
   ADDRESS_TEXT_INPUT = { css: '.ui-geo-filter__address-select [type="text"]' }
-  ADDRESS_NO_RESULTS = { css: 'choices__item choices__item--choice has-no-choices' }
+  ADDRESS_NO_RESULTS = { css: '.choices__item .choices__item--choice has-no-choices' }
   ADDRESS_OPTIONS = { css: '.ui-geo-filter__address-select .choices__item' }
 
   def close_drawer

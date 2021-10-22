@@ -3,13 +3,13 @@
 require_relative '../../../shared_components/base_page'
 
 class ScreeningsTable < BasePage
-  CREATE_SCREENING_BTN = { css: '#create-screening-btn' }
-  LOADING_SCREENINGS = { xpath: './/p[text()="Loading Screenings..."]' }
-
+  CREATE_SCREENING_BTN = { css: 'button[aria-label="New Screening"]' }
+  LOADING_SCREENINGS = { xpath: './/span[text()="Loading..."]' }
+  SPINNER = { css: '.loader' }
 
   def page_displayed?
-    is_displayed?(CREATE_SCREENING_BTN)
-    is_not_displayed?(LOADING_SCREENINGS)
+    is_displayed?(CREATE_SCREENING_BTN) &&
+      wait_for_spinner(SPINNER)
   end
 
   def create_screening

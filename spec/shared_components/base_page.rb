@@ -187,6 +187,11 @@ class BasePage
     find_elements(selector).select { |e| e.text == text }.first
   end
 
+  # returns an element
+  def find_element_containing_text(selector, text)
+    find_elements(selector).select { |e| e.text.include? text }.first
+  end
+
   # returns a boolean
   def find_element_with_text(selector, text)
     find(selector).text.include?(text)
@@ -304,6 +309,12 @@ class BasePage
   def scroll_to(selector)
     element = find(selector)
     driver.execute_script('arguments[0].scrollIntoView(true);', element)
+  end
+
+  def scroll_to_element_and_click(element)
+    # TODO: use scrollIntoView(true) after CPR-347 is complete
+    driver.execute_script('arguments[0].scrollIntoView(false)', element)
+    element.click
   end
 
   def scroll_to_bottom_of_page
