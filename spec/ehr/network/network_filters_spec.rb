@@ -35,7 +35,7 @@ describe '[Network]', :ehr, :network do
         # filter by service type
         service_type = "Disability Benefits"
         network.select_service_type(service_type)
-        network.wait_for_results_to_load
+        expect(notifications_ehr.error_notification_not_displayed?).to be_truthy
 
         # open filter drawer
         network.open_filter_drawer
@@ -44,13 +44,11 @@ describe '[Network]', :ehr, :network do
         # filter by distance
         distance = "25 Miles"
         filter_drawer.filter_distance_by_miles(distance)
-        network.wait_for_results_to_load
-        expect(network.search_result_text).to include(distance.downcase);
+        expect(network.search_result_text).to include(distance.downcase)
 
         # filter by address
         nyc_office_address= "217 Broadway, New York, NY 10007, USA"
         filter_drawer.submit_other_address(nyc_office_address)
-        network.wait_for_results_to_load
         expect(network.search_result_text).to include(nyc_office_address)
 
         # close filter drawer

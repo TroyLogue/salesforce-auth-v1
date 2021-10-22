@@ -79,7 +79,8 @@ class Network < BasePage
   end
 
   def search_result_text
-    text(RESULT_DIV)
+    is_not_displayed?(LOADER) &&
+      text(RESULT_DIV)
   end
 
   def select_service_type(service_type)
@@ -89,10 +90,6 @@ class Network < BasePage
 
   def selected_programs_count_text
     text(SELECTED_PROGRAMS_COUNT)
-  end
-
-  def wait_for_results_to_load
-    is_not_displayed?(LOADER)
   end
 
   private

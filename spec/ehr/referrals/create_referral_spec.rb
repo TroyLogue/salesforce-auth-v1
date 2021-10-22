@@ -35,8 +35,6 @@ describe '[Referrals]', :ehr, :ehr_referrals do
 
     it 'adding two programs via table', :uuqa_1614 do
       # select two random programs from table
-      description = Faker::Lorem.sentence(word_count: 5)
-
       find_programs.select_service_type_by_text(@service_type)
       find_programs.add_programs_from_table(program_count: 2)
       find_programs.click_next
@@ -46,7 +44,7 @@ describe '[Referrals]', :ehr, :ehr_referrals do
       select_service_types.click_next
       expect(add_description.page_displayed?).to be_truthy
 
-      add_description.fill_out_description_card_for_each_referral(description: description)
+      add_description.fill_out_description_card_for_each_referral
       add_description.click_next
       referral_assessment.click_next if referral_assessment.page_displayed?
       expect(referral_review.page_displayed?).to be_truthy

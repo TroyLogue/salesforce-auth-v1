@@ -27,9 +27,10 @@ class AddDescription < BasePage
       is_displayed?(DESCRIPTION_INPUT)
   end
 
-  def fill_out_description_card_for_each_referral(description: '')
+  def fill_out_description_card_for_each_referral(description: nil)
     referral_cards = find_elements(REFERRAL_CARD)
     referral_cards.each do |referral_card|
+      description ||= Faker::Lorem.word # set description if not passed as argument
       description_field = referral_card.find_element(DESCRIPTION_INPUT)
       description_field.send_keys description
       if (primary_worker_dropdown = referral_card.find_elements(PRIMARY_WORKER_SELECT_FIELD)[0])
