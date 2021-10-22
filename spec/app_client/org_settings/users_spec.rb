@@ -87,7 +87,8 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
 
       program_added = org_settings_user_form.add_program
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
-
+      org_settings_user_form.refresh
+      expect(org_settings_user_form.page_displayed?).to be_truthy
       expected_values = original_program_values + [program_added]
       actual_values = org_settings_user_form.check_updated_ui_values(
         :displayed_program_choice_values, original_values: original_program_values
@@ -103,7 +104,8 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
 
       org_role_added = org_settings_user_form.add_org_role
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
-
+      org_settings_user_form.refresh
+      expect(org_settings_user_form.page_displayed?).to be_truthy
       expected_values = original_org_role_values + [org_role_added]
       actual_values = org_settings_user_form.check_updated_ui_values(
         :displayed_org_role_access_values, original_values: original_org_role_values
@@ -119,7 +121,8 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
 
       org_role_removed = org_settings_user_form.remove_org_role
       expect(notifications.success_text).to include(Notifications::USER_UPDATED)
-
+      org_settings_user_form.refresh
+      expect(org_settings_user_form.page_displayed?).to be_truthy
       expected_values = original_org_role_values - [org_role_removed]
       actual_values = org_settings_user_form.check_updated_ui_values(
         :displayed_org_role_access_values, original_values: original_org_role_values
