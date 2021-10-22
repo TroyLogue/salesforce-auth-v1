@@ -71,11 +71,9 @@ class FindPrograms < BasePage
   private
 
   def add_random_program_from_table
-    random_add_btn = find_elements(PROGRAM_CARD_ADD_BTN).sample
-    scroll_to_element_and_click(random_add_btn)
-  rescue StandardError => e
-    info_message = "No more provider results for the selected service type."
-    raise StandardError, "#{e.message}: #{info_message}"
+    active_program_btns = find_elements(PROGRAM_CARD_ADD_BTN)
+    raise("No active program results found for the selected service type.") if active_program_btns.empty?
+    scroll_to_element_and_click(active_program_btns.sample)
   end
 
   def wait_for_matches
