@@ -293,6 +293,7 @@ class BasePage
   end
 
   def scroll_to_element_and_click(element)
+    # TODO: use scrollIntoView(true) after CPR-347 is complete
     driver.execute_script('arguments[0].scrollIntoView(false)', element)
     element.click
   end
