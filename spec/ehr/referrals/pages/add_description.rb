@@ -27,7 +27,7 @@ class AddDescription < BasePage
       is_displayed?(DESCRIPTION_INPUT)
   end
 
-  def fill_out_description_card_for_each_referral(description:)
+  def fill_out_description_card_for_each_referral(description: '')
     referral_cards = find_elements(REFERRAL_CARD)
     referral_cards.each do |referral_card|
       description_field = referral_card.find_element(DESCRIPTION_INPUT)
