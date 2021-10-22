@@ -4,7 +4,7 @@ require_relative './pages/program_drawer'
 require_relative './pages/share_drawer'
 require_relative '../root/pages/notifications_ehr'
 
-describe '[Network] Add Provider from Browse Drawer', :ehr, :network do
+describe '[Network] Add Program from Browse Drawer', :ehr, :network do
   include LoginEhr
 
   let(:login_email_ehr) { LoginEmailEhr.new(@driver) }
