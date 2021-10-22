@@ -18,8 +18,8 @@ class CollectionFiltersDrawer < BasePage
   CARE_COORDINATOR_TEXT = "Care Coordinator"
   CARE_COORDINATOR_SEARCH_INPUT = { css: '#care-coordinator-filter.ui-filter-search__input' }
 
-  # TODO - update this to be more deterministic. Currently EHR doesn't show any 'No Matches' text or
-  # component, just keeps displaying the Loading... text forever if no matches
+  # TODO: update this selector after https://uniteus.atlassian.net/browse/CPR-348 is fixed
+  # (currently there is no 'No Results Found' response, just 'Loading...' text)
   CARE_COORDINATOR_NO_MATCHES = { css: '.filter-options__container--loading' }
 
   def drawer_displayed?
