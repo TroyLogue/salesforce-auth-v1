@@ -11,7 +11,6 @@ class ReferralReview < BasePage
     is_displayed?(REVIEW_TEXT) &&
       is_displayed?(REFERRAL_CARD) &&
       is_displayed?(COMPLETE_BTN)
-    true
   end
 
   def complete_referral
