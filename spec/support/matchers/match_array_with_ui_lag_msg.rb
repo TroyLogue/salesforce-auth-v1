@@ -9,6 +9,6 @@ RSpec::Matchers.define :match_array_with_ui_lag_msg do |expected_values|
     expect(actual_values).to match_array(expected_values)
   end
   failure_message do |actual_values|
-    "E2E ERROR: got #{actual_values}, expected #{expected_values} : UI lags can cause flakes; if common, add page refresh before asserting"
+    "E2E ERROR: got #{actual_values}, expected #{expected_values} : Potential UI flakes. Consider adding page refresh before asserting. If refresh implemented, check for bugs or unacceptable lag."
   end
 end
