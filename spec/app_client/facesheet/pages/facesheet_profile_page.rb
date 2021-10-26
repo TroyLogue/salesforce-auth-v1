@@ -569,6 +569,8 @@ class FacesheetProfilePage < BasePage
       click_element_from_list_by_text(LIST_PLAN_TYPE_CHOICES, plan_type)
       click_via_js(EXPAND_INSURANCE_PLAN)
       is_displayed?(INSURANCE_PLAN_DROPDOWN_OPEN)
+      # waiting for plans to load on dropdown, dropdown should have more than 1 option displayed when loaded
+      wait_for_elements_to_appear(LIST_INSURANCE_PLAN_CHOICES, 1)
       click_element_from_list_by_text(LIST_INSURANCE_PLAN_CHOICES, insurance_plan)
       enter(member_id, INPUT_MEMBER_ID)
       enter(group_id, INPUT_GROUP_ID)

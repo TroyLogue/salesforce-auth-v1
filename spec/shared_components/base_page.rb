@@ -375,6 +375,10 @@ class BasePage
     wait_for { find_elements(selector).length < 1 }
   end
 
+  def wait_for_elements_to_appear(selector, number_greater_than)
+    wait_for { find_elements(selector).length > number_greater_than }
+  end
+
   def wait_for_notification_to_disappear(notification = { css: '#notifications .notification' })
     wait_for { find_elements(notification).length < 1 }
   end
