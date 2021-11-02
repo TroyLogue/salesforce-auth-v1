@@ -380,7 +380,7 @@ class Referral < BasePage
     retry_count = 0
     coordinator = 'None'
     while coordinator == 'None' && retry_count <= default_retry_count
-      click(ASSIGN_CARE_COORDINATOR_DROPDOWN)
+      click_via_js(ASSIGN_CARE_COORDINATOR_DROPDOWN)
       click_random(ASSIGN_CARE_COORDINATOR_CHOICES)
       # Return name of care coordinator to use later, removing unwanted text
       coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!

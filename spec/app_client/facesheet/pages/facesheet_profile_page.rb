@@ -80,7 +80,7 @@ class FacesheetProfilePage < BasePage
       click(EDIT_PHONE)
       is_displayed?(PHONE_MODAL)
       # Adding Phone Number
-      click(ADD_PHONE)
+      click_via_js(ADD_PHONE)
       click(INPUT_PHONE)
       enter(phone, INPUT_PHONE)
       click(EXPAND_TYPE_CHOICES)
