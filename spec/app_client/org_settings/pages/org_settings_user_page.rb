@@ -85,9 +85,9 @@ module OrgSettings
     INPUT_WORK_TITLE = { css: '#work-title' }.freeze
     EMPLOYEE_STATE_CHOICES = { css: 'div[aria-activedescendant*="choices-state-item-choice"]' }.freeze
     EMPLOYEE_STATE_ACTIVE = { css: 'div[aria-activedescendant*="choices-state-item-choice"] .choices__item.choices__item--selectable[data-value="active"]' }.freeze
-    INPUT_PROGRAM_CHOICES = { css: 'div[aria-activedescendant*="programs-item-choice"]' }.freeze
-    INPUT_PROGRAM_ROLES = { css: 'div[aria-activedescendant*="roles-item-choice"]' }.freeze
-    INPUT_ORG_ROLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
+    INPUT_PROGRAM_CHOICES = { css: '.dialog.open.large div[aria-activedescendant*="programs-item-choice"]' }.freeze
+    INPUT_PROGRAM_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="roles-item-choice"]' }.freeze
+    INPUT_ORG_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
     INPUT_PROGRAM_CHOICES_SELECTABLES = { css: 'div[aria-activedescendant*="programs-item-choice"] div.choices__list--multiple div.choices__item--selectable' }.freeze
     INPUT_ORG_ROLES_SELECTABLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"] div.choices__list--multiple div.choices__item--selectable' }.freeze
     PROGRAM_ACCESS_CHOICES = { css: 'div[data-role="personal-information"] .profile-value' }.freeze
@@ -109,9 +109,9 @@ module OrgSettings
     EDITABLE_NETWORK = { css: '#edit-network-licenses-modal-btn' }.freeze
     EDITABLE_ORG = { css: '#edit-group-licenses-modal-btn' }.freeze
     PROGRAM_ACCESS_DROPDOWN = { css: '.program-data-form .multiple-selector' }.freeze
-    PROGRAM_ACCESS_DROPDOWN_CHOICES = { css: '[id^=choices-user-programs-item-choice]' }.freeze
+    PROGRAM_ACCESS_DROPDOWN_CHOICES = { css: '.is-active [id^=choices-user-programs-item-choice]' }.freeze
     ORG_ROLE_DROPDOWN = { css: '.program-data-form__org-roles .multiple-selector' }.freeze
-    ORG_ROLE_DROPDOWN_CHOICES = { css: '[id^=choices-org-roles-item-choice]' }.freeze
+    ORG_ROLE_DROPDOWN_CHOICES = { css: '.is-active [id^=choices-org-roles-item-choice]' }.freeze
     ORG_ROLE_REMOVE_BUTTONS = { css: '#org-roles + div .choices__button' }.freeze
     EDITABLE_STATE = { css: '#edit-employee-state-modal-btn' }.freeze
     EDITABLE_STATE_MODAL = { css: '#edit-employee-state-modal.dialog.open' }.freeze
