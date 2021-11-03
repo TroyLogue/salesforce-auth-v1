@@ -37,7 +37,7 @@ class Referral < BasePage
   ACCEPT_SAVE_BTN = { css: '#accept-referral-submit-btn' }.freeze
 
   HOLD_REFERRAL_MODAL = { css: '.dialog.open.large .hold-modal-form' }.freeze
-  HOLD_REFERRAL_REASON_DROPDOWN = { css: '.referral-reason-field' }.freeze
+  HOLD_REFERRAL_REASON_DROPDOWN = { css: '.dialog.open.large .referral-reason-field' }.freeze
   HOLD_REFERRAL_REASON_OPTION = { css: '.is-active .choices__item.choices__item--choice.choices__item--selectable' }.freeze
   HOLD_REFERRAL_NOTE = { css: '.hold-modal-form #noteInput' }.freeze
   HOLD_REFERRAL_BTN = { css: '#hold-referral-hold-btn' }.freeze
