@@ -85,9 +85,9 @@ module OrgSettings
     INPUT_WORK_TITLE = { css: '#work-title' }.freeze
     EMPLOYEE_STATE_CHOICES = { css: 'div[aria-activedescendant*="choices-state-item-choice"]' }.freeze
     EMPLOYEE_STATE_ACTIVE = { css: 'div[aria-activedescendant*="choices-state-item-choice"] .choices__item.choices__item--selectable[data-value="active"]' }.freeze
-    INPUT_PROGRAM_CHOICES = { css: '.dialog.open.large div[aria-activedescendant*="programs-item-choice"]' }.freeze
-    INPUT_PROGRAM_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="roles-item-choice"]' }.freeze
-    INPUT_ORG_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
+    INPUT_PROGRAM_CHOICES = { css: 'div[aria-activedescendant*="programs-item-choice"]' }.freeze
+    INPUT_PROGRAM_ROLES = { css: 'div[aria-activedescendant*="roles-item-choice"]' }.freeze
+    INPUT_ORG_ROLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
     INPUT_PROGRAM_CHOICES_SELECTABLES = { css: 'div[aria-activedescendant*="programs-item-choice"] div.choices__list--multiple div.choices__item--selectable' }.freeze
     INPUT_ORG_ROLES_SELECTABLES = { css: 'div[aria-activedescendant*="org-roles-item-choice"] div.choices__list--multiple div.choices__item--selectable' }.freeze
     PROGRAM_ACCESS_CHOICES = { css: 'div[data-role="personal-information"] .profile-value' }.freeze
@@ -110,6 +110,9 @@ module OrgSettings
     EDITABLE_ORG = { css: '#edit-group-licenses-modal-btn' }.freeze
     PROGRAM_ACCESS_DROPDOWN = { css: '.program-data-form .multiple-selector' }.freeze
     PROGRAM_ACCESS_DROPDOWN_CHOICES = { css: '.is-active [id^=choices-user-programs-item-choice]' }.freeze
+    PROGRAM_CHOICES = { css: '.dialog.open.large div[aria-activedescendant*="programs-item-choice"]' }.freeze
+    PROGRAM_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="roles-item-choice"]' }.freeze
+    ORG_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
     ORG_ROLE_DROPDOWN = { css: '.program-data-form__org-roles .multiple-selector' }.freeze
     ORG_ROLE_DROPDOWN_CHOICES = { css: '.is-active [id^=choices-org-roles-item-choice]' }.freeze
     ORG_ROLE_REMOVE_BUTTONS = { css: '#org-roles + div .choices__button' }.freeze
@@ -161,14 +164,14 @@ module OrgSettings
     def edit_program_access?
       click(EDITABLE_PROGRAM)
       is_displayed?(EDIT_PROGRAM_CLOSE_BUTTON) # wait for modal to glide down
-      editable = is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
+      editable = is_displayed?(PROGRAM_CHOICES) && is_displayed?(PROGRAM_ROLES) && is_displayed?(ORG_ROLES)
       click(BTN_CANCEL_PROGRAM)
       editable
     end
 
     def go_to_edit_program_access
       click(EDITABLE_PROGRAM)
-      is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
+      is_displayed?(PROGRAM_CHOICES) && is_displayed?(PROGRAM_ROLES) && is_displayed?(ORG_ROLES)
     end
 
     def displayed_program_access_values
@@ -199,7 +202,7 @@ module OrgSettings
     end
 
     def program_role_value
-      text(INPUT_PROGRAM_ROLES).gsub('Remove item', '').strip
+      text(PROGRAM_ROLES).gsub('Remove item', '').strip
     end
 
     def org_role_values
