@@ -115,7 +115,7 @@ module OrgSettings
     ORG_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
     ORG_ROLE_DROPDOWN = { css: '.program-data-form__org-roles .multiple-selector' }.freeze
     ORG_ROLE_DROPDOWN_CHOICES = { css: '.is-active [id^=choices-org-roles-item-choice]' }.freeze
-    ORG_ROLE_REMOVE_BUTTONS = { css: '#org-roles + div .choices__button' }.freeze
+    ORG_ROLE_REMOVE_BUTTONS = { css: '.dialog.open.large #org-roles + div .choices__button' }.freeze
     EDITABLE_STATE = { css: '#edit-employee-state-modal-btn' }.freeze
     EDITABLE_STATE_MODAL = { css: '#edit-employee-state-modal.dialog.open' }.freeze
     STATE_DROPDOWN = { css: '.edit-employee-state-form__state-select .choices' }.freeze
