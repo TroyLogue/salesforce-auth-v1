@@ -18,7 +18,7 @@ module UserSettings
     CONTACT_INFO_ROW = { css: '.row.settings-contact-information' }.freeze
 
     # security settings
-    EDIT_SECURITY_SETTINGS_BUTTON = { css: 'button[data-qa=edit-security-settings-btn]' }.freeze
+    EDIT_SECURITY_SETTINGS_BUTTON = { css: 'button[data-test-element=edit-security-settings-btn]' }.freeze
 
     PATH = '/user/settings'
 
