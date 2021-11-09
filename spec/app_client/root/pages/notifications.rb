@@ -15,6 +15,7 @@ class Notifications < BasePage
   CASE_CREATED = 'Case Created'
   CASE_REOPENED = 'Case Successfully Reopened'
   CASE_UPDATED = 'Case Successfully Updated'
+  CLIENT_CREATED = 'Contact Successfully Created'
   CLIENT_UPDATED = 'Client Successfully Updated'
   CONSENT_REQUEST_SENT = 'Consent Request Sent'
   CONSENT_UPLOADED = 'Consent Uploaded'
