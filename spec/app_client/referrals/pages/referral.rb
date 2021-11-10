@@ -211,9 +211,9 @@ class Referral < BasePage
     click(TAKE_ACTION_DROP_DOWN)
     click(TAKE_ACTION_ACCEPT_OPTION)
     is_displayed?(ACCEPT_MODAL)
-    click(ACCEPT_PROGRAM_OPTIONS)
+    click_via_js(ACCEPT_PROGRAM_OPTIONS)
     click(ACCEPT_FIRST_PROGRAM_OPTION)
-    click(ACCEPT_PRIMARY_WORKER_OPTIONS)
+    click_via_js(ACCEPT_PRIMARY_WORKER_OPTIONS)
     click(ACCEPT_FIRST_PRIMARY_WORKER_OPTION)
     click(ACCEPT_SAVE_BTN)
     wait_for_spinner
