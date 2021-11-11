@@ -381,6 +381,7 @@ class Referral < BasePage
     coordinator = 'None'
     while coordinator == 'None' && retry_count <= default_retry_count
       click_via_js(ASSIGN_CARE_COORDINATOR_DROPDOWN)
+      find(ASSIGN_CARE_COORDINATOR_CHOICES) # find in each loop to avoid StaleReferenceElementException
       click_random(ASSIGN_CARE_COORDINATOR_CHOICES)
       # Return name of care coordinator to use later, removing unwanted text
       coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
