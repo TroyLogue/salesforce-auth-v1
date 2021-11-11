@@ -110,12 +110,14 @@ module OrgSettings
     EDITABLE_ORG = { css: '#edit-group-licenses-modal-btn' }.freeze
     PROGRAM_ACCESS_DROPDOWN = { css: '.program-data-form .multiple-selector' }.freeze
     PROGRAM_ACCESS_DROPDOWN_CHOICES = { css: '.is-active [id^=choices-user-programs-item-choice]' }.freeze
+    PROGRAM_ACCESS_SELECTIONS = { css: '.program-data-form .choices__inner' }.freeze
     PROGRAM_CHOICES = { css: '.dialog.open.large div[aria-activedescendant*="programs-item-choice"]' }.freeze
     PROGRAM_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="roles-item-choice"]' }.freeze
     ORG_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
     ORG_ROLE_DROPDOWN = { css: '.program-data-form__org-roles .multiple-selector' }.freeze
     ORG_ROLE_DROPDOWN_CHOICES = { css: '.is-active [id^=choices-org-roles-item-choice]' }.freeze
     ORG_ROLE_REMOVE_BUTTONS = { css: '.dialog.open.large #org-roles + div .choices__button' }.freeze
+    ORG_ROLE_SELECTIONS = { css: '.program-data-form__org-roles .choices__inner' }.freeze # useful for getting text of selections
     EDITABLE_STATE = { css: '#edit-employee-state-modal-btn' }.freeze
     EDITABLE_STATE_MODAL = { css: '#edit-employee-state-modal.dialog.open' }.freeze
     STATE_DROPDOWN = { css: '.edit-employee-state-form__state-select .choices' }.freeze
@@ -215,6 +217,10 @@ module OrgSettings
       program_element = find_elements(PROGRAM_ACCESS_DROPDOWN_CHOICES).sample
       program_new_value = program_element.text
       program_element.click
+      unless text(PROGRAM_ACCESS_SELECTIONS).include? program_new_value
+        raise StandardError, "E2E ERROR: #{program_new_value} was not added before saving, test is in an invalid state"
+      end
+
       click(BTN_SAVE_PROGRAM)
       program_new_value
     end
@@ -225,6 +231,10 @@ module OrgSettings
       org_role_element = find_elements(ORG_ROLE_DROPDOWN_CHOICES).sample
       org_new_value = org_role_element.text
       org_role_element.click
+      unless text(ORG_ROLE_SELECTIONS).include? org_new_value
+        raise StandardError, "E2E ERROR: #{org_new_value} was not added before saving, test is in an invalid state"
+      end
+
       click(BTN_SAVE_PROGRAM)
       org_new_value
     end
@@ -234,6 +244,11 @@ module OrgSettings
       org_role_element = find_elements(ORG_ROLE_REMOVE_BUTTONS).sample
       org_removed_value = org_role_element.attribute('aria-label').gsub('Remove item:', '').gsub("'", '').strip
       org_role_element.click
+      if text(ORG_ROLE_SELECTIONS).include? org_removed_value
+        raise StandardError,
+              "E2E ERROR: #{org_removed_value} was not removed before saving, test is in an invalid state"
+      end
+
       click(BTN_SAVE_PROGRAM)
       org_removed_value
     end
