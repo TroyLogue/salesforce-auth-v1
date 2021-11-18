@@ -190,13 +190,13 @@ class FacesheetProfilePage < BasePage
       click(EDIT_EMAIL)
       is_displayed?(EMAIL_MODAL)
       # Adding email
-      click(ADD_EMAIL)
+      click_via_js(ADD_EMAIL)
       enter(email, INPUT_EMAIL)
       # Enabling notifications
       click(EMAIL_CHECKBOX_MESSAGE)
       click(EMAIL_CHECKBOX_NOTIFICATION)
       # saving
-      click(BTN_SAVE_EMAIL)
+      click_via_js(BTN_SAVE_EMAIL)
       wait_for_spinner
       wait_for_notification_to_disappear
     end
