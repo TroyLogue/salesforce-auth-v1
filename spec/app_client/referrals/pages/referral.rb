@@ -64,7 +64,7 @@ class Referral < BasePage
   ASSIGN_CARE_COORDINATOR_LINK = { css: '#assign-care-coordinator-link' }.freeze
   ASSIGN_CARE_COORDINATOR_MODAL = { css: '#care-coordinator-modal.dialog.open.normal .dialog-paper' }.freeze
   ASSIGN_CARE_COORDINATOR_DROPDOWN = { css: '.care-coordinator-select .choices' }.freeze
-  ASSIGN_CARE_COORDINATOR_CHOICES = { css: '.is-active div[id^="choices-care-coordinator"]' }.freeze
+  ASSIGN_CARE_COORDINATOR_CHOICES = { css: '.is-active div[id^="choices-care-coordinator"]:not([data-value="none"])' }.freeze # any Care Coordinator value from the dropdown except 'None'
   ASSIGN_CARE_COORDINATOR_SELECTED = { css: '#care-coordinator-selector + div > div:not(button)' }.freeze
   ASSIGN_CARE_COORDINATOR_BUTTON = { css: '#edit-care-coordinator-assign-btn' }.freeze
   CURRENT_CARE_COORDINATOR = { css: '.edit-care-coordinator > span' }.freeze
@@ -368,30 +368,18 @@ class Referral < BasePage
   end
 
   # Care Coordinator
-  def assign_first_care_coordinator
+  def assign_random_care_coordinator
     click(ASSIGN_CARE_COORDINATOR_LINK)
     is_displayed?(ASSIGN_CARE_COORDINATOR_MODAL)
     # ensure dropdown is displayed before trying to click to avoid StaleElementReference
     is_displayed?(ASSIGN_CARE_COORDINATOR_DROPDOWN)
 
-    # 'None' is an option among the care coordinator choices; we need to make sure it's not submitted
-    # CORE-1120 improvement ticket to move None out of alphabetic order
-    default_retry_count = 10
-    retry_count = 0
-    coordinator = 'None'
-    while coordinator == 'None' && retry_count <= default_retry_count
-      click_via_js(ASSIGN_CARE_COORDINATOR_DROPDOWN)
-      click_random(ASSIGN_CARE_COORDINATOR_CHOICES)
-      # Return name of care coordinator to use later, removing unwanted text
-      coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
-      # logging the coordinator value in case retry_count reaches max with None selected;
-      # given the unlikelihood of that happening, we will want proof in case of the StandardError being raised
-      # this logging can be removed when CORE-1120 is addressed
-      p "E2E DEBUG: care coordinator at retry count #{retry_count} is #{coordinator}"
-      retry_count += 1
-      coordinator
-    end
+    click_via_js(ASSIGN_CARE_COORDINATOR_DROPDOWN)
+    click_random(ASSIGN_CARE_COORDINATOR_CHOICES)
+    coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
 
+    # if Care Coordinator is 'None', check if the data-value of selector
+    # used in ASSIGN_CARE_COORDINATOR_CHOICES has changed
     raise StandardError, 'Invalid test condition: Coordinator is None' if coordinator == 'None'
 
     click(ASSIGN_CARE_COORDINATOR_BUTTON)
