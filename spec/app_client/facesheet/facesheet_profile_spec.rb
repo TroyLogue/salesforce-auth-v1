@@ -5,12 +5,14 @@ require_relative '../root/pages/home_page'
 require_relative './pages/facesheet_header'
 require_relative './pages/facesheet_profile_page'
 require_relative '../root/pages/left_nav'
+require_relative '../root/pages/notifications'
 require_relative '../clients/pages/clients_page'
 
 describe '[Facesheet][Profile]', :app_client, :facesheet, :messaging do
   let(:home_page) { HomePage.new(@driver) }
   let(:facesheet_header) { FacesheetHeader.new(@driver) }
   let(:facesheet_profile) { FacesheetProfilePage.new(@driver) }
+  let(:notifications) { Notifications.new(@driver) }
 
   # # option 1 - new browser session with each spec
   context('[as org user with military and insurance]') do
@@ -38,14 +40,14 @@ describe '[Facesheet][Profile]', :app_client, :facesheet, :messaging do
       expect(facesheet_profile.are_phone_notifications_enabled?).to be_truthy
     end
 
-    it 'updates address', :uuqa_1510, :test do
+    it 'updates address', :uuqa_1510 do
       @city = Faker::Address.city
       @state = Faker::Address.state
       # UU does a soft validation of addresses, therefore zip code needs to map to state
       @zip = Faker::Address.zip(state_abbreviation: state_name_to_abbr(name: @state))
       facesheet_profile.add_address(address_line1: @address_line1, city: @city, state: @state, zip: @zip)
       p "E2E DEBUG: Updating client address to: #{@address_line1} #{@city} #{@state} #{@zip}"
-      expect(notifications.error_notification_not_displayed?).to be_truthy
+      expect(notifications.success_text).to eq(Notifications::ADDRESS_ADDED)
       expect(facesheet_profile.current_address).to include(
         @city, state_name_to_abbr(name: @state), @zip
       )
