@@ -37,7 +37,7 @@ class Referral < BasePage
   ACCEPT_SAVE_BTN = { css: '#accept-referral-submit-btn' }.freeze
 
   HOLD_REFERRAL_MODAL = { css: '.dialog.open.large .hold-modal-form' }.freeze
-  HOLD_REFERRAL_REASON_DROPDOWN = { css: '.dialog.open.large .referral-reason-field' }.freeze
+  HOLD_REFERRAL_REASON_DROPDOWN = { css: '.dialog.open.large .referral-reason-field .choices__inner' }.freeze
   HOLD_REFERRAL_REASON_OPTION = { css: '.is-active .choices__item.choices__item--choice.choices__item--selectable' }.freeze
   HOLD_REFERRAL_NOTE = { css: '.hold-modal-form #noteInput' }.freeze
   HOLD_REFERRAL_BTN = { css: '#hold-referral-hold-btn' }.freeze
@@ -211,9 +211,9 @@ class Referral < BasePage
     click(TAKE_ACTION_DROP_DOWN)
     click(TAKE_ACTION_ACCEPT_OPTION)
     is_displayed?(ACCEPT_MODAL)
-    click(ACCEPT_PROGRAM_OPTIONS)
+    click_via_js(ACCEPT_PROGRAM_OPTIONS)
     click(ACCEPT_FIRST_PROGRAM_OPTION)
-    click(ACCEPT_PRIMARY_WORKER_OPTIONS)
+    click_via_js(ACCEPT_PRIMARY_WORKER_OPTIONS)
     click(ACCEPT_FIRST_PRIMARY_WORKER_OPTION)
     click(ACCEPT_SAVE_BTN)
     wait_for_spinner
@@ -375,6 +375,7 @@ class Referral < BasePage
     is_displayed?(ASSIGN_CARE_COORDINATOR_DROPDOWN)
 
     click_via_js(ASSIGN_CARE_COORDINATOR_DROPDOWN)
+    find(ASSIGN_CARE_COORDINATOR_CHOICES) # find in each loop to avoid StaleReferenceElementException
     click_random(ASSIGN_CARE_COORDINATOR_CHOICES)
     coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
 
