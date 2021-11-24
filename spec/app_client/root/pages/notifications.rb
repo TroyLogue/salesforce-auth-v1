@@ -63,6 +63,10 @@ class Notifications < BasePage
     text(NOTIFICATION_BANNER)
   end
 
+  def notification_text
+    text(NOTIFICATION_BANNER)
+  end
+
   def success_banner_displayed?
     check_displayed?(SUCCESS_BANNER)
   end

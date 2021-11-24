@@ -47,7 +47,7 @@ describe '[Facesheet][Profile]', :app_client, :facesheet, :messaging do
       @zip = Faker::Address.zip(state_abbreviation: state_name_to_abbr(name: @state))
       facesheet_profile.add_address(address_line1: @address_line1, city: @city, state: @state, zip: @zip)
       p "E2E DEBUG: Updating client address to: #{@address_line1} #{@city} #{@state} #{@zip}"
-      expect(notifications.success_text).to eq(Notifications::ADDRESS_ADDED)
+      expect(notifications.notification_text).to eq(Notifications::ADDRESS_ADDED)
       expect(facesheet_profile.current_address).to include(
         @city, state_name_to_abbr(name: @state), @zip
       )
