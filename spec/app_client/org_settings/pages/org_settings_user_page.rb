@@ -243,10 +243,18 @@ module OrgSettings
       go_to_edit_program_access
       org_role_element = find_elements(ORG_ROLE_REMOVE_BUTTONS).sample
       org_removed_value = org_role_element.attribute('aria-label').gsub('Remove item:', '').gsub("'", '').strip
-      org_role_element.click
+
+      # Adding retries when clicking on the 'x' for the selected org role to avoid flakes
+      max_retry_count = 2
+      retry_count = 0
+      while (text(ORG_ROLE_SELECTIONS).include? org_removed_value) && (retry_count <= max_retry_count)
+        org_role_element.click
+        p "E2E DEBUG: #{org_removed_value} was clicked to be removed, retry_count: #{retry_count}"
+        retry_count += 1
+      end
+
       if text(ORG_ROLE_SELECTIONS).include? org_removed_value
-        raise StandardError,
-              "E2E ERROR: #{org_removed_value} was not removed before saving, test is in an invalid state"
+        raise StandardError, "E2E Error: #{org_removed_value}  was not removed before saving after #{retry_count} retries"
       end
 
       click(BTN_SAVE_PROGRAM)
