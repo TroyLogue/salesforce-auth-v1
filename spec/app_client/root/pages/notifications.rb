@@ -9,6 +9,7 @@ class Notifications < BasePage
   CLOSE_BANNER = { css: '.close' }.freeze
 
   ACCESS_DENIED = 'Access to the requested resource has been forbidden.'
+  ADDRESS_ADDED = 'Address Successfully Added'
   ASSISTANCE_REQUEST_CLOSED = 'Assistance Request Successfully Closed'
   BLANK_EMAIL_MESSAGE = "EmailAddress can't be blank"
   CASE_CLOSED = 'Case Successfully closed'
@@ -59,6 +60,10 @@ class Notifications < BasePage
 
   def error_text
     find(ERROR_BANNER)
+    text(NOTIFICATION_BANNER)
+  end
+
+  def notification_text
     text(NOTIFICATION_BANNER)
   end
 
