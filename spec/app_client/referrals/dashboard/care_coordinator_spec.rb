@@ -23,7 +23,7 @@ describe '[Referrals]', :app_client, :referrals do
 
     it 'assign a care coordinator on an incoming referral', :uuqa_1737 do
       referral.go_to_new_referral_with_id(referral_id: @referral.id)
-      care_coordinator = referral.assign_first_care_coordinator
+      care_coordinator = referral.assign_random_care_coordinator
       expect(referral.current_care_coordinator).to eq(care_coordinator)
     end
   end

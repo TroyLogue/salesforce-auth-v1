@@ -37,7 +37,7 @@ class Referral < BasePage
   ACCEPT_SAVE_BTN = { css: '#accept-referral-submit-btn' }.freeze
 
   HOLD_REFERRAL_MODAL = { css: '.dialog.open.large .hold-modal-form' }.freeze
-  HOLD_REFERRAL_REASON_DROPDOWN = { css: '.referral-reason-field' }.freeze
+  HOLD_REFERRAL_REASON_DROPDOWN = { css: '.dialog.open.large .referral-reason-field .choices__inner' }.freeze
   HOLD_REFERRAL_REASON_OPTION = { css: '.is-active .choices__item.choices__item--choice.choices__item--selectable' }.freeze
   HOLD_REFERRAL_NOTE = { css: '.hold-modal-form #noteInput' }.freeze
   HOLD_REFERRAL_BTN = { css: '#hold-referral-hold-btn' }.freeze
@@ -64,7 +64,7 @@ class Referral < BasePage
   ASSIGN_CARE_COORDINATOR_LINK = { css: '#assign-care-coordinator-link' }.freeze
   ASSIGN_CARE_COORDINATOR_MODAL = { css: '#care-coordinator-modal.dialog.open.normal .dialog-paper' }.freeze
   ASSIGN_CARE_COORDINATOR_DROPDOWN = { css: '.care-coordinator-select .choices' }.freeze
-  ASSIGN_CARE_COORDINATOR_CHOICES = { css: '.is-active div[id^="choices-care-coordinator"]' }.freeze
+  ASSIGN_CARE_COORDINATOR_CHOICES = { css: '.is-active div[id^="choices-care-coordinator"]:not([data-value="none"])' }.freeze # any Care Coordinator value from the dropdown except 'None'
   ASSIGN_CARE_COORDINATOR_SELECTED = { css: '#care-coordinator-selector + div > div:not(button)' }.freeze
   ASSIGN_CARE_COORDINATOR_BUTTON = { css: '#edit-care-coordinator-assign-btn' }.freeze
   CURRENT_CARE_COORDINATOR = { css: '.edit-care-coordinator > span' }.freeze
@@ -211,9 +211,9 @@ class Referral < BasePage
     click(TAKE_ACTION_DROP_DOWN)
     click(TAKE_ACTION_ACCEPT_OPTION)
     is_displayed?(ACCEPT_MODAL)
-    click(ACCEPT_PROGRAM_OPTIONS)
+    click_via_js(ACCEPT_PROGRAM_OPTIONS)
     click(ACCEPT_FIRST_PROGRAM_OPTION)
-    click(ACCEPT_PRIMARY_WORKER_OPTIONS)
+    click_via_js(ACCEPT_PRIMARY_WORKER_OPTIONS)
     click(ACCEPT_FIRST_PRIMARY_WORKER_OPTION)
     click(ACCEPT_SAVE_BTN)
     wait_for_spinner
@@ -224,7 +224,9 @@ class Referral < BasePage
     click(TAKE_ACTION_DROP_DOWN)
     click(TAKE_ACTION_HOLD_OPTION)
     is_displayed?(HOLD_REFERRAL_MODAL)
+    is_displayed?(HOLD_REFERRAL_REASON_DROPDOWN)
     click(HOLD_REFERRAL_REASON_DROPDOWN)
+    is_displayed?(HOLD_REFERRAL_REASON_OPTION)
     click(HOLD_REFERRAL_REASON_OPTION)
     enter(note, HOLD_REFERRAL_NOTE)
     click(HOLD_REFERRAL_BTN)
@@ -331,6 +333,7 @@ class Referral < BasePage
   end
 
   def military_assessment_displayed?
+    wait_for { find_elements(ASSESSMENT_LIST).length > 1 }
     is_displayed?(MILITARY_ASSESSMENT)
   end
 
@@ -365,24 +368,19 @@ class Referral < BasePage
   end
 
   # Care Coordinator
-  def assign_first_care_coordinator
+  def assign_random_care_coordinator
     click(ASSIGN_CARE_COORDINATOR_LINK)
     is_displayed?(ASSIGN_CARE_COORDINATOR_MODAL)
+    # ensure dropdown is displayed before trying to click to avoid StaleElementReference
+    is_displayed?(ASSIGN_CARE_COORDINATOR_DROPDOWN)
 
-    # 'None' is an option among the care coordinator choices; we need to make sure it's not submitted
-    # CORE-1120 improvement ticket to move None out of alphabetic order
-    default_retry_count = 5
-    retry_count = 0
-    coordinator = 'None'
-    while coordinator == 'None' && retry_count <= default_retry_count
-      click(ASSIGN_CARE_COORDINATOR_DROPDOWN)
-      click_random(ASSIGN_CARE_COORDINATOR_CHOICES)
-      # Return name of care coordinator to use later, removing unwanted text
-      coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
-      retry_count += 1
-      coordinator
-    end
+    click_via_js(ASSIGN_CARE_COORDINATOR_DROPDOWN)
+    find(ASSIGN_CARE_COORDINATOR_CHOICES) # find in each loop to avoid StaleReferenceElementException
+    click_random(ASSIGN_CARE_COORDINATOR_CHOICES)
+    coordinator = text(ASSIGN_CARE_COORDINATOR_SELECTED).sub!(REMOVE_TEXT, '').split('(')[0].strip!
 
+    # if Care Coordinator is 'None', check if the data-value of selector
+    # used in ASSIGN_CARE_COORDINATOR_CHOICES has changed
     raise StandardError, 'Invalid test condition: Coordinator is None' if coordinator == 'None'
 
     click(ASSIGN_CARE_COORDINATOR_BUTTON)

@@ -111,6 +111,25 @@ class BasePage
     find_within(context, selector).click
   end
 
+  # In some specs we assert that values in the UI are updated as expected, and there is no explicit wait availble toward ensuring the value has changed.
+  # This method is designed to compare the original and updated values, giving the UI up to 2 seconds to reflect the change.
+  # The func passed to this method should read the current, actual values in the UI; it must be passed as a symbol, and it must be local to the page-object class under test.
+  # Example: `org_settings_user_form.check_updated_ui_values(:displayed_org_role_access_values, expected_values: expected_values)`
+  # We hope to address this pain point in the front-end rewrite:
+  # https://uniteus.atlassian.net/wiki/spaces/QA/pages/2278490206/Front-end+Rewrite+Historical+Testing+Challenges#lags-in-updating-values-on-the-UI
+  def check_updated_ui_values(func, original_values:, max_retries: 2)
+    max_retry_count = max_retries
+    retry_count = 0
+    updated_values = method(func).call
+    while updated_values.to_set == original_values.to_set && retry_count <= max_retry_count
+      p "E2E DEBUG: check_updated_ui_values retry_count #{retry_count}: original is #{original_values.to_set}, updated is #{updated_values.to_set}"
+      sleep 1 # waiting on dynamic UI update of values
+      retry_count += 1
+      updated_values = method(func).call
+    end
+    updated_values
+  end
+
   def count(selector)
     find_elements(selector).length
   end
@@ -166,6 +185,11 @@ class BasePage
   # returns an element
   def find_element_by_text(selector, text)
     find_elements(selector).select { |e| e.text == text }.first
+  end
+
+  # returns an element
+  def find_element_containing_text(selector, text)
+    find_elements(selector).select { |e| e.text.include? text }.first
   end
 
   # returns a boolean
@@ -287,6 +311,12 @@ class BasePage
     driver.execute_script('arguments[0].scrollIntoView(true);', element)
   end
 
+  def scroll_to_element_and_click(element)
+    # TODO: use scrollIntoView(true) after CPR-347 is complete
+    driver.execute_script('arguments[0].scrollIntoView(false)', element)
+    element.click
+  end
+
   def scroll_to_bottom_of_page
     main_container = find({ css: 'main' })
     driver.execute_script('arguments[0].scrollTo(0, arguments[0].scrollHeight);', main_container)
@@ -343,6 +373,10 @@ class BasePage
 
   def wait_for_element_to_disappear(selector)
     wait_for { find_elements(selector).length < 1 }
+  end
+
+  def wait_for_elements_to_appear(selector, number_greater_than)
+    wait_for { find_elements(selector).length > number_greater_than }
   end
 
   def wait_for_notification_to_disappear(notification = { css: '#notifications .notification' })

@@ -109,10 +109,15 @@ module OrgSettings
     EDITABLE_NETWORK = { css: '#edit-network-licenses-modal-btn' }.freeze
     EDITABLE_ORG = { css: '#edit-group-licenses-modal-btn' }.freeze
     PROGRAM_ACCESS_DROPDOWN = { css: '.program-data-form .multiple-selector' }.freeze
-    PROGRAM_ACCESS_DROPDOWN_CHOICES = { css: '[id^=choices-user-programs-item-choice]' }.freeze
+    PROGRAM_ACCESS_DROPDOWN_CHOICES = { css: '.is-active [id^=choices-user-programs-item-choice]' }.freeze
+    PROGRAM_ACCESS_SELECTIONS = { css: '.program-data-form .choices__inner' }.freeze
+    PROGRAM_CHOICES = { css: '.dialog.open.large div[aria-activedescendant*="programs-item-choice"]' }.freeze
+    PROGRAM_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="roles-item-choice"]' }.freeze
+    ORG_ROLES = { css: '.dialog.open.large div[aria-activedescendant*="org-roles-item-choice"]' }.freeze
     ORG_ROLE_DROPDOWN = { css: '.program-data-form__org-roles .multiple-selector' }.freeze
-    ORG_ROLE_DROPDOWN_CHOICES = { css: '[id^=choices-org-roles-item-choice]' }.freeze
-    ORG_ROLE_REMOVE_BUTTONS = { css: '#org-roles + div .choices__button' }.freeze
+    ORG_ROLE_DROPDOWN_CHOICES = { css: '.is-active [id^=choices-org-roles-item-choice]' }.freeze
+    ORG_ROLE_REMOVE_BUTTONS = { css: '.dialog.open.large #org-roles + div .choices__button' }.freeze
+    ORG_ROLE_SELECTIONS = { css: '.program-data-form__org-roles .choices__inner' }.freeze # useful for getting text of selections
     EDITABLE_STATE = { css: '#edit-employee-state-modal-btn' }.freeze
     EDITABLE_STATE_MODAL = { css: '#edit-employee-state-modal.dialog.open' }.freeze
     STATE_DROPDOWN = { css: '.edit-employee-state-form__state-select .choices' }.freeze
@@ -161,29 +166,37 @@ module OrgSettings
     def edit_program_access?
       click(EDITABLE_PROGRAM)
       is_displayed?(EDIT_PROGRAM_CLOSE_BUTTON) # wait for modal to glide down
-      editable = is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
+      editable = is_displayed?(PROGRAM_CHOICES) && is_displayed?(PROGRAM_ROLES) && is_displayed?(ORG_ROLES)
       click(BTN_CANCEL_PROGRAM)
       editable
     end
 
     def go_to_edit_program_access
       click(EDITABLE_PROGRAM)
-      is_displayed?(INPUT_PROGRAM_CHOICES) && is_displayed?(INPUT_PROGRAM_ROLES) && is_displayed?(INPUT_ORG_ROLES)
+      is_displayed?(PROGRAM_CHOICES) && is_displayed?(PROGRAM_ROLES) && is_displayed?(ORG_ROLES)
     end
 
     def displayed_program_access_values
       # returns program access values displayed onder user page
-      arr = find_elements(PROGRAM_ACCESS_CHOICES).map{ |e| e.attribute('innerText').split(', ') }
+      arr = find_elements(PROGRAM_ACCESS_CHOICES).map { |e| e.attribute('innerText').split(', ') }
       {
         program_choice_values: arr[0],
-        # TODO - remove empty string default value after implementing UU3-52069
-        program_role_value: arr[1].first || "",
-        org_role_values:arr[2]
+        # TODO: - remove empty string default value after implementing UU3-52069
+        program_role_value: arr[1].first || '',
+        org_role_values: arr[2]
       }
     end
 
+    def displayed_org_role_access_values
+      find_elements(PROGRAM_ACCESS_CHOICES).map { |e| e.attribute('innerText').split(', ') }[2]
+    end
+
+    def displayed_program_choice_values
+      find_elements(PROGRAM_ACCESS_CHOICES).map { |e| e.attribute('innerText').split(', ') }[0]
+    end
+
     def get_selectable_input_text(element)
-      find_elements(element).map {|s| s.text.gsub('Remove item', '').strip}
+      find_elements(element).map { |s| s.text.gsub('Remove item', '').strip }
     end
 
     def program_choice_values
@@ -191,7 +204,7 @@ module OrgSettings
     end
 
     def program_role_value
-      text(INPUT_PROGRAM_ROLES).gsub('Remove item', '').strip
+      text(PROGRAM_ROLES).gsub('Remove item', '').strip
     end
 
     def org_role_values
@@ -204,6 +217,10 @@ module OrgSettings
       program_element = find_elements(PROGRAM_ACCESS_DROPDOWN_CHOICES).sample
       program_new_value = program_element.text
       program_element.click
+      unless text(PROGRAM_ACCESS_SELECTIONS).include? program_new_value
+        raise StandardError, "E2E ERROR: #{program_new_value} was not added before saving, test is in an invalid state"
+      end
+
       click(BTN_SAVE_PROGRAM)
       program_new_value
     end
@@ -214,6 +231,10 @@ module OrgSettings
       org_role_element = find_elements(ORG_ROLE_DROPDOWN_CHOICES).sample
       org_new_value = org_role_element.text
       org_role_element.click
+      unless text(ORG_ROLE_SELECTIONS).include? org_new_value
+        raise StandardError, "E2E ERROR: #{org_new_value} was not added before saving, test is in an invalid state"
+      end
+
       click(BTN_SAVE_PROGRAM)
       org_new_value
     end
@@ -223,6 +244,11 @@ module OrgSettings
       org_role_element = find_elements(ORG_ROLE_REMOVE_BUTTONS).sample
       org_removed_value = org_role_element.attribute('aria-label').gsub('Remove item:', '').gsub("'", '').strip
       org_role_element.click
+      if text(ORG_ROLE_SELECTIONS).include? org_removed_value
+        raise StandardError,
+              "E2E ERROR: #{org_removed_value} was not removed before saving, test is in an invalid state"
+      end
+
       click(BTN_SAVE_PROGRAM)
       org_removed_value
     end

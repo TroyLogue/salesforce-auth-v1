@@ -19,6 +19,8 @@ describe '[Assessments]', :ehr, :assessments do
     before {
       log_in_default_as(LoginEhr::CC_HARVARD)
       expect(homepage.default_view_displayed?).to be_truthy
+      homepage.go_to_assessments_tab
+      expect(assessments_table.page_displayed?).to be_truthy
     }
 
     it 'can edit an assessment', :uuqa_399 do
@@ -32,7 +34,8 @@ describe '[Assessments]', :ehr, :assessments do
       assessment.edit_assessment(new_value)
 
       # verify success notification:
-      notification_text = notifications.success_text
+#      notification_text = notifications.success_text
+      notification_text = notifications.assessment_success_text # TODO remove after CPR-303 is fixed
       expect(notification_text).to include(NotificationsEhr::ASSESSMENT_UPDATED)
 
       # verify value updated:

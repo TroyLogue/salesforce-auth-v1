@@ -10,7 +10,7 @@ class ReferralNetworkMap < BasePage
   FIRST_ORG_CARD = { css: '.ui-provider-card__info' }.freeze
   FIRST_ORG_CARD_NAME = { css: '.ui-provider-card__name' }.freeze
   FIRST_ORG_ADD = { css: '.ui-provider-card.group-list-item .ui-add-remove-buttons__add' }.freeze
-  FIRST_ORG_REMOVE = { css: '.ui-provider-card.group-list-item .ui-add-remove-buttons__remove'}.freeze
+  FIRST_ORG_REMOVE = { css: '.ui-provider-card.group-list-item .ui-add-remove-buttons__remove' }.freeze
 
   DETAILS_DRAWER = { css: 'referral-create-group-details group-details' }.freeze
   DETAILS_DRAWER_ADD_BTN = { css: '.add-button' }.freeze
@@ -19,7 +19,6 @@ class ReferralNetworkMap < BasePage
   FILTER_DRAWER = { css: '.ui-drawer--opened .browse-filters-drawer__body' }.freeze
   FILTER_DRAWER_CLEAR_ALL = { css: '.ui-drawer--opened .browse-filters-drawer__header-clear-all:not(.hidden) a' }.freeze
   CLOSE_DRAWER_BUTTON = { css: '.ui-drawer__close-btn.ui-drawer__close-btn--opened > a > svg' }.freeze
-
 
   def page_displayed?
     is_displayed?(BROWSE_MAP)
@@ -45,7 +44,7 @@ class ReferralNetworkMap < BasePage
   end
 
   def clear_all_filters_and_close_drawer
-    click(FILTER_SUMMARY_LINK)
+    click_via_js(FILTER_SUMMARY_LINK)
     is_displayed?(FILTER_DRAWER)
     click(FILTER_DRAWER_CLEAR_ALL)
     click(CLOSE_DRAWER_BUTTON)

@@ -80,7 +80,7 @@ class FacesheetProfilePage < BasePage
       click(EDIT_PHONE)
       is_displayed?(PHONE_MODAL)
       # Adding Phone Number
-      click(ADD_PHONE)
+      click_via_js(ADD_PHONE)
       click(INPUT_PHONE)
       enter(phone, INPUT_PHONE)
       click(EXPAND_TYPE_CHOICES)
@@ -190,13 +190,13 @@ class FacesheetProfilePage < BasePage
       click(EDIT_EMAIL)
       is_displayed?(EMAIL_MODAL)
       # Adding email
-      click(ADD_EMAIL)
+      click_via_js(ADD_EMAIL)
       enter(email, INPUT_EMAIL)
       # Enabling notifications
       click(EMAIL_CHECKBOX_MESSAGE)
       click(EMAIL_CHECKBOX_NOTIFICATION)
       # saving
-      click(BTN_SAVE_EMAIL)
+      click_via_js(BTN_SAVE_EMAIL)
       wait_for_spinner
       wait_for_notification_to_disappear
     end
@@ -361,7 +361,7 @@ class FacesheetProfilePage < BasePage
       click(EDIT_CITIZENSHIP)
       is_displayed?(CITIZENSHIP_MODAL)
       # Select citizenship
-      click(EXPAND_CITIZENSHIP_CHOICES)
+      click_via_js(EXPAND_CITIZENSHIP_CHOICES)
       click_element_from_list_by_text(LIST_CITIZENSHIP_CHOICES, citizenship)
       # Since there is no spinner, waiting for the modal to disappear
       click(BTN_SAVE_CITIZENSHIP)
@@ -523,9 +523,9 @@ class FacesheetProfilePage < BasePage
   include HouseHold
 
   module Insurance
-    INSURANCE_SECTION = { css: '.profile-panel.insurance-information'}.freeze
-    INSURANCE_LIST = { css: '.payments-insurance-information'}.freeze
-    CURRENT_PLAN = { css: '.payments-insurance-information__plan-info'}.freeze
+    INSURANCE_SECTION = { css: '.profile-panel.insurance-information' }.freeze
+    INSURANCE_LIST = { css: '.payments-insurance-information' }.freeze
+    CURRENT_PLAN = { css: '.payments-insurance-information__plan-info' }.freeze
     CURRENT_MEMBER_ID = { xpath: ".//div[div[@class='row']//text()[contains(., 'Member Id')]]//p" }.freeze
     CURRENT_GROUP_ID = { xpath: ".//div[div[@class='row']//text()[contains(., 'Group Id')]]//p" }.freeze
     CURRENT_COVERAGE_START = { xpath: ".//div[div[@class='row']//text()[contains(., 'Coverage Start')]]//p" }.freeze
@@ -539,11 +539,11 @@ class FacesheetProfilePage < BasePage
     LIST_INSURANCE_PLAN_CHOICES = { css: 'div[id^="choices-insurance-plan-item"]' }.freeze
     INPUT_MEMBER_ID = { css: '#insurance-member-id' }.freeze
     INPUT_GROUP_ID = { css: '#insurance-group-id' }.freeze
-    INPUT_COVERAGE_START = {css: '#insurance-coverage-start' }.freeze
+    INPUT_COVERAGE_START = { css: '#insurance-coverage-start' }.freeze
     INPUT_COVERAGE_END = { css: '#insurance-coverage-end' }.freeze
     # buttons
     ADD_INSURANCE_ICON = { css: '#add-insurance-button' }.freeze
-    # TODO UU3-50414 edit button add an aria-label
+    # TODO: UU3-50414 edit button add an aria-label
     EDIT_INSURANCE_ICON = { css: '#edit-modal' }.freeze
     DELETE_INSURANCE_ICON = { css: 'div[aria-label="delete"]' }.freeze
     BTN_SAVE_INSURANCE = { css: '#edit-insurance-save-btn-' }.freeze
@@ -561,14 +561,16 @@ class FacesheetProfilePage < BasePage
       find_elements(INSURANCE_LIST).map(&:text).join(' ')
     end
 
-    def add_insurance(plan_type: MEDICARE_PLAN, insurance_plan: MEDICARE_PLAN, member_id: '1EG4TE5MK72', group_id:'', coverage_start:'', coverage_end:'')
+    def add_insurance(plan_type: MEDICARE_PLAN, insurance_plan: MEDICARE_PLAN, member_id: '1EG4TE5MK72', group_id: '', coverage_start: '', coverage_end: '')
       click(ADD_INSURANCE_ICON)
       is_displayed?(INSURANCE_MODAL)
       # Fill out insurance information
-      click(EXPAND_PLAN_TYPE)
+      click_via_js(EXPAND_PLAN_TYPE)
       click_element_from_list_by_text(LIST_PLAN_TYPE_CHOICES, plan_type)
-      click(EXPAND_INSURANCE_PLAN)
+      click_via_js(EXPAND_INSURANCE_PLAN)
       is_displayed?(INSURANCE_PLAN_DROPDOWN_OPEN)
+      # waiting for plans to load on dropdown, dropdown should have more than 1 option displayed when loaded
+      wait_for_elements_to_appear(LIST_INSURANCE_PLAN_CHOICES, 1)
       click_element_from_list_by_text(LIST_INSURANCE_PLAN_CHOICES, insurance_plan)
       enter(member_id, INPUT_MEMBER_ID)
       enter(group_id, INPUT_GROUP_ID)

@@ -3,16 +3,26 @@
 require_relative '../../../shared_components/base_page'
 
 class CasesTable < BasePage
-  HEADER = { css: '.cases .header-title__text' }
+  EXTERNAL_CASES_TAB = { css: '#cases-header2-btn' }
+  HEADER = { css: '.patient-table-header' }
+  INTERNAL_CASES_TAB = { css: '#cases-header1-btn' }
+  LOADING_CASES_MESSAGE_TEXT = 'Loading...'
+  MORE_FILTERS_BTN = { xpath: '//span[text()="Filters"]' }
+  NO_CASES_MESSAGE_TEXT = 'No cases here.'
+  PRIMARY_WORKER_FILTER = { css: '#primary-worker-filter' }
+  STATUS_FILTER = { css: '#status-filter' }
+  TABLE_BODY = { css: '.table-component' }
+  TABLE_MESSAGE = { css: '.table-component td.text-center' }
+  TABLE_ROW = { xpath: '//table/tbody/tr' }
 
-  TABLE_MESSAGE = { css: '.cases .ui-expandable__body > .message' }
-  LOADING_CASES_MESSAGE_TEXT = 'Loading Cases'
-  NO_CASES_MESSAGE_TEXT = 'No cases to display'
-
-  TABLE_ROW = { css: '.cases-table .ui-table-body .ui-table-row' }
-
-  def table_displayed?
-    is_displayed?(HEADER)
+  def page_displayed?
+    is_displayed?(HEADER) &&
+      is_displayed?(INTERNAL_CASES_TAB) &&
+      is_displayed?(EXTERNAL_CASES_TAB) &&
+      is_displayed?(STATUS_FILTER) &&
+      is_displayed?(PRIMARY_WORKER_FILTER) &&
+      is_displayed?(MORE_FILTERS_BTN) &&
+      is_displayed?(TABLE_BODY)
   end
 
   def click_first_case

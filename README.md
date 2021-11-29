@@ -224,6 +224,10 @@ Thoughtful test design is at least as meaningful as clean coding. Deciding wheth
 
 Running tests by tags rather than directory is optimal for its flexibility, but because we are housing tests for multiple projects in a common repository we need to tag the relevant application because distinct base URLs need to be passed for each.
 
+### Custom Matchers
+
+We employ custom matchers where they may enable us to debug efficiently. Custom matchers should demonstrate a significant value over standard matchers, e.g., by overwriting error messages to be more informative or to by executing comparisons specific to our applications. Each matchers should be clearly named and commented with its purpose and intended use. 
+
 ### Other development guidelines
 
 - Value readability over magic!
