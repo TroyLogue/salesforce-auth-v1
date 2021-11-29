@@ -3,7 +3,7 @@
 require_relative './pages/insights'
 require_relative '../root/pages/notifications'
 
-describe '[Insights - ]', :insights do
+describe '[Insights - ]', :insights, :app_client do
   let(:insights) { Insights.new(@driver) }
   let(:notifications) { Notifications.new(@driver) }
 
