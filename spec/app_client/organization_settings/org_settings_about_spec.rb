@@ -14,7 +14,7 @@ describe '[Org Settings - About]', :new_org_settings, :app_client do
   context('[As an org admin with access to new org settings page') do
     before do
       @auth_token = Auth.encoded_auth_token(email_address: Users::SETTINGS_USER)
-      organization_settings.authenticate_and_navigate_to(token: @auth_token, path: '/organization/settings')
+      org_settings_about.authenticate_and_navigate_to(token: @auth_token, path: '/organization/settings')
     end
 
     it 'can see the new org settings page' do
@@ -24,7 +24,6 @@ describe '[Org Settings - About]', :new_org_settings, :app_client do
     context('can edit and save') do
       before do
         org_settings_about.edit_org_info
-        byebug
         expect(org_settings_edit_org.page_displayed?).to be_truthy
       end
 
@@ -46,7 +45,7 @@ describe '[Org Settings - About]', :new_org_settings, :app_client do
         phone = Faker::Number.number(digits: 10)
         org_settings_edit_org.save_phone(phone)
         expect(org_settings_about.page_displayed?).to be_truthy
-        expect(org_settings_about.get_phones).to include(phone)
+        expect(org_settings_about.get_phones).to include(org_settings_about.number_to_phone_format(phone))
       end
 
       it 'org email' do
