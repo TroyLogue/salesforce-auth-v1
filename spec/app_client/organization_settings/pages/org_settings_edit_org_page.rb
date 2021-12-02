@@ -86,12 +86,9 @@ module OrgSettings
     end
 
     def save_time(time)
-      # byebug
       click_via_js(INPUT_HOURS_OPEN_FIRST)
-      # byebug
       click_element_from_list_by_text(LIST_HOURS, time)
       click_via_js(SAVE_BUTTON)
-      # byebug
     end
 
     private
