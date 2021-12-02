@@ -151,7 +151,7 @@ class FacesheetProfilePage < BasePage
       is_displayed?(ADDRESS_MODAL)
       # Filling out address
       click_via_js(LINK_ADD_ADDRESS)
-      click(EXPAND_ADDRESS_TYPE_CHOICES)
+      click_via_js(EXPAND_ADDRESS_TYPE_CHOICES)
       click_element_from_list_by_text(LIST_ADDRESS_TYPE_CHOICES, type)
       enter(address_line1, INPUT_ADDRESS_LINE1)
       enter(address_line2, INPUT_ADDRESS_LINE2)

@@ -41,12 +41,14 @@ describe '[Facesheet][Profile]', :app_client, :facesheet, :messaging do
     end
 
     it 'updates address', :uuqa_1510 do
-      @city = Faker::Address.city
-      @state = Faker::Address.state
-      # UU does a soft validation of addresses, therefore zip code needs to map to state
-      @zip = Faker::Address.zip(state_abbreviation: state_name_to_abbr(name: @state))
-      facesheet_profile.add_address(address_line1: @address_line1, city: @city, state: @state, zip: @zip)
-      p "E2E DEBUG: Updating client address to: #{@address_line1} #{@city} #{@state} #{@zip}"
+      # Hard coding values for address instead of using Faker due to v3 validations.
+      # For example, Faker returns zip code or address line values that will cause v3
+      # to return 422s when posting a new address(e.g. Nanside, 59080, etc.)
+      @city = 'New York'
+      @state = 'New York'
+      @zip = '10012'
+      facesheet_profile.add_address(city: @city, state: @state, zip: @zip)
+      p "E2E DEBUG: Updating client address to: #{@city} #{@state} #{@zip}"
       expect(notifications.notification_text).to eq(Notifications::ADDRESS_ADDED)
       expect(facesheet_profile.current_address).to include(
         @city, state_name_to_abbr(name: @state), @zip
