@@ -46,7 +46,9 @@ Clone this repository
 Since you'll most likely be working across multiple projects it is a good idea to keep your gems seperate. You can set up a `.ruby-gemset` file at the root and specify the name of the gemset you are creating. 
 
 For example, using rvm:
+`echo end-to-end-tests > .ruby-gemset`
 `rvm gemset create end-to-end-tests`
+`rvm gemset use end-to-end-tests`
 
 You would then place the text `end-to-end-tests` inside your `.ruby-gemset` file
 

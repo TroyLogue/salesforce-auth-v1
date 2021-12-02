@@ -113,7 +113,10 @@ describe '[Org Settings - Users]', :org_settings, :app_client do
       expect(actual_values).to match_array_with_ui_lag_msg(expected_values)
     end
 
-    it 'can remove an employee org role', :uuqa_1707 do
+    # Temporarily skipping while we debug this test case's failures
+    # A separate jenkins job will run this test case in the meantime on BrowserStack
+    # https://jenkins.devops.uniteus.io/qa-jenkins/job/end-to-end-tests/job/Staging/job/uuqa_1707_staging/
+    xit 'can remove an employee org role', :uuqa_1707 do
       org_settings_user_table.go_to_user_with_id(user_id: employee_id)
       expect(org_settings_user_form.page_displayed?).to be_truthy
 
