@@ -23,7 +23,8 @@ describe '[Org Settings Navigation]', :org_settings, :app_client do
       expect(home_page.page_displayed?).to be_truthy
     end
 
-    it 'Navigate through Org Settings Tabs', :uuqa_323, :uuqa_322, :uuqa_321 do
+    #turning this nav spec off as the phase 1 of the org settings revamp excludes programs and users, we'll be navigating between the new org settings and the legacy programs and users tabs
+    xit 'Navigate through Org Settings Tabs', :uuqa_323, :uuqa_322, :uuqa_321 do
       org_menu.go_to_users_table
       org_settings_navigation.go_to_profile_tab
       expect(org_settings_profile.page_displayed?).to be_truthy
