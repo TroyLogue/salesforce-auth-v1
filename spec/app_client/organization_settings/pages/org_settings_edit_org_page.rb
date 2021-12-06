@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../../root/pages/notifications'
-
 module OrgSettings
   class EditOrgInfo < BasePage
 

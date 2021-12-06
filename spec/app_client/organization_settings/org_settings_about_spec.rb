@@ -6,8 +6,6 @@ require_relative './pages/org_settings_about_page'
 require_relative './pages/org_settings_edit_org_page'
 
 describe '[Org Settings - About]', :new_org_settings, :app_client do
-  let(:home_page) { HomePage.new(@driver) }
-  let(:org_menu) { RightNav::OrgMenu.new(@driver) }
   let(:org_settings_about) { OrgSettings::About.new(@driver) }
   let(:org_settings_edit_org) {OrgSettings::EditOrgInfo.new(@driver)}
 
