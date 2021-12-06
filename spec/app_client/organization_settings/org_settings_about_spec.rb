@@ -9,13 +9,13 @@ describe '[Org Settings - About]', :new_org_settings, :app_client do
   let(:org_settings_about) { OrgSettings::About.new(@driver) }
   let(:org_settings_edit_org) {OrgSettings::EditOrgInfo.new(@driver)}
 
-  context('[As an org admin with access to new org settings page') do
+  context('[As an org admin with access to org settings page') do
     before do
       @auth_token = Auth.encoded_auth_token(email_address: Users::SETTINGS_USER)
       org_settings_about.authenticate_and_navigate_to(token: @auth_token, path: '/organization/settings')
     end
 
-    it 'can see the new org settings page' do
+    it 'can see the org settings page' do
       expect(org_settings_about.page_displayed?).to be_truthy
     end
 
