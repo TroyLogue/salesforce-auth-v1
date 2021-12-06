@@ -41,7 +41,7 @@ describe '[Serve Assistance Request]', :app_client, :assistance_request do
     if confirm_client_page.page_displayed?
       confirm_client_page.click_create_new_client
       expect(add_client_page.page_displayed?).to be_truthy
-      expect(add_client_page.is_info_prefilled?(fname: fname, lname: lname, dob: dob)).to be_truthy
+      expect(add_client_page.is_info_prefilled?(fname: @assistance_request.fname, lname: @assistance_request.lname, dob: Time.at(@assistance_request.date_of_birth).strftime('%m/%d/%Y'))).to be_truthy
       add_client_page.save_client
     end
     expect(create_case.create_case_form_displayed?).to be_truthy
