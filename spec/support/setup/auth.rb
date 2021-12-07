@@ -2,11 +2,25 @@
 
 class Auth
   class << self
+    # create new nested hash that can adjust with new emails
+    @@cached_jwt ||= Hash.new { |hash, key| hash[key] = {} }
+
     def jwt(email_address:, password: Users::DEFAULT_PASSWORD)
       # returns only a string of the JWT
-      response_body = auth_token(email_address: email_address, password: password)
-      parsed_response = JSON.parse response_body, symbolize_names: true
-      parsed_response[:access_token]
+      unless session_valid?(token: @@cached_jwt[email_address]["jwt"])
+        # puts "Invalid jwt session. Clearing stored token for #{email_address}"
+        @@cached_jwt[email_address].clear()
+      end
+
+      if (@@cached_jwt[email_address]["jwt"].nil? || @@cached_jwt[email_address]["jwt"].empty?)
+        response_body = auth_token(email_address: email_address, password: password)
+        parsed_response = JSON.parse response_body, symbolize_names: true
+        # puts "caching jwt- #{email_address}"
+        @@cached_jwt[email_address]["jwt"] = parsed_response[:access_token]
+      else
+        # puts "cached jwt - #{email_address}: #{@@cached_jwt[email_address]["jwt"]}"
+       @@cached_jwt[email_address]["jwt"]
+      end
     end
 
     def encoded_auth_token(email_address:, password: Users::DEFAULT_PASSWORD)
@@ -73,7 +87,7 @@ class Auth
         headers: { 'cookie': auth_cookie[:auth] },
         follow_redirects: false
       )
-      raise("Response returned: #{response.code}") unless response.code == 302
+      raise("#{response.request.last_uri} returned: #{response.code}") unless response.code == 302
 
       query_values = URI(response.headers['location']).query
       { code: URI.decode_www_form(query_values).to_h['code'] }
@@ -88,7 +102,7 @@ class Auth
       }
 
       response = HTTParty.post("#{ENV['APP_CLIENT_AUTH_URL']}/oauth2/token", body: body)
-      raise("Response returned: #{response.code}") unless response.code == 200
+      raise("#{response.request.last_uri} returned: #{response.code}") unless response.code == 200
 
       response.body
     end
@@ -100,6 +114,12 @@ class Auth
       auth_cookie = get_auth_cookie(email_address: email_address, password: password, tokens: csrf_auth)
       code = set_auth_code(auth_cookie: auth_cookie)
       get_access_token(code: code)
+    end
+
+    def session_valid?(token: )
+      #checks response for non 401 code
+      response = HTTParty.get("#{ENV['API_URL']}/v3/groups/#{Providers::GENERAL_CC_01}", headers: { 'Authorization' => "Bearer #{token}", 'Content-Type' => 'application/json' })
+      response.code == 200
     end
   end
 end

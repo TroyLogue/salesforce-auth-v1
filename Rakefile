@@ -6,6 +6,7 @@ end
 
 namespace :jenkins do
   desc 'specs tagged app_client on chrome headless'
+
   task :app_client_staging do
     ENV['BROWSER'] = 'chrome_headless'
     ENV['ENVIRONMENT'] = 'staging'
