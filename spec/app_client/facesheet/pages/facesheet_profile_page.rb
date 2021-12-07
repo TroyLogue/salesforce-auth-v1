@@ -612,7 +612,7 @@ class FacesheetProfilePage < BasePage
       click(LINK_ADD_MILITARY_INFO)
       is_displayed?(MILITARY_MODAL)
       # Select affiliation
-      click(EXPAND_MILITARY_CHOICES)
+      click_via_js(EXPAND_MILITARY_CHOICES)
       click_element_from_list_by_text(LIST_MILITARY_CHOICES, affiliation)
       # Since there is no spinner, waiting for the modal to disappear
       click(BTN_SAVE_MILITARY)
