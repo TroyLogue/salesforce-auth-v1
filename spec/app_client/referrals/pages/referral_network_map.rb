@@ -18,7 +18,7 @@ class ReferralNetworkMap < BasePage
 
   FILTER_DRAWER = { css: '.ui-drawer--opened .browse-filters-drawer__body' }.freeze
   FILTER_DRAWER_CLEAR_ALL = { css: '.ui-drawer--opened .browse-filters-drawer__header-clear-all:not(.hidden) a' }.freeze
-  CLOSE_DRAWER_BUTTON = { css: '.ui-drawer__close-btn.ui-drawer__close-btn--opened > a > svg' }.freeze
+  CLOSE_DRAWER_BUTTON = { css: '.ui-drawer__close-btn.ui-drawer__close-btn--opened > a' }.freeze
 
   def page_displayed?
     is_displayed?(BROWSE_MAP)
@@ -47,6 +47,6 @@ class ReferralNetworkMap < BasePage
     click_via_js(FILTER_SUMMARY_LINK)
     is_displayed?(FILTER_DRAWER)
     click(FILTER_DRAWER_CLEAR_ALL)
-    click(CLOSE_DRAWER_BUTTON)
+    click_via_js(CLOSE_DRAWER_BUTTON)
   end
 end
