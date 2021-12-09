@@ -3,7 +3,7 @@
 module OrgSettings
   class EditOrgInfo < BasePage
 
-    CANCEL_BUTTON = { css: 'button[aria-label="Cancel"]' }
+    CANCEL_BUTTON = { css: '[data-test-element=cancel]' }
     EDIT_ORG_INFO_HEADING = { css: '[data-test-element=heading]'}
 
     INPUT_NAME = { css: 'input[id=org-name]' }
