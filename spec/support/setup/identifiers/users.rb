@@ -55,6 +55,7 @@ module Users
     ORG_PAYMENTS_USER = 'sam@speedywheels.test'
 
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
+    NEW_DEFAULT_PASSWORD = ENV['NEW_DEFAULT_PASSWORD']
   else
     raise "Missing required ENV['ENVIRONMENT']: prod, training, staging, devqa"
   end
