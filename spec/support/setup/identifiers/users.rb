@@ -9,6 +9,7 @@ module Users
     ORG_02_USER = 'general-p2p-org-02@qa.test'
     ORG_03_USER = 'general-p2p-org-03@qa.test'
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
+    DEFAULT_PASSWORD_15 = ENV['DEFAULT_PASSWORD_15']
   when 'training'
     # End to End Tests - General P2P - [Technology Team Only][DO NOT USE]
     CC_01_USER = 'general-p2p-cc-01@qa.test'
@@ -16,6 +17,7 @@ module Users
     ORG_02_USER = 'general-p2p-org-02@qa.test'
     ORG_03_USER = 'general-p2p-org-03@qa.test'
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
+    DEFAULT_PASSWORD_15 = ENV['DEFAULT_PASSWORD_15']
   when 'staging', 'devqa'
     # Ivy League Network
     CC_01_USER = 'harvard@auto.com'
@@ -55,7 +57,7 @@ module Users
     ORG_PAYMENTS_USER = 'sam@speedywheels.test'
 
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
-    NEW_DEFAULT_PASSWORD = ENV['NEW_DEFAULT_PASSWORD']
+    DEFAULT_PASSWORD_15 = ENV['DEFAULT_PASSWORD_15']
     NEW_RESET_PASSWORD = ENV['NEW_RESET_PASSWORD']
   else
     raise "Missing required ENV['ENVIRONMENT']: prod, training, staging, devqa"

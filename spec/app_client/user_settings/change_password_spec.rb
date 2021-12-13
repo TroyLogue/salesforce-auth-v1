@@ -23,7 +23,7 @@ describe '[User Settings - Change Password]', :app_client, :user_settings, order
 
   context('[as licensed user] From user settings page,') do
     let(:reset_user) { Users::RESET_PW_USER }
-    let(:original_pw) { Users::NEW_DEFAULT_PASSWORD }
+    let(:original_pw) { Users::DEFAULT_PASSWORD_15 }
     let(:insecure_pw) { 'password123' }
     let(:new_pw) { Users::NEW_RESET_PASSWORD }
 
