@@ -1,38 +1,34 @@
 # frozen_string_literal: true
 
 module OrgSettings
-  class EditOrgInfo < BasePage
+  class EditOrgLocation < BasePage
     include ContactComponents
 
     CANCEL_BUTTON = { css: '[data-test-element=cancel]' }
-    EDIT_ORG_INFO_HEADING = { css: '[data-test-element=heading]' }
+    EDIT_LOCATION_HEADING = { css: '[data-test-element=heading]'}
 
-    INPUT_NAME = { css: 'input[id=org-name]' }
-    INPUT_DESCRIPTION = { css: '.public-DraftEditor-content' }
-    INPUT_WEBSITE = { css: 'input[id=org-website]' }
+    INPUT_LOCATION_NAME = { css: 'input[id=location-name]' }
+    INPUT_LOCATION_ADDRESS = { css: 'input[id=location-address-address-field]' }
+    INPUT_LOCATION_ADDRESS_OPTIONAL = { css: 'input[id=location-line2]' }
 
     SAVE_BUTTON = { css: '[data-test-element=save]' }
+    DELETE_BUTTON = { css: '[data-test-element=delete]' }
 
     def page_displayed?
-      is_displayed?(EDIT_ORG_INFO_HEADING) &&
+      is_displayed?(EDIT_LOCATION_HEADING) &&
       is_displayed?(CANCEL_BUTTON) &&
+      is_displayed?(INPUT_LOCATION_NAME) &&
+      is_displayed?(INPUT_LOCATION_ADDRESS) &&
       is_displayed?(SAVE_BUTTON)
     end
 
-    def save_description(description)
-      save_field(input_field: INPUT_DESCRIPTION, text_value: description)
+    ###
+    def save_address(address)
+      save_field(input_field: INPUT_LOCATION_ADDRESS, text_value: address)
     end
 
-    def get_description
-      text(TEXT_DESCRIPTION)
-    end
-
-    def save_website(website)
-      save_field(input_field: INPUT_WEBSITE, text_value: website)
-    end
-
-    def get_website
-      text(TEXT_WEBSITE)
+    def save_address_line_2(address_line_2)
+      save_field(input_field: INPUT_LOCATION_ADDRESS_OPTIONAL, text_value: address_line_2)
     end
 
     def save_phone(phone)
@@ -40,20 +36,8 @@ module OrgSettings
       save_field(input_field: INPUT_PHONE_NUMBER_FIRST, text_value: phone)
     end
 
-    def get_phone
-      text(INPUT_PHONE_NUMBER_FIRST)
-    end
-
     def save_email(email)
       save_field(input_field: INPUT_EMAIL_FIRST, text_value: email)
-    end
-
-    def get_email
-      text(TEXT_EMAIL)
-    end
-
-    def get_time
-      text(TEXT_HOURS_MONDAY)
     end
 
     def save_time(time)

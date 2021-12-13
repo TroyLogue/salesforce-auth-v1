@@ -15,6 +15,7 @@ module OrgSettings
     #ORG LOCATIONS
     ORG_LOCATIONS_SECTION = { css: '[data-test-element=org_locations_section]' }
     ADD_LOCATION_LINK = { css: '[data-test-element=add_location_link]' }
+    EDIT_LOCATION_LINK =  { css: '[data-test-element=edit_location_link]'}
 
     #PROGRAMS
     ORG_PROGRAMS_SECTION = {css: '[data-test-element=org_programs_section]'}
@@ -50,5 +51,13 @@ module OrgSettings
       click(TEXT_HOURS_TODAY)
       text(TEXT_HOURS_MONDAY)
     end
+
+    def edit_first_location
+      page_displayed?
+      click(EDIT_LOCATION_LINK)
+    end
+
+  # def get_location
+  # end
   end
 end
