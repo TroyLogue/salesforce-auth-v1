@@ -25,7 +25,7 @@ describe '[User Settings - Change Password]', :app_client, :user_settings, order
     let(:reset_user) { Users::RESET_PW_USER }
     let(:original_pw) { Users::NEW_DEFAULT_PASSWORD }
     let(:insecure_pw) { 'password123' }
-    let(:new_pw) { 'Uniteusisgreat456!' }
+    let(:new_pw) { Users::NEW_RESET_PASSWORD }
 
     it 'cancels password change while logged in', :uuqa_1493 do
       log_in_as(email_address: reset_user, password: ENV['NEW_DEFAULT_PASSWORD'])
