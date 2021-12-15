@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require './spec/shared_components/contact_components'
+
 module OrgSettings
   class EditOrgLocation < BasePage
     include ContactComponents
@@ -9,9 +11,10 @@ module OrgSettings
 
     INPUT_LOCATION_NAME = { css: 'input[id=location-name]' }
     INPUT_LOCATION_ADDRESS = { css: 'input[id=location-address-address-field]' }
+    INPUT_LOCATION_CLOSE_DROPDOWN_BUTTON = { css: '[id=address-dropdown-close-btn' }
+    INPUT_LOCATION_ADDRESS_DROPDOWN_OPTIONS = { css: '.location-address-field__dropdown-item' }
     INPUT_LOCATION_ADDRESS_OPTIONAL = { css: 'input[id=location-line2]' }
 
-    SAVE_BUTTON = { css: '[data-test-element=save]' }
     DELETE_BUTTON = { css: '[data-test-element=delete]' }
 
     def page_displayed?
@@ -22,13 +25,12 @@ module OrgSettings
       is_displayed?(SAVE_BUTTON)
     end
 
-    ###
-    def save_address(address)
-      save_field(input_field: INPUT_LOCATION_ADDRESS, text_value: address)
+    def save_name(name)
+      save_field(input_field: INPUT_LOCATION_NAME, text_value: name)
     end
 
-    def save_address_line_2(address_line_2)
-      save_field(input_field: INPUT_LOCATION_ADDRESS_OPTIONAL, text_value: address_line_2)
+    def save_address_optional(address_optional)
+      save_field(input_field: INPUT_LOCATION_ADDRESS_OPTIONAL, text_value: address_optional)
     end
 
     def save_phone(phone)
@@ -44,6 +46,7 @@ module OrgSettings
       click_via_js(INPUT_HOURS_OPEN_FIRST)
       click_element_from_list_by_text(LIST_HOURS, time)
       click_via_js(SAVE_BUTTON)
+      wait_for_notification_to_disappear
     end
 
     private
@@ -51,6 +54,7 @@ module OrgSettings
       delete_all_char(input_field)
       enter(text_value, input_field)
       click_via_js(SAVE_BUTTON)
+      wait_for_notification_to_disappear
     end
 
     def select_phone_type_fax

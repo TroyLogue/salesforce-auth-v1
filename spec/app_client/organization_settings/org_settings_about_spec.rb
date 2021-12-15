@@ -1,18 +1,13 @@
 # frozen_string_literal: true
 
-require './spec/shared_components/contact_components'
-require_relative '../root/pages/home_page'
-require_relative '../root/pages/right_nav'
 require_relative './pages/org_settings_about_page'
 require_relative './pages/org_settings_edit_org_page'
-require_relative './pages/org_settings_location_page'
 
-describe '[Org Settings - About]', :new_org_settings, :app_client do
+describe '[Org Settings - About]', :org_settings, :app_client do
   let(:org_settings_about) { OrgSettings::About.new(@driver) }
   let(:org_settings_edit_org) {OrgSettings::EditOrgInfo.new(@driver)}
-  let(:org_settings_edit_location) {OrgSettings::EditOrgLocation.new(@driver)}
 
-  context('[As an org admin with access to org settings page') do
+  context('[as an org admin]') do
     before do
       @auth_token = Auth.encoded_auth_token(email_address: Users::SETTINGS_USER)
       org_settings_about.authenticate_and_navigate_to(token: @auth_token, path: '/organization/settings')
@@ -62,53 +57,6 @@ describe '[Org Settings - About]', :new_org_settings, :app_client do
         expect(org_settings_about.page_displayed?).to be_truthy
         expect(org_settings_about.get_time).to include(time)
       end
-    end
-
-    context('can edit and save location') do
-      before do
-        org_settings_about.edit_first_location
-        expect(org_settings_edit_location.page_displayed?).to be_truthy
-      end
-
-      # it 'location name', :uuqa_810 do
-      #   name = Faker::Lorem.word
-      #   org_settings_edit_location.save_name(description)
-      #   expect(org_settings_about.page_displayed?).to be_truthy
-      #   expect(org_settings_about.get_first_location[name]).to include(name)
-      # end
-      #
-      # it 'location address', :uuqa_810 do
-      #   address = "#{Faker::Number.between(from: 1, to: 10)} Apt"
-      #   org_settings_edit_location.save_address(address)
-      #   expect(org_settings_profile.get_address).to include(address)
-      # end
-      #
-      it 'location address line 2', :uuqa_810 do
-        address_line_2 = "#{Faker::Number.between(from: 1, to: 10)} Apt"
-        org_settings_edit_location.save_address(address_line_2)
-        expect(org_settings_profile.get_first_location[name]).to include(address_line_2)
-      end
-      #
-      # it 'location phone', :uuqa_810 do
-      #   phone = Faker::Number.number(digits: 10)
-      #   org_settings_edit_org.save_phone(phone)
-      #   expect(org_settings_about.page_displayed?).to be_truthy
-      #   expect(org_settings_about.get_phones).to include(org_settings_about.number_to_phone_format(phone))
-      # end
-      #
-      # it 'location email', :uuqa_810 do
-      #   email = Faker::Internet.email
-      #   org_settings_edit_org.save_email(email)
-      #   expect(org_settings_about.page_displayed?).to be_truthy
-      #   expect(org_settings_about.get_emails).to include(email)
-      # end
-      #
-      # it 'location hours of operation', :uuqa_810 do
-      #   time = "#{Faker::Number.between(from: 1, to: 10)}:00 AM"
-      #   org_settings_edit_org.save_time(time)
-      #   expect(org_settings_about.page_displayed?).to be_truthy
-      #   expect(org_settings_about.get_time).to include(time)
-      # end
     end
   end
 end
