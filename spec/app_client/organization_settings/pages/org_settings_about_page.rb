@@ -10,7 +10,7 @@ module OrgSettings
     TEXT_ORG_EMAILS = { css: "[data-test-element^=org_email_address_]" }
     #TODO we have a https://uniteus.atlassian.net/browse/CP-542 task to add data-test-element attribute to each day of the week and its hour entries in progress
     TEXT_ORG_HOURS_TODAY = { css: '.org-info .ui-hours-of-operation-today' }
-    TEXT_ORG_HOURS_MONDAY = { css: '[id^=monday-hours]' }.freeze
+    TEXT_ORG_HOURS_MONDAY = { css: '[id^=monday-hours]' }
 
     #ORG LOCATIONS
     ORG_LOCATIONS_SECTION = { css: '[data-test-element=org_locations_section]' }
@@ -23,7 +23,7 @@ module OrgSettings
     TEXT_FIRST_LOCATION_EMAIL = { css: '.ui-location__email' }
 
     TEXT_FIRST_LOCATION_HOURS_TODAY = { css: '.ui-location__hours .ui-hours-of-operation-today' }
-    TEXT_FIRST_LOCATION_HOURS_MONDAY = { css: '[id^=monday-hours]' }.freeze
+    TEXT_FIRST_LOCATION_HOURS_MONDAY = { css: '[id^=monday-hours]' }
 
     #PROGRAMS
     ORG_PROGRAMS_SECTION = {css: '[data-test-element=org_programs_section]'}
