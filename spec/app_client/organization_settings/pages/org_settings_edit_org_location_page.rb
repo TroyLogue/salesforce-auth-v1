@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require './spec/shared_components/contact_components'
+require_relative './org_settings_contact_components'
 
 module OrgSettings
   class EditOrgLocation < BasePage
-    include ContactComponents
+    include OrgSettings::ContactComponents
 
     CANCEL_BUTTON = { css: '[data-test-element=cancel]' }
     EDIT_LOCATION_HEADING = { css: '[data-test-element=heading]'}
