@@ -27,6 +27,13 @@ describe '[Org Settings - Location]', :org_settings, :app_client do
       end
 
       # TODO needs to figure out a STABLE way to handle address input + validation
+      # 1st option: use Faker::Address.full_address
+      # The full_address Faker provides is not always a valid US address,
+      # plus sometimes it provides a Suite or Building # that is not supposed to
+      # be in the address line (our suite/building/apt # goes to address optional field).
+      # 2nd option: Faker::Address.full_address_as_hash(:street_address, street_address: {include_secondary: false})
+      # Using the street_address only also has the possibility of having an invalid US address,
+      # plus sometimes google places will return multiple results that are slightly different from the street_address input
       # it 'location address', :uuqa_2649 do
       # end
 
