@@ -4,7 +4,7 @@ require_relative './org_settings_contact_components'
 
 module OrgSettings
   class EditOrgLocation < BasePage
-    include OrgSettings::ContactComponents
+    include ContactComponents
 
     CANCEL_BUTTON = { css: '[data-test-element=cancel]' }
     EDIT_LOCATION_HEADING = { css: '[data-test-element=heading]'}
