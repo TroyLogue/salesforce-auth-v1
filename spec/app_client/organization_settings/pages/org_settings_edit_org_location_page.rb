@@ -12,7 +12,7 @@ module OrgSettings
     INPUT_LOCATION_NAME = { css: 'input[id=location-name]' }
     INPUT_LOCATION_ADDRESS = { css: 'input[id=location-address-address-field]' }
     INPUT_LOCATION_CLOSE_DROPDOWN_BUTTON = { css: '[id=address-dropdown-close-btn' }
-    INPUT_LOCATION_ADDRESS_DROPDOWN_OPTIONS = { css: '.location-address-field__dropdown-item' }
+    INPUT_LOCATION_ADDRESS_DROPDOWN_OPTION = { css: '.location-address-field__dropdown-item' }
     INPUT_LOCATION_ADDRESS_OPTIONAL = { css: 'input[id=location-line2]' }
 
     DELETE_BUTTON = { css: '[data-test-element=delete]' }
@@ -27,6 +27,14 @@ module OrgSettings
 
     def save_name(name)
       save_field(input_field: INPUT_LOCATION_NAME, text_value: name)
+    end
+
+    def save_address(address)
+      delete_all_char(INPUT_LOCATION_ADDRESS)
+      enter(address, INPUT_LOCATION_ADDRESS)
+      click_via_js(INPUT_LOCATION_ADDRESS_DROPDOWN_OPTION)
+      click_via_js(SAVE_BUTTON)
+      wait_for_notification_to_disappear
     end
 
     def save_address_optional(address_optional)

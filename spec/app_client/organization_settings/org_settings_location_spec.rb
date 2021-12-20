@@ -26,16 +26,19 @@ describe '[Org Settings - Location]', :org_settings, :app_client do
         expect(org_settings_about.get_first_location_name).to include(name)
       end
 
-      # TODO needs to figure out a STABLE way to handle address input + validation
-      # 1st option: use Faker::Address.full_address
-      # The full_address Faker provides is not always a valid US address,
-      # plus sometimes it provides a Suite or Building # that is not supposed to
-      # be in the address line (our suite/building/apt # goes to address optional field).
-      # 2nd option: Faker::Address.full_address_as_hash(:street_address, street_address: {include_secondary: false})
-      # Using the street_address only also has the possibility of having an invalid US address,
-      # plus sometimes google places will return multiple results that are slightly different from the street_address input
-      # it 'location address', :uuqa_2649 do
-      # end
+      # Mimick the solution in
+      # https://github.com/unite-us/end-to-end-tests/blob/master/spec/app_client/facesheet/facesheet_profile_spec.rb#L43-L50
+      # Hardcoding street address, city and state due to address validation
+      # 217-221 broadway blocks are valid address. Sampling a building number each time to validate an successful
+      # address update
+      it 'location address', :uuqa_2649 do
+        street_address = "#{Faker::Number.between(from: 217, to: 221)} Broadway"
+        city = "New York"
+        state = 'NY'
+        org_settings_edit_location.save_address("#{street_address}, #{city}, #{state}")
+        expect(org_settings_about.page_displayed?).to be_truthy
+        expect(org_settings_about.get_first_location_address).to include(street_address, city, state)
+      end
 
       it 'location address optional field', :uuqa_2649 do
         address_optional = "#{Faker::Number.between(from: 1, to: 10)} Apt"
