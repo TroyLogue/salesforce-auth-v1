@@ -32,7 +32,8 @@ module OrgSettings
     def save_address(address)
       delete_all_char(INPUT_LOCATION_ADDRESS)
       enter(address, INPUT_LOCATION_ADDRESS)
-      click_via_js(INPUT_LOCATION_ADDRESS_DROPDOWN_OPTION)
+      is_displayed?(INPUT_LOCATION_ADDRESS_DROPDOWN_OPTION) &&
+        click_element_from_list_including_text(INPUT_LOCATION_ADDRESS_DROPDOWN_OPTION, address)
       click_via_js(SAVE_BUTTON)
       wait_for_notification_to_disappear
     end
