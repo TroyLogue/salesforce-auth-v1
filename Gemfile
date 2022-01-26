@@ -7,6 +7,8 @@ gem 'selenium-webdriver'
 gem 'rspec'
 gem 'rspec-expectations'
 gem 'rspec-retry'
+gem 'page-object'
+gem 'capybara'
 
 #test_harness
 gem 'parallel_tests'
@@ -18,6 +20,7 @@ gem 'http'
 gem 'dotenv'
 gem 'httparty'
 gem 'nokogiri'
+gem 'capybara'
 
 #browserstack
 # enables HTTP persistent connection in selenium bindings
@@ -32,3 +35,7 @@ gem 'byebug' # https://github.com/deivid-rodriguez/byebug
 
 #internal
 gem 'uniteus-api-client', git: 'git@github.com:unite-us/api-integration-tests.git'
+
+group :test, :development do
+  gem 'knapsack_pro'
+end

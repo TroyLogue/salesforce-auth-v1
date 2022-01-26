@@ -1,9 +1,13 @@
 # frozen_string_literal: true
-
+require 'selenium-webdriver'
+require 'page-object'
+require 'rspec'
 require 'bundler'
 require 'fileutils'
 require 'rubygems'
 require 'date'
+require 'capybara'
+
 # adding login pages for EHR:
 require_relative './ehr/auth/pages/login_email_ehr' # UU3-48209 Currently all tests login through the UI and so these files are needed throughout the repo.
 require_relative './ehr/auth/pages/login_password_ehr' # With UU3-48209 we should not require login_email and login_password in the spec_helper, and only require them in specs testing login.
@@ -112,15 +116,16 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    @driver.manage.delete_all_cookies
+    #@driver.manage.delete_all_cookies
+    #@driver.manage.delete_all_cookies = false
   end
 
   if ENV['RETRY'] == 'false'
     config.verbose_retry = false # recommended for development mode
   else
     config.verbose_retry = true # show retry status in spec process
-    config.display_try_failure_messages = true
-    config.default_retry_count = 2
+    config.display_try_failure_messages = false #true
+    config.default_retry_count = 0
   end
 
   case ENV['ENVIRONMENT']
@@ -131,6 +136,7 @@ RSpec.configure do |config|
     ENV['EHR_AUTH_URL'] = 'https://emr.auth.uniteusdev.com'
     ENV['API_URL'] = 'https://api.uniteusdev.com'
     ENV['CORE_URL'] = 'https://core.uniteusdev.com'
+    ENV['SALESFORCE_URL'] = 'https://uniteus4.my.salesforce.com'
   when 'staging'
     ENV['APP_CLIENT_URL'] = 'https://app.uniteusdev.com'
     ENV['WIDGETS_URL'] = 'https://widgets.uniteusdev.com/assistance-request'
@@ -141,6 +147,7 @@ RSpec.configure do |config|
     ENV['CORE_URL'] = 'https://core.uniteusdev.com'
     ENV['RESOURCE_DIRECTORY_URL'] = 'https://uniteus.resources.uniteusdev.com'
     ENV['CONSENT_URL'] = 'https://consent.uniteusdev.com'
+    ENV['SALESFORCE_URL'] = 'https://uniteus4.my.salesforce.com'
   when 'training'
     ENV['APP_CLIENT_URL'] = 'https://app.uniteustraining.com'
     ENV['WIDGETS_URL'] = 'https://widgets.uniteustraining.com/assistance-request'
@@ -150,6 +157,7 @@ RSpec.configure do |config|
     ENV['API_URL'] = 'https://api.uniteustraining.com'
     ENV['CORE_URL'] = 'https://core.uniteustraining.com'
     ENV['CONSENT_URL'] = 'https://consent.uniteustraining.com'
+    ENV['SALESFORCE_URL'] = 'https://uniteus4.my.salesforce.com'
   when 'prod'
     ENV['APP_CLIENT_URL'] = 'https://app.uniteus.io'
     ENV['WIDGETS_URL'] = 'https://widgets.uniteus.io/assistance-request'
@@ -161,14 +169,14 @@ RSpec.configure do |config|
     ENV['RESOURCE_DIRECTORY_URL'] = 'https://uniteus.resources.uniteus.io'
     ENV['CONSENT_URL'] = 'https://consent.uniteus.io'
   else
-    raise "Missing required ENV['ENVIRONMENT']: devqa, staging, training, prod"
+    raise "Missing required ENV['ENVIRONMENT']: devqa, staging, training, prod and salesforce."
   end
 
   # Setting web and auth urls for app being tested
-  valid_application_values = ['APP_CLIENT', 'EHR', 'CONSENT', 'RESOURCE_DIRECTORY', 'WIDGETS']
-  if !ENV['APPLICATION']
+  valid_application_values = %w[APP_CLIENT EHR CONSENT RESOURCE_DIRECTORY WIDGETS SALESFORCE]
+  unless ENV['APPLICATION']
     p "Setting ENV['APPLICATION'] to APP_CLIENT by default. If your spec doesn't live in the app_client directory, pass in APPLICATION at runtime. Options: #{valid_application_values.join(', ')}"
-    ENV['APPLICATION'] = 'APP_CLIENT'
+    ENV['APPLICATION'] = 'SALESFORCE'
   end
   raise "Invalid ENV['APPLICATION']. Must be one of: #{valid_application_values}" unless valid_application_values.include?(ENV['APPLICATION'])
 

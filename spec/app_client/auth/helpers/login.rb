@@ -12,4 +12,5 @@ module Login
 
     login_password.submit(password)
   end
+
 end

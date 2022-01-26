@@ -18,6 +18,8 @@ module Users
     ORG_03_USER = 'general-p2p-org-03@qa.test'
     DEFAULT_PASSWORD = ENV['DEFAULT_PASSWORD']
     DEFAULT_PASSWORD_15 = ENV['DEFAULT_PASSWORD_15']
+    SALESFORCE_USER = 'fine-01curls@icloud.com'
+    SALESFORCE_DEFAULT_PASSWORD = ENV['SALESFORCE_DEFAULT_PASSWORD']
   when 'staging', 'devqa'
     # Ivy League Network
     CC_01_USER = 'harvard@auto.com'
@@ -33,6 +35,9 @@ module Users
     NON_MILITARY_NON_INSURANCE_ORG = 'princeton@auto.com'
     USER_IN_MULTIPLE_PROVIDERS = 'seven-sisters@e2e.test'
     INSIGHTS_USER = 'insights-automated@bi.test'
+    #salesforce
+    SALESFORCE_USER = 'fine-01curls@icloud.com'
+    SALESFORCE_DEFAULT_PASSWORD = ENV['SALESFORCE_DEFAULT_PASSWORD']
 
     # QA Network
     CC_02_USER = 'qa.perms@auto.com'

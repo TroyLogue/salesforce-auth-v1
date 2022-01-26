@@ -240,3 +240,4 @@ namespace :browserstack do
     exit run_in_parallel(tag: 'ehr')
   end
 end
+KnapsackPro.load_tasks if defined?(KnapsackPro)
