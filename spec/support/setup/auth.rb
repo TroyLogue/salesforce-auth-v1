@@ -116,7 +116,7 @@ class Auth
       get_access_token(code: code)
     end
 
-    def session_valid?(token: )
+    def session_valid?(token:)
       #checks response for non 401 code
       response = HTTParty.get("#{ENV['API_URL']}/v3/groups/#{Providers::GENERAL_CC_01}", headers: { 'Authorization' => "Bearer #{token}", 'Content-Type' => 'application/json' })
       response.code == 200

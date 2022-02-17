@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 require_relative '../../shared_components/base_page'
 
@@ -5,20 +6,15 @@ require 'date'
 
 class UuPatientContextPage < BasePage
 
-  EMAIL_INPUT = {css: 'username'}.freeze # css: '#email-0'
-  PASSWORD_INPUT = {css: 'password'}.freeze
-  VERIFICATION_CODE_INPUT = {id: 'emc'}.freeze
-  VERIFY_YOUR_IDENTITY = {id: 'save'}.freeze
+  EMAIL_INPUT = { css: 'username' }.freeze # css: '#email-0'
+  PASSWORD_INPUT = { css: 'password' }.freeze
+  VERIFICATION_CODE_INPUT = { id: 'emc' }.freeze
+  VERIFY_YOUR_IDENTITY = { id: 'save' }.freeze
 
   LOGIN_BTN = { css: 'Login' }.freeze
 
   def page_displayed?
     is_displayed?(VERIFY_YOUR_IDENTITY)
-  end
-
-  def enter_credentials(user_name, password)
-    user_name = SALESFORCE_USER
-    password = SALESFORCE_PASSWORD
   end
 
   def submit_form

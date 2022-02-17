@@ -355,7 +355,7 @@ class BasePage
 
   def text_present?(selector)
     find(selector)
-    wait_for(1) { !driver.find_element(selector).text.nil? }
+    wait_for(20) { !driver.find_element(selector).text.nil? }
   rescue Selenium::WebDriver::Error::TimeOutError
     print 'E2E ERROR: TimeOutError: text was nil'
     false
@@ -367,12 +367,12 @@ class BasePage
 
   # explicit-wait wrapper for find_element methods to avoid flakiness caused by timing,
   # e.g., wait on find_element before interacting with it or asserting its visibility
-  def wait_for(seconds = 30)
-    Selenium::WebDriver::Wait.new(timeout: seconds).until { yield }
+  def wait_for(seconds = 30, &block)
+    Selenium::WebDriver::Wait.new(timeout: seconds).until(&block)
   end
 
   def wait_for_element_to_disappear(selector)
-    wait_for { find_elements(selector).length < 1 }
+    wait_for { find_elements(selector).empty? }
   end
 
   def wait_for_elements_to_appear(selector, number_greater_than)
@@ -380,14 +380,14 @@ class BasePage
   end
 
   def wait_for_notification_to_disappear(notification = { css: '#notifications .notification' })
-    wait_for { find_elements(notification).length < 1 }
+    wait_for { find_elements(notification).empty? }
   end
 
   def wait_for_spinner(spinner = { css: '.spinner-container' })
-    wait_for { find_elements(spinner).length < 1 }
+    wait_for { find_elements(spinner).empty? }
   end
 
   def wait_for_download_spinner(spinner = { css: '.spin-icon.spinning' })
-    wait_for { find_elements(spinner).length < 1 }
+    wait_for { find_elements(spinner).empty? }
   end
 end

@@ -6,7 +6,11 @@ require 'bundler'
 require 'fileutils'
 require 'rubygems'
 require 'date'
-require 'capybara'
+require 'capybara/email/rspec'
+require 'mailslurp_client'
+require 'rspec/expectations'
+require 'rspec/matchers/built_in/all'
+
 
 # adding login pages for EHR:
 require_relative './ehr/auth/pages/login_email_ehr' # UU3-48209 Currently all tests login through the UI and so these files are needed throughout the repo.
@@ -113,11 +117,6 @@ RSpec.configure do |config|
     end
   rescue Exception => e
     p "Exception in spec_helper.rb - before hook: #{e}"
-  end
-
-  config.before(:each) do
-    #@driver.manage.delete_all_cookies
-    #@driver.manage.delete_all_cookies = false
   end
 
   if ENV['RETRY'] == 'false'
@@ -228,5 +227,10 @@ RSpec.configure do |config|
       p "Exception in spec_helper.rb - after hook: #{e}"
     end
     @driver.quit
+  end
+
+  # email verification code
+  MailSlurpClient.configure do |configuration|
+    configuration.api_key['x-api-key'] = ENV['MAILSLURP_API_KEY']
   end
 end
